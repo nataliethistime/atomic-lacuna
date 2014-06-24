@@ -1,7 +1,7 @@
-YAHOO.namespace("lacuna");    
+YAHOO.namespace("lacuna");
 
 if (typeof YAHOO.lacuna.Login == "undefined" || !YAHOO.lacuna.Login) {
-    
+
 (function(){
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
@@ -15,7 +15,7 @@ if (typeof YAHOO.lacuna.Login == "undefined" || !YAHOO.lacuna.Login) {
     var Login = function() {
         this.id = "login";
         this.createEvent("onLoginSuccessful");
-        
+
         var container = document.createElement("div");
         container.id = this.id;
         Dom.addClass(container, "hidden");
@@ -58,7 +58,7 @@ if (typeof YAHOO.lacuna.Login == "undefined" || !YAHOO.lacuna.Login) {
         ].join('');
         document.body.insertBefore(container, document.body.firstChild);
         Dom.addClass(container, "nofooter");
-        
+
         this.Dialog = new YAHOO.widget.Panel(this.id, {
             constraintoviewport:true,
             fixedcenter:true,
@@ -80,13 +80,13 @@ if (typeof YAHOO.lacuna.Login == "undefined" || !YAHOO.lacuna.Login) {
             this.elForm = Dom.get("loginForm");
             this.elCreate = Dom.get("loginCreate");
             this.elReset = Dom.get("loginReset");
-            
+
             Event.addListener(this.elCreate, "click", function(e){Event.stopEvent(e);this.createEmpire();}, this, true);
             Event.addListener(this.elReset, "click", function(e){Event.stopEvent(e);this.resetPassword();}, this, true);
             Event.addListener(this.elForm, "submit", function(e){Event.stopEvent(e);this.handleLogin();}, this, true);
             Dom.removeClass(this.id, Lib.Styles.HIDDEN);
         }, this, true);
-        
+
         this.Dialog.render();
         Game.OverlayManager.register(this.Dialog);
     };
@@ -100,16 +100,12 @@ if (typeof YAHOO.lacuna.Login == "undefined" || !YAHOO.lacuna.Login) {
                     YAHOO.log(o, "info", "Login.handleLogin.success");
                     //clear the session just in case
                     Game.RemoveCookie("session");
-                    
+
                     if(this.elRemember.checked) {
-                        var now = new Date();
-                        Cookie.set("lacunaEmpireName", this.elName.value, {
-                            domain: Game.domain,
-                            expires: new Date(now.setFullYear(now.getFullYear() + 1))
-                        });
+                        Game.SetCookie('empireName', this.elName.value);
                     }
                     else {
-                        Cookie.remove("lacunaEmpireName");
+                        Game.RemoveCookie('empireName');
                     }
                     this.elForm.reset();
                     this.fireEvent("onLoginSuccessful",o);
@@ -140,7 +136,7 @@ if (typeof YAHOO.lacuna.Login == "undefined" || !YAHOO.lacuna.Login) {
                 Game.OverlayManager.hideAll();
                 this.elForm.reset();
                 this.Dialog.show();
-                var str = Cookie.get("lacunaEmpireName");
+                var str = Game.GetCookie('empireName');
                 if(str) {
                     this.elName.value = str;
                     this.elRemember.checked = true;
@@ -212,7 +208,7 @@ if (typeof YAHOO.lacuna.Login == "undefined" || !YAHOO.lacuna.Login) {
     var ResetPassword = function(Login) {
         this.createEvent("onResetSuccessful");
         this._login = Login;
-        
+
         this.emailId = "resetPasswordEmail";
 
         var emailContainer = document.createElement("div");
@@ -235,7 +231,7 @@ if (typeof YAHOO.lacuna.Login == "undefined" || !YAHOO.lacuna.Login) {
         '    <div class="ft"></div>'
         ].join('');
         document.body.insertBefore(emailContainer, document.body.firstChild);
-        
+
         this.EmailDialog = new YAHOO.widget.Dialog(this.emailId, {
             constraintoviewport:true,
             fixedcenter:true,
@@ -257,7 +253,7 @@ if (typeof YAHOO.lacuna.Login == "undefined" || !YAHOO.lacuna.Login) {
         this.EmailDialog.renderEvent.subscribe(function(){
             this.elName = Dom.get("resetEmpireName");
             this.elEmail = Dom.get("resetEmail");
-            
+
             Event.on('resetShowKey', 'click', function(e){this.showReset();}, this, true);
             Dom.removeClass(this.emailId, Lib.Styles.HIDDEN);
         }, this, true);
@@ -288,7 +284,7 @@ if (typeof YAHOO.lacuna.Login == "undefined" || !YAHOO.lacuna.Login) {
         '    <div class="ft"></div>'
         ].join('');
         document.body.insertBefore(resetContainer, document.body.firstChild);
-        
+
         this.ResetDialog = new YAHOO.widget.Dialog(this.resetId, {
             constraintoviewport:true,
             fixedcenter:true,
@@ -310,7 +306,7 @@ if (typeof YAHOO.lacuna.Login == "undefined" || !YAHOO.lacuna.Login) {
             this.elKey = Dom.get("resetKey");
             this.elPassword1 = Dom.get("resetPassword1");
             this.elPassword2 = Dom.get("resetPassword2");
-            
+
             Dom.removeClass(this.resetId, Lib.Styles.HIDDEN);
         }, this, true);
         this.ResetDialog.submitEvent.subscribe(this.resetPassword, this, true);
@@ -396,7 +392,7 @@ if (typeof YAHOO.lacuna.Login == "undefined" || !YAHOO.lacuna.Login) {
 
     Lacuna.Login = Login;
 })();
-YAHOO.register("login", YAHOO.lacuna.Login, {version: "1", build: "0"}); 
+YAHOO.register("login", YAHOO.lacuna.Login, {version: "1", build: "0"});
 
 }
 // vim: noet:ts=4:sw=4

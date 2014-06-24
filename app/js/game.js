@@ -22,8 +22,9 @@ var Storage = require('dom-storage');
         onTick : new Util.CustomEvent("onTick"),
         OverlayManager : new YAHOO.widget.OverlayManager(),
 
-        // in-file, doesn't call `String(val)` on values (default)
-        db : new Storage('./db.json', { strict: false }),
+        // in-file, doesn't call String(val) on values (default)
+        db       : new Storage('./db.json', { strict: false }),
+        settings : new Storage('./settings.json', { strict: false }),
 
         Start : function(query) {
             var l = window.location;
@@ -808,21 +809,17 @@ var Storage = require('dom-storage');
 
         //Cookie helpers functions
         GetCookie : function(key, defaultValue) {
-            var chip = Cookie.getSub("lacuna",key);
-            return chip || defaultValue;
+            var item = this.db.getItem(key);
+            return item || defaultValue;
         },
-        SetCookie : function(key, value, expiresDate) {
-            var opts = { domain: Game.domain };
-            if(expiresDate) {
-                opts.expires = expiresDate;
-            }
-            Cookie.setSub("lacuna", key, value, opts);
+        SetCookie : function(key, value) {
+            this.db.setItem(key, value);
         },
         RemoveCookie : function(key) {
-            Cookie.removeSub("lacuna", key, { domain: Game.domain });
+            this.db.removeItem(key);
         },
         RemoveAllCookies : function() {
-            Cookie.remove("lacuna", { domain: Game.domain });
+            this.db.clear();
         },
         SetLocation : function(id, view) {
             Game.SetCookie("locationId", id);
@@ -831,19 +828,14 @@ var Storage = require('dom-storage');
 
         //using a more permanent cookie
         GetCookieSettings : function(key, defaultValue) {
-            var chip = Cookie.getSub("lacunaSettings",key);
-            return chip || defaultValue;
+            var item = this.settings.getItem(key);
+            return item || defaultValue;
         },
         SetCookieSettings : function(key, value) {
-            var now = new Date(),
-                opts = {
-                    domain: Game.domain,
-                    expires: new Date(now.setFullYear(now.getFullYear() + 1))
-                };
-            Cookie.setSub("lacunaSettings", key, value, opts);
+            this.settings.setItem(key, value);
         },
         RemoveCookieSettings : function(key) {
-            Cookie.removeSub("lacunaSettings", key, { domain: Game.domain });
+            this.settings.clear();
         },
 
         //Tick related
