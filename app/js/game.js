@@ -23,7 +23,7 @@ var Storage = require('dom-storage');
         OverlayManager : new YAHOO.widget.OverlayManager(),
 
         // in-file, doesn't call `String(val)` on values (default)
-        cache : new Storage('./db.json', { strict: false }),
+        db : new Storage('./db.json', { strict: false }),
 
         Start : function(query) {
             var l = window.location;
