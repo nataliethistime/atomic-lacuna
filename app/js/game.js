@@ -1,6 +1,8 @@
 YAHOO.namespace("lacuna");
 if (typeof YAHOO.lacuna.Game == "undefined" || !YAHOO.lacuna.Game) {
 
+var Storage = require('dom-storage');
+
 (function(){
     var Util = YAHOO.util,
         Lang = YAHOO.lang,
@@ -19,6 +21,9 @@ if (typeof YAHOO.lacuna.Game == "undefined" || !YAHOO.lacuna.Game) {
         HourMS : 3600000, //(60min * 60sec * 1000ms),
         onTick : new Util.CustomEvent("onTick"),
         OverlayManager : new YAHOO.widget.OverlayManager(),
+
+        // in-file, doesn't call `String(val)` on values (default)
+        cache : new Storage('./db.json', { strict: false }),
 
         Start : function(query) {
             var l = window.location;
