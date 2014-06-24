@@ -1,0 +1,1 @@
+~/atom-shell/atom .
