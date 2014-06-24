@@ -1,2 +1,3 @@
 *.sublime-*
 db.json
+settings.json
