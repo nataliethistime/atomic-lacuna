@@ -715,7 +715,7 @@ if (typeof YAHOO.lacuna.Game == "undefined" || !YAHOO.lacuna.Game) {
         },
 
         GetResources : function() {
-            var newResources = require('data/resources.json') || {};
+            var newResources = require('data/resources.json');
             Game.Resources = newResources;
             Game.Resources.complete = 1;
         },
