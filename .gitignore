@@ -1,3 +1,4 @@
 *.sublime-*
 db.json
 settings.json
+node_modules
