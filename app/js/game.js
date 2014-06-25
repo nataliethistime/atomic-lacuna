@@ -254,16 +254,7 @@ var Storage = require('dom-storage');
             Lacuna.Pulser.Hide();
         },
         InitChat : function() {
-            Game.Services.Chat.get_commands({session_id:Game.GetSession()},{
-                success : function(o){
-                    Game.chatLogout = o.result.logout_command;
-                    if(window.env_executeCommand) {
-                        YAHOO.log(o, "debug", "Chat.get_commands.success");
-                        window.env_executeCommand(o.result.login_command);
-                    }
-                },
-                failure : function(o){ return true; }
-            });
+            require('ipc').send('chat-connect', Game.GetSession());
         },
         InitEvents : function() {
             //make sure we only subscribe once
@@ -809,17 +800,17 @@ var Storage = require('dom-storage');
 
         //Cookie helpers functions
         GetCookie : function(key, defaultValue) {
-            var item = this.db.getItem(key);
+            var item = Game.db.getItem(key);
             return item || defaultValue;
         },
         SetCookie : function(key, value) {
-            this.db.setItem(key, value);
+            Game.db.setItem(key, value);
         },
         RemoveCookie : function(key) {
-            this.db.removeItem(key);
+            Game.db.removeItem(key);
         },
         RemoveAllCookies : function() {
-            this.db.clear();
+            Game.db.clear();
         },
         SetLocation : function(id, view) {
             Game.SetCookie("locationId", id);
@@ -828,14 +819,14 @@ var Storage = require('dom-storage');
 
         //using a more permanent cookie
         GetCookieSettings : function(key, defaultValue) {
-            var item = this.settings.getItem(key);
+            var item = Game.settings.getItem(key);
             return item || defaultValue;
         },
         SetCookieSettings : function(key, value) {
-            this.settings.setItem(key, value);
+            Game.settings.setItem(key, value);
         },
         RemoveCookieSettings : function(key) {
-            this.settings.clear();
+            Game.settings.clear();
         },
 
         //Tick related
