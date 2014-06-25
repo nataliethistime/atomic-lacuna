@@ -54,8 +54,6 @@ if (!String.prototype.titleCaps) {
 
 if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
 
-var Storage = require('dom-storage');
-
 (function(){
     var Util = YAHOO.util,
         Lang = YAHOO.lang,
@@ -73,8 +71,16 @@ var Storage = require('dom-storage');
     };
 
     // in-file, doesn't call String(val) on values (default)
-    var db       = window.localStorage || new Storage('./db.json', { strict: false });
-    var settings = window.localStorage || new Storage('./settings.json', { strict: false });
+    var db, settings;
+    if (window.ATOM_SHELL) {
+        var Storage = require('dom-storage');
+        db = new Storage('./app/data/db.json', { strict: false });
+        settings = new Storage('./app/data/settings.json', { strict: false });
+    }
+    else {
+        db = window.localStorage;
+        settings = window.localStorage;
+    }
 
     var Library = {
         db : db,

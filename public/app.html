@@ -28,7 +28,7 @@
             Lacuna Expanse requires Javascript to run.  Please enable and reload the page.
         </div>
     </div>
-    <div id="footer" class="yui-gb hidden" style="bottom: 25px;">
+    <div id="footer" class="yui-gb hidden">
         <div id="footerShine"></div>
         <div id="planetsCenter">
             <div id="planetsArrow"></div>
@@ -38,7 +38,9 @@
         <div id="planetsCenterShine"></div>
         <div id="planetsClick"></div>
     </div>
-        <div style="position: absolute;bottom: 0;left:0; width: 100%; height: 25px; background-color: #0ba2f2; color: #1bb2f2; font-family: helvetica; font-size: 20px;">Join in game chat, and talk with the other players who are online right now...</div>
+    <!-- Chat bar - old
+    <div style="position: absolute;bottom: 0;left:0; width: 100%; height: 25px; background-color: #0ba2f2; color: #1bb2f2; font-family: helvetica; font-size: 20px;">Join in game chat, and talk with the other players who are online right now...</div>
+    -->
     <script id="noJsScript" type="text/javascript">
         (function(){
             //remove noscript notice
@@ -52,9 +54,9 @@
         })();
     </script>
     <script type="text/javascript">
-        lacuna_code_base_url = 'app/js/';
         lacuna_rpc_base_url = 'http://us1.lacunaexpanse.com/'
         lacuna_s3_base_url = 'http://d16cbq0l6kkf21.cloudfront.net/';
+        window.ATOM_SHELL = true;
     </script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/yui/2.8.1/build/yuiloader/yuiloader-min.js"></script>
     <script type="text/javascript" src="../app/js/main.js"></script>

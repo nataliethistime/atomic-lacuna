@@ -27,13 +27,13 @@
 
     // Determine weather we're in the atom-shell or an actual web browser.
     var basePath = '';
-    if (window.location.protocol === 'http:') {
-        // web browser
-        basePath = 'http://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/';
-    }
-    else {
+    if (window.ATOM_SHELL) {
         // atom-shell
         basePath = require('path').join(process.cwd(), 'lib', 'yui2', 'build') + '/';
+    }
+    else {
+        // web browser
+        basePath = 'http://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/';
     }
 
     var loader = new YAHOO.util.YUILoader({
