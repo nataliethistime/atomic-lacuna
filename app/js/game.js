@@ -196,7 +196,7 @@ if (typeof YAHOO.lacuna.Game == "undefined" || !YAHOO.lacuna.Game) {
             //create menus (or update if already created)
             Lacuna.Menu.create();
             //set our interval going for resource calcs since Logout clears it
-            Game.recTime = (new Date()).getTime();
+            Game.recTime = Date.now();
             Game.isRunning = 1;
             //Game.recInt = setInterval(Game.Tick, 1000);
             /* possible new pattern for game loop*/
@@ -250,52 +250,42 @@ if (typeof YAHOO.lacuna.Game == "undefined" || !YAHOO.lacuna.Game) {
         InitChat : function() {
             require('ipc').send('chat-connect', Game.GetSession());
         },
-        InitEvents : function() {
-            //make sure we only subscribe once
-            if(!Lacuna.Game._hasRun) {
-                //only subscribe once.
-                //Game.onTick.subscribe(Game.QueueProcess);
-                //this will be called on the first load and create menu
-                Lacuna.MapStar.subscribe("onMapRpc", Game.onRpc);
-                Lacuna.MapStar.subscribe("onChangeToPlanetView", Game.onChangeToPlanetView);
+        InitEvents : _.once(function() {
+            //this will be called on the first load and create menu
+            Lacuna.MapStar.subscribe("onMapRpc", Game.onRpc);
+            Lacuna.MapStar.subscribe("onChangeToPlanetView", Game.onChangeToPlanetView);
 
-                Lacuna.MapPlanet.subscribe("onMapRpc", Game.onRpc);
+            Lacuna.MapPlanet.subscribe("onMapRpc", Game.onRpc);
 
-                Lacuna.Menu.subscribe("onChangeClick", Game.onChangeClick);
-                Lacuna.Menu.subscribe("onInboxClick", function() {
-                    Game.OverlayManager.hideAll();
-                    Lacuna.Messaging.show();
-                });
-                Lacuna.Menu.subscribe("onDestructClick", Game.onDestructClick);
+            Lacuna.Menu.subscribe("onChangeClick", Game.onChangeClick);
+            Lacuna.Menu.subscribe("onInboxClick", function() {
+                Game.OverlayManager.hideAll();
+                Lacuna.Messaging.show();
+            });
 
-                Lacuna.Messaging.subscribe("onRpc", Game.onRpc);
+            Lacuna.Menu.subscribe("onDestructClick", Game.onDestructClick);
+            Lacuna.Messaging.subscribe("onRpc", Game.onRpc);
+            Lacuna.Essentia.subscribe("onRpc", Game.onRpc);
+            Lacuna.Invite.subscribe("onRpc", Game.onRpc);
+            Lacuna.Profile.subscribe("onRpc", Game.onRpc);
 
-                Lacuna.Essentia.subscribe("onRpc", Game.onRpc);
-
-                Lacuna.Invite.subscribe("onRpc", Game.onRpc);
-
-                Lacuna.Profile.subscribe("onRpc", Game.onRpc);
-
-                Game._hasRun = true;
-
-                Event.on(window, "resize", function (e) {
-                    //taken from YUI Overlay
-                    if (YAHOO.env.ua.ie) {
-                        if (!window.resizeEnd) {
-                            window.resizeEnd = -1;
-                        }
-
-                        clearTimeout(window.resizeEnd);
-
-                        window.resizeEnd = setTimeout(function () {
-                            Lacuna.Game.Resize();
-                        }, 100);
-                    } else {
-                        Lacuna.Game.Resize();
+            Event.on(window, "resize", function (e) {
+                //taken from YUI Overlay
+                if (YAHOO.env.ua.ie) {
+                    if (!window.resizeEnd) {
+                        window.resizeEnd = -1;
                     }
-                });
-            }
-        },
+
+                    clearTimeout(window.resizeEnd);
+
+                    window.resizeEnd = setTimeout(function () {
+                        Lacuna.Game.Resize();
+                    }, 100);
+                } else {
+                    Lacuna.Game.Resize();
+                }
+            });
+        }),
         InitServices : function(smd) {
             var serviceOut = {};
             var successFunc = function(){
@@ -438,18 +428,6 @@ if (typeof YAHOO.lacuna.Game == "undefined" || !YAHOO.lacuna.Game) {
         onChangeToPlanetView : function(planetId) {
             YAHOO.log(planetId, "info", "onChangeToPlanetView");
             Game.PlanetJump(Game.EmpireData.planets[planetId]);
-            /*
-            var cp = Game.EmpireData.planets[planetId];
-            if(cp) {
-                Game.EmpireData.current_planet_id = cp.id;
-                Lacuna.Menu.PlanetMenu.elText.innerHTML = ['<img src="', Lib.AssetUrl, 'star_system/', cp.image, '.png" class="menuPlanetThumb" />', cp.name].join('');
-                Game.SetLocation(planetId, Lib.View.PLANET);
-            }
-
-            Lacuna.MapStar.MapVisible(false);
-            Lacuna.Menu.PlanetVisible();
-            Lacuna.MapPlanet.Load(planetId);
-            */
         },
         onRpc : function(oResult){
             Lacuna.Game.ProcessStatus(oResult.status);
@@ -459,16 +437,6 @@ if (typeof YAHOO.lacuna.Game == "undefined" || !YAHOO.lacuna.Game) {
             Game.OverlayManager.hideAll();
             if(Lacuna.MapStar.IsVisible() || Lacuna.Menu.IsStarVisible()) {
                 Game.PlanetJump(Game.GetCurrentPlanet());
-                /*
-                Lacuna.MapStar.MapVisible(false);
-                Lacuna.MapPlanet.MapVisible(true);
-                Lacuna.Menu.PlanetVisible();
-                //load planet with currently selected or home
-                var ED = Lacuna.Game.EmpireData,
-                    planetId = ED.current_planet_id || ED.home_planet_id;
-                Game.SetLocation(planetId, Lib.View.PLANET);
-                Lacuna.MapPlanet.Load(planetId);
-                */
             }
             else if(Lacuna.MapPlanet.IsVisible() || Lacuna.Menu.IsPlanetVisible()) {
                 Lacuna.MapPlanet.MapVisible(false);
@@ -756,7 +724,6 @@ if (typeof YAHOO.lacuna.Game == "undefined" || !YAHOO.lacuna.Game) {
             EmpireServ.logout({session_id:session},{
                 success : function(o){
                     YAHOO.log(o, 'info', 'Game.Logout.success');
-                    //Dom.setStyle(Game._envolveContainer, "display", "none");
                     Game.Reset();
                     Game.DoLogin();
                     Lacuna.Pulser.Hide();
@@ -764,7 +731,6 @@ if (typeof YAHOO.lacuna.Game == "undefined" || !YAHOO.lacuna.Game) {
             });
         },
         Reset : function() {
-            //clearInterval(Game.recInt);
             delete Game.isRunning;
             clearInterval(Game.planetRefreshInterval);
             delete Game.planetRefreshInterval;
@@ -909,12 +875,6 @@ if (typeof YAHOO.lacuna.Game == "undefined" || !YAHOO.lacuna.Game) {
                 }
             }
 
-            /*ED.happiness += (ED.happiness_hour * ratio) - totalWasteOverage;
-            if(ED.happiness < 0 && ED.is_isolationist == "1") {
-                ED.happiness = 0;
-            }*/
-
-            //YAHOO.log([diff, ratio]);
             if(updateMenu) {
                 Lacuna.Menu.updateTick();
             }

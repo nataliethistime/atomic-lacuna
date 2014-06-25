@@ -5,29 +5,6 @@ Private Key:
 d07c9bd4-fcb7-427f-9064-218064677fef
 */
 YAHOO.namespace("lacuna");
-/*
-indexOf is a recent addition to the ECMA-262 standard; as such it may not be present in all browsers. You can work around this by inserting the
-following code at the beginning of your scripts, allowing use of indexOf in implementations which do not natively support it. This algorithm is
-exactly the one used in Firefox and SpiderMonkey.
-*/
-if (!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function(elt /*, from*/) {
-        var len = this.length >>> 0;
-
-        var from = Number(arguments[1]) || 0;
-        from = (from < 0) ? Math.ceil(from) : Math.floor(from);
-        if (from < 0) {
-            from += len;
-        }
-
-        for (; from < len; from++) {
-            if (from in this && this[from] === elt) {
-                return from;
-            }
-        }
-        return -1;
-    };
-}
 if (!String.prototype.titleCaps) {
     String.small = "(a|an|and|as|at|but|by|en|for|if|in|of|on|or|the|to|v[.]?|via|vs[.]?)";
     String.punct = "([!\"#$%&'()*+,./:;<=>?@[\\\\\\]^_`{|}~-]*)";
@@ -353,31 +330,6 @@ var Storage = require('dom-storage');
             "ore":["anthracite","bauxite","beryl","chromite","chalcopyrite","fluorite","galena","goethite","gold","gypsum","halite","kerogen","magnetite","methane","monazite","rutile","sulfur","trona","uraninite","zircon"],
             "waste":1,
             "water":1
-        },
-        Ships :  {
-            bomber:"Bomber",
-            cargo_ship:"Cargo Ship",
-            colony_ship:"Colony Ship",
-            detonator:"Detonator",
-            dory:"Dory",
-            drone:"Drone",
-            excavator:"Excavator",
-            fighter:"Fighter",
-            freighter:"Freighter",
-            gas_giant_settlement_platform_ship:"Gas Giant Settlement Platform Ship",
-            mining_platform_ship:"Mining Platform Ship",
-            observatory_seeker:"Observatory Seeker",
-            probe:"Probe",
-            scanner:"Scanner",
-            scow:"Scow",
-            security_ministry_seeker:"Security Ministry Seeker",
-            smuggler_ship:"Smuggler Ship",
-            snark:"Snark",
-            space_station:"Space Station",
-            spaceport_seeker:"Spaceport Seeker",
-            spy_pod:"Spy Pod",
-            spy_shuttle:"Spy Shuttle",
-            terraforming_platform_ship:"Terraforming Platform Ship"
         },
         UIImages : [
             'ui/bkg.png',
