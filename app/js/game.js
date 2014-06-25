@@ -248,7 +248,7 @@ if (typeof YAHOO.lacuna.Game == "undefined" || !YAHOO.lacuna.Game) {
             Lacuna.Pulser.Hide();
         },
         InitChat : function() {
-            require('ipc').send('chat-connect', Game.GetSession());
+            // One day, this will do something interesting.
         },
         InitEvents : _.once(function() {
             //this will be called on the first load and create menu

@@ -1,10 +1,14 @@
 {
     "name"         : "atomic-lacuna",
     "version"      : "0.0.1",
-    "main"         : "main.js",
+    "main"         : "src/main.js",
     "dependencies" : {
-        "dom-storage" : "2.0.x",
-        "jquery"      : "2.1.x",
-        "lodash"      : "2.4.x"
+        "dom-storage"     : "2.0.x",
+        "jquery"          : "2.1.x",
+        "lodash"          : "2.4.x",
+        "gulp"            : "3.8.x",
+        "gulp-util"       : "2.2.x",
+        "gulp-browserify" : "0.5.x",
+        "connect"         : "2.21.x"
     }
 }
