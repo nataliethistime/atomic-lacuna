@@ -3,6 +3,8 @@
     "version"      : "0.0.1",
     "main"         : "main.js",
     "dependencies" : {
-        "dom-storage" : "2.0.x"
+        "dom-storage" : "2.0.x",
+        "jquery"      : "2.1.x",
+        "lodash"      : "2.4.x"
     }
 }

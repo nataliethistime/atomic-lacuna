@@ -25,9 +25,8 @@
         p.className += ' hidden';
     }
 
-    var host = window.lacuna_code_base_url || window.lacuna_s3_base_url;
     var loader = new YAHOO.util.YUILoader({
-        base: "http://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/",
+        base: require('path').join(process.cwd(), 'lib', 'yui2', 'build') + '/',
         filter: "RAW",
         allowRollup: false,
         combine: false
@@ -55,6 +54,10 @@
     ]);
 
     loader.onSuccess = function(o) {
+        // Require the new boyz on the street!
+        window.$ = require('jquery');
+        window._ = require('lodash');
+
         // RPC and core stuff
         require('js/smd');
         require('js/rpc');
