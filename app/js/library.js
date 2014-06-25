@@ -73,8 +73,8 @@ var Storage = require('dom-storage');
     };
 
     // in-file, doesn't call String(val) on values (default)
-    var db       = new Storage('./db.json', { strict: false });
-    var settings = new Storage('./settings.json', { strict: false });
+    var db       = window.localStorage || new Storage('./db.json', { strict: false });
+    var settings = window.localStorage || new Storage('./settings.json', { strict: false });
 
     var Library = {
         db : db,

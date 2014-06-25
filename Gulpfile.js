@@ -1,6 +1,8 @@
 var gulp       = require('gulp');
 var gutil      = require('gulp-util');
+
 var browserify = require('gulp-browserify');
+var cssConcat  = require('gulp-concat-css');
 
 var connect = require('connect');
 var http    = require('http');
@@ -16,6 +18,10 @@ gulp.task('web-build', function() {
         }))
         // For some reason, this gets exported as a folder containing the built file.
         .pipe(gulp.dest('public/dist/'));
+
+    gulp.src('app/css/styles.css')
+        .pipe(cssConcat(''))
+        .pipe(gulp.dest('public/dist/styles.css'))
 });
 
 // This should be used in conjunction with the browser-build. To run the desktop
@@ -24,8 +30,7 @@ gulp.task('server', ['web-build'], function() {
     var port = process.env.PORT || 5000;
     var app = connect()
         .use(connect.logger('dev'))
-        // .use(connect['static'](path.join(__dirname, 'public')));
-        .use(connect['static'](__dirname));
+        .use(connect['static'](path.join(__dirname, 'public')));
     http.createServer(app).listen(port);
     gutil.log('Server started on port ' + port);
 });
