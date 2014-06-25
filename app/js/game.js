@@ -1,8 +1,6 @@
 YAHOO.namespace("lacuna");
 if (typeof YAHOO.lacuna.Game == "undefined" || !YAHOO.lacuna.Game) {
 
-var Storage = require('dom-storage');
-
 (function(){
     var Util = YAHOO.util,
         Lang = YAHOO.lang,
@@ -21,10 +19,6 @@ var Storage = require('dom-storage');
         HourMS : 3600000, //(60min * 60sec * 1000ms),
         onTick : new Util.CustomEvent("onTick"),
         OverlayManager : new YAHOO.widget.OverlayManager(),
-
-        // in-file, doesn't call String(val) on values (default)
-        db       : new Storage('./db.json', { strict: false }),
-        settings : new Storage('./settings.json', { strict: false }),
 
         Start : function(query) {
             var l = window.location;
@@ -800,17 +794,17 @@ var Storage = require('dom-storage');
 
         //Cookie helpers functions
         GetCookie : function(key, defaultValue) {
-            var item = Game.db.getItem(key);
+            var item = Lib.db.getItem(key);
             return item || defaultValue;
         },
         SetCookie : function(key, value) {
-            Game.db.setItem(key, value);
+            Lib.db.setItem(key, value);
         },
         RemoveCookie : function(key) {
-            Game.db.removeItem(key);
+            Lib.db.removeItem(key);
         },
         RemoveAllCookies : function() {
-            Game.db.clear();
+            Lib.db.clear();
         },
         SetLocation : function(id, view) {
             Game.SetCookie("locationId", id);
@@ -819,14 +813,14 @@ var Storage = require('dom-storage');
 
         //using a more permanent cookie
         GetCookieSettings : function(key, defaultValue) {
-            var item = Game.settings.getItem(key);
+            var item = Lib.settings.getItem(key);
             return item || defaultValue;
         },
         SetCookieSettings : function(key, value) {
-            Game.settings.setItem(key, value);
+            Lib.settings.setItem(key, value);
         },
         RemoveCookieSettings : function(key) {
-            Game.settings.clear();
+            Lib.settings.clear();
         },
 
         //Tick related

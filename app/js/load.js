@@ -53,7 +53,7 @@
         name: "game",
         type: "js",
         fullpath: urlBuilder("game.js"),
-        requires : ["event","cookie","library","pulse","rpc","smd"]
+        requires : ["event","library","pulse","rpc","smd"]
     });
     loader.addModule({
         name: "about",
