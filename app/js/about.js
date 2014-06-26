@@ -3,6 +3,8 @@
 
 YAHOO.namespace("lacuna");
 
+var Templates = require('js/templates');
+
 (function () {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
@@ -19,7 +21,7 @@ YAHOO.namespace("lacuna");
         container.id = this.id;
         Dom.addClass(container, "nofooter");
         Dom.addClass(container, Lib.Styles.HIDDEN);
-        container.innerHTML = this.html();
+        container.innerHTML = this.template();
         document.body.insertBefore(container, document.body.firstChild);
 
         this.Panel = new YAHOO.widget.Panel(this.id, {
@@ -46,23 +48,8 @@ YAHOO.namespace("lacuna");
         Game.OverlayManager.register(this.Panel);
     };
     About.prototype = {
-        html : function () {
-            return [
-                '<div class="hd">About</div>',
-                '<div class="bd">',
-                '    <div style="overflow:auto;height:400px">',
-                '        The Lacuna Expanse',
-                '        <ul>',
-                '            <li>&copy; 2011 by Lacuna Expanse Corp.</li>',
-                '            <li>Server Version: <span id="aboutVersion"></span></li>',
-                '        </ul><br/>',
-                '        Credits',
-                '        <ul id="aboutCredits">',
-                '        </ul>',
-                '    </div>',
-                '</div>'
-            ].join('');
-        },
+        template : Templates.get('about'),
+
         show : function () {
             if (!this.hasCredits) {
                 Game.Services.Stats.credits({}, {
