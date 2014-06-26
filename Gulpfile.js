@@ -21,7 +21,7 @@ gulp.task('lint', function() {
             debug : false,
             node : true,
             // Lint options
-            maxerr : Infinity, // To infinity and beyond!
+            maxerr : 30,
             // maxlen : 100,
             sloppy : false,
             todo : true,
