@@ -10,6 +10,7 @@
         "gulp-util"       : "2.2.x",
         "gulp-browserify" : "0.5.x",
         "gulp-concat-css" : "0.1.x",
+        "gulp-jslint"     : "0.1.x",
         "connect"         : "2.21.x"
     }
 }
