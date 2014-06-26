@@ -15,7 +15,7 @@ module.exports = {
 
     load : function (name) {
         var cachedName = this.addPrefix(name),
-            buffer, func;
+            buffer, func, string;
 
         // Add the file extension.
         name += '.html';
@@ -23,7 +23,10 @@ module.exports = {
         if (window.ATOM_SHELL) {
             // We can use the file system to get the templates.
             buffer = fs.readFileSync(path.join(process.cwd(), 'app', 'templates', name));
-            func = Handlebars.compile(buffer.toString());
+            string = buffer.toString();
+            string = string.replace(/\n/g, ''); // Remove newlines.
+            string = string.replace(/\s{2,}/g, ''); // Weed out whitespace.
+            func = Handlebars.compile(string);
             this.tmplCache[cachedName] = func;
             return func;
         }

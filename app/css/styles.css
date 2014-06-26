@@ -398,6 +398,22 @@ dialogs
 }
 
 /*
+about
+*/
+#aboutCredits {
+    padding-left:20px
+}
+#aboutCredits ul {
+    padding-left:20px
+}
+#aboutCredits li {
+    list-style: none inside;
+}
+#aboutCredits ul li {
+    list-style: disc inside;
+}
+
+/*
 menu
 */
 #planetMenuTT strong {
@@ -715,22 +731,6 @@ SHINEY
 .menuPercentInner {
 	background-color: #ffffff;
 	height: 5px;
-}
-
-/*
-about
-*/
-#aboutCredits {
-	padding-left:20px
-}
-#aboutCredits ul {
-	padding-left:20px
-}
-#aboutCredits li {
-	list-style: none inside;
-}
-#aboutCredits ul li {
-	list-style: disc inside;
 }
 
 /*

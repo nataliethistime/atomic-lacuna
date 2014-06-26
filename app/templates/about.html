@@ -1,13 +1,24 @@
-<div class="hd">About</div>
-<div class="bd">
-    <div style="overflow:auto;height:400px">
-        The Lacuna Expanse
-        <ul>
-            <li>&copy; 2011 by Lacuna Expanse Corp.</li>
-            <li>Server Version: <span id="aboutVersion"></span></li>
-        </ul><br/>
-        Credits
-        <ul id="aboutCredits">
-        </ul>
-    </div>
+<div style="overflow: auto; height: 400px;">
+    The Lacuna Expanse
+    <ul>
+        <li>&copy; <span id="aboutYear"></span> by Lacuna Expanse Corp.</li>
+        <li>Server Version: <span id="aboutVersion"></span></li>
+    </ul><br />
+    Credits
+    <ul id="aboutCredits">
+        {{#if result}}{{#each result}}
+            <li>
+                {{#each this}}
+                    <label>{{@key}}</label>
+                    <ul>
+                        {{#each this}}
+                            <li>
+                                {{this}}
+                            </li>
+                        {{/each}}
+                    </ul>
+                {{/each}}
+            </li>
+        {{/each}}{{/if}}
+    </ul>
 </div>

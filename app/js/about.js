@@ -1,4 +1,4 @@
-/*global YAHOO */
+/*global YAHOO, $ */
 'use strict';
 
 YAHOO.namespace("lacuna");
@@ -7,24 +7,17 @@ var Templates = require('js/templates');
 
 (function () {
     var Lang = YAHOO.lang,
-        Util = YAHOO.util,
-        Dom = Util.Dom,
         Lacuna = YAHOO.lacuna,
-        Game = Lacuna.Game,
-        Lib = Lacuna.Library;
+        Game = Lacuna.Game;
 
     var About = function () {
         this.id = "about";
         this.createEvent("onShow");
 
-        var container = document.createElement("div");
-        container.id = this.id;
-        Dom.addClass(container, "nofooter");
-        Dom.addClass(container, Lib.Styles.HIDDEN);
-        container.innerHTML = this.template();
-        document.body.insertBefore(container, document.body.firstChild);
+        var container = $('<div></div>').attr('id', this.id).addClass('nofooter');
+        $(document.body).prepend(container);
 
-        this.Panel = new YAHOO.widget.Panel(this.id, {
+        this.panel = new YAHOO.widget.Panel(this.id, {
             constraintoviewport : true,
             fixedcenter : true,
             visible : false,
@@ -33,20 +26,16 @@ var Templates = require('js/templates');
             underlay : false,
             modal : true,
             close : true,
-            width : "450px",
+            width : '450px',
             zIndex : 9999
         });
 
-        this.Panel.renderEvent.subscribe(function () {
-            this.elCreditsList = Dom.get("aboutCredits");
-            this.elVersion = Dom.get("aboutVersion");
+        this.panel.setHeader('About');
 
-            Dom.removeClass(this.id, Lib.Styles.HIDDEN);
-        }, this, true);
-
-        this.Panel.render();
-        Game.OverlayManager.register(this.Panel);
+        this.panel.render();
+        Game.OverlayManager.register(this.panel);
     };
+
     About.prototype = {
         template : Templates.get('about'),
 
@@ -55,48 +44,34 @@ var Templates = require('js/templates');
                 Game.Services.Stats.credits({}, {
                     success : function (o) {
                         YAHOO.log(o, "info", "Stats");
-                        this.populateCredits(o.result);
+                        this.populateCredits(o);
+                        this.hasCredits = true;
+                        this.open();
                     },
                     scope : this
                 });
+            } else {
+                this.open();
             }
-            this.elVersion.innerHTML = Game.ServerData.version;
-            Game.OverlayManager.hideAll();
-            this.Panel.show();
-        },
-        hide : function () {
-            this.Panel.hide();
         },
 
-        populateCredits : function (results) {
-            // TODO: this method can use _ a lot!
-            var i, prop, x, obj, nLi, html;
-            if (!this.hasCredits) {
-                var list = this.elCreditsList,
-                    li = document.createElement("li");
-                for (i = 0; i < results.length; i += 1) {
-                    obj = results[i];
-                    for (prop in obj) {
-                        if (obj.hasOwnProperty(prop)) {
-                            nLi = li.cloneNode(false);
-                            html = ["<label>", prop, "</label><ul>"];
-                            for (x = 0; x < obj[prop].length; x += 1) {
-                                html.push("<li>");
-                                html.push(obj[prop][x]);
-                                html.push("</li>");
-                            }
-                            html.push("</ul>");
-                            nLi.innerHTML = html.join('');
-                            list.appendChild(nLi);
-                        }
-                    }
-                }
-                this.hasCredits = true;
-                this.Panel.center();
-            }
+        open : function () {
+            Game.OverlayManager.hideAll();
+            this.panel.show();
+            this.panel.center();
+        },
+
+        hide : function () {
+            this.panel.hide();
+        },
+
+        populateCredits : function (o) {
+            this.panel.setBody(this.template(o));
+            $('#aboutVersion').html(Game.ServerData.version);
+            $('#aboutYear').html((new Date()).getFullYear());
         }
     };
 
-    Lang.augmentProto(About, Util.EventProvider);
+    Lang.augmentProto(About, YAHOO.util.EventProvider);
     Lacuna.About = new About();
 }());
