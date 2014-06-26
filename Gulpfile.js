@@ -13,41 +13,6 @@ var fs      = require('fs');
 var JS_FILES = ['app/js/**/*.js'];
 
 gulp.task('lint', function() {
-    // console.log(gulp.src(JS_FILES));
-    // gulp.src(['app/js/*.js', 'app/js/building/*.js', 'app/js/module/*.js'])
-    //     .pipe(jshint({
-    //         bitwise : true,
-    //         curly   : true,
-    //         eqeqeq  : true,
-    //         es3     : false,
-    //         indent  : 4,
-    //         undef   : true,
-    //         unused  : true,
-
-    //         // Globals
-    //         yui     : true,
-    //         node    : true,
-    //         jquery  : true,
-    //         devel   : true,
-    //         browser : true,
-
-    //         // Hurt my feelings! I DARE you!!!
-    //         maxerr : Infinity
-
-    //         // TODO: do these at a later stage:
-    //         // es3 => true
-    //         // camelcase => true
-    //         // forin => true
-    //         // noempty => true
-    //         // plusplus => true
-    //         // quotmark => 'single'
-    //         // strict => true
-    //         // maxlen => 100
-    //     }))
-    //     .pipe(jshint.reporter('jshint-stylish'))
-    //     // Fail straight away if something goes wrong.
-    //     // .pipe(jshint.reporter('fail'));
-
     gulp.src(JS_FILES)
         .pipe(jslint({
             // Globals
