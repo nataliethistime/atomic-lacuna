@@ -44,7 +44,7 @@ var Templates = require('js/templates');
                 Game.Services.Stats.credits({}, {
                     success : function (o) {
                         YAHOO.log(o, "info", "Stats");
-                        this.populateCredits(o);
+                        this.render(o);
                         this.hasCredits = true;
                         this.open();
                     },
@@ -65,7 +65,7 @@ var Templates = require('js/templates');
             this.panel.hide();
         },
 
-        populateCredits : function (o) {
+        render : function (o) {
             this.panel.setBody(this.template(o));
             $('#aboutVersion').html(Game.ServerData.version);
             $('#aboutYear').html((new Date()).getFullYear());
