@@ -2,6 +2,10 @@ var Handlebars = require('handlebars'),
     fs = require('fs'),
     path = require('path');
 
+
+// Define all the Handlebars helpers.
+require('js/templateHelpers');
+
 module.exports = {
     tmplCache : {
 

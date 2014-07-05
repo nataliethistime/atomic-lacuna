@@ -16,7 +16,7 @@ module.exports = {
             energy : join(s, 'ui', 's', 'energy.png'),
             waste : join(s, 'ui', 's', 'waste.png'),
             happiness : join(s, 'ui', 's', 'happiness.png'),
-            happiness : join(s, 'ui', 's', 'time.png')
+            time : join(s, 'ui', 's', 'time.png')
         },
 
         large : {

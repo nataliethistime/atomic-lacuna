@@ -1,4 +1,9 @@
 <div id="detailsProduction">
+
+    {{#if building.upgrade.cost.halls}}
+        <p>Can upgrade to level {{upLevel}} by sacrificing {{upLevel}} Halls of Vrbansk.</p>
+    {{/if}}
+
     <div id="buildingDetailsProduction" class="yui-gb">
         <div class="yui-u first">
             <ul>
@@ -37,20 +42,53 @@
             <ul id="buildingDetailsUpgradeProduction">
                 {{#if upgrade}}
                     <li>Upgrade Production</li>
-                    <li><span class="smallImg"><img src="{{assets.ui.small.food}}" title="Food" class="smallFood" /></span>
-                        <span class="buildingDetailsNum',this.building.food_hour - up.production.food_hour > planet.food_hour ? ' low-resource' : '','">{{upgrade.production.food_hour}}/hr</span>
+                    <li>
+                        <span class="smallImg">
+                            <img src="{{assets.ui.small.food}}" title="Food" class="smallFood" />
+                        </span>
+                        <span class="buildingDetailsNum {{#lowResource building.food_hour upgrade.production.food_hour planet.food_hour}}{{/lowResource}}">
+                            {{upgrade.production.food_hour}}/hr
+                        </span>
                     </li>
-                    <li><span class="smallImg"><img src="{{assets.ui.small.ore}}" title="Ore" class="smallOre" /></span>
-                        <span class="buildingDetailsNum',this.building.ore_hour - up.production.ore_hour > planet.ore_hour ? ' low-resource' : '','">{{upgrade.production.ore_hour}}/hr</span></li>
-                    <li><span class="smallImg"><img src="{{assets.ui.small.water}}" title="Water" class="smallWater" /></span>
-                        <span class="buildingDetailsNum',this.building.water_hour - up.production.water_hour > planet.water_hour ? ' low-resource' : '','">{{upgrade.production.water_hour}}/hr</span></li>
-                    <li><span class="smallImg"><img src="{{assets.ui.small.energy}}" title="Energy" class="smallEnergy" /></span>
-                        <span class="buildingDetailsNum',this.building.energy_hour - up.production.energy_hour > planet.energy_hour ? ' low-resource' : '','">{{upgrade.production.energy_hour}}/hr</span></li>
-                    <li><span class="smallImg"><img src="{{assets.ui.small.waste}}" title="Waste" class="smallWaste" /></span>
-                        <span class="buildingDetailsNum">{{upgrade.production.waste_hour}}/hr</span>
+                    <li>
+                        <span class="smallImg">
+                            <img src="{{assets.ui.small.ore}}" title="Ore" class="smallOre" />
+                        </span>
+                        <span class="buildingDetailsNum {{#lowResource building.ore_hour upgrade.production.ore_hour planet.ore_hour}}{{/lowResource}}">
+                            {{upgrade.production.ore_hour}}/hr
+                        </span>
                     </li>
-                    <li><span class="smallImg"><img src="{{assets.ui.small.happiness}}" title="Happiness" class="smallHappy" /></span>
-                        <span class="buildingDetailsNum">{{upgrade.production.happiness_hour}}/hr</span>
+                    <li>
+                        <span class="smallImg">
+                            <img src="{{assets.ui.small.water}}" title="Water" class="smallWater" />
+                        </span>
+                        <span class="buildingDetailsNum {{#lowResource building.water_hour upgrade.production.water_hour planet.water_hour}}{{/lowResource}}">
+                            {{upgrade.production.water_hour}}/hr
+                        </span>
+                    </li>
+                    <li>
+                        <span class="smallImg">
+                            <img src="{{assets.ui.small.energy}}" title="Energy" class="smallEnergy" />
+                        </span>
+                        <span class="buildingDetailsNum {{#lowResource building.energy_hour upgrade.production.energy_hour planet.energy_hour}}{{/lowResource}}">
+                            {{upgrade.production.energy_hour}}/hr
+                        </span>
+                    </li>
+                    <li>
+                        <span class="smallImg">
+                            <img src="{{assets.ui.small.waste}}" title="Waste" class="smallWaste" />
+                        </span>
+                        <span class="buildingDetailsNum">
+                            {{upgrade.production.waste_hour}}/hr
+                        </span>
+                    </li>
+                    <li>
+                        <span class="smallImg">
+                            <img src="{{assets.ui.small.happiness}}" title="Happiness" class="smallHappy" />
+                        </span>
+                        <span class="buildingDetailsNum">
+                            {{upgrade.production.happiness_hour}}/hr
+                        </span>
                     </li>
                     {{#if upgrade.can}}
                         <li>
@@ -60,7 +98,7 @@
                         </li>
                     {{else}}
                         <li class="alert">Unable to Upgrade:</li>
-                        {{!<li class="alert">{{upgrade.reason[1]}}</li>}}
+                        <li class="alert">{{upgrade.reason.[1]}}</li>
                     {{/if}}
                 {{/if}}
             </ul>
@@ -70,21 +108,66 @@
             <ul id="buildingDetailsUpgradeCost">
                 {{#if upgrade}}
                     <li>Upgrade Cost</li>
-                    <li><span class="smallImg"><img src="{{assets.ui.small.food}}" title="Food" class="smallFood" /></span><span class="buildingDetailsNum',up.cost.food > planet.food_stored ? ' low-resource' : '','">',up.cost.food,'</span></li>
-                    <li><span class="smallImg"><img src="{{assets.ui.small.ore}}" title="Ore" class="smallOre" /></span><span class="buildingDetailsNum',up.cost.ore > planet.ore_stored ? ' low-resource' : '','">',up.cost.ore,'</span></li>
-                    <li><span class="smallImg"><img src="{{assets.ui.small.water}}" title="Water" class="smallWater" /></span><span class="buildingDetailsNum',up.cost.water > planet.water_stored ? ' low-resource' : '','">',up.cost.water,'</span></li>
-                    <li><span class="smallImg"><img src="{{assets.ui.small.energy}}" title="Energy" class="smallEnergy" /></span><span class="buildingDetailsNum',up.cost.energy > planet.energy_stored ? ' low-resource' : '','">',up.cost.energy,'</span></li>
-                    <li><span class="smallImg"><img src="{{assets.ui.small.waste}}" title="Waste" class="smallWaste" /></span><span class="buildingDetailsNum">',up.cost.waste,'</span></li>',
-                    <li><span class="smallImg"><img src="{{assets.ui.small.time}}" title="Time" class="smallTime" /></span><span class="buildingDetailsNum">',Lib.formatTime(up.cost.time),'</span></li>'
+                    <li>
+                        <span class="smallImg">
+                            <img src="{{assets.ui.small.food}}" title="Food" class="smallFood" />
+                        </span>
+                        <span class="buildingDetailsNum {{#lowCost upgrade.cost.food planet.food_stored}}{{/lowCost}}">
+                            {{upgrade.cost.food}}
+                        </span>
+                    </li>
+                    <li>
+                        <span class="smallImg">
+                            <img src="{{assets.ui.small.ore}}" title="Ore" class="smallOre" />
+                        </span>
+                        <span class="buildingDetailsNum {{#lowCost upgrade.cost.ore planet.ore_stored}}{{/lowCost}}">
+                            {{upgrade.cost.ore}}
+                        </span>
+                    </li>
+                    <li>
+                        <span class="smallImg">
+                            <img src="{{assets.ui.small.water}}" title="Water" class="smallWater" />
+                        </span>
+                        <span class="buildingDetailsNum {{#lowCost upgrade.cost.water planet.water_stored}}{{/lowCost}}">
+                            {{upgrade.cost.water}}
+                        </span>
+                    </li>
+                    <li>
+                        <span class="smallImg">
+                            <img src="{{assets.ui.small.energy}}" title="Energy" class="smallEnergy" />
+                        </span>
+                        <span class="buildingDetailsNum {{#lowCost upgrade.cost.energy planet.energy_stored}}{{/lowCost}}">
+                            {{upgrade.cost.energy}}
+                        </span>
+                    </li>
+                    <li>
+                        <span class="smallImg">
+                            <img src="{{assets.ui.small.waste}}" title="Waste" class="smallWaste" />
+                        </span>
+                        <span class="buildingDetailsNum">
+                            {{upgrade.cost.waste}}
+                        </span>
+                    </li>
+                    <li>
+                        <span class="smallImg">
+                            <img src="{{assets.ui.small.time}}" title="Time" class="smallTime" />
+                        </span>
+                        <span class="buildingDetailsNum">
+                            {{#formatTime upgrade.cost.time}}{{/formatTime}}
+                        </span>
+                    </li>
                 {{/if}}
 
                 {{! TODO: should we check if level is more than 1? }}
                 {{#if downgrade.can}}
-                    <li><button id="buildingDetailsDowngrade" type="button">Downgrade to Level ' + (currentLevel - 1) + '</button></li>
+                    <li>
+                        <button id="buildingDetailsDowngrade" type="button">
+                            Downgrade to Level {{downLevel}}
+                        </button>
+                    </li>
                 {{else}}
                     <li class="alert">Unable to Downgrade:</li>
-                    {{!</li><li class="alert">' + String(down.reason).replace(/^\d+,\s*/, '') + '</li>}}
-                    <li class="alert">{{downgrade.reason}}</li>
+                    <li class="alert">{{#removeLeadingErrorCode downgrade.reason}}{{/removeLeadingErrorCode}}</li>
                 {{/if}}
             </ul>
         </div>

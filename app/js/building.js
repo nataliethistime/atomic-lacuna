@@ -190,33 +190,21 @@ var Templates = require('js/templates'),
                 label: 'Production',
                 content: this.productionTemplate({
                     assets : assets,
-
-                    // foodProduction : this.building.food_hour,
-                    // oreProduction : this.building.ore_hour,
-                    // waterProduction : this.building.water_hour,
-                    // energyProduction : this.building.energy_hour,
-                    // wasteProduction : this.building.waste_hour,
-                    // happinessProduction : this.building.happiness_hour,
                     building : this.building,
                     upgrade : this.building.upgrade,
                     downgrade : this.building.downgrade,
+                    planet : Game.GetCurrentPlanet(),
                     upLevel : level + 1,
                     downLevel : level - 1,
                     level : level
                 })
             });
 
-			Event.onAvailable('extraBuildingDetails', function(o) {
-				if (o.building.upgrade.cost.halls) {
-					Dom.get('extraBuildingDetails').innerHTML = 'Can upgrade to level ' + (parseInt(o.building.level) + 1) + ' by sacrificing ' + (parseInt(o.building.level) + 1) + ' Halls of Vrbansk.';
-				}
-			}, this);
-
             Event.on('buildingDetailsDemolish', 'click', this.Demolish, this, true);
-            if(up.can) {
+            if (this.building.upgrade.can) {
                 Event.on('buildingDetailsUpgrade', 'click', this.Upgrade, this, true);
             }
-            if(currentLevel > 1) {
+            if (level > 1) {
                 Event.on('buildingDetailsDowngrade', 'click', this.Downgrade, this, true);
             }
 
