@@ -17,7 +17,8 @@ var Templates = require('js/templates'),
         Lib = Lacuna.Library;
 
     var Building = function (oResults) {
-        this.repairTemplate = Templates.get('building.repair');
+        this.repairTemplate = Templates.get('tab.building.repair');
+        this.productionTemplate = Templates.get('tab.building.production');
 
         this.createEvent("onMapRpc");
         this.createEvent("onQueueAdd");
