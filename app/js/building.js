@@ -19,6 +19,7 @@ var Templates = require('js/templates'),
     var Building = function (oResults) {
         this.repairTemplate = Templates.get('tab.building.repair');
         this.productionTemplate = Templates.get('tab.building.production');
+        this.storageTemplate = Templates.get('tab.building.storage');
 
         this.createEvent("onMapRpc");
         this.createEvent("onQueueAdd");
@@ -414,31 +415,14 @@ var Templates = require('js/templates'),
           },10);
         },
         _getStorageTab : function() {
-            var p = this.building.upgrade.production,
-                output = [
-                '<div class="yui-g">',
-                '    <div class="yui-u first">',
-                '        <ul>',
-                '            <li>Current Building Storage</li>',
-                '            <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/food.png" title="Food" class="smallFood" /></span><span class="buildingDetailsNum">',this.building.food_capacity,'</span></li>',
-                '            <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/ore.png" title="Ore" class="smallOre" /></span><span class="buildingDetailsNum">',this.building.ore_capacity,'</span></li>',
-                '            <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/water.png" title="Water" class="smallWater" /></span><span class="buildingDetailsNum">',this.building.water_capacity,'</span></li>',
-                '            <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/energy.png" title="Energy" class="smallEnergy" /></span><span class="buildingDetailsNum">',this.building.energy_capacity,'</span></li>',
-                '            <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/waste.png" title="Waste" class="smallWaste" /></span><span class="buildingDetailsNum">',this.building.waste_capacity,'</span></li>',
-                '        </ul>',
-                '    </div>',
-                '    <div class="yui-u">',
-                '        <ul id="buildingDetailsUpgradeStorage">',
-                '            <li>Upgrade to Building Storage</li>',
-                '            <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/food.png" title="Food" class="smallFood" /></span><span class="buildingDetailsNum">',p.food_capacity,'</span></li>',
-                '            <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/ore.png" title="Ore" class="smallOre" /></span><span class="buildingDetailsNum">',p.ore_capacity,'</span></li>',
-                '            <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/water.png" title="Water" class="smallWater" /></span><span class="buildingDetailsNum">',p.water_capacity,'</span></li>',
-                '            <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/energy.png" title="Energy" class="smallEnergy" /></span><span class="buildingDetailsNum">',p.energy_capacity,'</span></li>',
-                '            <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/waste.png" title="Waste" class="smallWaste" /></span><span class="buildingDetailsNum">',p.waste_capacity,'</span></li>',
-                '        </ul>',
-                '    </div>',
-                '</div>'];
-            return new YAHOO.widget.Tab({ label: "Storage", content: output.join('')});
+            return new YAHOO.widget.Tab({
+                label: 'Storage',
+                content: this.storageTemplate({
+                    assets : assets,
+                    building : this.building,
+                    upgrade : this.building.upgrade
+                })
+            });
         }
     };
 

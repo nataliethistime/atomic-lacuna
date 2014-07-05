@@ -1,0 +1,97 @@
+<div class="yui-g">
+    <div class="yui-u first">
+        <ul>
+            {{#with building}}
+                <li>Current Building Storage</li>
+                <li>
+                    <span class="smallImg">
+                        <img src="{{../assets.ui.small.food}}" title="Food" class="smallFood" />
+                    </span>
+                    <span class="buildingDetailsNum">
+                        {{food_capacity}}
+                    </span>
+                </li>
+                <li>
+                <span class="smallImg">
+                    <img src="{{../assets.ui.small.ore}}" title="Ore" class="smallOre" />
+                </span>
+                    <span class="buildingDetailsNum">
+                        {{ore_capacity}}
+                    </span>
+                </li>
+                <li>
+                    <span class="smallImg">
+                        <img src="{{../assets.ui.small.water}}" title="Water" class="smallWater" />
+                    </span>
+                    <span class="buildingDetailsNum">
+                        {{water_capacity}}
+                    </span>
+                </li>
+                <li>
+                    <span class="smallImg">
+                        <img src="{{../assets.ui.small.energy}}" title="Energy" class="smallEnergy" />
+                    </span>
+                    <span class="buildingDetailsNum">
+                        {{energy_capacity}}
+                    </span>
+                </li>
+                <li>
+                    <span class="smallImg">
+                        <img src="{{../assets.ui.small.waste}}" title="Waste" class="smallWaste" />
+                    </span>
+                    <span class="buildingDetailsNum">
+                        {{waste_capacity}}
+                    </span>
+                </li>
+            {{/with}}
+        </ul>
+    </div>
+
+    <div class="yui-u">
+        <ul id="buildingDetailsUpgradeStorage">
+            {{#with upgrade.production}}
+                <li>Upgrade to Building Storage</li>
+                <li>
+                    <span class="smallImg">
+                        <img src="{{../assets.ui.small.food}}" title="Food" class="smallFood" />
+                    </span>
+                    <span class="buildingDetailsNum">
+                        {{food_capacity}}
+                    </span>
+                </li>
+                <li>
+                <span class="smallImg">
+                    <img src="{{../assets.ui.small.ore}}" title="Ore" class="smallOre" />
+                </span>
+                    <span class="buildingDetailsNum">
+                        {{ore_capacity}}
+                    </span>
+                </li>
+                <li>
+                    <span class="smallImg">
+                        <img src="{{../assets.ui.small.water}}" title="Water" class="smallWater" />
+                    </span>
+                    <span class="buildingDetailsNum">
+                        {{water_capacity}}
+                    </span>
+                </li>
+                <li>
+                    <span class="smallImg">
+                        <img src="{{../assets.ui.small.energy}}" title="Energy" class="smallEnergy" />
+                    </span>
+                    <span class="buildingDetailsNum">
+                        {{energy_capacity}}
+                    </span>
+                </li>
+                <li>
+                    <span class="smallImg">
+                        <img src="{{../assets.ui.small.waste}}" title="Waste" class="smallWaste" />
+                    </span>
+                    <span class="buildingDetailsNum">
+                        {{waste_capacity}}
+                    </span>
+                </li>
+            {{/with}}
+        </ul>
+    </div>
+</div>
