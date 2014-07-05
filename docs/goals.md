@@ -8,10 +8,9 @@ as performance or usability.
 - Use the Handlebars template engine to use HTML templates instead of manually
   messing with HTML inside the code. The reasons for this should be obvious.
 - Use JSLint to check the code for errors and report on possible bugs because
-  if various pitfalls in the JavaScript language design.
+  of various pitfalls in the JavaScript language design.
 - Because this project is NodeJs based, it's the easiest thing in the world to
-  add a new module use that module to simplify the code. As such, as much of the
-  code as possible with me separated out into different files.
+  break code out into new modules.
 - General cleaning of messy code.
 - Use Browserify to make this code usable in the web browser, so that we're only
   maintaining one code base. (**IMPORTANT**)
