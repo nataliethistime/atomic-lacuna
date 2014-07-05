@@ -5,7 +5,7 @@ There are several ideas behind this project, a lot of them are aimed at improvin
 the quality of the code so that improvements can be made to important issues such
 as performance or usability.
 
-- Use the Handlebars template engine to use HTML tem plates instead of manually
+- Use the Handlebars template engine to use HTML templates instead of manually
   messing with HTML inside the code. The reasons for this should be obvious.
 - Use JSLint to check the code for errors and report on possible bugs because
   if various pitfalls in the JavaScript language design.
