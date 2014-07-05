@@ -140,7 +140,7 @@ var Templates = require('js/templates'),
         _getRepairTab : function() {
             this.repairTab = new YAHOO.widget.Tab({
                 label : 'Repair',
-                content: this.repairTemplate({
+                content : this.repairTemplate({
                     efficiency : this.building.efficiency,
                     assets : assets,
                     food : this.building.repair_costs.food,
@@ -185,56 +185,26 @@ var Templates = require('js/templates'),
         },
 
         _getProductionTab : function() {
-            var up = this.building.upgrade,
-                down = this.building.downgrade,
-                currentLevel = this.building.level*1,
-                planet = Game.GetCurrentPlanet();
-            this.productionTab = new YAHOO.widget.Tab({ label: "Production", content: [
-                '<div id="detailsProduction"><p id="extraBuildingDetails"></p>',
-                '    <div id="buildingDetailsProduction" class="yui-gb">',
-                '        <div class="yui-u first">',
-                '            <ul>',
-                '                <li>Current Production</li>',
-                '                <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/food.png" title="Food" class="smallFood" /></span><span id="buildingDetailsFood" class="buildingDetailsNum">',this.building.food_hour,'/hr</span></li>',
-                '                <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/ore.png" title="Ore" class="smallOre" /></span><span id="buildingDetailsOre" class="buildingDetailsNum">',this.building.ore_hour,'/hr</span></li>',
-                '                <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/water.png" title="Water" class="smallWater" /></span><span id="buildingDetailsWater" class="buildingDetailsNum">',this.building.water_hour,'/hr</span></li>',
-                '                <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/energy.png" title="Energy" class="smallEnergy" /></span><span id="buildingDetailsEnergy" class="buildingDetailsNum">',this.building.energy_hour,'/hr</span></li>',
-                '                <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/waste.png" title="Waste" class="smallWaste" /></span><span id="buildingDetailsWaste" class="buildingDetailsNum">',this.building.waste_hour,'/hr</span></li>',
-                '                <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/happiness.png" title="Happiness" class="smallHappy" /></span><span id="buildingDetailsHappiness" class="buildingDetailsNum">',this.building.happiness_hour,'/hr</span></li>',
-                '                <li><button id="buildingDetailsDemolish" type="button">Demolish</button></li>',
-                '            </ul>',
-                '        </div>',
-                '        <div class="yui-u">',
-                '            <ul id="buildingDetailsUpgradeProduction">',
-                up ? [
-                    '<li>Upgrade Production</li>',
-                    '    <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/food.png" title="Food" class="smallFood" /></span><span class="buildingDetailsNum',this.building.food_hour - up.production.food_hour > planet.food_hour ? ' low-resource' : '','">',up.production.food_hour,'/hr</span></li>',
-                    '    <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/ore.png" title="Ore" class="smallOre" /></span><span class="buildingDetailsNum',this.building.ore_hour - up.production.ore_hour > planet.ore_hour ? ' low-resource' : '','">',up.production.ore_hour,'/hr</span></li>',
-                    '    <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/water.png" title="Water" class="smallWater" /></span><span class="buildingDetailsNum',this.building.water_hour - up.production.water_hour > planet.water_hour ? ' low-resource' : '','">',up.production.water_hour,'/hr</span></li>',
-                    '    <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/energy.png" title="Energy" class="smallEnergy" /></span><span class="buildingDetailsNum',this.building.energy_hour - up.production.energy_hour > planet.energy_hour ? ' low-resource' : '','">',up.production.energy_hour,'/hr</span></li>',
-                    '    <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/waste.png" title="Waste" class="smallWaste" /></span><span class="buildingDetailsNum">',up.production.waste_hour,'/hr</span></li>',
-                    '    <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/happiness.png" title="Happiness" class="smallHappy" /></span><span class="buildingDetailsNum">',up.production.happiness_hour,'/hr</span></li>',
-                    up.can ? '<li><button id="buildingDetailsUpgrade" type="button">Upgrade to Level ' + (1 + (this.building.level*1)) + '</button></li>' : '<li class="alert">Unable to Upgrade:</li><li class="alert">',up.reason[1],'</li>'
-                    ].join('') : '',
-                '            </ul>',
-                '        </div>',
-                '        <div class="yui-u">',
-                '            <ul id="buildingDetailsUpgradeCost">',
-                up ? [
-                    '    <li>Upgrade Cost</li>',
-                    '    <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/food.png" title="Food" class="smallFood" /></span><span class="buildingDetailsNum',up.cost.food > planet.food_stored ? ' low-resource' : '','">',up.cost.food,'</span></li>',
-                    '    <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/ore.png" title="Ore" class="smallOre" /></span><span class="buildingDetailsNum',up.cost.ore > planet.ore_stored ? ' low-resource' : '','">',up.cost.ore,'</span></li>',
-                    '    <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/water.png" title="Water" class="smallWater" /></span><span class="buildingDetailsNum',up.cost.water > planet.water_stored ? ' low-resource' : '','">',up.cost.water,'</span></li>',
-                    '    <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/energy.png" title="Energy" class="smallEnergy" /></span><span class="buildingDetailsNum',up.cost.energy > planet.energy_stored ? ' low-resource' : '','">',up.cost.energy,'</span></li>',
-                    '    <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/waste.png" title="Waste" class="smallWaste" /></span><span class="buildingDetailsNum">',up.cost.waste,'</span></li>',
-                    '    <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/time.png" title="Time" class="smallTime" /></span><span class="buildingDetailsNum">',Lib.formatTime(up.cost.time),'</span></li>'
-                    ].join('') : '',
-                currentLevel <= 1 ? '' : down.can ? '<li><button id="buildingDetailsDowngrade" type="button">Downgrade to Level ' + (currentLevel - 1) + '</button></li>' : '<li class="alert">Unable to Downgrade:</li><li class="alert">' + String(down.reason).replace(/^\d+,\s*/, '') + '</li>',
-                '            </ul>',
-                '        </div>',
-                '    </div>',
-                '</div>'
-                ].join('')});
+            var level = parseInt(this.building.level, 10);
+            this.productionTab = new YAHOO.widget.Tab({
+                label: 'Production',
+                content: this.productionTemplate({
+                    assets : assets,
+
+                    // foodProduction : this.building.food_hour,
+                    // oreProduction : this.building.ore_hour,
+                    // waterProduction : this.building.water_hour,
+                    // energyProduction : this.building.energy_hour,
+                    // wasteProduction : this.building.waste_hour,
+                    // happinessProduction : this.building.happiness_hour,
+                    building : this.building,
+                    upgrade : this.building.upgrade,
+                    downgrade : this.building.downgrade,
+                    upLevel : level + 1,
+                    downLevel : level - 1,
+                    level : level
+                })
+            });
 
 			Event.onAvailable('extraBuildingDetails', function(o) {
 				if (o.building.upgrade.cost.halls) {
@@ -242,16 +212,15 @@ var Templates = require('js/templates'),
 				}
 			}, this);
 
-            Event.on("buildingDetailsDemolish", "click", this.Demolish, this, true);
+            Event.on('buildingDetailsDemolish', 'click', this.Demolish, this, true);
             if(up.can) {
-                Event.on("buildingDetailsUpgrade", "click", this.Upgrade, this, true);
+                Event.on('buildingDetailsUpgrade', 'click', this.Upgrade, this, true);
             }
             if(currentLevel > 1) {
-                Event.on("buildingDetailsDowngrade", "click", this.Downgrade, this, true);
+                Event.on('buildingDetailsDowngrade', 'click', this.Downgrade, this, true);
             }
 
             return this.productionTab;
-
         },
         Demolish : function() {
             var building = this.building;
