@@ -3,7 +3,8 @@
 
 YAHOO.namespace("lacuna.buildings");
 
-var Templates = require('js/templates');
+var Templates = require('js/templates'),
+    assets = require('js/assets');
 
 (function () {
     var Lang = YAHOO.lang,
@@ -16,6 +17,8 @@ var Templates = require('js/templates');
         Lib = Lacuna.Library;
 
     var Building = function (oResults) {
+        this.repairTemplate = Templates.get('building.repair');
+
         this.createEvent("onMapRpc");
         this.createEvent("onQueueAdd");
         this.createEvent("onQueueReset");
@@ -62,6 +65,7 @@ var Templates = require('js/templates');
                 }
 
                 // incoming supply-chains tab
+                // TODO: why is this here?????????????
                 if (this.building.url == "/planetarycommand" || this.building.url == "/stationcommand") {
                     tabs[tabs.length] = this._getIncomingSupplyChainsTab();
                 }
@@ -133,21 +137,18 @@ var Templates = require('js/templates');
         },
 
         _getRepairTab : function() {
-            this.repairTab = new YAHOO.widget.Tab({ label: "Repair", content: [
-                    '<div id="repairContainer">',
-                    '    <span id="repairText">Building is currently running at ',this.building.efficiency,'% efficiency.  Costs to repair the building are:</span>',
-                    '    <ul>',
-                    '        <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/food.png" title="Food" class="smallFood" /></span><span class="buildingDetailsNum">',this.building.repair_costs.food,'</span></li>',
-                    '        <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/ore.png" title="Ore" class="smallOre" /></span><span class="buildingDetailsNum">',this.building.repair_costs.ore,'</span></li>',
-                    '        <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/water.png" title="Water" class="smallWater" /></span><span class="buildingDetailsNum">',this.building.repair_costs.water,'</span></li>',
-                    '        <li><span class="smallImg"><img src="',Lib.AssetUrl,'ui/s/energy.png" title="Energy" class="smallEnergy" /></span><span class="buildingDetailsNum">',this.building.repair_costs.energy,'</span></li>',
-                    '    </ul>',
-                    '    <button id="repairBuilding" type="button">Repair</button>',
-                    '</div>'
-                ].join('')});
-
+            this.repairTab = new YAHOO.widget.Tab({
+                label : 'Repair',
+                content: this.repairTemplate({
+                    efficiency : this.building.efficiency,
+                    assets : assets,
+                    food : this.building.repair_costs.food,
+                    ore : this.building.repair_costs.ore,
+                    water : this.building.repair_costs.water,
+                    energy : this.building.repair_costs.energy
+                })
+            });
             Event.on("repairBuilding", "click", this.Repair, this, true);
-
             return this.repairTab;
         },
         Repair : function(e) {
