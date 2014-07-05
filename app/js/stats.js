@@ -139,7 +139,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
 
         getServerStats : function(){
             Lacuna.Pulser.Show();
-            Util.Connect.asyncRequest('GET', 'server_overview.json', {
+            Util.Connect.asyncRequest('GET', Game.RPCBase + 'server_overview.json', {
                 success: function(o) {
                     YAHOO.log(o, "info", "Stats.populateServerStats.success");
                     Lacuna.Pulser.Hide();
@@ -292,61 +292,63 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                 '</ul>'
                     ].join('');
                           },
-_getOrbitsHtml : function() {
-                     var data = this._serverOverview.orbits;
+        _getOrbitsHtml : function() {
+            var data = this._serverOverview.orbits;
 
-                     return  ['<ul class="statsList">',
-                             '<li><label>Orbits</label><ul class="statsSubList">',
-                             '<li><label class="statsSubHeader">One</label>',
-                             '    <ul style="display:none;">',
-                             '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["1"].bodies), '</li>',
-                             '    <li><label>Inhabited:</label>', Lib.formatNumber(data["1"].inhabited), '</li>',
-                             '    </ul>',
-                             '</li>',
-                             '<li><label class="statsSubHeader">Two</label>',
-                             '    <ul style="display:none;">',
-                             '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["2"].bodies), '</li>',
-                             '    <li><label>Inhabited:</label>', Lib.formatNumber(data["2"].inhabited), '</li>',
-                             '    </ul>',
-                             '</li>',
-                             '<li><label class="statsSubHeader">Three</label>',
-                             '    <ul style="display:none;">',
-                             '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["3"].bodies), '</li>',
-                             '    <li><label>Inhabited:</label>', Lib.formatNumber(data["3"].inhabited), '</li>',
-                             '    </ul>',
-                             '</li>',
-                             '<li><label class="statsSubHeader">Four</label>',
-                             '    <ul style="display:none;">',
-                             '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["4"].bodies), '</li>',
-                             '    <li><label>Inhabited:</label>', Lib.formatNumber(data["4"].inhabited), '</li>',
-                             '    </ul>',
-                             '</li>',
-                             '<li><label class="statsSubHeader">Five</label>',
-                             '    <ul style="display:none;">',
-                             '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["5"].bodies), '</li>',
-                             '    <li><label>Inhabited:</label>', Lib.formatNumber(data["5"].inhabited), '</li>',
-                             '    </ul>',
-                             '</li>',
-                             '<li><label class="statsSubHeader">Six</label>',
-                             '    <ul style="display:none;">',
-                             '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["6"].bodies), '</li>',
-                             '    <li><label>Inhabited:</label>', Lib.formatNumber(data["6"].inhabited), '</li>',
-                             '    </ul>',
-                             '</li>',
-                             '<li><label class="statsSubHeader">Seven</label>',
-                             '    <ul style="display:none;">',
-                             '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["7"].bodies), '</li>',
-                             '    <li><label>Inhabited:</label>', Lib.formatNumber(data["7"].inhabited), '</li>',
-                             '    </ul>',
-                             '</li>',
-                             '<li><label class="statsSubHeader">Eight</label>',
-                             '    <ul style="display:none;">',
-                             '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["8"].bodies), '</li>',
-                             '    <li><label>Inhabited:</label>', Lib.formatNumber(data["8"].inhabited), '</li>',
-                             '    </ul>',
-                             '</li>',
-                             '</ul></li></ul>'].join('');
-                 },
+            return  [
+                '<ul class="statsList">',
+                '<li><label>Orbits</label><ul class="statsSubList">',
+                '<li><label class="statsSubHeader">One</label>',
+                '    <ul style="display:none;">',
+                '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["1"].bodies), '</li>',
+                '    <li><label>Inhabited:</label>', Lib.formatNumber(data["1"].inhabited), '</li>',
+                '    </ul>',
+                '</li>',
+                '<li><label class="statsSubHeader">Two</label>',
+                '    <ul style="display:none;">',
+                '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["2"].bodies), '</li>',
+                '    <li><label>Inhabited:</label>', Lib.formatNumber(data["2"].inhabited), '</li>',
+                '    </ul>',
+                '</li>',
+                '<li><label class="statsSubHeader">Three</label>',
+                '    <ul style="display:none;">',
+                '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["3"].bodies), '</li>',
+                '    <li><label>Inhabited:</label>', Lib.formatNumber(data["3"].inhabited), '</li>',
+                '    </ul>',
+                '</li>',
+                '<li><label class="statsSubHeader">Four</label>',
+                '    <ul style="display:none;">',
+                '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["4"].bodies), '</li>',
+                '    <li><label>Inhabited:</label>', Lib.formatNumber(data["4"].inhabited), '</li>',
+                '    </ul>',
+                '</li>',
+                '<li><label class="statsSubHeader">Five</label>',
+                '    <ul style="display:none;">',
+                '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["5"].bodies), '</li>',
+                '    <li><label>Inhabited:</label>', Lib.formatNumber(data["5"].inhabited), '</li>',
+                '    </ul>',
+                '</li>',
+                '<li><label class="statsSubHeader">Six</label>',
+                '    <ul style="display:none;">',
+                '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["6"].bodies), '</li>',
+                '    <li><label>Inhabited:</label>', Lib.formatNumber(data["6"].inhabited), '</li>',
+                '    </ul>',
+                '</li>',
+                '<li><label class="statsSubHeader">Seven</label>',
+                '    <ul style="display:none;">',
+                '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["7"].bodies), '</li>',
+                '    <li><label>Inhabited:</label>', Lib.formatNumber(data["7"].inhabited), '</li>',
+                '    </ul>',
+                '</li>',
+                '<li><label class="statsSubHeader">Eight</label>',
+                '    <ul style="display:none;">',
+                '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["8"].bodies), '</li>',
+                '    <li><label>Inhabited:</label>', Lib.formatNumber(data["8"].inhabited), '</li>',
+                '    </ul>',
+                '</li>',
+                '</ul></li></ul>'
+            ].join('');
+        },
 _getShipsHtml : function() {
                     var data = this._serverOverview.ships,
                     output = ['<ul class="statsList">',
@@ -463,9 +465,7 @@ EmpireStats : function(){
                       {key:"dirtiest", label:"Dirtiest", formatter:"number", sortable:true}
                       ];
 
-                      // TODO: this is throwing an error  because it's attempting
-                      // to access /stats on t he file protocol.
-                      this.EmpireData = new Util.XHRDataSource("/stats");
+                      this.EmpireData = new Util.XHRDataSource(Game.RPCBase + 'stats');
                       this.EmpireData.connMethodPost = "POST";
                       this.EmpireData.maxCacheEntries = 2;
                       this.EmpireData.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
@@ -644,7 +644,7 @@ initialRequest: Lang.JSON.stringify({
             }
         },
         EmpireFindCreate : function() {
-            var dataSource = new Util.XHRDataSource("/stats");
+            var dataSource = new Util.XHRDataSource(Game.RPCBase + 'stats');
             dataSource.connMethodPost = "POST";
             dataSource.maxCacheEntries = 2;
             dataSource.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
@@ -710,7 +710,7 @@ initialRequest: Lang.JSON.stringify({
                     {key:"dirtiest", label:"Dirtiest", formatter:"number", sortable:true}
                 ];
 
-                this.AllianceData = new Util.XHRDataSource("/stats");
+                this.AllianceData = new Util.XHRDataSource(Game.RPCBase + 'stats');
                 this.AllianceData.connMethodPost = "POST";
                 this.AllianceData.maxCacheEntries = 2;
                 this.AllianceData.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
@@ -885,7 +885,7 @@ initialRequest: Lang.JSON.stringify({
             }
         },
         AllianceFindCreate : function() {
-            var dataSource = new Util.XHRDataSource("/stats");
+            var dataSource = new Util.XHRDataSource(Game.RPCBase + 'stats');
             dataSource.connMethodPost = "POST";
             dataSource.maxCacheEntries = 2;
             dataSource.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
@@ -943,7 +943,7 @@ initialRequest: Lang.JSON.stringify({
                     {key:"highest_building_level", label:"High Building Lvl"}
                 ];
 
-                this.ColonyData = new Util.XHRDataSource("/stats");
+                this.ColonyData = new Util.XHRDataSource(Game.RPCBase + 'stats');
                 this.ColonyData.connMethodPost = "POST";
                 this.ColonyData.maxCacheEntries = 2;
                 this.ColonyData.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
@@ -1070,7 +1070,7 @@ initialRequest: Lang.JSON.stringify({
                     {key:"dirtiest", label:"Dirtiest", sortable:true}
                 ];
 
-                this.SpyData = new Util.XHRDataSource("/stats");
+                this.SpyData = new Util.XHRDataSource(Game.RPCBase + 'stats');
                 this.SpyData.connMethodPost = "POST";
                 this.SpyData.maxCacheEntries = 2;
                 this.SpyData.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
@@ -1193,7 +1193,7 @@ initialRequest: Lang.JSON.stringify({
                     }}
                 ];
 
-                this.WeeklyMedalData = new Util.XHRDataSource("/stats");
+                this.WeeklyMedalData = new Util.XHRDataSource(Game.RPCBase + 'stats');
                 this.WeeklyMedalData.connMethodPost = "POST";
                 this.WeeklyMedalData.maxCacheEntries = 2;
                 this.WeeklyMedalData.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;

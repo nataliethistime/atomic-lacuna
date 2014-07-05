@@ -8,15 +8,14 @@ required and getting them to run on each different OS is different, so, you go t
 their websites and figure it out yourself. I know you can do it.
 
 To start with:
-- git
-- nodejs
+- [Git](http://git-scm.com)
+- [NodeJs](http://nodejs.org/)
 
-I'm kidding.. I'm kidding. Git and NodeJs should be really simple. But atom-shell
-doesn't have any instructions. All you do, is clone its repository to the same place
-that you're putting Atomic Lacuna in later. Eg, your home folder.
+I'm kidding.. I'm kidding. Git and NodeJs should be really simple. If they're not,
+yell at me in a Github issue and we can sort your stuff out.
 
-Now that we've got all that boring crap outta that way. Let the fun begin:
-```shell
+Now that we've got all that boring stuff outta the way. Let the fun begin:
+```bash
 git clone https://github.com/atom/atom-shell # Get the atom-shell
 git clone https://github.com/Vasari/atomic-lacuna # Get this repository
 cd atomic-lacuna
