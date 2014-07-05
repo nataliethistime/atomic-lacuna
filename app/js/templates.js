@@ -9,30 +9,40 @@ module.exports = {
 
     get : function (name) {
         // Get from cache or load new one.
-        var cachedName = this.addPrefix(name);
-        return this.tmplCache[cachedName] || this.load(name);
+        return this.tmplCache[this.addPrefix(name)] || this.load(name);
     },
 
     load : function (name) {
-        var cachedName = this.addPrefix(name),
-            buffer, func, string;
+        var buffer, location;
 
-        // Add the file extension.
-        name += '.html';
+        // Add the file extension and fix /'s
+        name = this.fixName(name);
 
         if (window.ATOM_SHELL) {
             // We can use the file system to get the templates.
-            buffer = fs.readFileSync(path.join(process.cwd(), 'app', 'templates', name));
-            string = buffer.toString();
-            string = string.replace(/\n/g, ''); // Remove newlines.
-            string = string.replace(/\s{2,}/g, ''); // Weed out whitespace.
-            func = Handlebars.compile(string);
-            this.tmplCache[cachedName] = func;
-            return func;
+            location = path.join(process.cwd(), 'app', 'templates', name);
+            buffer = fs.readFileSync(location);
+            return this.save(name, this.prepare(buffer.toString()));
         }
         else {
-            // TODO
+            // TODO: send a HTTP request
         }
+    },
+
+    save : function (name, func) {
+        this.tmplCache[this.addPrefix(name)] = func;
+        return func;
+    },
+
+    prepare : function (string) {
+        string = string.replace(/\n/g, ''); // Remove newlines.
+        string = string.replace(/\s{2,}/g, ''); // Weed out whitespace.
+        return Handlebars.compile(string);
+    },
+
+    fixName : function (name) {
+        name = name.replace(/\./g, path.sep);
+        return name + '.html';
     },
 
     addPrefix : function (name) {

@@ -38,7 +38,7 @@ var Templates = require('js/templates');
     };
 
     Announce.prototype = {
-        template : Templates.get('announcement'),
+        template : Templates.get('menu.announcement'),
 
         show : function () {
             this.render();

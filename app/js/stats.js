@@ -463,6 +463,8 @@ EmpireStats : function(){
                       {key:"dirtiest", label:"Dirtiest", formatter:"number", sortable:true}
                       ];
 
+                      // TODO: this is throwing an error  because it's attempting
+                      // to access /stats on t he file protocol.
                       this.EmpireData = new Util.XHRDataSource("/stats");
                       this.EmpireData.connMethodPost = "POST";
                       this.EmpireData.maxCacheEntries = 2;

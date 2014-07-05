@@ -62,7 +62,8 @@
         "event-mouseenter",
         "paginator",
         "tabview",
-        "menu"
+        "menu",
+        "datatable"
     ]);
 
     loader.onSuccess = function(o) {

@@ -1,8 +1,11 @@
+/*global YAHOO, $ */
+'use strict';
+
 YAHOO.namespace("lacuna.buildings");
 
-if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.buildings.Building) {
-    
-(function(){
+var Templates = require('js/templates');
+
+(function () {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -12,7 +15,7 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
 
-    var Building = function(oResults){
+    var Building = function (oResults) {
         this.createEvent("onMapRpc");
         this.createEvent("onQueueAdd");
         this.createEvent("onQueueReset");
@@ -24,47 +27,50 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
         this.createEvent("onUpdateMap");
         this.createEvent("onRemoveTile");
         this.createEvent("onHide");
-        //for internal use
+
+        // For internal use
         this.createEvent("onLoad");
         this.createEvent("onRepair");
-        //common elements
+
+        // Common elements
         this.building = oResults.building;
         this.work = oResults.building.work;
-        //delete status since it's rather large
+
+        // Delete status since it's rather large
         delete oResults.status;
-        //so we can store just in case anyway
+
+        // So we can store just in case anyway
         this.result = oResults;
     };
-    
+
     Building.prototype = {
-        destroy : function() {
+        destroy : function () {
             this.unsubscribeAll();
         },
-        load : function() {
+        load : function () {
             this.fireEvent("onLoad");
         },
-        getTabs : function() {
-            if(this.building.efficiency*1 < 100 && this.building.repair_costs) {
+        getTabs : function () {
+            if ((this.building.efficiency * 1) < 100 && this.building.repair_costs) {
                 return [this._getProductionTab(), this._getRepairTab()];
-            }
-            else {
+            } else {
                 var tabs = [this._getProductionTab()],
                     childTabs = this.building.level > 0 ? this.getChildTabs() : null;
-                    
+
                 if(childTabs && Lang.isArray(childTabs)) {
                     tabs = tabs.concat(childTabs);
                 }
-                
+
                 // incoming supply-chains tab
                 if (this.building.url == "/planetarycommand" || this.building.url == "/stationcommand") {
                     tabs[tabs.length] = this._getIncomingSupplyChainsTab();
                 }
-                
+
                 //create storage tab last
                 if(this.building.upgrade.production && ((this.building.food_capacity*1 + this.building.ore_capacity*1 + this.building.water_capacity*1 + this.building.energy_capacity*1 + this.building.waste_capacity*1) > 0)) {
                     tabs[tabs.length] = this._getStorageTab();
                 }
-                
+
                 return tabs;
             }
         },
@@ -72,7 +78,7 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
             //overrideable function for child classes that have their own tabs
             //** Must return nothing or an array of tabs **
         },
-        
+
         /*
         Event Helpers
         */
@@ -125,7 +131,7 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
         removeBuildingTile : function(building) {
             this.fireEvent("onRemoveTile", building);
         },
-        
+
         _getRepairTab : function() {
             this.repairTab = new YAHOO.widget.Tab({ label: "Repair", content: [
                     '<div id="repairContainer">',
@@ -141,7 +147,7 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
                 ].join('')});
 
             Event.on("repairBuilding", "click", this.Repair, this, true);
-                    
+
             return this.repairTab;
         },
         Repair : function(e) {
@@ -175,7 +181,7 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
                 scope:this
             });
         },
-        
+
         _getProductionTab : function() {
             var up = this.building.upgrade,
                 down = this.building.downgrade,
@@ -227,13 +233,13 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
                 '    </div>',
                 '</div>'
                 ].join('')});
-			
+
 			Event.onAvailable('extraBuildingDetails', function(o) {
 				if (o.building.upgrade.cost.halls) {
 					Dom.get('extraBuildingDetails').innerHTML = 'Can upgrade to level ' + (parseInt(o.building.level) + 1) + ' by sacrificing ' + (parseInt(o.building.level) + 1) + ' Halls of Vrbansk.';
 				}
 			}, this);
-            
+
             Event.on("buildingDetailsDemolish", "click", this.Demolish, this, true);
             if(up.can) {
                 Event.on("buildingDetailsUpgrade", "click", this.Upgrade, this, true);
@@ -241,7 +247,7 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
             if(currentLevel > 1) {
                 Event.on("buildingDetailsDowngrade", "click", this.Downgrade, this, true);
             }
-            
+
             return this.productionTab;
 
         },
@@ -258,7 +264,7 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
                         this.removeBuildingTile(building);
-                        this.fireEvent("onHide");                    
+                        this.fireEvent("onHide");
                     },
                     scope:this,
                     target:building.url
@@ -277,16 +283,16 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
                         YAHOO.log(o, "info", "Building.Downgrade.success");
                         Lacuna.Pulser.Hide();
                         this.fireEvent("onMapRpc", o.result);
-                        
+
                         var b = building; //originally passed in building data from currentBuilding
                         b.id = o.result.building.id;
                         b.level = o.result.building.level;
                         b.pending_build = o.result.building.pending_build;
                         YAHOO.log(b, "info", "Building.Upgrade.success.building");
-                        
+
                         this.updateBuildingTile(b);
-                    
-                        this.fireEvent("onHide");                    
+
+                        this.fireEvent("onHide");
                     },
                     scope:this,
                     target:building.url
@@ -296,15 +302,15 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
         Upgrade : function() {
             var building = this.building,
 				userUpgrade = false;
-			
+
 			if (building.upgrade.cost.halls) {
 				userUpgrade = confirm('Are you sure you want to sacrifice ' + building.upgrade.cost.halls + ' Halls of Vrbansk?');
 			}
 			else {
 				userUpgrade = true;
 			}
-			
-			
+
+
 			if (userUpgrade) {
 				Lacuna.Pulser.Show();
 				var BuildingServ = Game.Services.Buildings.Generic,
@@ -312,21 +318,21 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
 						session_id: Game.GetSession(""),
 						building_id: building.id
 					};
-            
+
 				BuildingServ.upgrade(data,{
 					success : function(o){
 						YAHOO.log(o, "info", "Building.Upgrade.success");
 						Lacuna.Pulser.Hide();
 						this.fireEvent("onMapRpc", o.result);
-                    
+
 						var b = building; //originally passed in building data from currentBuilding
 						b.id = o.result.building.id;
 						b.level = o.result.building.level;
 						b.pending_build = o.result.building.pending_build;
 						YAHOO.log(b, "info", "Building.Upgrade.success.building");
-                    
+
 						this.updateBuildingTile(b);
-                    
+
 						this.fireEvent("onHide");
 					},
 					scope:this,
@@ -334,8 +340,8 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
 				});
 			}
         },
-        
-        _getIncomingSupplyChainsTab : function() {            
+
+        _getIncomingSupplyChainsTab : function() {
             this.incomingSupplyChainTab = new YAHOO.widget.Tab({ label: "Supply Chains", content: [
                 '<div id="incomingSupplyChainInfo" style="margin-bottom: 2px">',
                 '   <div id="incomingSupplyChainList">',
@@ -351,7 +357,7 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
                 '   <div id="incomingSupplyChainListNone"><b>No Incoming Supply Chains</b></div>',
                 '</div>',
             ].join('')});
-            
+
             this.incomingSupplyChainTab.subscribe("activeChange", this.viewIncomingSupplyChainInfo, this, true);
 
             return this.incomingSupplyChainTab;
@@ -359,7 +365,7 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
         viewIncomingSupplyChainInfo : function(e) {
             Dom.setStyle("incomingSupplyChainList", "display", "none");
             Dom.setStyle("incomingSupplyChainListNone", "display", "none");
-            
+
             if ( !this.incoming_supply_chains ) {
                 Lacuna.Pulser.Show();
                 this.service.view_incoming_supply_chains({session_id:Game.GetSession(),building_id:this.building.id}, {
@@ -368,7 +374,7 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
                         this.incoming_supply_chains = o.result.supply_chains;
-                        
+
                         this.incomingSupplyChainList();
                     },
                     scope:this
@@ -380,7 +386,7 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
         },
         incomingSupplyChainList : function() {
           var supply_chains = this.incoming_supply_chains;
-          
+
           if ( supply_chains.length == 0 ) {
             Dom.setStyle("incomingSupplyChainList", "display", "none");
             Dom.setStyle("incomingSupplyChainListNone", "display", "");
@@ -390,27 +396,27 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
             Dom.setStyle("incomingSupplyChainList", "display", "");
             Dom.setStyle("incomingSupplyChainListNone", "display", "none");
           }
-          
+
           var details = Dom.get("incomingSupplyChainListDetails"),
               detailsParent = details.parentNode,
               ul = document.createElement("ul"),
               li = document.createElement("li");
-          
+
           // chains list
           Event.purgeElement(details, true); //clear any events before we remove
           details = detailsParent.removeChild(details); //remove from DOM to make this faster
           details.innerHTML = "";
-          
+
           //Dom.setStyle(detailsParent, "display", "");
           detailsParent.appendChild(details); //add back as child
-          
+
           for (var i=0; i<supply_chains.length; i++) {
             var chain = supply_chains[i],
                 nUl = ul.cloneNode(false);
-            
+
             Dom.addClass(nUl, "incomingSupplyChainInfo");
             Dom.addClass(nUl, "clearafter");
-            
+
             nLi = li.cloneNode(false);
             Dom.addClass(nLi, "incomingSupplyChainBody");
             if (chain.stalled == 1) {
@@ -421,25 +427,25 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
                 nLi.innerHTML = chain.from_body.name;
             }
             nUl.appendChild(nLi);
-            
+
             nLi = li.cloneNode(false);
             Dom.addClass(nLi, "incomingSupplyChainResource");
             nLi.innerHTML = chain.resource_type.titleCaps();
             nUl.appendChild(nLi);
-            
+
             nLi = li.cloneNode(false);
             Dom.addClass(nLi, "incomingSupplyChainHour");
             nLi.innerHTML = chain.resource_hour;
             nUl.appendChild(nLi);
-            
+
             nLi = li.cloneNode(false);
             Dom.addClass(nLi,"incomingSupplyChainEfficiency");
             nLi.innerHTML = chain.percent_transferred;
             nUl.appendChild(nLi);
-            
+
             details.appendChild(nUl);
           }
-          
+
           //wait for tab to display first
           setTimeout(function() {
             var Ht = Game.GetSize().h - 250;
@@ -448,7 +454,7 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
             Dom.setStyle(detailsParent,"overflow-y","auto");
           },10);
         },
-        _getStorageTab : function() {            
+        _getStorageTab : function() {
             var p = this.building.upgrade.production,
                 output = [
                 '<div class="yui-g">',
@@ -476,12 +482,7 @@ if (typeof YAHOO.lacuna.buildings.Building == "undefined" || !YAHOO.lacuna.build
             return new YAHOO.widget.Tab({ label: "Storage", content: output.join('')});
         }
     };
+
     Lang.augmentProto(Building, Util.EventProvider);
-    
     YAHOO.lacuna.buildings.Building = Building;
-
-})();
-YAHOO.register("building", YAHOO.lacuna.buildings.Building, {version: "1", build: "0"}); 
-
-}
-// vim: noet:ts=4:sw=4
+}());

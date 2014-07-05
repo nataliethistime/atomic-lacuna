@@ -37,7 +37,7 @@ var Templates = require('js/templates');
     };
 
     About.prototype = {
-        template : Templates.get('about'),
+        template : Templates.get('menu.about'),
 
         show : function () {
             if (!this.hasCredits) {
