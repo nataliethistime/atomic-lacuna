@@ -11,10 +11,8 @@ var Templates = require('js/templates'),
         Util = YAHOO.util,
         Dom = Util.Dom,
         Event = Util.Event,
-        Sel = Util.Selector,
         Lacuna = YAHOO.lacuna,
-        Game = Lacuna.Game,
-        Lib = Lacuna.Library;
+        Game = Lacuna.Game;
 
     var Building = function (oResults) {
         this.repairTemplate = Templates.get('tab.building.repair');
@@ -56,48 +54,58 @@ var Templates = require('js/templates'),
             this.fireEvent("onLoad");
         },
         getTabs : function () {
-            if ((this.building.efficiency * 1) < 100 && this.building.repair_costs) {
-                return [this._getProductionTab(), this._getRepairTab()];
-            } else {
-                var tabs = [this._getProductionTab()],
-                    childTabs = this.building.level > 0 ? this.getChildTabs() : null;
-
-                if(childTabs && Lang.isArray(childTabs)) {
-                    tabs = tabs.concat(childTabs);
-                }
-
-                // incoming supply-chains tab
-                // TODO: why is this here?????????????
-                if (this.building.url == "/planetarycommand" || this.building.url == "/stationcommand") {
-                    tabs[tabs.length] = this._getIncomingSupplyChainsTab();
-                }
-
-                //create storage tab last
-                if(this.building.upgrade.production && ((this.building.food_capacity*1 + this.building.ore_capacity*1 + this.building.water_capacity*1 + this.building.energy_capacity*1 + this.building.waste_capacity*1) > 0)) {
-                    tabs[tabs.length] = this._getStorageTab();
-                }
-
-                return tabs;
+            if (parseInt(this.building.efficiency, 10) < 100 && this.building.repair_costs) {
+                return [this.getProductionTab(), this.getRepairTab()];
             }
+
+            var tabs = [this.getProductionTab()],
+                childTabs = this.building.level > 0 ? this.getChildTabs() : [];
+
+            if (Lang.isArray(childTabs)) {
+                tabs = tabs.concat(childTabs);
+            }
+
+            // Incoming supply-chains tab. This is because Station Command
+            // doesn't inherit from PCC. It's here to avoid duplication.
+            if (this.building.url === "/planetarycommand" || this.building.url === "/stationcommand") {
+                tabs.push(this.getIncomingSupplyChainsTab());
+            }
+
+            // Create storage tab last
+            if (this.building.upgrade.production && (
+                    parseInt(this.building.food_capacity, 10) +
+                    parseInt(this.building.ore_capacity, 10) +
+                    parseInt(this.building.water_capacity, 10) +
+                    parseInt(this.building.energy_capacity, 10) +
+                    parseInt(this.building.waste_capacity, 10)
+                ) > 0) {
+
+                tabs.push(this.getStorageTab());
+            }
+
+            return tabs;
         },
-        getChildTabs : function() {
+        getChildTabs : function () {
             //overrideable function for child classes that have their own tabs
             //** Must return nothing or an array of tabs **
+            return [];
         },
 
         /*
         Event Helpers
         */
-        rpcSuccess : function(o) {
+        rpcSuccess : function (o) {
             this.fireEvent("onMapRpc", o.result);
-            if(o.result.building && this.building) {
-                //if we suddenly have work update the tile to add the tile.  if we don't have work update the tile to remove the timer
+            if (o.result.building && this.building) {
+                // if we suddenly have work update the tile to add the tile.
+                // if we don't have work update the tile to remove the timer
                 var workChanged = (
                     (this.building.work && !o.result.building.work) ||
                     (!this.building.work && o.result.building.work) ||
-                    (this.building.work && o.result.building.work && this.building.work.end != o.result.building.work.end)
+                    (this.building.work && o.result.building.work &&
+                        this.building.work.end !== o.result.building.work.end)
                 );
-                if(workChanged) {
+                if (workChanged) {
                     this.building.work = o.result.building.work;
                     this.work = this.building.work;
                     this.updateBuildingTile(this.building);
@@ -116,29 +124,34 @@ var Templates = require('js/templates'),
                 }*/
             }
         },
-        addQueue : function(sec, func, elm, sc) {
-            this.fireEvent("onQueueAdd", {seconds:sec, fn:func, el:elm, scope:sc});
+        addQueue : function (sec, func, elm, sc) {
+            this.fireEvent("onQueueAdd", {
+                seconds : sec,
+                fn : func,
+                el : elm,
+                scope : sc
+            });
         },
-        resetQueue : function() {
+        resetQueue : function () {
             this.fireEvent("onQueueReset");
         },
-        addTab : function(tab) {
+        addTab : function (tab) {
             this.fireEvent("onAddTab", tab);
         },
-        removeTab : function(tab) {
+        removeTab : function (tab) {
             this.fireEvent("onRemoveTab", tab);
         },
-        updateBuildingTile : function(building) {
+        updateBuildingTile : function (building) {
             //always updated url when doing this since some returns don't have the url
             building.url = this.building.url;
             this.building = building;
             this.fireEvent("onUpdateTile", this.building);
         },
-        removeBuildingTile : function(building) {
+        removeBuildingTile : function (building) {
             this.fireEvent("onRemoveTile", building);
         },
 
-        _getRepairTab : function() {
+        getRepairTab : function () {
             this.repairTab = new YAHOO.widget.Tab({
                 label : 'Repair',
                 content : this.repairTemplate({
@@ -153,16 +166,18 @@ var Templates = require('js/templates'),
             Event.on("repairBuilding", "click", this.Repair, this, true);
             return this.repairTab;
         },
-        Repair : function(e) {
+        Repair : function (e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             Lacuna.Pulser.Show();
-            Game.Services.Buildings.Generic.repair({session_id:Game.GetSession(),building_id:this.building.id}, {
-                success : function(o){
-                    YAHOO.log(o, "info", "Building.Repair.repair.success");
+            Game.Services.Buildings.Generic.repair({
+                session_id : Game.GetSession(),
+                building_id : this.building.id
+            }, {
+                success : function (o) {
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
-                    if(this.repairTab) {
+                    if (this.repairTab) {
                         Event.removeListener("repair", "click");
                         this.removeTab(this.repairTab);
                         o.result.building.url = this.building.url;
@@ -172,20 +187,20 @@ var Templates = require('js/templates'),
                         this.updateBuildingTile(o.result.building);
                         this.fireEvent("onReloadTabs");
                     }
-                    if(!this.productionTab) {
-                        this.addTab(this._getProductionTab());
+                    if (!this.productionTab) {
+                        this.addTab(this.getProductionTab());
                     }
                     this.fireEvent("onRepair");
                 },
-                failure : function(o){
+                failure : function () {
                     btn.disabled = false;
                 },
-                target:this.building.url,
-                scope:this
+                target : this.building.url,
+                scope : this
             });
         },
 
-        _getProductionTab : function() {
+        getProductionTab : function () {
             var level = parseInt(this.building.level, 10);
             this.productionTab = new YAHOO.widget.Tab({
                 label: 'Production',
@@ -211,36 +226,34 @@ var Templates = require('js/templates'),
 
             return this.productionTab;
         },
-        Demolish : function() {
+        Demolish : function () {
             var building = this.building;
-            if(confirm(['Are you sure you want to Demolish the level ',building.level,' ',building.name,'?'].join(''))) {
+            if (confirm(['Are you sure you want to Demolish the level ', building.level, ' ', building.name, '?'].join(''))) {
                 Lacuna.Pulser.Show();
                 Game.Services.Buildings.Generic.demolish({
-                    session_id:Game.GetSession(),
-                    building_id:building.id
+                    session_id : Game.GetSession(),
+                    building_id : building.id
                 }, {
-                    success : function(o){
-                        YAHOO.log(o, "info", "Building.Demolish.success");
+                    success : function (o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
                         this.removeBuildingTile(building);
                         this.fireEvent("onHide");
                     },
-                    scope:this,
-                    target:building.url
+                    scope : this,
+                    target : building.url
                 });
             }
         },
-        Downgrade : function() {
+        Downgrade : function () {
             var building = this.building;
-            if(confirm(['Are you sure you want to downgrade the level ',building.level,' ',building.name,'?'].join(''))) {
+            if (confirm(['Are you sure you want to downgrade the level ', building.level, ' ', building.name, '?'].join(''))) {
                 Lacuna.Pulser.Show();
                 Game.Services.Buildings.Generic.downgrade({
-                    session_id:Game.GetSession(),
-                    building_id:building.id
+                    session_id : Game.GetSession(),
+                    building_id : building.id
                 }, {
-                    success : function(o){
-                        YAHOO.log(o, "info", "Building.Downgrade.success");
+                    success : function (o) {
                         Lacuna.Pulser.Hide();
                         this.fireEvent("onMapRpc", o.result);
 
@@ -254,54 +267,51 @@ var Templates = require('js/templates'),
 
                         this.fireEvent("onHide");
                     },
-                    scope:this,
-                    target:building.url
+                    scope : this,
+                    target : building.url
                 });
             }
         },
-        Upgrade : function() {
+        Upgrade : function () {
             var building = this.building,
-				userUpgrade = false;
+                userUpgrade = false;
 
-			if (building.upgrade.cost.halls) {
-				userUpgrade = confirm('Are you sure you want to sacrifice ' + building.upgrade.cost.halls + ' Halls of Vrbansk?');
-			}
-			else {
-				userUpgrade = true;
-			}
+            if (building.upgrade.cost.halls) {
+                userUpgrade = confirm('Are you sure you want to sacrifice ' + building.upgrade.cost.halls + ' Halls of Vrbansk?');
+            } else {
+                userUpgrade = true;
+            }
 
 
-			if (userUpgrade) {
-				Lacuna.Pulser.Show();
-				var BuildingServ = Game.Services.Buildings.Generic,
-					data = {
-						session_id: Game.GetSession(""),
-						building_id: building.id
-					};
+            if (userUpgrade) {
+                Lacuna.Pulser.Show();
+                var BuildingServ = Game.Services.Buildings.Generic,
+                    data = {
+                        session_id : Game.GetSession(""),
+                        building_id : building.id
+                    };
 
-				BuildingServ.upgrade(data,{
-					success : function(o){
-						YAHOO.log(o, "info", "Building.Upgrade.success");
-						Lacuna.Pulser.Hide();
-						this.fireEvent("onMapRpc", o.result);
+                BuildingServ.upgrade(data, {
+                    success : function (o) {
+                        Lacuna.Pulser.Hide();
+                        this.fireEvent("onMapRpc", o.result);
 
-						var b = building; //originally passed in building data from currentBuilding
-						b.id = o.result.building.id;
-						b.level = o.result.building.level;
-						b.pending_build = o.result.building.pending_build;
-						YAHOO.log(b, "info", "Building.Upgrade.success.building");
+                        var b = building; //originally passed in building data from currentBuilding
+                        b.id = o.result.building.id;
+                        b.level = o.result.building.level;
+                        b.pending_build = o.result.building.pending_build;
 
-						this.updateBuildingTile(b);
+                        this.updateBuildingTile(b);
 
-						this.fireEvent("onHide");
-					},
-					scope:this,
-					target:building.url
-				});
-			}
+                        this.fireEvent("onHide");
+                    },
+                    scope : this,
+                    target : building.url
+                });
+            }
         },
 
-        _getIncomingSupplyChainsTab : function() {
+        getIncomingSupplyChainsTab : function () {
             this.incomingSupplyChainTab = new YAHOO.widget.Tab({ label: "Supply Chains", content: [
                 '<div id="incomingSupplyChainInfo" style="margin-bottom: 2px">',
                 '   <div id="incomingSupplyChainList">',
@@ -315,106 +325,112 @@ var Templates = require('js/templates'),
                 '      <div><div id="incomingSupplyChainListDetails"></div></div>',
                 '   </div>',
                 '   <div id="incomingSupplyChainListNone"><b>No Incoming Supply Chains</b></div>',
-                '</div>',
+                '</div>'
             ].join('')});
 
             this.incomingSupplyChainTab.subscribe("activeChange", this.viewIncomingSupplyChainInfo, this, true);
 
             return this.incomingSupplyChainTab;
         },
-        viewIncomingSupplyChainInfo : function(e) {
+        viewIncomingSupplyChainInfo : function () {
             Dom.setStyle("incomingSupplyChainList", "display", "none");
             Dom.setStyle("incomingSupplyChainListNone", "display", "none");
 
-            if ( !this.incoming_supply_chains ) {
+            if (!this.incoming_supply_chains) {
                 Lacuna.Pulser.Show();
-                this.service.view_incoming_supply_chains({session_id:Game.GetSession(),building_id:this.building.id}, {
-                    success : function(o){
-                        YAHOO.log(o, "info", "building.viewIncomingSupplyChainInfo.success");
+                this.service.view_incoming_supply_chains({
+                    session_id : Game.GetSession(),
+                    building_id : this.building.id
+                }, {
+                    success : function (o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
                         this.incoming_supply_chains = o.result.supply_chains;
 
                         this.incomingSupplyChainList();
                     },
-                    scope:this
+                    scope : this
                 });
-            }
-            else {
+            } else {
                 this.incomingSupplyChainList();
             }
         },
-        incomingSupplyChainList : function() {
-          var supply_chains = this.incoming_supply_chains;
+        incomingSupplyChainList : function () {
+            var supply_chains = this.incoming_supply_chains,
+                i,
+                chain,
+                nUl,
+                nLi,
+                details,
+                detailsParent,
+                ul,
+                li;
 
-          if ( supply_chains.length == 0 ) {
-            Dom.setStyle("incomingSupplyChainList", "display", "none");
-            Dom.setStyle("incomingSupplyChainListNone", "display", "");
-            return;
-          }
-          else {
+            if (supply_chains.length === 0) {
+                Dom.setStyle("incomingSupplyChainList", "display", "none");
+                Dom.setStyle("incomingSupplyChainListNone", "display", "");
+                return;
+            }
+
             Dom.setStyle("incomingSupplyChainList", "display", "");
             Dom.setStyle("incomingSupplyChainListNone", "display", "none");
-          }
 
-          var details = Dom.get("incomingSupplyChainListDetails"),
-              detailsParent = details.parentNode,
-              ul = document.createElement("ul"),
-              li = document.createElement("li");
+            details = Dom.get("incomingSupplyChainListDetails");
+            detailsParent = details.parentNode;
+            ul = document.createElement("ul");
+            li = document.createElement("li");
 
-          // chains list
-          Event.purgeElement(details, true); //clear any events before we remove
-          details = detailsParent.removeChild(details); //remove from DOM to make this faster
-          details.innerHTML = "";
+            // chains list
+            Event.purgeElement(details, true); //clear any events before we remove
+            details = detailsParent.removeChild(details); //remove from DOM to make this faster
+            details.innerHTML = "";
 
-          //Dom.setStyle(detailsParent, "display", "");
-          detailsParent.appendChild(details); //add back as child
+            //Dom.setStyle(detailsParent, "display", "");
+            detailsParent.appendChild(details); //add back as child
 
-          for (var i=0; i<supply_chains.length; i++) {
-            var chain = supply_chains[i],
+            for (i = 0; i < supply_chains.length; i += 1) {
+                chain = supply_chains[i];
                 nUl = ul.cloneNode(false);
 
-            Dom.addClass(nUl, "incomingSupplyChainInfo");
-            Dom.addClass(nUl, "clearafter");
+                Dom.addClass(nUl, "incomingSupplyChainInfo");
+                Dom.addClass(nUl, "clearafter");
 
-            nLi = li.cloneNode(false);
-            Dom.addClass(nLi, "incomingSupplyChainBody");
-            if (chain.stalled == 1) {
-                Dom.addClass( nUl, "incomingSupplyChainStalled")
-                nLi.innerHTML = chain.from_body.name + " (Stalled)";
+                nLi = li.cloneNode(false);
+                Dom.addClass(nLi, "incomingSupplyChainBody");
+                if (chain.stalled === 1) {
+                    Dom.addClass(nUl, "incomingSupplyChainStalled");
+                    nLi.innerHTML = chain.from_body.name + " (Stalled)";
+                } else {
+                    nLi.innerHTML = chain.from_body.name;
+                }
+                nUl.appendChild(nLi);
+
+                nLi = li.cloneNode(false);
+                Dom.addClass(nLi, "incomingSupplyChainResource");
+                nLi.innerHTML = chain.resource_type.titleCaps();
+                nUl.appendChild(nLi);
+
+                nLi = li.cloneNode(false);
+                Dom.addClass(nLi, "incomingSupplyChainHour");
+                nLi.innerHTML = chain.resource_hour;
+                nUl.appendChild(nLi);
+
+                nLi = li.cloneNode(false);
+                Dom.addClass(nLi, "incomingSupplyChainEfficiency");
+                nLi.innerHTML = chain.percent_transferred;
+                nUl.appendChild(nLi);
+                details.appendChild(nUl);
             }
-            else {
-                nLi.innerHTML = chain.from_body.name;
-            }
-            nUl.appendChild(nLi);
 
-            nLi = li.cloneNode(false);
-            Dom.addClass(nLi, "incomingSupplyChainResource");
-            nLi.innerHTML = chain.resource_type.titleCaps();
-            nUl.appendChild(nLi);
-
-            nLi = li.cloneNode(false);
-            Dom.addClass(nLi, "incomingSupplyChainHour");
-            nLi.innerHTML = chain.resource_hour;
-            nUl.appendChild(nLi);
-
-            nLi = li.cloneNode(false);
-            Dom.addClass(nLi,"incomingSupplyChainEfficiency");
-            nLi.innerHTML = chain.percent_transferred;
-            nUl.appendChild(nLi);
-
-            details.appendChild(nUl);
-          }
-
-          //wait for tab to display first
-          setTimeout(function() {
-            var Ht = Game.GetSize().h - 250;
-            if(Ht > 250) { Ht = 250; }
-            Dom.setStyle(detailsParent,"height",Ht + "px");
-            Dom.setStyle(detailsParent,"overflow-y","auto");
-          },10);
+            //wait for tab to display first
+            setTimeout(function () {
+                var Ht = Game.GetSize().h - 250;
+                if (Ht > 250) { Ht = 250; }
+                Dom.setStyle(detailsParent, "height", Ht + "px");
+                Dom.setStyle(detailsParent, "overflow-y", "auto");
+            }, 10);
         },
-        _getStorageTab : function() {
+        getStorageTab : function () {
             return new YAHOO.widget.Tab({
                 label: 'Storage',
                 content: this.storageTemplate({
