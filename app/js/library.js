@@ -78,8 +78,7 @@ if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
         settings = new Storage('./app/data/settings.json', { strict: false });
     }
     else {
-        db = window.localStorage;
-        settings = window.localStorage;
+        db = settings = window.localStorage;
     }
 
     var Library = {

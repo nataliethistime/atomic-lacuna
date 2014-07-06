@@ -455,7 +455,7 @@ if (typeof YAHOO.lacuna.Game == "undefined" || !YAHOO.lacuna.Game) {
             if(ED.self_destruct_active*1 === 1) {
                 func = EmpireServ.disable_self_destruct;
             }
-            else if (confirm("Are you certain you want to enable self destuct?  If enabled, your empire will be deleted after 24 hours.")) {
+            else if (confirm("Are you certain you want to enable self destruct?  If enabled, your empire will be deleted after 24 hours.")) {
                 func = EmpireServ.enable_self_destruct;
             }
             else {
