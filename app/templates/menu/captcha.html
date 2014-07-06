@@ -1,0 +1,25 @@
+<form>
+    <ul id="captchaList">
+        <li>Solve this problem to continue:</li>
+        <li>
+            <img width="300" height="80" id="captchaImage" />
+            <button id="captchaRefresh" type="button">
+                <img alt="Refresh" src="{{assets.ui.small.refresh}}" width="20" height="22" />
+            </button>
+        </li>
+        <li>
+            <label for="captchaSolution">Answer:</label>
+            <input type="text" id="captchaSolution" />
+        </li>
+    </ul>
+
+    <div id="captchaMessage" class="alert">&nbsp;</div>
+
+    <div style="display: block; text-align: right;">
+        <button type="button" id="solveCaptcha">
+            <span style="font-weight: bold;">Solve</span>
+        </button>
+        <button type="button" id="cancelCaptcha">Cancel</button>
+    </div>
+</form>
+
