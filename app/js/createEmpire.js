@@ -1,7 +1,7 @@
 YAHOO.namespace("lacuna");
 
 if (typeof YAHOO.lacuna.CreateEmpire == "undefined" || !YAHOO.lacuna.CreateEmpire) {
-    
+
 (function(){
     var Util = YAHOO.util,
         Cookie = Util.Cookie,
@@ -15,7 +15,7 @@ if (typeof YAHOO.lacuna.CreateEmpire == "undefined" || !YAHOO.lacuna.CreateEmpir
         this.id = "createEmpire";
         this._login = Login;
         this.createEvent("onCreateSuccessful");
-        
+
         var container = document.createElement("div");
         container.id = this.id;
         Dom.addClass(container, "hidden");
@@ -46,7 +46,7 @@ if (typeof YAHOO.lacuna.CreateEmpire == "undefined" || !YAHOO.lacuna.CreateEmpir
         '    <div class="ft"></div>'
         ].join('');
         document.body.insertBefore(container, document.body.firstChild);
-        
+
         this.Dialog = new YAHOO.widget.Dialog(this.id, {
             constraintoviewport:true,
             fixedcenter:true,
@@ -77,13 +77,13 @@ if (typeof YAHOO.lacuna.CreateEmpire == "undefined" || !YAHOO.lacuna.CreateEmpir
             this.elCaptcha = Dom.get("empireCaptcha");
             Event.on(this.elCaptchaImage, 'load', function(){Dom.setStyle(this, 'visibility', 'inherit');} );
             Event.on('empireRefreshCaptcha', 'click', function(e){Event.stopEvent(e);this.refreshCaptcha();}, this, true);
-            
+
             Dom.removeClass(this.id, Lib.Styles.HIDDEN);
         }, this, true);
-        this.Dialog.cfg.queueProperty("keylisteners", new YAHOO.util.KeyListener("empirePassConfirm", { keys:13 }, { fn:this.handleCreate, scope:this, correctScope:true } )); 
+        this.Dialog.cfg.queueProperty("keylisteners", new YAHOO.util.KeyListener("empirePassConfirm", { keys:13 }, { fn:this.handleCreate, scope:this, correctScope:true } ));
         this.Dialog.render();
         Game.OverlayManager.register(this.Dialog);
-        
+
         this.initSpecies();
     };
     CreateEmpire.prototype = {
@@ -102,7 +102,7 @@ if (typeof YAHOO.lacuna.CreateEmpire == "undefined" || !YAHOO.lacuna.CreateEmpir
                 scope:this
             });
         },
-        
+
         handleCreate : function() {
             if (! this.elAgreeTOS.checked || ! this.elAgreeRules.checked) {
                 this.setMessage("You must agree to the Terms of Service and the rules before registering.");
@@ -178,12 +178,12 @@ if (typeof YAHOO.lacuna.CreateEmpire == "undefined" || !YAHOO.lacuna.CreateEmpir
             this.elName.value = name + "'s Empire";
             this.elAgreeTOS.checked = false;
             this.elAgreeRules.checked = false;
-            
+
             this.facebook = {
                 uid: uid,
                 token: token
             };
-            
+
             Dom.addClass(this.id, 'facebookLogin');
             Game.OverlayManager.hideAll();
             this.Dialog.show();
@@ -224,7 +224,7 @@ if (typeof YAHOO.lacuna.CreateEmpire == "undefined" || !YAHOO.lacuna.CreateEmpir
 
     Lacuna.CreateEmpire = CreateEmpire;
 })();
-YAHOO.register("createEmpire", YAHOO.lacuna.CreateEmpire, {version: "1", build: "0"}); 
+YAHOO.register("createEmpire", YAHOO.lacuna.CreateEmpire, {version: "1", build: "0"});
 
 }
 // vim: noet:ts=4:sw=4

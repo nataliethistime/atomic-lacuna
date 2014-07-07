@@ -22,22 +22,13 @@ app.on('window-all-closed', function() {
 // initialization and ready for creating browser windows.
 app.on('ready', function() {
 
-    // Currently broken.
-    // Define chat window first so that main appears in front.
-    // chatWindow = new BrowserWindow({width: 800, height: 600});
-    ipc.on('chat-connect', function(event, session) {
-        console.log('Connecting to chat with ' + session);
-
-        // chatWindow.loadUrl('https://us1.lacunaexpanse.com/chat?session_id=' + session)
-        // chatWindow.openDevTools();
-    });
-
     // Create the browser window.
     mainWindow = new BrowserWindow({width: 800, height: 600});
     mainWindow.maximize();
 
     // and load the index.html of the app.
-    var foo = path.join(__dirname, '..', 'public', 'app.html');
+    var file = process.env.PT_SERVER ? 'pt.html' : 'app.html'
+    var foo = path.join(__dirname, '..', 'public', file);
     mainWindow.loadUrl('file://' + foo);
     mainWindow.openDevTools();
 
