@@ -22,10 +22,10 @@ gulp.task('lint', function() {
             node : true,
             // Lint options
             maxerr : 30,
-            // maxlen : 100,
             sloppy : false,
             todo : true,
             vars : true,
+            nomen : true, // Allow _'s in variable names. (we use Underscore here)
 
             // Gulp options
             reporter : 'default',
