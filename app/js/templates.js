@@ -1,6 +1,8 @@
 var Handlebars = require('handlebars'),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+
+    Util = require('js/util');
 
 
 // Define all the Handlebars helpers.
@@ -54,17 +56,6 @@ module.exports = {
     },
 
     getLocation : function (name) {
-        var cwd = process.cwd();
-
-        // When in development mode, the cwd is:
-        // /home/vasari/atomic-lacuna
-        // In a build, it's:
-        // /home/vasari/atomic-lacuna/build/linux_binary
-        // but when in
-        if (_.last(cwd.split(path.sep)) == 'atomic-lacuna') {
-            return path.join(process.cwd(), 'app', 'templates', name);
-        }
-
-        return path.join(process.cwd(), 'resources', 'app', 'templates', name);
+        return path.join(Util.root(), 'templates', name);
     }
 }

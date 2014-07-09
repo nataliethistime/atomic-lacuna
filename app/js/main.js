@@ -30,7 +30,9 @@
     if (window.DOWNLOAD_YUI) {
         basePath = 'http://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/';
     } else {
-        basePath = require('path').join(process.cwd(), 'lib', 'yui2', 'build') + '/';
+        var path = require('path');
+        var Util = require('js/util');
+        basePath = path.join(Util.root(), 'lib', 'yui2') + '/';
     }
 
     var loader = new YAHOO.util.YUILoader({
