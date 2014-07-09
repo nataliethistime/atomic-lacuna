@@ -1,9 +1,11 @@
 var gulp       = require('gulp');
 var gutil      = require('gulp-util');
 
-var browserify = require('gulp-browserify');
 var cssConcat  = require('gulp-concat-css');
 var jslint     = require('gulp-jslint');
+
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
 
 var connect = require('connect');
 var http    = require('http');
@@ -33,19 +35,22 @@ gulp.task('lint', function() {
         }));
 });
 
-gulp.task('web-build', function() {
-    gutil.log('Building Atomic Lacuna for in the browser.');
+gulp.task('code-build', function() {
     process.env.NODE_PATH = path.join(__dirname, 'app')
-    gulp.src('app/js/main.js')
-        .pipe(browserify({
+
+    browserify('./app/js/main.js')
+        .bundle({
             insertGlobals : true
-        }))
-        // For some reason, this gets exported as a folder containing the built file.
-        .pipe(gulp.dest('public/dist/'));
+        })
+        .pipe(source('application.js'))
+        .pipe(gulp.dest('./public/dist'));
 
     gulp.src('app/css/styles.css')
         .pipe(cssConcat(''))
         .pipe(gulp.dest('public/dist/styles.css'))
+
+    // TODO: now we bundle all the Handlebars templates into one file.
+
 });
 
 // This should be used in conjunction with the browser-build. To run the desktop

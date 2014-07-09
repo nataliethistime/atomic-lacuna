@@ -1,6 +1,5 @@
-var app = require('app'); // Module to control application life.
-var BrowserWindow = require('browser-window'); // Module to create native browser window.
-var ipc = require('ipc');
+var app = require('app');
+var BrowserWindow = require('browser-window');
 var path = require('path');
 
 // Report crashes to our server.
@@ -26,10 +25,11 @@ app.on('ready', function() {
     mainWindow.maximize();
 
     // and load the index.html of the app.
-    var file = process.env.PT_SERVER ? 'pt.html' : 'app.html'
-    var foo = path.join(__dirname, '..', 'public', file);
-    mainWindow.loadUrl('file://' + foo);
-    mainWindow.openDevTools();
+    var url = 'file://' + path.join(__dirname, 'index.html');
+    mainWindow.loadUrl(url);
+
+    // TODO: somehow make this a condition - cli arg maybe?
+    // mainWindow.openDevTools();
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {

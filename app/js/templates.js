@@ -24,12 +24,12 @@ module.exports = {
 
         if (window.ATOM_SHELL) {
             // We can use the file system to get the templates.
-            location = path.join(process.cwd(), 'app', 'templates', name);
-            buffer = fs.readFileSync(location);
+            buffer = fs.readFileSync(this.getLocation(name));
             return this.save(name, this.prepare(buffer.toString()));
         }
         else {
-            // TODO: send a HTTP request
+            // If it can't be gotten from the file system, then it isn't here.
+            throw new Error('Template had not been loaded: ' + name);
         }
     },
 
@@ -51,5 +51,20 @@ module.exports = {
 
     addPrefix : function (name) {
         return '__' + name;
+    },
+
+    getLocation : function (name) {
+        var cwd = process.cwd();
+
+        // When in development mode, the cwd is:
+        // /home/vasari/atomic-lacuna
+        // In a build, it's:
+        // /home/vasari/atomic-lacuna/build/linux_binary
+        // but when in
+        if (_.last(cwd.split(path.sep)) == 'atomic-lacuna') {
+            return path.join(process.cwd(), 'app', 'templates', name);
+        }
+
+        return path.join(process.cwd(), 'resources', 'app', 'templates', name);
     }
 }
