@@ -5,6 +5,8 @@ var path = require('path');
 var _ = require('lodash');
 
 module.exports = {
+    _cwd : process.cwd(),
+
     root : function () {
         // Get a full path to the app/ directory
 
