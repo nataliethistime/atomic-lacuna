@@ -1,4 +1,41 @@
 (function() {
+
+    // Initialize the menu, this should be the last part of GUI initialization
+    // before the JS code starts to load.
+    if (window.ATOM_SHELL) {
+        var remote = require('remote');
+        var Menu = remote.require('menu');
+        var MenuItem = remote.require('menu-item');
+
+        var menu = new Menu();
+        menu.append(new MenuItem({
+            label : 'Debug Mode',
+            click : function () {
+                console.log('Toggling dev tools.');
+                remote.getCurrentWindow().toggleDevTools();
+            }
+        }));
+        menu.append(new MenuItem({ type: 'separator' }));
+        menu.append(new MenuItem({
+            label : 'Copy',
+            click : function () {
+                console.error('TODO: implement copy!');
+            }
+        }));
+        menu.append(new MenuItem({
+            label : 'Paste',
+            click : function () {
+                console.error('TODO: implement paste!');
+            }
+        }));
+
+        window.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+            menu.popup(remote.getCurrentWindow());
+        }, false);
+    }
+
+
     // This converts url parameters into a usable object. I think it's only used
     // in the registration process when someone clicks a referral link (which
     // has a code in the url as a parameter.)

@@ -28,9 +28,6 @@ app.on('ready', function() {
     var url = 'file://' + path.join(__dirname, 'index.html');
     mainWindow.loadUrl(url);
 
-    // TODO: somehow make this a condition - cli arg maybe?
-    // mainWindow.openDevTools();
-
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {
         // Dereference the window object, usually you would store windows

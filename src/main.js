@@ -29,7 +29,6 @@ app.on('ready', function() {
     var file = process.env.PT_SERVER ? 'pt.html' : 'app.html'
     var foo = path.join(__dirname, '..', 'public', file);
     mainWindow.loadUrl('file://' + foo);
-    mainWindow.openDevTools();
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {

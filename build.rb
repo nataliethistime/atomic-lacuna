@@ -90,6 +90,7 @@ print "\n\n" # some space
         # Move the templates and JavaScript into place.
         FileUtils.cp_r('app/js/.', File.join(dest, 'js'))
         FileUtils.cp_r('app/templates/.', File.join(dest, 'templates'))
+        FileUtils.cp_r('app/lib/.', File.join(dest, 'lib'))
 
         # resources.json and such.
         FileUtils.cp_r('app/data/.', File.join(dest, 'data'))
