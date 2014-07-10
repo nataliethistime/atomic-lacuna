@@ -1,6 +1,6 @@
 *.sublime-*
-db.json
-settings.json
+app/data/db.json
+app/data/settings.json
 node_modules
 
 build/
