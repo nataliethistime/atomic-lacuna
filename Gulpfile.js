@@ -40,7 +40,8 @@ gulp.task('code-build', function() {
 
     browserify('./app/js/main.js')
         .bundle({
-            insertGlobals : true
+            insertGlobals : true,
+            ignoreMissing : true // For things like 'remote' which are atom-shell only.
         })
         .pipe(source('application.js'))
         .pipe(gulp.dest('./public/dist'));

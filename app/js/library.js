@@ -74,8 +74,11 @@ if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
     var db, settings;
     if (window.ATOM_SHELL) {
         var Storage = require('dom-storage');
-        db = new Storage('./app/data/db.json', { strict: false });
-        settings = new Storage('./app/data/settings.json', { strict: false });
+        var Util = require('js/util');
+        var path = require('path');
+        var args = { strict : false };
+        db = new Storage(path.join(Util.root(), 'data', 'db.json'), args);
+        settings = new Storage(path.join(Util.root(), 'data', 'settings.json'), args);
     }
     else {
         db = settings = window.localStorage;

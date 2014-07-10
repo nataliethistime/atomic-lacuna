@@ -2,17 +2,26 @@
 <html lang="en">
 <head>
     <title>Lacuna Expanse</title>
+
+    {{#if development}}
     <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/reset-fonts-grids/reset-fonts-grids.css" />
-    <link rel="stylesheet" type="text/css" href="../app/css/styles.css" />
+        <link rel="stylesheet" type="text/css" href="../app/css/styles.css" />
+    {{else}}
+        <link rel="stylesheet" type="text/css" href="lib/yui2/reset-fonts-grids/reset-fonts-grids.css" />
+        <link rel="stylesheet" type="text/css" href="styles.css" />
+    {{/if}}
+
     <link rel="icon" href="http://s3.amazonaws.com/www.lacunaexpanse.com/favicon.png" type="image/png" />
     <link rel="SHORTCUT ICON" href="http://s3.amazonaws.com/www.lacunaexpanse.com/favicon.ico" />
 </head>
 <body id="body" class="yui-skin-sam">
+
     <div id="pulsing" class="nofooter yui-panel">
         <div class="bd">
             <img src="http://d16cbq0l6kkf21.cloudfront.net/assets/ui/pulse-indicator.gif" alt="Pulse Indicator" />
         </div>
     </div>
+
     <div id="header" class="yui-gb hidden">
         <div id="headerShine"></div>
         <div id="usersCenter">
@@ -23,11 +32,13 @@
         <div id="userCenterShine"></div>
         <div id="userClick"></div>
     </div>
+
     <div id="content">
         <div id="nojavascript">
-            Lacuna Expanse requires Javascript to run.  Please enable and reload the page.
+            Lacuna Expanse requires JavaScript to run. Please enable and reload the page.
         </div>
     </div>
+
     <div id="footer" class="yui-gb hidden">
         <div id="footerShine"></div>
         <div id="planetsCenter">
@@ -38,27 +49,44 @@
         <div id="planetsCenterShine"></div>
         <div id="planetsClick"></div>
     </div>
-    <!-- Chat bar - old
-    <div style="position: absolute;bottom: 0;left:0; width: 100%; height: 25px; background-color: #0ba2f2; color: #1bb2f2; font-family: helvetica; font-size: 20px;">Join in game chat, and talk with the other players who are online right now...</div>
-    -->
+
     <script id="noJsScript" type="text/javascript">
-        (function(){
-            //remove noscript notice
+        (function () {
+            // Remove 'no JavaScript' notice.
             var nojs = document.getElementById("nojavascript");
-            if(nojs) {
+            if (nojs) {
                 nojs.parentNode.removeChild(nojs);
             }
-            //remove script node as well
+
+            // Remove this script node as well.
             var njs = document.getElementById("noJsScript");
             njs.parentNode.removeChild(njs);
-        })();
+        }());
     </script>
+
     <script type="text/javascript">
-        window.lacuna_rpc_base_url = 'http://pt.lacunaexpanse.com/'
+        window.lacuna_rpc_base_url = 'http://us1.lacunaexpanse.com/';
         window.lacuna_s3_base_url = 'http://d16cbq0l6kkf21.cloudfront.net/';
-        window.ATOM_SHELL = true;
     </script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/yui/2.8.1/build/yuiloader/yuiloader-min.js"></script>
-    <script type="text/javascript" src="../app/js/main.js"></script>
+
+    {{#if atomShell}}
+        <script type="text/javascript">
+            window.ATOM_SHELL = true;
+            window.DOWNLOAD_YUI = false;
+        </script>
+    {{else}}
+        <script type="text/javascript">
+            window.ATOM_SHELL = false;
+            window.DOWNLOAD_YUI = true;
+        </script>
+    {{/if}}
+
+    {{#if development}}
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/yuiloader/yuiloader-min.js"></script>
+        <script type="text/javascript" src="../app/js/main.js"></script>
+    {{else}}
+        <script type="text/javascript" src="lib/yui2/yuiloader/yuiloader.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+    {{/if}}
 </body>
 </html>

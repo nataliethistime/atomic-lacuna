@@ -3,3 +3,5 @@
 NEW_PATH=$(pwd)
 NEW_PATH+="/app"
 export NODE_PATH=$NEW_PATH
+
+export ATOMIC_LACUNA_DEVELOPMENT=true

@@ -30,19 +30,13 @@ successful = system 'gulp code-build'
 print "\n\n" # some space
 
 if successful
-    # Move some files around
-    # We now have the following files to work with.
-    # - public/dist/main.js
-    # - public/dist/styles.css
-    # - public/browser.html
-    # - public/app.html
 
     puts "Pulling all the code together."
     FileUtils.cp('public/dist/application.js', 'build/app/application.js')
     FileUtils.cp('public/dist/styles.css', 'build/app/styles.css')
-    FileUtils.cp('public/production.html', 'build/app/index.html')
+    FileUtils.cp('public/index-template.html', 'build/app/index-template.html')
     FileUtils.cp('public/browser.html', 'build/app/browser.html')
-    FileUtils.cp('src/production.js', 'build/app/main.js')
+    FileUtils.cp('src/main.js', 'build/app/main.js')
 
     # Clean up the package.json file so that the 'main' attribute points correctly to
     # the app's launch file. (Which has obviously changed...)
@@ -92,13 +86,13 @@ print "\n\n" # some space
         FileUtils.cp_r('app/templates/.', File.join(dest, 'templates'))
         FileUtils.cp_r('app/lib/.', File.join(dest, 'lib'))
 
-        # resources.json and such.
-        FileUtils.cp_r('app/data/.', File.join(dest, 'data'))
+        # Woo! resources.json!
+        FileUtils.cp_r('app/data/resources.json', File.join(dest, 'data', 'resources.json'))
 
         FileUtils.cp_r([
             File.join(src, 'package.json'),
             File.join(src, 'styles.css'),
-            File.join(src, 'index.html'),
+            File.join(src, 'index-template.html'),
             File.join(src, 'main.js'),
         ], dest)
     end

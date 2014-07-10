@@ -1,5 +1,0 @@
-#!/bin/bash
-source ./node_path
-# Set atomic-lacuna to use the public test server.
-export PT_SERVER=true
-~/atom-shell/atom .
