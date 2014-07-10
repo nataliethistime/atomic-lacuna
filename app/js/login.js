@@ -32,6 +32,7 @@ if (typeof YAHOO.lacuna.Login == "undefined" || !YAHOO.lacuna.Login) {
         '                        <li><label for="loginName">Empire Name</label><input type="text" id="loginName" /></li>',
         '                        <li><label for="loginPass">Password</label><input type="password" id="loginPass"  /></li>',
         '                        <li><label for="loginRemember">Remember Empire?</label><input type="checkbox" id="loginRemember" /> <button type="submit">Login</button></li>',
+        '                        <li><label for="selectServer">Select Server</label><select id="selectServer"><option value="us1">US1</option><option value="pt">PT</option></select></li>',
         '                    </ul>',
         '                    <ul class="loginExtras">',
         '                        <li><a id="loginReset" href="#">Forgotten your password?</a></li>',
@@ -80,9 +81,19 @@ if (typeof YAHOO.lacuna.Login == "undefined" || !YAHOO.lacuna.Login) {
             this.elForm = Dom.get("loginForm");
             this.elCreate = Dom.get("loginCreate");
             this.elReset = Dom.get("loginReset");
+            this.elServer = Dom.get('selectServer');
 
             Event.addListener(this.elCreate, "click", function(e){Event.stopEvent(e);this.createEmpire();}, this, true);
             Event.addListener(this.elReset, "click", function(e){Event.stopEvent(e);this.resetPassword();}, this, true);
+            Event.addListener(this.elServer, 'change', function (e) {
+                Event.stopEvent(e);
+
+                var server = Lib.getSelectedOptionValue(this.elServer);
+                var url = 'https://' + server + '.lacunaexpanse.com';
+                Game.RPCBase = url;
+                Game.Services = Game.InitServices(YAHOO.lacuna.SMD.Services);
+
+            }, this, true);
             Event.addListener(this.elForm, "submit", function(e){Event.stopEvent(e);this.handleLogin();}, this, true);
             Dom.removeClass(this.id, Lib.Styles.HIDDEN);
         }, this, true);
