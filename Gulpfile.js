@@ -13,6 +13,7 @@ var path    = require('path');
 var fs      = require('fs');
 
 var JS_FILES = ['app/js/**/*.js'];
+var packageJson = require(path.join(__dirname, 'package.json'));
 
 gulp.task('lint', function() {
     gulp.src(JS_FILES)
@@ -52,6 +53,14 @@ gulp.task('code-build', function() {
 
     // TODO: now we bundle all the Handlebars templates into one file.
 
+});
+
+gulp.task('download-shell', function () {
+    gutil.log('Not implemented!');
+    // downloadShell({
+    //     version : packageJson['shell-version'],
+    //     outputDir : path.join(__dirname, 'build', 'binaries')
+    // });
 });
 
 // This should be used in conjunction with the browser-build. To run the desktop
