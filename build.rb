@@ -90,6 +90,9 @@ print "\n\n" # some space
         FileUtils.mkdir_p File.join(dest, 'data')
         FileUtils.cp_r('app/data/resources.json', File.join(dest, 'data', 'resources.json'))
 
+        # Need to copy node_modules because this code isn't run through Browserify.
+        FileUtils.cp_r('node_modules/.', File.join(bin_path, 'node_modules'))
+
         FileUtils.cp_r([
             File.join(src, 'package.json'),
             File.join(src, 'styles.css'),
