@@ -20,7 +20,7 @@ Recently I tried to build it on my system and I discovered that it ran on a 'she
 that could be re-used in other projects.
 
 To make a short story shorter, the `atom-shell` allows a web page (such as the
-web client) to run in a desktop window and have access to the file system view
+web client) to run in a desktop window and have access to the file system via
 NodeJs. This allowed me to streamline the loading of all the JavaScript and assets.
 I don't have any performance tests, but the client *seems* faster in the desktop
 mode than in the web browser. If any of that doesn't convince you, just look at it.
