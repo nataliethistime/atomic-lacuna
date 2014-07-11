@@ -87,6 +87,7 @@ print "\n\n" # some space
         FileUtils.cp_r('app/lib/.', File.join(dest, 'lib'))
 
         # Woo! resources.json!
+        FileUtils.mkdir_p File.join(dest, 'data')
         FileUtils.cp_r('app/data/resources.json', File.join(dest, 'data', 'resources.json'))
 
         FileUtils.cp_r([

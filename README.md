@@ -27,6 +27,7 @@ mode than in the web browser. If any of that doesn't convince you, just look at 
 No silly web browser rubbish in the way! Tadaaa! :dizzy:
 
 ![Atomic Lacuna in action!](https://raw.githubusercontent.com/Vasari/atomic-lacuna/master/docs/Screenshot.png)
+Made with :heart: by Nathan McCallum and contributers under the MIT license! :panda_face:
 
 Badges! :beginner:
 =======
@@ -37,4 +38,11 @@ Badges! :beginner:
 | Travis CI    | [![Build Status](https://travis-ci.org/Vasari/atomic-lacuna.svg?branch=master)](https://travis-ci.org/Vasari/atomic-lacuna)     |
 | Ohloh        | [![Ohloh](https://www.ohloh.net/images/logo/ohloh_hub.png)](https://www.ohloh.net/p/atomic-lacuna)
 
-Made with :heart: by Nathan McCallum and contributers under the MIT license! :panda_face:
+Changes
+=======
+
+###0.0.2
+- Started keeping a change log.
+
+###0.0.1
+- Initial version! :D
