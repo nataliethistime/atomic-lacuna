@@ -6,6 +6,7 @@ var jslint     = require('gulp-jslint');
 
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
+var AtomShellDownload = require('atom-shell-pull');
 
 var connect = require('connect');
 var http    = require('http');
@@ -56,11 +57,15 @@ gulp.task('code-build', function() {
 });
 
 gulp.task('download-shell', function () {
-    gutil.log('Not implemented!');
-    // downloadShell({
-    //     version : packageJson['shell-version'],
-    //     outputDir : path.join(__dirname, 'build', 'binaries')
-    // });
+    var download = new AtomShellDownload({
+        outputDir : 'build/binaries',
+        // Available options are 'linux', 'win32' and 'darwin'
+        platforms : ['linux', 'win32']
+    });
+
+    download.prepare(function (start) {
+        start();
+    });
 });
 
 // This should be used in conjunction with the browser-build. To run the desktop
