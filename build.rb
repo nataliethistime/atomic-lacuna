@@ -18,8 +18,24 @@ require 'archive/zip'
 STDOUT.sync = true
 
 
-# TODO: clean out any files remaining from the previous run!
+# Get our working area sorted out.
+build_dir = File.join(Dir.getwd, 'build')
+FileUtils::mkdir_p build_dir
+
+
 PACKAGES = %w(linux-32 linux-64 win32-32)
+
+# Clean out the old build files 'n' things.
+puts 'Cleaning out files from previous run...'
+PACKAGES.each do |package|
+    bin = File.join(build_dir, package)
+    zip = bin + '.zip'
+
+    FileUtils.remove_entry_secure bin if Dir.exists? bin
+    FileUtils.remove_entry_secure zip if File.exists? zip
+end
+
+print "\n\n"
 
 
 # Run the Gulp task which downloads the atom-shell for different platforms.
@@ -31,12 +47,6 @@ else
 end
 
 
-# Get our working area sorted out.
-build_dir = File.join(Dir.getwd, 'build')
-FileUtils::mkdir_p build_dir
-FileUtils::mkdir_p File.join(build_dir, 'app')
-
-
 # Do this first, because it's needed for every build type.
 puts "Running Browserify on the JavaScript code."
 puts "Concatenating all the CSS files."
@@ -46,6 +56,7 @@ print "\n\n" # some space
 if successful
 
     puts "Pulling all the code together."
+    FileUtils::mkdir_p File.join(build_dir, 'app')
     FileUtils.cp('public/dist/application.js', 'build/app/application.js')
     FileUtils.cp('public/dist/styles.css', 'build/app/styles.css')
     FileUtils.cp('public/index-template.html', 'build/app/index-template.html')
@@ -99,6 +110,7 @@ PACKAGES.each do |build|
         FileUtils.cp_r('app/data/resources.json', File.join(dest, 'data', 'resources.json'))
 
         # Need to copy node_modules because this code isn't run through Browserify.
+        # TODO: ignore the dependencies in the devDependencies object of the package.json.
         FileUtils.cp_r('node_modules/.', File.join(bin_path, 'node_modules'))
 
         FileUtils.cp_r([
@@ -112,3 +124,6 @@ PACKAGES.each do |build|
     # Now we need to zip this thing!!
     Archive::Zip.archive(File.join(build_dir, build + '.zip'), bin_path)
 end
+
+puts "All finished! Ready to push to Github! :D"
+print "\n"
