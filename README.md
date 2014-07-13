@@ -46,6 +46,7 @@ Changes
 - Sorted out the inclusion of `node_modules` in linux builds.
 - The build script now zips each package.
 - Build script now deletes old stuff before running.
+- Ignore useless development dependencies when building.
 
 ###0.0.1
 - Initial version! :D

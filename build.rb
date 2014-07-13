@@ -27,7 +27,7 @@ PACKAGES = %w(linux-32 linux-64 win32-32)
 
 # Clean out the old build files 'n' things.
 puts 'Cleaning out files from previous run...'
-PACKAGES.each do |package|
+(PACKAGES + ['app']).each do |package|
     bin = File.join(build_dir, package)
     zip = bin + '.zip'
 
@@ -110,8 +110,17 @@ PACKAGES.each do |build|
         FileUtils.cp_r('app/data/resources.json', File.join(dest, 'data', 'resources.json'))
 
         # Need to copy node_modules because this code isn't run through Browserify.
-        # TODO: ignore the dependencies in the devDependencies object of the package.json.
-        FileUtils.cp_r('node_modules/.', File.join(bin_path, 'node_modules'))
+        # So, grab a list of dependencies (not devDependencies) and copy them across.
+        # Ignoring devDependencies is important because it reduces the size
+        # down quite a bit. (Browserify is 25 mb!)
+        JSON.parse(File.read('package.json'))['dependencies'].each do |name, ver|
+            from = File.join('node_modules', name) + '/.'
+            to = File.join(bin_path, 'node_modules', name)
+
+            # Make sure we have somewhere to go.
+            FileUtils.mkdir_p to
+            FileUtils.cp_r(from, to)
+        end
 
         FileUtils.cp_r([
             File.join(src, 'package.json'),
@@ -125,5 +134,6 @@ PACKAGES.each do |build|
     Archive::Zip.archive(File.join(build_dir, build + '.zip'), bin_path)
 end
 
-puts "All finished! Ready to push to Github! :D"
+print "\n\n"
+puts "All finished! Ready to publish on Github! :D"
 print "\n"
