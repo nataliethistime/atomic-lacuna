@@ -16,6 +16,7 @@ STDOUT.sync = true
 
 # TODO: clean out any files remaining from the previous run!
 
+
 # Run the Gulp task which downloads the atom-shell for different platforms.
 unless system 'gulp download-shell'
     puts "ERR: Failed to download atom-shell"
@@ -64,19 +65,12 @@ else
 end
 
 
-# TODO: download all the atom-shell binaries we need. (There are 3 of them).
-
-
 # Finally, let's get started.
 print "\n\n" # some space
-%w(linux darwin windows web).each do |build|
+%w(linux-32 linux-64 win32-32).each do |build|
     bin_path = File.join(build_dir, build)
-    if build == 'web' || build == 'windows' || build == 'darwin'
-        puts "#{build.capitalize} build not implemented!"
-        next
-    end
 
-    puts "Constructing #{build.capitalize} package."
+    puts "Constructing the #{build} package."
 
     unless Dir.exists? bin_path
         puts "ERR: please download the #{build} binary."
@@ -109,4 +103,7 @@ print "\n\n" # some space
             File.join(src, 'main.js'),
         ], dest)
     end
+
+    # Now we need to zip this thing!!
+
 end

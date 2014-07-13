@@ -59,8 +59,8 @@ gulp.task('code-build', function() {
 gulp.task('download-shell', function () {
     var download = new AtomShellDownload({
         outputDir : 'build',
-        // Available options are 'linux', 'win32' and 'darwin'
-        platforms : ['linux', 'win32']
+        platforms : ['linux', 'win32'],
+        bits : [32, 64]
     });
 
     download.prepare(function (start) {
