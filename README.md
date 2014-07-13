@@ -41,6 +41,9 @@ Badges! :beginner:
 Changes
 =======
 
+###0.1.1 (2014-07-13)
+- Include binaries for Windows (32 bit) and Linux (64 and 32 bit).
+
 ###0.1.0 (2014-07-13)
 - Started keeping a change log.
 - Sorted out the inclusion of `node_modules` in linux builds.

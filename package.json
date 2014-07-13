@@ -1,6 +1,6 @@
 {
   "name": "atomic-lacuna",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "shell-version": "0.13.3",
   "main": "src/main.js",
   "private": true,
