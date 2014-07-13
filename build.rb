@@ -16,6 +16,14 @@ STDOUT.sync = true
 
 # TODO: clean out any files remaining from the previous run!
 
+# Run the Gulp task which downloads the atom-shell for different platforms.
+unless system 'gulp download-shell'
+    puts "ERR: Failed to download atom-shell"
+    exit
+else
+    print "\n\n"
+end
+
 
 # Get our working area sorted out.
 build_dir = File.join(Dir.getwd, 'build')
@@ -42,6 +50,7 @@ if successful
     # the app's launch file. (Which has obviously changed...)
     json = JSON.parse(File.read('package.json'))
     json['dependencies'] = nil
+    json['devDependencies'] = nil
     json['main'] = 'main.js'
 
     # Reject all that are nil so that we clear the keys out as well.
@@ -61,7 +70,7 @@ end
 # Finally, let's get started.
 print "\n\n" # some space
 %w(linux darwin windows web).each do |build|
-    bin_path = File.join(build_dir, build + '_binary')
+    bin_path = File.join(build_dir, build)
     if build == 'web' || build == 'windows' || build == 'darwin'
         puts "#{build.capitalize} build not implemented!"
         next
