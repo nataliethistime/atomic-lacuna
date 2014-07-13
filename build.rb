@@ -10,11 +10,16 @@
 require 'fileutils'
 require 'json'
 
+# This is a non-core dependency. If you're getting an error on this line, you'll
+# need to get and run bundler on in this directory. (Google it. :P)
+require 'archive/zip'
+
 # Auto-Flush STDOUT
 STDOUT.sync = true
 
 
 # TODO: clean out any files remaining from the previous run!
+PACKAGES = %w(linux-32 linux-64 win32-32)
 
 
 # Run the Gulp task which downloads the atom-shell for different platforms.
@@ -67,7 +72,7 @@ end
 
 # Finally, let's get started.
 print "\n\n" # some space
-%w(linux-32 linux-64 win32-32).each do |build|
+PACKAGES.each do |build|
     bin_path = File.join(build_dir, build)
 
     puts "Constructing the #{build} package."
@@ -105,5 +110,5 @@ print "\n\n" # some space
     end
 
     # Now we need to zip this thing!!
-
+    Archive::Zip.archive(File.join(build_dir, build + '.zip'), bin_path)
 end

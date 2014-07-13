@@ -44,6 +44,7 @@ Changes
 ###0.0.2
 - Started keeping a change log.
 - Sorted out the inclusion of `node_modules` in linux builds.
+- The build script now zips each package.
 
 ###0.0.1
 - Initial version! :D
