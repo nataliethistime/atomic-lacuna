@@ -14,11 +14,12 @@
     "gulp": "3.8.x",
     "gulp-util": "2.2.x",
     "gulp-concat-css": "0.1.x",
-    "gulp-jslint": "0.1.x",
     "connect": "2.21.x",
     "vinyl-source-stream": "0.1.x",
     "browserify": "4.2.x",
     "atom-shell-pull": "0.2.x",
-    "gulp-js-prettify": "0.1.x"
+    "gulp-js-prettify": "0.1.x",
+    "gulp-jshint": "1.7.x",
+    "jshint-stylish": "0.4.x"
   }
 }

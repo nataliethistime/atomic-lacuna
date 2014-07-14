@@ -2,7 +2,8 @@ var gulp       = require('gulp');
 var gutil      = require('gulp-util');
 
 var cssConcat  = require('gulp-concat-css');
-var jslint     = require('gulp-jslint');
+var jshint     = require('gulp-jshint');
+var stylish    = require('jshint-stylish');
 var beautify   = require('gulp-js-prettify');
 
 var browserify = require('browserify');
@@ -19,23 +20,26 @@ var packageJson = require(path.join(__dirname, 'package.json'));
 
 gulp.task('lint', ['code-clean'], function() {
     gulp.src(JS_FILES)
-        .pipe(jslint({
-            // Globals
+        .pipe(jshint({
+            predef : ['YAHOO', '_', '$'],
+            eqeqeq : true,
+            curly : true,
+            //es3 : true,
+            forin : true,
+            noempty : true,
+            //quotmark : 'single',
+            undef : true,
+            //unused : true,
+            strict : true,
+
+            // Environments
             browser : true,
             devel : true,
-            debug : false,
+            jquery : true,
             node : true,
-            // Lint options
-            maxerr : 30,
-            sloppy : false,
-            todo : true,
-            vars : true,
-            nomen : true, // Allow _'s in variable names. (we use Underscore here)
-
-            // Gulp options
-            reporter : 'default',
-            errorsOnly : true
-        }));
+            yui : true
+        }))
+        .pipe(jshint.reporter(stylish));
 });
 
 gulp.task('code-build', ['code-clean'], function() {
