@@ -55,8 +55,7 @@ gulp.task('code-clean', function () {
         .pipe(beautify({
             preserve_newlines : false,
             jslint_happy : true,
-            break_chained_methods : true,
-            good_stuff : true
+            break_chained_methods : true
         }))
         .pipe(gulp.dest('app/js'));
 });
