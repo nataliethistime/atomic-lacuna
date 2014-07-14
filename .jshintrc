@@ -1,0 +1,17 @@
+{
+    "eqeqeq": true,
+    "curly": true,
+    "forin": true,
+    "noempty": true,
+    "undef": true,
+    "strict": true,
+
+    "browser": true,
+    "devel": true,
+    "jquery": true,
+    "node": true,
+    "yui": true,
+    "globals": {
+        "YAHOO": true
+    }
+}

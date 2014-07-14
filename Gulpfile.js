@@ -20,25 +20,13 @@ var packageJson = require(path.join(__dirname, 'package.json'));
 
 gulp.task('lint', ['code-clean'], function() {
     gulp.src(JS_FILES)
-        .pipe(jshint({
-            predef : ['YAHOO', '_', '$'],
-            eqeqeq : true,
-            curly : true,
-            //es3 : true,
-            forin : true,
-            noempty : true,
-            //quotmark : 'single',
-            undef : true,
-            //unused : true,
-            strict : true,
+        // Note: the following options need to be enabled sometime later:
+        // ~> es3 : true
+        // ~> quotmark : 'single'
+        // ~> unused : true
 
-            // Environments
-            browser : true,
-            devel : true,
-            jquery : true,
-            node : true,
-            yui : true
-        }))
+        // Note JSHint finds configuration options in the .jshintrc
+        .pipe(jshint())
         .pipe(jshint.reporter(stylish))
         .pipe(jshint.reporter('fail'));
 });
