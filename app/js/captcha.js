@@ -17,18 +17,18 @@ var Templates = require('js/templates'),
         $(document.body).prepend(container);
 
         this.dialog = new YAHOO.widget.Panel(this.id, {
-            constraintoviewport : true,
-            postmethod : "none",
-            hideaftersubmit : false,
-            fixedcenter : true,
-            visible : false,
-            draggable : true,
-            effect : Game.GetContainerEffect(),
-            underlay : false,
-            modal : true,
-            close : true,
-            width : "390px",
-            zIndex : 9999
+            constraintoviewport: true,
+            postmethod: "none",
+            hideaftersubmit: false,
+            fixedcenter: true,
+            visible: false,
+            draggable: true,
+            effect: Game.GetContainerEffect(),
+            underlay: false,
+            modal: true,
+            close: true,
+            width: "390px",
+            zIndex: 9999
         });
 
         this.dialog.setHeader('Verify Your Humanity');
@@ -42,9 +42,9 @@ var Templates = require('js/templates'),
     };
 
     Captcha.prototype = {
-        template : Templates.get('menu.captcha'),
+        template: Templates.get('menu.captcha'),
 
-        show : function (retry, fail) {
+        show: function (retry, fail) {
             this.retyFunction = retry;
             this.failFunction = fail;
             this.refreshCaptcha();
@@ -52,26 +52,28 @@ var Templates = require('js/templates'),
             this.dialog.show();
         },
 
-        render : function () {
-            this.dialog.setBody(this.template({assets : assets}));
+        render: function () {
+            this.dialog.setBody(this.template({
+                assets: assets
+            }));
             $('#captchaRefresh').click(_.bind(this.refreshCaptcha, this));
             $('#solveCaptcha').click(_.bind(this.solveCaptcha, this));
             $('#cancelCaptcha').click(_.bind(this.cancel, this));
         },
 
-        solveCaptcha : function () {
+        solveCaptcha: function () {
             Lacuna.Pulser.Show();
             Game.Services.Captcha.solve({
-                session_id : Game.GetSession(),
-                captcha_guid : this.captchaGuid,
-                captcha_solution : $('#captchaSolution').val()
+                session_id: Game.GetSession(),
+                captcha_guid: this.captchaGuid,
+                captcha_solution: $('#captchaSolution').val()
             }, {
-                success : function () {
+                success: function () {
                     Lacuna.Pulser.Hide();
                     this.dialog.hide();
                     this.retyFunction();
                 },
-                failure : function (o) {
+                failure: function (o) {
                     this.setError(o.error.message);
 
                     if (o.error.message === 'Captcha not valid.') {
@@ -80,7 +82,7 @@ var Templates = require('js/templates'),
 
                     return true;
                 },
-                scope : this
+                scope: this
             });
         },
 
@@ -88,28 +90,28 @@ var Templates = require('js/templates'),
             Lacuna.Pulser.Show();
             this.clear();
             Game.Services.Captcha.fetch({
-                session_id : Game.GetSession()
+                session_id: Game.GetSession()
             }, {
-                success : function (o) {
+                success: function (o) {
                     this.captchaGuid = o.result.guid;
                     $('#captchaImage').attr('src', o.result.url);
                     Lacuna.Pulser.Hide();
                     this.dialog.show();
                 },
-                scope : this
+                scope: this
             });
         },
 
-        cancel : function () {
+        cancel: function () {
             this.dialog.hide();
         },
 
-        clear : function () {
+        clear: function () {
             $('#captchaSolution').text('');
             $('#captchaImage').attr('src', '');
         },
 
-        setError : function (msg) {
+        setError: function (msg) {
             $('#captchaSolution').text('').focus();
             $('#captchaMessage').html(msg).fadeOut(5 * 1000, function () {
                 $(this).html('&nbsp;');

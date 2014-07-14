@@ -17,17 +17,17 @@ var Templates = require('js/templates');
         $(document.body).prepend(container);
 
         this.Panel = new YAHOO.widget.Panel(this.id, {
-            constraintoviewport : true,
-            fixedcenter : false,
-            visible : false,
-            draggable : true,
-            effect : Game.GetContainerEffect(),
-            underlay : false,
-            modal : false,
-            close : true,
-            width : "350px",
-            zIndex : 19999,
-            context : ["header", "tr", "br", ["beforeShow", "windowResize"], [0, 20]]
+            constraintoviewport: true,
+            fixedcenter: false,
+            visible: false,
+            draggable: true,
+            effect: Game.GetContainerEffect(),
+            underlay: false,
+            modal: false,
+            close: true,
+            width: "350px",
+            zIndex: 19999,
+            context: ["header", "tr", "br", ["beforeShow", "windowResize"], [0, 20]]
         });
 
         this.Panel.setHeader('Announcements');
@@ -38,19 +38,21 @@ var Templates = require('js/templates');
     };
 
     Announce.prototype = {
-        template : Templates.get('menu.announcement'),
+        template: Templates.get('menu.announcement'),
 
-        show : function () {
+        show: function () {
             this.render();
             this.Panel.show();
         },
 
-        render : function () {
+        render: function () {
             var uri = "/announcement?session_id=" + Game.GetSession();
-            this.Panel.setBody(this.template({uri : uri}));
+            this.Panel.setBody(this.template({
+                uri: uri
+            }));
         },
 
-        hide : function () {
+        hide: function () {
             this.Panel.hide();
         }
     };

@@ -3,6 +3,7 @@ var gutil      = require('gulp-util');
 
 var cssConcat  = require('gulp-concat-css');
 var jslint     = require('gulp-jslint');
+var beautify   = require('gulp-beautify');
 
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
@@ -16,7 +17,7 @@ var fs      = require('fs');
 var JS_FILES = ['app/js/**/*.js'];
 var packageJson = require(path.join(__dirname, 'package.json'));
 
-gulp.task('lint', function() {
+gulp.task('lint', ['code-clean'], function() {
     gulp.src(JS_FILES)
         .pipe(jslint({
             // Globals
@@ -37,7 +38,7 @@ gulp.task('lint', function() {
         }));
 });
 
-gulp.task('code-build', function() {
+gulp.task('code-build', ['code-clean'], function() {
     process.env.NODE_PATH = path.join(__dirname, 'app')
 
     browserify('./app/js/main.js')
@@ -54,6 +55,15 @@ gulp.task('code-build', function() {
 
     // TODO: now we bundle all the Handlebars templates into one file.
 
+});
+
+gulp.task('code-clean', function () {
+    gulp.src(JS_FILES)
+        .pipe(beautify({
+            keepArrayIndentation : true,
+            lookup : false
+        }))
+        .pipe(gulp.dest('app/js'));
 });
 
 gulp.task('download-shell', function () {

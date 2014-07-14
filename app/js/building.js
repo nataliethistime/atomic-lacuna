@@ -47,13 +47,13 @@ var Templates = require('js/templates'),
     };
 
     Building.prototype = {
-        destroy : function () {
+        destroy: function () {
             this.unsubscribeAll();
         },
-        load : function () {
+        load: function () {
             this.fireEvent("onLoad");
         },
-        getTabs : function () {
+        getTabs: function () {
             if (parseInt(this.building.efficiency, 10) < 100 && this.building.repair_costs) {
                 return [this.getProductionTab(), this.getRepairTab()];
             }
@@ -73,44 +73,34 @@ var Templates = require('js/templates'),
 
             // Create storage tab last
             if (this.building.upgrade.production && (
-                    parseInt(this.building.food_capacity, 10) +
-                    parseInt(this.building.ore_capacity, 10) +
-                    parseInt(this.building.water_capacity, 10) +
-                    parseInt(this.building.energy_capacity, 10) +
-                    parseInt(this.building.waste_capacity, 10)
-                ) > 0) {
+            parseInt(this.building.food_capacity, 10) + parseInt(this.building.ore_capacity, 10) + parseInt(this.building.water_capacity, 10) + parseInt(this.building.energy_capacity, 10) + parseInt(this.building.waste_capacity, 10)) > 0) {
 
                 tabs.push(this.getStorageTab());
             }
 
             return tabs;
         },
-        getChildTabs : function () {
+        getChildTabs: function () {
             //overrideable function for child classes that have their own tabs
             //** Must return nothing or an array of tabs **
             return [];
         },
 
-        /*
+/*
         Event Helpers
         */
-        rpcSuccess : function (o) {
+        rpcSuccess: function (o) {
             this.fireEvent("onMapRpc", o.result);
             if (o.result.building && this.building) {
                 // if we suddenly have work update the tile to add the tile.
                 // if we don't have work update the tile to remove the timer
-                var workChanged = (
-                    (this.building.work && !o.result.building.work) ||
-                    (!this.building.work && o.result.building.work) ||
-                    (this.building.work && o.result.building.work &&
-                        this.building.work.end !== o.result.building.work.end)
-                );
+                var workChanged = ((this.building.work && !o.result.building.work) || (!this.building.work && o.result.building.work) || (this.building.work && o.result.building.work && this.building.work.end !== o.result.building.work.end));
                 if (workChanged) {
                     this.building.work = o.result.building.work;
                     this.work = this.building.work;
                     this.updateBuildingTile(this.building);
                 }
-                /*if(o.result.building.id && o.result.building.name) {
+/*if(o.result.building.id && o.result.building.name) {
                     delete this.building.work;
                     delete this.building.pending_build;
                     Lang.augmentObject(this.building, o.result.building, true);
@@ -124,57 +114,57 @@ var Templates = require('js/templates'),
                 }*/
             }
         },
-        addQueue : function (sec, func, elm, sc) {
+        addQueue: function (sec, func, elm, sc) {
             this.fireEvent("onQueueAdd", {
-                seconds : sec,
-                fn : func,
-                el : elm,
-                scope : sc
+                seconds: sec,
+                fn: func,
+                el: elm,
+                scope: sc
             });
         },
-        resetQueue : function () {
+        resetQueue: function () {
             this.fireEvent("onQueueReset");
         },
-        addTab : function (tab) {
+        addTab: function (tab) {
             this.fireEvent("onAddTab", tab);
         },
-        removeTab : function (tab) {
+        removeTab: function (tab) {
             this.fireEvent("onRemoveTab", tab);
         },
-        updateBuildingTile : function (building) {
+        updateBuildingTile: function (building) {
             //always updated url when doing this since some returns don't have the url
             building.url = this.building.url;
             this.building = building;
             this.fireEvent("onUpdateTile", this.building);
         },
-        removeBuildingTile : function (building) {
+        removeBuildingTile: function (building) {
             this.fireEvent("onRemoveTile", building);
         },
 
-        getRepairTab : function () {
+        getRepairTab: function () {
             this.repairTab = new YAHOO.widget.Tab({
-                label : 'Repair',
-                content : this.repairTemplate({
-                    efficiency : this.building.efficiency,
-                    assets : assets,
-                    food : this.building.repair_costs.food,
-                    ore : this.building.repair_costs.ore,
-                    water : this.building.repair_costs.water,
-                    energy : this.building.repair_costs.energy
+                label: 'Repair',
+                content: this.repairTemplate({
+                    efficiency: this.building.efficiency,
+                    assets: assets,
+                    food: this.building.repair_costs.food,
+                    ore: this.building.repair_costs.ore,
+                    water: this.building.repair_costs.water,
+                    energy: this.building.repair_costs.energy
                 })
             });
             Event.on("repairBuilding", "click", this.Repair, this, true);
             return this.repairTab;
         },
-        Repair : function (e) {
+        Repair: function (e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             Lacuna.Pulser.Show();
             Game.Services.Buildings.Generic.repair({
-                session_id : Game.GetSession(),
-                building_id : this.building.id
+                session_id: Game.GetSession(),
+                building_id: this.building.id
             }, {
-                success : function (o) {
+                success: function (o) {
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
                     if (this.repairTab) {
@@ -192,27 +182,27 @@ var Templates = require('js/templates'),
                     }
                     this.fireEvent("onRepair");
                 },
-                failure : function () {
+                failure: function () {
                     btn.disabled = false;
                 },
-                target : this.building.url,
-                scope : this
+                target: this.building.url,
+                scope: this
             });
         },
 
-        getProductionTab : function () {
+        getProductionTab: function () {
             var level = parseInt(this.building.level, 10);
             this.productionTab = new YAHOO.widget.Tab({
                 label: 'Production',
                 content: this.productionTemplate({
-                    assets : assets,
-                    building : this.building,
-                    upgrade : this.building.upgrade,
-                    downgrade : this.building.downgrade,
-                    planet : Game.GetCurrentPlanet(),
-                    upLevel : level + 1,
-                    downLevel : level - 1,
-                    level : level
+                    assets: assets,
+                    building: this.building,
+                    upgrade: this.building.upgrade,
+                    downgrade: this.building.downgrade,
+                    planet: Game.GetCurrentPlanet(),
+                    upLevel: level + 1,
+                    downLevel: level - 1,
+                    level: level
                 })
             });
 
@@ -226,34 +216,34 @@ var Templates = require('js/templates'),
 
             return this.productionTab;
         },
-        Demolish : function () {
+        Demolish: function () {
             var building = this.building;
             if (confirm(['Are you sure you want to Demolish the level ', building.level, ' ', building.name, '?'].join(''))) {
                 Lacuna.Pulser.Show();
                 Game.Services.Buildings.Generic.demolish({
-                    session_id : Game.GetSession(),
-                    building_id : building.id
+                    session_id: Game.GetSession(),
+                    building_id: building.id
                 }, {
-                    success : function (o) {
+                    success: function (o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
                         this.removeBuildingTile(building);
                         this.fireEvent("onHide");
                     },
-                    scope : this,
-                    target : building.url
+                    scope: this,
+                    target: building.url
                 });
             }
         },
-        Downgrade : function () {
+        Downgrade: function () {
             var building = this.building;
             if (confirm(['Are you sure you want to downgrade the level ', building.level, ' ', building.name, '?'].join(''))) {
                 Lacuna.Pulser.Show();
                 Game.Services.Buildings.Generic.downgrade({
-                    session_id : Game.GetSession(),
-                    building_id : building.id
+                    session_id: Game.GetSession(),
+                    building_id: building.id
                 }, {
-                    success : function (o) {
+                    success: function (o) {
                         Lacuna.Pulser.Hide();
                         this.fireEvent("onMapRpc", o.result);
 
@@ -267,12 +257,12 @@ var Templates = require('js/templates'),
 
                         this.fireEvent("onHide");
                     },
-                    scope : this,
-                    target : building.url
+                    scope: this,
+                    target: building.url
                 });
             }
         },
-        Upgrade : function () {
+        Upgrade: function () {
             var building = this.building,
                 userUpgrade = false;
 
@@ -287,12 +277,12 @@ var Templates = require('js/templates'),
                 Lacuna.Pulser.Show();
                 var BuildingServ = Game.Services.Buildings.Generic,
                     data = {
-                        session_id : Game.GetSession(""),
-                        building_id : building.id
+                        session_id: Game.GetSession(""),
+                        building_id: building.id
                     };
 
                 BuildingServ.upgrade(data, {
-                    success : function (o) {
+                    success: function (o) {
                         Lacuna.Pulser.Hide();
                         this.fireEvent("onMapRpc", o.result);
 
@@ -305,66 +295,62 @@ var Templates = require('js/templates'),
 
                         this.fireEvent("onHide");
                     },
-                    scope : this,
-                    target : building.url
+                    scope: this,
+                    target: building.url
                 });
             }
         },
 
-        getIncomingSupplyChainsTab : function () {
-            this.incomingSupplyChainTab = new YAHOO.widget.Tab({ label: "Supply Chains", content: [
-                '<div id="incomingSupplyChainInfo" style="margin-bottom: 2px">',
-                '   <div id="incomingSupplyChainList">',
-                '      <b>Incoming Supply Chains</b><hr/>',
-                '      <ul id="incomingSupplyChainListHeader" class="incomingSupplyChainHeader incomingSupplyChainInfo clearafter">',
-                '        <li class="incomingSupplyChainBody">From Body</li>',
-                '        <li class="incomingSupplyChainResource">Resource</li>',
-                '        <li class="incomingSupplyChainHour">/hr</li>',
-                '        <li class="incomingSupplyChainEfficiency">Efficiency</li>',
-                '      </ul>',
-                '      <div><div id="incomingSupplyChainListDetails"></div></div>',
-                '   </div>',
-                '   <div id="incomingSupplyChainListNone"><b>No Incoming Supply Chains</b></div>',
-                '</div>'
-            ].join('')});
+        getIncomingSupplyChainsTab: function () {
+            this.incomingSupplyChainTab = new YAHOO.widget.Tab({
+                label: "Supply Chains",
+                content: [
+                    '<div id="incomingSupplyChainInfo" style="margin-bottom: 2px">',
+                    '   <div id="incomingSupplyChainList">',
+                    '      <b>Incoming Supply Chains</b><hr/>',
+                    '      <ul id="incomingSupplyChainListHeader" class="incomingSupplyChainHeader incomingSupplyChainInfo clearafter">',
+                    '        <li class="incomingSupplyChainBody">From Body</li>',
+                    '        <li class="incomingSupplyChainResource">Resource</li>',
+                    '        <li class="incomingSupplyChainHour">/hr</li>',
+                    '        <li class="incomingSupplyChainEfficiency">Efficiency</li>',
+                    '      </ul>',
+                    '      <div><div id="incomingSupplyChainListDetails"></div></div>',
+                    '   </div>',
+                    '   <div id="incomingSupplyChainListNone"><b>No Incoming Supply Chains</b></div>',
+                    '</div>'
+                    ].join('')
+            });
 
             this.incomingSupplyChainTab.subscribe("activeChange", this.viewIncomingSupplyChainInfo, this, true);
 
             return this.incomingSupplyChainTab;
         },
-        viewIncomingSupplyChainInfo : function () {
+        viewIncomingSupplyChainInfo: function () {
             Dom.setStyle("incomingSupplyChainList", "display", "none");
             Dom.setStyle("incomingSupplyChainListNone", "display", "none");
 
             if (!this.incoming_supply_chains) {
                 Lacuna.Pulser.Show();
                 this.service.view_incoming_supply_chains({
-                    session_id : Game.GetSession(),
-                    building_id : this.building.id
+                    session_id: Game.GetSession(),
+                    building_id: this.building.id
                 }, {
-                    success : function (o) {
+                    success: function (o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
                         this.incoming_supply_chains = o.result.supply_chains;
 
                         this.incomingSupplyChainList();
                     },
-                    scope : this
+                    scope: this
                 });
             } else {
                 this.incomingSupplyChainList();
             }
         },
-        incomingSupplyChainList : function () {
+        incomingSupplyChainList: function () {
             var supply_chains = this.incoming_supply_chains,
-                i,
-                chain,
-                nUl,
-                nLi,
-                details,
-                detailsParent,
-                ul,
-                li;
+                i, chain, nUl, nLi, details, detailsParent, ul, li;
 
             if (supply_chains.length === 0) {
                 Dom.setStyle("incomingSupplyChainList", "display", "none");
@@ -387,7 +373,6 @@ var Templates = require('js/templates'),
 
             //Dom.setStyle(detailsParent, "display", "");
             detailsParent.appendChild(details); //add back as child
-
             for (i = 0; i < supply_chains.length; i += 1) {
                 chain = supply_chains[i];
                 nUl = ul.cloneNode(false);
@@ -425,18 +410,20 @@ var Templates = require('js/templates'),
             //wait for tab to display first
             setTimeout(function () {
                 var Ht = Game.GetSize().h - 250;
-                if (Ht > 250) { Ht = 250; }
+                if (Ht > 250) {
+                    Ht = 250;
+                }
                 Dom.setStyle(detailsParent, "height", Ht + "px");
                 Dom.setStyle(detailsParent, "overflow-y", "auto");
             }, 10);
         },
-        getStorageTab : function () {
+        getStorageTab: function () {
             return new YAHOO.widget.Tab({
                 label: 'Storage',
                 content: this.storageTemplate({
-                    assets : assets,
-                    building : this.building,
-                    upgrade : this.building.upgrade
+                    assets: assets,
+                    building: this.building,
+                    upgrade: this.building.upgrade
                 })
             });
         }

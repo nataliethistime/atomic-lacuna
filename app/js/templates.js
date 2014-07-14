@@ -9,16 +9,16 @@ var Handlebars = require('handlebars'),
 require('js/templateHelpers');
 
 module.exports = {
-    tmplCache : {
+    tmplCache: {
 
     },
 
-    get : function (name) {
+    get: function (name) {
         // Get from cache or load new one.
         return this.tmplCache[this.addPrefix(name)] || this.load(name);
     },
 
-    load : function (name) {
+    load: function (name) {
         var buffer, location;
 
         // Add the file extension and fix /'s
@@ -35,27 +35,27 @@ module.exports = {
         }
     },
 
-    save : function (name, func) {
+    save: function (name, func) {
         this.tmplCache[this.addPrefix(name)] = func;
         return func;
     },
 
-    prepare : function (string) {
+    prepare: function (string) {
         string = string.replace(/\n/g, ''); // Remove newlines.
         string = string.replace(/\s{2,}/g, ''); // Weed out whitespace.
         return Handlebars.compile(string);
     },
 
-    fixName : function (name) {
+    fixName: function (name) {
         name = name.replace(/\./g, path.sep);
         return name + '.html';
     },
 
-    addPrefix : function (name) {
+    addPrefix: function (name) {
         return '__' + name;
     },
 
-    getLocation : function (name) {
+    getLocation: function (name) {
         return path.join(Util.root(), 'templates', name);
     }
 }

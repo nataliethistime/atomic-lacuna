@@ -1,15 +1,13 @@
-
 var path = require('path');
 
 // Need to load this here because Util.root() is called before Lodash is global-ised.
 var _ = require('lodash');
 
 module.exports = {
-    _cwd : process.cwd(),
+    _cwd: process.cwd(),
 
-    root : function () {
+    root: function () {
         // Get a full path to the app/ directory
-
         cwd = this._cwd || process.cwd();
 
         // When in development mode, the cwd is:

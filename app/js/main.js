@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
     // Initialize the menu, this should be the last part of GUI initialization
     // before the JS code starts to load.
@@ -9,22 +9,24 @@
 
         var menu = new Menu();
         menu.append(new MenuItem({
-            label : 'Debug Mode',
-            click : function () {
+            label: 'Debug Mode',
+            click: function () {
                 console.log('Toggling dev tools.');
                 remote.getCurrentWindow().toggleDevTools();
             }
         }));
-        menu.append(new MenuItem({ type: 'separator' }));
         menu.append(new MenuItem({
-            label : 'Copy',
-            click : function () {
+            type: 'separator'
+        }));
+        menu.append(new MenuItem({
+            label: 'Copy',
+            click: function () {
                 console.error('TODO: implement copy!');
             }
         }));
         menu.append(new MenuItem({
-            label : 'Paste',
-            click : function () {
+            label: 'Paste',
+            click: function () {
                 console.error('TODO: implement paste!');
             }
         }));
@@ -43,13 +45,13 @@
     var query = {};
     var vars = l.hash.substring(1).split('&');
     if (vars.length > 0) {
-        for (var i=0; i<vars.length; i++) {
+        for (var i = 0; i < vars.length; i++) {
             var pair = vars[i].split("=");
             query[pair[0]] = decodeURIComponent(pair[1]);
         }
     }
     if (window.history.replaceState) {
-        window.history.replaceState({}, document.title, l.protocol+'//'+l.host+l.pathname+l.search);
+        window.history.replaceState({}, document.title, l.protocol + '//' + l.host + l.pathname + l.search);
     }
     else if (l.hash != '') {
         l.hash = '';
@@ -58,7 +60,7 @@
 
     // Make sure the pulser is hidden.
     var p = document.getElementById("pulsing");
-    if(p.className.indexOf('hidden') < 0) {
+    if (p.className.indexOf('hidden') < 0) {
         p.className += ' hidden';
     }
 
@@ -100,9 +102,9 @@
         "tabview",
         "menu",
         "datatable"
-    ]);
+        ]);
 
-    loader.onSuccess = function(o) {
+    loader.onSuccess = function (o) {
         // Require the new boyz on the street!
         window.$ = require('jquery');
         window._ = require('lodash');
