@@ -1,4 +1,3 @@
-/*global YAHOO, $ */
 'use strict';
 YAHOO.namespace("lacuna");
 var Templates = require('js/templates');
