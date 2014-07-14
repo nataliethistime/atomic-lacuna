@@ -1,7 +1,5 @@
 YAHOO.namespace("lacuna.buildings");
-
 if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.buildings.Transporter) {
-
     (function () {
         var Lang = YAHOO.lang,
             Util = YAHOO.util,
@@ -12,37 +10,30 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
             Lacuna = YAHOO.lacuna,
             Game = Lacuna.Game,
             Lib = Lacuna.Library;
-
         var Transporter = function (result) {
             Transporter.superclass.constructor.call(this, result);
-
             this.transport = result.transport;
             this.service = Game.Services.Buildings.Transporter;
-
             this.availableAcceptText = "Accept For 1 Essentia";
             this.addTradeText = "Add Trade For 1 Essentia";
             this.pushTradeText = "Send For 2 Essentia";
-
-
             // defaults.  Values are updated to server numbers during get_* calls
             this.shipSize = 50000;
             this.planSize = 10000;
             this.spySize = 350;
             this.glyphSize = 100;
-
             this.createEvent("onLoadResources");
             this.createEvent("onLoadGlyphs");
             this.createEvent("onLoadPlans");
             this.createEvent("onLoadShips");
             this.createEvent("onLoadPrisoners");
-
             if (this.building.level > 0) {
                 var p = document.createElement("p");
                 p.innerHTML = "Transporter has a maximum capacity of " + this.transport.max + " at this level.";
                 Dom.setStyle(p, "margin-top", "5px");
                 Dom.setStyle(p, "font-style", "italic");
-                Dom.get("buildingDetailsDesc").appendChild(p);
-
+                Dom.get("buildingDetailsDesc")
+                    .appendChild(p);
                 this.subscribe("onLoad", function () {
                     this.getStoredResources();
                     this.mine.subscribe("activeChange", this.getMine, this, true);
@@ -54,8 +45,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                     if (Dom.getStyle("tradePushResourceName", "display") == "none") {
                                         Dom.setStyle("tradePushResourceName", "display", "block");
                                         this.getStoredResources();
-                                    }
-                                    else {
+                                    } else {
                                         Dom.setStyle("tradePushResourceName", "display", "none");
                                     }
                                 }, this, true);
@@ -63,8 +53,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                     if (Dom.getStyle("tradePushGlyphName", "display") == "none") {
                                         Dom.setStyle("tradePushGlyphName", "display", "block");
                                         this.getGlyphs();
-                                    }
-                                    else {
+                                    } else {
                                         Dom.setStyle("tradePushGlyphName", "display", "none");
                                     }
                                 }, this, true);
@@ -72,8 +61,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                     if (Dom.getStyle("tradePushPlanName", "display") == "none") {
                                         Dom.setStyle("tradePushPlanName", "display", "block");
                                         this.getPlans();
-                                    }
-                                    else {
+                                    } else {
                                         Dom.setStyle("tradePushPlanName", "display", "none");
                                     }
                                 }, this, true);
@@ -81,8 +69,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                     if (Dom.getStyle("tradePushShipName", "display") == "none") {
                                         Dom.setStyle("tradePushShipName", "display", "block");
                                         this.getShips();
-                                    }
-                                    else {
+                                    } else {
                                         Dom.setStyle("tradePushShipName", "display", "none");
                                     }
                                 }, this, true);
@@ -90,13 +77,11 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                     if (Dom.getStyle("tradePushPrisonerName", "display") == "none") {
                                         Dom.setStyle("tradePushPrisonerName", "display", "block");
                                         this.getPrisoners();
-                                    }
-                                    else {
+                                    } else {
                                         Dom.setStyle("tradePushPrisonerName", "display", "none");
                                     }
                                 }, this, true);
                             }
-
                             this.tradePushSubbed = 1;
                         }
                     }, this, true);
@@ -107,8 +92,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                     if (Dom.getStyle("tradeAddResourceName", "display") == "none") {
                                         Dom.setStyle("tradeAddResourceName", "display", "block");
                                         this.getStoredResources();
-                                    }
-                                    else {
+                                    } else {
                                         Dom.setStyle("tradeAddResourceName", "display", "none");
                                     }
                                 }, this, true);
@@ -116,8 +100,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                     if (Dom.getStyle("tradeAddGlyphName", "display") == "none") {
                                         Dom.setStyle("tradeAddGlyphName", "display", "block");
                                         this.getGlyphs();
-                                    }
-                                    else {
+                                    } else {
                                         Dom.setStyle("tradeAddGlyphName", "display", "none");
                                     }
                                 }, this, true);
@@ -125,8 +108,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                     if (Dom.getStyle("tradeAddPlanName", "display") == "none") {
                                         Dom.setStyle("tradeAddPlanName", "display", "block");
                                         this.getPlans();
-                                    }
-                                    else {
+                                    } else {
                                         Dom.setStyle("tradeAddPlanName", "display", "none");
                                     }
                                 }, this, true);
@@ -134,8 +116,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                     if (Dom.getStyle("tradeAddShipName", "display") == "none") {
                                         Dom.setStyle("tradeAddShipName", "display", "block");
                                         this.getShips();
-                                    }
-                                    else {
+                                    } else {
                                         Dom.setStyle("tradeAddShipName", "display", "none");
                                     }
                                 }, this, true);
@@ -143,20 +124,17 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                     if (Dom.getStyle("tradeAddPrisonerName", "display") == "none") {
                                         Dom.setStyle("tradeAddPrisonerName", "display", "block");
                                         this.getPrisoners();
-                                    }
-                                    else {
+                                    } else {
                                         Dom.setStyle("tradeAddPrisonerName", "display", "none");
                                     }
                                 }, this, true);
                             }
-
                             this.tradeAddSubbed = 1;
                         }
                     }, this, true);
                 }, this, true);
             }
         };
-
         Lang.extend(Transporter, Lacuna.buildings.Building, {
             destroy: function () {
                 if (this.availablePager) {
@@ -174,20 +152,9 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
             _getOneForOneTab: function () {
                 this.oneForOne = new YAHOO.widget.Tab({
                     label: "One For One",
-                    content: ['<div class="transporterOneForOne">',
-                                                                '<div>You may trade one-for-one with Lacuna Corp for 3<img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia smallImg" /> per transaction.</div>',
-                                                                '<ul>',
-                                                                '    <li><label>Want:</label><select id="transporterOneForOneWant"></select></li>',
-                                                                '    <li><label>Have:</label><select id="transporterOneForOneHave"></select></li>',
-                                                                '    <li><label>Quantity:</label><input type="text" id="transporterOneForOneQuantity" /></li>',
-                                                                '    <li id="transporterOneForOneMessage" class="alert"></li>',
-                                                                '    <li><button id="transporterOneForOneTrade">Submit Trade for 3 Essentia</button></li>',
-                                                                '</ul>',
-                                                            '</div>'].join('')
+                    content: ['<div class="transporterOneForOne">', '<div>You may trade one-for-one with Lacuna Corp for 3<img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia smallImg" /> per transaction.</div>', '<ul>', '    <li><label>Want:</label><select id="transporterOneForOneWant"></select></li>', '    <li><label>Have:</label><select id="transporterOneForOneHave"></select></li>', '    <li><label>Quantity:</label><input type="text" id="transporterOneForOneQuantity" /></li>', '    <li id="transporterOneForOneMessage" class="alert"></li>', '    <li><button id="transporterOneForOneTrade">Submit Trade for 3 Essentia</button></li>', '</ul>', '</div>'].join('')
                 });
-
                 this.subscribe("onLoadResources", this.populateOneForOneHave, this, true);
-
                 Event.onAvailable("transporterOneForOneWant", function (e) {
                     var elm = Dom.get("transporterOneForOneWant"),
                         opt = document.createElement("option"),
@@ -198,17 +165,14 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             if (Lang.isArray(resource)) {
                                 optGroup = document.createElement("optgroup");
                                 optGroup.label = r.titleCaps();
-
                                 for (var x = 0; x < resource.length; x++) {
                                     nOpt = opt.cloneNode(false);
                                     nOpt.value = resource[x];
                                     nOpt.innerHTML = resource[x].titleCaps();
                                     optGroup.appendChild(nOpt);
                                 }
-
                                 elm.appendChild(optGroup);
-                            }
-                            else if (resource) {
+                            } else if (resource) {
                                 nOpt = opt.cloneNode(false);
                                 nOpt.value = r;
                                 nOpt.innerHTML = r.titleCaps();
@@ -218,48 +182,23 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                     }
                 }, this, true);
                 Event.on("transporterOneForOneTrade", "click", this.Trade, this, true);
-
                 return this.oneForOne;
             },
             _getPushTab: function () {
                 this.push = new YAHOO.widget.Tab({
                     label: "Push",
-                    content: [
-                        '<div id="pHt"><div class="tradeStash yui-g">',
-                        '    <div class="yui-u first">',
-                        '        <legend>On Planet</legend>',
-                        '        <div class="tradeContainers">',
-                        '            <div><div id="tradePushResources" class="accordian">Resources</div><ul id="tradePushResourceName"></ul></div>',
-                        '            <div><div id="tradePushGlyphs" class="accordian">Glyphs</div><ul id="tradePushGlyphName" style="display:none;"></ul></div>',
-                        '            <div><div id="tradePushPlans" class="accordian">Plans</div><ul id="tradePushPlanName" style="display:none;"></ul></div>',
-                        '            <div><div id="tradePushShips" class="accordian">Ships</div><ul id="tradePushShipName" style="display:none;"></ul></div>',
-                        '            <div><div id="tradePushPrisoners" class="accordian">Prisoners</div><ul id="tradePushPrisonerName" style="display:none;"></ul></div>',
-                        '        </div>',
-                        '    </div>',
-                        '    <div class="yui-u">',
-                        '        <legend>To Push</legend>',
-                        '        <div class="tradeContainers"><ul id="tradePushItems"></ul></div>',
-                        '    </div>',
-                        '</div>',
-                        '<ul style="margin-top:5px;">',
-                        '    <li style=""><label>Total Cargo:</label><span id="tradePushCargo">0</span></li>',
-                        '    <li style="margin-bottom:5px;"><label>To Colony:</label><select id="tradePushColony"><option value="" selected></option></select></li>',
-                        '    <li id="tradePushMessage" class="alert"></li>',
-                        '</ul></div><button id="tradePushSend">', this.pushTradeText, '</button>'].join('')
+                    content: ['<div id="pHt"><div class="tradeStash yui-g">', '    <div class="yui-u first">', '        <legend>On Planet</legend>', '        <div class="tradeContainers">', '            <div><div id="tradePushResources" class="accordian">Resources</div><ul id="tradePushResourceName"></ul></div>', '            <div><div id="tradePushGlyphs" class="accordian">Glyphs</div><ul id="tradePushGlyphName" style="display:none;"></ul></div>', '            <div><div id="tradePushPlans" class="accordian">Plans</div><ul id="tradePushPlanName" style="display:none;"></ul></div>', '            <div><div id="tradePushShips" class="accordian">Ships</div><ul id="tradePushShipName" style="display:none;"></ul></div>', '            <div><div id="tradePushPrisoners" class="accordian">Prisoners</div><ul id="tradePushPrisonerName" style="display:none;"></ul></div>', '        </div>', '    </div>', '    <div class="yui-u">', '        <legend>To Push</legend>', '        <div class="tradeContainers"><ul id="tradePushItems"></ul></div>', '    </div>', '</div>', '<ul style="margin-top:5px;">', '    <li style=""><label>Total Cargo:</label><span id="tradePushCargo">0</span></li>', '    <li style="margin-bottom:5px;"><label>To Colony:</label><select id="tradePushColony"><option value="" selected></option></select></li>', '    <li id="tradePushMessage" class="alert"></li>', '</ul></div><button id="tradePushSend">', this.pushTradeText, '</button>'].join('')
                 });
-
                 this.subscribe("onLoadResources", this.populatePushResourceName, this, true);
                 this.subscribe("onLoadGlyphs", this.populatePushGlyphName, this, true);
                 this.subscribe("onLoadPlans", this.populatePushPlanName, this, true);
                 this.subscribe("onLoadShips", this.populatePushShipName, this, true);
                 this.subscribe("onLoadPrisoners", this.populatePushPrisonerName, this, true);
-
                 Event.onAvailable("tradePushColony", function () {
                     var opt = document.createElement("option"),
                         planets = Lib.planetarySort(Game.EmpireData.planets),
                         cp = Game.GetCurrentPlanet(),
                         nOpt;
-
                     for (var p = 0; p < planets.length; p++) {
                         if (planets[p].id != cp.id) {
                             nOpt = opt.cloneNode(false);
@@ -269,115 +208,57 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         }
                     }
                 });
-
                 Event.delegate("tradePushResourceName", "click", this.PushAddResource, "button", this, true);
                 Event.delegate("tradePushGlyphName", "click", this.PushAddGlyph, "button", this, true);
                 Event.delegate("tradePushPlanName", "click", this.PushAddPlan, "button", this, true);
                 Event.delegate("tradePushShipName", "click", this.PushAddShip, "button", this, true);
                 Event.delegate("tradePushPrisonerName", "click", this.PushAddPrisoner, "button", this, true);
-
                 Event.delegate("tradePushItems", "click", this.PushRemove, "button", this, true);
-
                 Event.on("tradePushSend", "click", this.Push, this, true);
-
                 return this.push;
             },
             _getAvailTab: function () {
                 this.avail = new YAHOO.widget.Tab({
                     label: "Available Trades",
-                    content: [
-                        '<div>',
-                        '    <div style="border-bottom: 1px solid #52ACFF; padding-bottom: 5px; margin-bottom: 5px;"><label>Filter:</label><select id="tradeFilter"><option value="">All</option><option value="energy">Energy</option><option value="food">Food</option><option value="ore">Ore</option>',
-                        '    <option value="water">Water</option><option value="waste">Waste</option><option value="glyph">Glyph</option><option value="prisoner">Prisoner</option>',
-                        '    <option value="ship">Ship</option><option value="plan">Plan</option></select></div>',
-                        '    <ul class="tradeHeader tradeInfo clearafter">',
-                        '        <li class="tradeEmpire">Empire</li>',
-                        '        <li class="tradeOfferedDate">Offered Date</li>',
-                        '        <li class="tradeAsking">Cost</li>',
-                        '        <li class="tradeOffer">Offering</li>',
-                        '        <li class="tradeAction"></li>',
-                        '        <li class="tradeAction"></li>',
-                        '    </ul>',
-                        '    <div><div id="tradeAvailableDetails"></div></div>',
-                        '    <div id="tradeAvailablePaginator"></div>',
-                        '</div>'].join('')
+                    content: ['<div>', '    <div style="border-bottom: 1px solid #52ACFF; padding-bottom: 5px; margin-bottom: 5px;"><label>Filter:</label><select id="tradeFilter"><option value="">All</option><option value="energy">Energy</option><option value="food">Food</option><option value="ore">Ore</option>', '    <option value="water">Water</option><option value="waste">Waste</option><option value="glyph">Glyph</option><option value="prisoner">Prisoner</option>', '    <option value="ship">Ship</option><option value="plan">Plan</option></select></div>', '    <ul class="tradeHeader tradeInfo clearafter">', '        <li class="tradeEmpire">Empire</li>', '        <li class="tradeOfferedDate">Offered Date</li>', '        <li class="tradeAsking">Cost</li>', '        <li class="tradeOffer">Offering</li>', '        <li class="tradeAction"></li>', '        <li class="tradeAction"></li>', '    </ul>', '    <div><div id="tradeAvailableDetails"></div></div>', '    <div id="tradeAvailablePaginator"></div>', '</div>'].join('')
                 });
-
                 Event.on("tradeFilter", "change", function (e) {
                     this.getAvailable({
                         newValue: true
                     });
                 }, this, true);
-
                 return this.avail;
             },
             _getMineTab: function () {
                 this.mine = new YAHOO.widget.Tab({
                     label: "My Trades",
-                    content: ['<div class="myTrades">',
-                                                                '    <ul class="tradeHeader tradeInfo clearafter">',
-                                                                '        <li class="tradeOfferedDate">Offered Date</li>',
-                                                                '        <li class="tradeAsking">Cost</li>',
-                                                                '        <li class="tradeOffer">Offering</li>',
-                                                                '        <li class="tradeAction"></li>',
-                                                                '    </ul>',
-                                                                '    <div><div id="tradeMineDetails"></div></div>',
-                                                                '    <div id="tradeMinePaginator"></div>',
-                                                                '</div>'].join('')
+                    content: ['<div class="myTrades">', '    <ul class="tradeHeader tradeInfo clearafter">', '        <li class="tradeOfferedDate">Offered Date</li>', '        <li class="tradeAsking">Cost</li>', '        <li class="tradeOffer">Offering</li>', '        <li class="tradeAction"></li>', '    </ul>', '    <div><div id="tradeMineDetails"></div></div>', '    <div id="tradeMinePaginator"></div>', '</div>'].join('')
                 });
-
                 return this.mine;
             },
             _getAddTab: function () {
                 this.add = new YAHOO.widget.Tab({
                     label: "Add Trade",
-                    content: [
-                        '<div id="aHt"><div class="tradeStash yui-g">',
-                        '    <div class="yui-u first">',
-                        '        <legend>On Planet</legend>',
-                        '        <div class="tradeContainers">',
-                        '            <div><div id="tradeAddResources" class="accordian">Resources</div><ul id="tradeAddResourceName"></ul></div>',
-                        '            <div><div id="tradeAddGlyphs" class="accordian">Glyphs</div><ul id="tradeAddGlyphName" style="display:none;"></ul></div>',
-                        '            <div><div id="tradeAddPlans" class="accordian">Plans</div><ul id="tradeAddPlanName" style="display:none;"></ul></div>',
-                        '            <div><div id="tradeAddShips" class="accordian">Ships</div><ul id="tradeAddShipName" style="display:none;"></ul></div>',
-                        '            <div><div id="tradeAddPrisoners" class="accordian">Prisoners</div><ul id="tradeAddPrisonerName" style="display:none;"></ul></div>',
-                        '        </div>',
-                        '    </div>',
-                        '    <div class="yui-u">',
-                        '        <legend>To Offer</legend>',
-                        '        <div class="tradeContainers"><ul id="tradeAddItems"></ul></div>',
-                        '    </div>',
-                        '</div>',
-                        '<ul style="margin-top:5px;">',
-                        '    <li style=""><label>Total Cargo:</label><span id="tradeAddCargo">0</span></li>',
-                        '    <li style="margin: 5px 0;"><label style="font-weight:bold">Asking Essentia:</label><input type="text" id="tradeAddAskingQuantity" /></li>',
-                        '    <li id="tradeAddMessage" class="alert"></li>',
-                        '</ul></div><button id="tradeAdd">', this.addTradeText, '</button>'].join('')
+                    content: ['<div id="aHt"><div class="tradeStash yui-g">', '    <div class="yui-u first">', '        <legend>On Planet</legend>', '        <div class="tradeContainers">', '            <div><div id="tradeAddResources" class="accordian">Resources</div><ul id="tradeAddResourceName"></ul></div>', '            <div><div id="tradeAddGlyphs" class="accordian">Glyphs</div><ul id="tradeAddGlyphName" style="display:none;"></ul></div>', '            <div><div id="tradeAddPlans" class="accordian">Plans</div><ul id="tradeAddPlanName" style="display:none;"></ul></div>', '            <div><div id="tradeAddShips" class="accordian">Ships</div><ul id="tradeAddShipName" style="display:none;"></ul></div>', '            <div><div id="tradeAddPrisoners" class="accordian">Prisoners</div><ul id="tradeAddPrisonerName" style="display:none;"></ul></div>', '        </div>', '    </div>', '    <div class="yui-u">', '        <legend>To Offer</legend>', '        <div class="tradeContainers"><ul id="tradeAddItems"></ul></div>', '    </div>', '</div>', '<ul style="margin-top:5px;">', '    <li style=""><label>Total Cargo:</label><span id="tradeAddCargo">0</span></li>', '    <li style="margin: 5px 0;"><label style="font-weight:bold">Asking Essentia:</label><input type="text" id="tradeAddAskingQuantity" /></li>', '    <li id="tradeAddMessage" class="alert"></li>', '</ul></div><button id="tradeAdd">', this.addTradeText, '</button>'].join('')
                 });
-
                 this.subscribe("onLoadResources", this.populateAddResourceName, this, true);
                 this.subscribe("onLoadGlyphs", this.populateAddGlyphName, this, true);
                 this.subscribe("onLoadPlans", this.populateAddPlanName, this, true);
                 this.subscribe("onLoadPrisoners", this.populateAddPrisonerName, this, true);
                 this.subscribe("onLoadShips", this.populateAddShipName, this, true);
-
                 Event.delegate("tradeAddResourceName", "click", this.AddResource, "button", this, true);
                 Event.delegate("tradeAddGlyphName", "click", this.AddGlyph, "button", this, true);
                 Event.delegate("tradeAddPlanName", "click", this.AddPlan, "button", this, true);
                 Event.delegate("tradeAddShipName", "click", this.AddShip, "button", this, true);
                 Event.delegate("tradeAddPrisonerName", "click", this.AddPrisoner, "button", this, true);
-
                 Event.delegate("tradeAddItems", "click", this.AddRemove, "button", this, true);
-
                 Event.on("tradeAdd", "click", this.AddTrade, this, true);
                 return this.add;
             },
-
             populateOneForOneHave: function () {
                 var elm = Dom.get("transporterOneForOneHave"),
                     opt = document.createElement("option"),
                     nOpt, optGroup;
-
                 if (elm) {
                     elm.innerHTML = '';
                     for (var r in Lib.ResourceTypes) {
@@ -386,7 +267,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             if (Lang.isArray(resource)) {
                                 optGroup = document.createElement("optgroup");
                                 optGroup.label = r.titleCaps();
-
                                 for (var x = 0; x < resource.length; x++) {
                                     var name = resource[x];
                                     if (this.resources[name]) {
@@ -396,10 +276,8 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                         optGroup.appendChild(nOpt);
                                     }
                                 }
-
                                 elm.appendChild(optGroup);
-                            }
-                            else if (this.resources[r] && resource) {
+                            } else if (this.resources[r] && resource) {
                                 nOpt = opt.cloneNode(false);
                                 nOpt.value = r;
                                 nOpt.innerHTML = [r.titleCaps(), ' (', this.resources[r], ')'].join('');
@@ -415,25 +293,28 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                     building_id: this.building.id,
                     have: Lib.getSelectedOptionValue(Dom.get("transporterOneForOneHave")),
                     want: Lib.getSelectedOptionValue(Dom.get("transporterOneForOneWant")),
-                    quantity: Dom.get("transporterOneForOneQuantity").value * 1
+                    quantity: Dom.get("transporterOneForOneQuantity")
+                        .value * 1
                 };
-
                 if (data.quantity > this.transport.max) {
-                    Dom.get("transporterOneForOneMessage").innerHTML = ["Quantity must be less than ", this.transport.max, ", which is the maximum for this level transporter."].join('');
+                    Dom.get("transporterOneForOneMessage")
+                        .innerHTML = ["Quantity must be less than ", this.transport.max, ", which is the maximum for this level transporter."].join('');
                     Lib.fadeOutElm("transporterOneForOneMessage");
-                }
-                else if (data.quantity < 0 || data.quantity > this.resources[data.have] * 1) {
-                    Dom.get("transporterOneForOneMessage").innerHTML = "Quantity must be greater than 0 and less than or equal to the resources you have on hand.";
+                } else if (data.quantity < 0 || data.quantity > this.resources[data.have] * 1) {
+                    Dom.get("transporterOneForOneMessage")
+                        .innerHTML = "Quantity must be greater than 0 and less than or equal to the resources you have on hand.";
                     Lib.fadeOutElm("transporterOneForOneMessage");
-                }
-                else {
+                } else {
                     this.service.trade_one_for_one(data, {
                         success: function (o) {
                             YAHOO.log(o, "info", "Transporter.Trade.success");
                             this.rpcSuccess(o);
-                            Dom.get("transporterOneForOneHave").selectedIndex = -1;
-                            Dom.get("transporterOneForOneWant").selectedIndex = -1;
-                            Dom.get("transporterOneForOneQuantity").value = "";
+                            Dom.get("transporterOneForOneHave")
+                                .selectedIndex = -1;
+                            Dom.get("transporterOneForOneWant")
+                                .selectedIndex = -1;
+                            Dom.get("transporterOneForOneQuantity")
+                                .value = "";
                             this.getStoredResources(true);
                             Lacuna.Pulser.Hide();
                         },
@@ -441,7 +322,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                     });
                 }
             },
-
             getGlyphs: function (force) {
                 if (force || !this.glyphs) {
                     Lacuna.Pulser.Show();
@@ -531,7 +411,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                     });
                 }
             },
-
             getAvailable: function (e) {
                 if (e.newValue) {
                     Lacuna.Pulser.Show();
@@ -549,7 +428,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             YAHOO.log(o, "info", "Trade.view_available_trades.success");
                             Lacuna.Pulser.Hide();
                             this.rpcSuccess(o);
-
                             delete o.result.status; //get rid of status after we process it, since it's big
                             this.availableTrades = o.result; //store: trades=[], trade_count = 1, page_number=1,  captcha = {guid, url}
                             this.availablePager = new Pager({
@@ -558,11 +436,9 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                 containers: 'tradeAvailablePaginator',
                                 template: "{PreviousPageLink} {PageLinks} {NextPageLink}",
                                 alwaysVisible: false
-
                             });
                             this.availablePager.subscribe('changeRequest', this.AvailableHandlePagination, this, true);
                             this.availablePager.render();
-
                             this.AvailablePopulate();
                         },
                         scope: this
@@ -571,45 +447,36 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
             },
             AvailablePopulate: function () {
                 var details = Dom.get("tradeAvailableDetails");
-
                 if (details) {
                     var trades = this.availableTrades.trades,
                         ul = document.createElement("ul"),
                         li = document.createElement("li");
-
                     Event.purgeElement(details);
                     details.innerHTML = "";
-
                     for (var i = 0; i < trades.length; i++) {
                         var trade = trades[i],
                             bbtn, nUl = ul.cloneNode(false),
                             nLi = li.cloneNode(false);
-
                         nUl.Trade = trade;
                         Dom.addClass(nUl, "tradeInfo");
                         Dom.addClass(nUl, "clearafter");
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeEmpire");
                         nLi.innerHTML = trade.empire.name;
                         Event.on(nLi, "click", this.EmpireProfile, trade.empire);
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeOfferedDate");
                         nLi.innerHTML = Lib.formatServerDateTimeShort(trade.date_offered);
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeAsking");
                         nLi.innerHTML = [trade.ask, '<img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" />'].join('');
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeOffer");
                         nLi.innerHTML = Lib.formatInlineList(trade.offer);
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeAction");
                         bbtn = document.createElement("button");
@@ -622,7 +489,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             Line: nUl
                         }, true);
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeAction");
                         bbtn = document.createElement("button");
@@ -636,13 +502,12 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             Line: nUl
                         }, true);
                         nUl.appendChild(nLi);
-
                         details.appendChild(nUl);
-
                     }
                     //wait for tab to display first
                     setTimeout(function () {
-                        var Ht = Game.GetSize().h - 240;
+                        var Ht = Game.GetSize()
+                            .h - 240;
                         if (Ht > 300) {
                             Ht = 300;
                         }
@@ -668,14 +533,12 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         YAHOO.log(o, "info", "Trade.view_available_trades.success");
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
-
                         delete o.result.status; //get rid of status after we process it, since it's big
                         this.availableTrades = o.result; //store: trades=[], trade_count = 1, page_number=1,  captcha = {guid, url}
                         this.AvailablePopulate();
                     },
                     scope: this
                 });
-
                 // Update the Paginator's state
                 this.availablePager.setState(newState);
             },
@@ -720,8 +583,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
             EmpireProfile: function (e, empire) {
                 Lacuna.Info.Empire.Load(empire.id);
             },
-
-
             //View Mine
             getMine: function (e) {
                 if (e.newValue) {
@@ -735,7 +596,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             YAHOO.log(o, "info", "Trade.view_my_trades.success");
                             Lacuna.Pulser.Hide();
                             this.rpcSuccess(o);
-
                             delete o.result.status; //get rid of status after we process it, since it's big
                             this.mineTrades = o.result; //store: trades=[], trade_count = 1, page_number=1
                             this.minePage = new Pager({
@@ -744,11 +604,9 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                 containers: 'tradeMinePaginator',
                                 template: "{PreviousPageLink} {PageLinks} {NextPageLink}",
                                 alwaysVisible: false
-
                             });
                             this.minePage.subscribe('changeRequest', this.MineHandlePagination, this, true);
                             this.minePage.render();
-
                             this.MinePopulate();
                         },
                         scope: this
@@ -757,39 +615,31 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
             },
             MinePopulate: function () {
                 var details = Dom.get("tradeMineDetails");
-
                 if (details) {
                     var trades = this.mineTrades.trades,
                         ul = document.createElement("ul"),
                         li = document.createElement("li");
-
                     Event.purgeElement(details);
                     details.innerHTML = "";
-
                     for (var i = 0; i < trades.length; i++) {
                         var trade = trades[i],
                             nUl = ul.cloneNode(false),
                             nLi = li.cloneNode(false);
-
                         nUl.Trade = trade;
                         Dom.addClass(nUl, "tradeInfo");
                         Dom.addClass(nUl, "clearafter");
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeOfferedDate");
                         nLi.innerHTML = Lib.formatServerDateTimeShort(trade.date_offered);
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeAsking");
                         nLi.innerHTML = [trade.ask, '<img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" />'].join('');
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeOffer");
                         nLi.innerHTML = Lib.formatInlineList(trade.offer);
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeAction");
                         var bbtn = document.createElement("button");
@@ -801,16 +651,13 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             Trade: trade,
                             Line: nUl
                         }, true);
-
                         nUl.appendChild(nLi);
-
                         details.appendChild(nUl);
-
                     }
-
                     //wait for tab to display first
                     setTimeout(function () {
-                        var Ht = Game.GetSize().h - 185;
+                        var Ht = Game.GetSize()
+                            .h - 185;
                         if (Ht > 300) {
                             Ht = 300;
                         }
@@ -831,14 +678,12 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         YAHOO.log(o, "info", "Trade.view_available_trades.success");
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
-
                         delete o.result.status; //get rid of status after we process it, since it's big
                         this.mineTrades = o.result; //store: trades=[], trade_count = 1, page_number=1
                         this.MinePopulate();
                     },
                     scope: this
                 });
-
                 // Update the Paginator's state
                 this.minePage.setState(newState);
             },
@@ -862,7 +707,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             }
                             this.Line.parentNode.removeChild(this.Line);
                             Lacuna.Pulser.Hide();
-
                             this.Self.getStoredResources(true);
                             this.Self.getPlans(true);
                             this.Self.getGlyphs(true);
@@ -873,13 +717,11 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                     });
                 }
             },
-
             //Add trade
             populateAddResourceName: function () {
                 var elm = Dom.get("tradeAddResourceName"),
                     li = document.createElement("li"),
                     nLi, x, r, name, resource;
-
                 if (elm) {
                     elm.innerHTML = "";
                     for (r in Lib.ResourceTypes) {
@@ -898,8 +740,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                         elm.appendChild(nLi);
                                     }
                                 }
-                            }
-                            else if (this.resources[r] && resource) {
+                            } else if (this.resources[r] && resource) {
                                 nLi = li.cloneNode(false);
                                 nLi.Resource = {
                                     type: r,
@@ -913,7 +754,8 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                 }
                 //wait for tab to display first
                 setTimeout(function () {
-                    var Ht = Game.GetSize().h - 180;
+                    var Ht = Game.GetSize()
+                        .h - 180;
                     if (Ht > 300) {
                         Ht = 300;
                     }
@@ -926,7 +768,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                 var elm = Dom.get("tradeAddGlyphName"),
                     li = document.createElement("li"),
                     nLi;
-
                 if (elm) {
                     elm.innerHTML = "";
                     if (this.glyphs.length > 0) {
@@ -937,8 +778,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             nLi.innerHTML = ['<span class="tradeResourceName">', obj.name.titleCaps(), ' (<label class="quantity">', obj.quantity, '</label>)</span> <input type="text" style="width:75px;" /><button type="button">+</button>'].join('');
                             elm.appendChild(nLi);
                         }
-                    }
-                    else {
+                    } else {
                         nLi = li.cloneNode(false);
                         nLi.innerHTML = "No Glyphs Available";
                         elm.appendChild(nLi);
@@ -949,7 +789,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                 var elm = Dom.get("tradeAddPlanName"),
                     li = document.createElement("li"),
                     nLi;
-
                 if (elm) {
                     elm.innerHTML = "";
                     if (this.plans.length > 0) {
@@ -959,14 +798,12 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             nLi.Plan = obj;
                             if (obj.extra_build_level > 0) {
                                 nLi.innerHTML = ['<span class="tradeResourceName">', obj.name, ' ', obj.level, '+', obj.extra_build_level, ' (<label class="quantity">', obj.quantity, '</label>)</span> <input type="text" style="width:75px;" /><button type="button">+</button>'].join('');
-                            }
-                            else {
+                            } else {
                                 nLi.innerHTML = ['<span class="tradeResourceName">', obj.name, ' ', obj.level, ' (<label class="quantity">', obj.quantity, '</label>)</span> <input type="text" style="width:75px;" /><button type="button">+</button>'].join('');
                             }
                             elm.appendChild(nLi);
                         }
-                    }
-                    else {
+                    } else {
                         nLi = li.cloneNode(false);
                         nLi.innerHTML = "No Plans Available";
                         elm.appendChild(nLi);
@@ -977,7 +814,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                 var elm = Dom.get("tradeAddShipName"),
                     li = document.createElement("li"),
                     nLi;
-
                 if (elm) {
                     elm.innerHTML = "";
                     if (this.ships.length > 0) {
@@ -986,18 +822,13 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             nLi = li.cloneNode(false);
                             nLi.Ship = obj;
                             nLi.innerHTML = ['<span class="tradeResourceName">',
-                                                                                                         obj.name, ' - ',
-                                                                                                         obj.type.titleCaps('_', ' '),
-                                                                                                         ' - Hold:', obj.hold_size,
-                                                                                                         ' - Berth:', obj.berth_level,
-                                                                                                         ' - Speed:', obj.speed,
-                                                                                                          ' (<label class="quantity">',
-                                                                                                          obj.quantity,
-                                                                                                          '</label>)</span> <input type="text" style="width:75px;" /><button type="button">+</button>'].join('');
+                                obj.name, ' - ',
+                                obj.type.titleCaps('_', ' '), ' - Hold:', obj.hold_size, ' - Berth:', obj.berth_level, ' - Speed:', obj.speed, ' (<label class="quantity">',
+                                obj.quantity, '</label>)</span> <input type="text" style="width:75px;" /><button type="button">+</button>'
+                            ].join('');
                             elm.appendChild(nLi);
                         }
-                    }
-                    else {
+                    } else {
                         nLi = li.cloneNode(false);
                         nLi.innerHTML = "No Ships Available";
                         elm.appendChild(nLi);
@@ -1008,7 +839,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                 var elm = Dom.get("tradeAddPrisonerName"),
                     li = document.createElement("li"),
                     nLi;
-
                 if (elm) {
                     elm.innerHTML = "";
                     if (this.prisoners.length > 0) {
@@ -1019,8 +849,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             nLi.innerHTML = ['<span class="tradeName">', obj.name, ' ', obj.level, '</span> <button type="button">+</button>'].join('');
                             elm.appendChild(nLi);
                         }
-                    }
-                    else {
+                    } else {
                         nLi = li.cloneNode(false);
                         nLi.innerHTML = "No Prisoners Available";
                         elm.appendChild(nLi);
@@ -1064,8 +893,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         content.innerHTML = ['<span class="tradeResourceName">', item.Object.type.titleCaps(), ' (<label class="quantity">', quantity, '</label>)</span> <input type="text" style="width:75px;" value="', quantity, '" /><button type="button">-</button>'].join('');
                         c.appendChild(item);
                         this.updateAddCargo(quantity);
-                    }
-                    else {
+                    } else {
                         var found = exists[0],
                             newTotal = found.Object.quantity + quantity,
                             diff = quantity,
@@ -1081,7 +909,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         lq.innerHTML = newTotal;
                         found.Object.quantity = newTotal;
                         this.updateAddCargo(diff);
-
                         var a = new Util.ColorAnim(lq, {
                             color: {
                                 from: '#0f0',
@@ -1123,8 +950,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         content.innerHTML = ['<span class="tradeResourceName">', gName.titleCaps(), ' (<label class="quantity">', quantity, '</label>)</span> <input type="text" style="width:75px;" value="', quantity, '" /><button type="button">-</button>'].join('');
                         c.appendChild(item);
                         this.updateAddCargo(this.glyphSize * quantity);
-                    }
-                    else {
+                    } else {
                         var found = exists[0],
                             newTotal = found.Object.quantity + quantity,
                             diff = quantity,
@@ -1152,7 +978,8 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         pType = li.Plan.plan_type,
                         pLevel = li.Plan.level,
                         pExtra = li.Plan.extra_build_level,
-                        id = ['addPlan-', pType, '-', pLevel, '-', pExtra].join('').titleCaps(' ', '_'),
+                        id = ['addPlan-', pType, '-', pLevel, '-', pExtra].join('')
+                            .titleCaps(' ', '_'),
                         exists = Sel.query("#" + id, c);
                     if (exists.length == 0) {
                         var item = document.createElement("li"),
@@ -1178,15 +1005,12 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         };
                         if (pExtra > 0) {
                             content.innerHTML = ['<span class="tradeResourceName">', pName, ' ', pLevel, '+', pExtra, ' (<label class="quantity">', quantity, '</label>)</span> <input type="text" style="width:75px;" value="', quantity, '" /><button type="button">-</button>'].join('');
-                        }
-                        else {
+                        } else {
                             content.innerHTML = ['<span class="tradeResourceName">', pName, ' ', pLevel, ' (<label class="quantity">', quantity, '</label>)</span> <input type="text" style="width:75px;" value="', quantity, '" /><button type="button">-</button>'].join('');
                         }
-
                         c.appendChild(item);
                         this.updateAddCargo(this.planSize * quantity);
-                    }
-                    else {
+                    } else {
                         var found = exists[0],
                             newTotal = found.Object.quantity + quantity,
                             diff = quantity,
@@ -1215,7 +1039,8 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         sSize = li.Ship.hold_size,
                         sBerth = li.Ship.berth_level,
                         sSpeed = li.Ship.speed,
-                        id = ['addShip', sName, sType, sSize, sBerth, sSpeed].join('-').titleCaps(' ', '_'),
+                        id = ['addShip', sName, sType, sSize, sBerth, sSpeed].join('-')
+                            .titleCaps(' ', '_'),
                         exists = Sel.query("#" + id, c);
                     if (exists.length == 0) {
                         var item = document.createElement("li"),
@@ -1242,21 +1067,14 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             size: this.shipSize
                         };
                         content.innerHTML = ['<span class="tradeResourceName">',
-                                                                                                 sName, ' - ',
-                                                                                                 sType.titleCaps('_', ' '),
-                                                                                                 ' - Hold:', sSize,
-                                                                                                 ' - Berth:', sBerth,
-                                                                                                 ' - Speed:', sSpeed,
-                                                                                                 ' (<label class="quantity">',
-                                                                                                 quantity,
-                                                                                                 '</label>)</span> <input type="text" style="width:75px;" value="',
-                                                                                                 quantity,
-                                                                                                 '" /><button type="button">-</button>'].join('');
-
+                            sName, ' - ',
+                            sType.titleCaps('_', ' '), ' - Hold:', sSize, ' - Berth:', sBerth, ' - Speed:', sSpeed, ' (<label class="quantity">',
+                            quantity, '</label>)</span> <input type="text" style="width:75px;" value="',
+                            quantity, '" /><button type="button">-</button>'
+                        ].join('');
                         c.appendChild(item);
                         this.updateAddCargo(this.shipSize * quantity);
-                    }
-                    else {
+                    } else {
                         var found = exists[0],
                             newTotal = found.Object.quantity + quantity,
                             diff = quantity,
@@ -1282,7 +1100,8 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                     var obj = li.Prisoner,
                         gId = obj.id,
                         id = "addPrisoner-" + gId;
-                    if (Sel.query("#" + id, c).length == 0) {
+                    if (Sel.query("#" + id, c)
+                        .length == 0) {
                         var item = document.createElement("li"),
                             del = item.appendChild(document.createElement("div")),
                             content = item.appendChild(document.createElement("div"));
@@ -1315,13 +1134,11 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         newTotal = 0;
                         diff = li.Object.quantity * -1;
                     }
-
                     if (newTotal == 0) {
                         this.updateAddCargo(li.Object.quantity * -1);
                         Event.purgeElement(li);
                         li.parentNode.removeChild(li);
-                    }
-                    else {
+                    } else {
                         lq.innerHTML = newTotal;
                         li.Object.quantity = newTotal;
                         this.updateAddCargo(diff);
@@ -1336,15 +1153,16 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                 }
             },
             AddTrade: function () {
-                var qVal = Dom.get("tradeAddAskingQuantity").value * 1;
+                var qVal = Dom.get("tradeAddAskingQuantity")
+                    .value * 1;
                 if (!Lang.isNumber(qVal) || qVal <= 0) {
-                    Dom.get("tradeAddMessage").innerHTML = "Quantity of asking essentia must be a number and greater than 0";
+                    Dom.get("tradeAddMessage")
+                        .innerHTML = "Quantity of asking essentia must be a number and greater than 0";
                     return;
+                } else {
+                    Dom.get("tradeAddMessage")
+                        .innerHTML = "";
                 }
-                else {
-                    Dom.get("tradeAddMessage").innerHTML = "";
-                }
-
                 var data = {
                     session_id: Game.GetSession(""),
                     building_id: this.building.id,
@@ -1352,7 +1170,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                     ask: qVal
                 },
                     hasResources, hasPlans, hasGlyphs, hasShips, hasPrisoners, lis = Sel.query("li", "tradeAddItems");
-
                 for (n = 0; n < lis.length; n++) {
                     obj = lis[n].Object;
                     if (obj) {
@@ -1376,7 +1193,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         }
                     }
                 }
-
                 Lacuna.Pulser.Show();
                 this.service.add_to_market(data, {
                     success: function (o) {
@@ -1402,21 +1218,21 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                 lis[i].parentNode.removeChild(lis[i]);
                             }
                         }
-                        Dom.get("tradeAddAskingQuantity").value = "";
-                        Dom.get("tradeAddCargo").innerHTML = "0";
+                        Dom.get("tradeAddAskingQuantity")
+                            .value = "";
+                        Dom.get("tradeAddCargo")
+                            .innerHTML = "0";
                         this.fireEvent("onSelectTab", this.mineTabIndex);
                         Lacuna.Pulser.Hide();
                     },
                     scope: this
                 });
             },
-
             //Push Resources
             populatePushResourceName: function () {
                 var elm = Dom.get("tradePushResourceName"),
                     li = document.createElement("li"),
                     nLi, x, r, name, resource;
-
                 if (elm) {
                     elm.innerHTML = "";
                     for (r in Lib.ResourceTypes) {
@@ -1435,8 +1251,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                                         elm.appendChild(nLi);
                                     }
                                 }
-                            }
-                            else if (this.resources[r] && resource) {
+                            } else if (this.resources[r] && resource) {
                                 nLi = li.cloneNode(false);
                                 nLi.Resource = {
                                     type: r,
@@ -1450,7 +1265,8 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                 }
                 //wait for tab to display first
                 setTimeout(function () {
-                    var Ht = Game.GetSize().h - 180;
+                    var Ht = Game.GetSize()
+                        .h - 180;
                     if (Ht > 270) {
                         Ht = 270;
                     }
@@ -1463,7 +1279,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                 var elm = Dom.get("tradePushGlyphName"),
                     li = document.createElement("li"),
                     nLi;
-
                 if (elm) {
                     elm.innerHTML = "";
                     if (this.glyphs.length > 0) {
@@ -1474,20 +1289,17 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             nLi.innerHTML = ['<span class="tradeResourceName">', obj.name.titleCaps(), ' (<label class="quantity">', obj.quantity, '</label>)</span> <input type="text" style="width:75px;" /><button type="button">+</button>'].join('');
                             elm.appendChild(nLi);
                         }
-                    }
-                    else {
+                    } else {
                         nLi = li.cloneNode(false);
                         nLi.innerHTML = "No Glyphs Available";
                         elm.appendChild(nLi);
                     }
                 }
             },
-
             populatePushPlanName: function () {
                 var elm = Dom.get("tradePushPlanName"),
                     li = document.createElement("li"),
                     nLi;
-
                 if (elm) {
                     elm.innerHTML = "";
                     if (this.plans.length > 0) {
@@ -1497,14 +1309,12 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             nLi.Plan = obj;
                             if (obj.extra_build_level > 0) {
                                 nLi.innerHTML = ['<span class="tradeResourceName">', obj.name, ' ', obj.level, '+', obj.extra_build_level, ' (<label class="quantity">', obj.quantity, '</label>)</span> <input type="text" style="width:75px;" /><button type="button">+</button>'].join('');
-                            }
-                            else {
+                            } else {
                                 nLi.innerHTML = ['<span class="tradeResourceName">', obj.name, ' ', obj.level, ' (<label class="quantity">', obj.quantity, '</label>)</span> <input type="text" style="width:75px;" /><button type="button">+</button>'].join('');
                             }
                             elm.appendChild(nLi);
                         }
-                    }
-                    else {
+                    } else {
                         nLi = li.cloneNode(false);
                         nLi.innerHTML = "No Plans Available";
                         elm.appendChild(nLi);
@@ -1515,7 +1325,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                 var elm = Dom.get("tradePushShipName"),
                     li = document.createElement("li"),
                     nLi;
-
                 if (elm) {
                     elm.innerHTML = "";
                     if (this.ships.length > 0) {
@@ -1524,18 +1333,13 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             nLi = li.cloneNode(false);
                             nLi.Ship = obj;
                             nLi.innerHTML = ['<span class="tradeName">',
-                                                                                                         obj.name, ' - ',
-                                                                                                         obj.type.titleCaps('_', ' '),
-                                                                                                         ' - Hold:', obj.hold_size,
-                                                                                                         ' - Berth:', obj.berth_level,
-                                                                                                         ' - Speed:', obj.speed,
-                                                                                                         ' (<label class="quantity">',
-                                                                                                         obj.quantity,
-                                                                                                         '</label>)</span> <input type="text" style="width:75px;" /><button type="button">+</button>'].join('');
+                                obj.name, ' - ',
+                                obj.type.titleCaps('_', ' '), ' - Hold:', obj.hold_size, ' - Berth:', obj.berth_level, ' - Speed:', obj.speed, ' (<label class="quantity">',
+                                obj.quantity, '</label>)</span> <input type="text" style="width:75px;" /><button type="button">+</button>'
+                            ].join('');
                             elm.appendChild(nLi);
                         }
-                    }
-                    else {
+                    } else {
                         nLi = li.cloneNode(false);
                         nLi.innerHTML = "No Ships Available";
                         elm.appendChild(nLi);
@@ -1546,7 +1350,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                 var elm = Dom.get("tradePushPrisonerName"),
                     li = document.createElement("li"),
                     nLi;
-
                 if (elm) {
                     elm.innerHTML = "";
                     if (this.prisoners.length > 0) {
@@ -1557,8 +1360,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             nLi.innerHTML = ['<span class="tradeName">', obj.name, ' ', obj.level, '</span> <button type="button">+</button>'].join('');
                             elm.appendChild(nLi);
                         }
-                    }
-                    else {
+                    } else {
                         nLi = li.cloneNode(false);
                         nLi.innerHTML = "No Prisoners Available";
                         elm.appendChild(nLi);
@@ -1601,8 +1403,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         content.innerHTML = ['<span class="tradeResourceName">', item.Object.type.titleCaps(), ' (<label class="quantity">', quantity, '</label>)</span> <input type="text" style="width:75px;" value="', quantity, '" /><button type="button">-</button>'].join('');
                         c.appendChild(item);
                         this.updatePushCargo(quantity);
-                    }
-                    else {
+                    } else {
                         var found = exists[0],
                             newTotal = found.Object.quantity + quantity,
                             diff = quantity,
@@ -1618,7 +1419,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         lq.innerHTML = newTotal;
                         found.Object.quantity = newTotal;
                         this.updatePushCargo(diff);
-
                         var a = new Util.ColorAnim(lq, {
                             color: {
                                 from: '#0f0',
@@ -1660,8 +1460,7 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         content.innerHTML = ['<span class="tradeResourceName">', gName.titleCaps(), ' (<label class="quantity">', quantity, '</label>)</span> <input type="text" style="width:75px;" value="', quantity, '" /><button type="button">-</button>'].join('');
                         c.appendChild(item);
                         this.updatePushCargo(this.glyphSize * quantity);
-                    }
-                    else {
+                    } else {
                         var found = exists[0],
                             newTotal = found.Object.quantity + quantity,
                             diff = quantity,
@@ -1689,9 +1488,9 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         pType = li.Plan.plan_type,
                         pLevel = li.Plan.level,
                         pExtra = li.Plan.extra_build_level,
-                        id = ['pushPlan-', pType, '-', pLevel, '-', pExtra].join('').titleCaps(' ', '_'),
+                        id = ['pushPlan-', pType, '-', pLevel, '-', pExtra].join('')
+                            .titleCaps(' ', '_'),
                         exists = Sel.query("#" + id, c);
-
                     if (exists.length == 0) {
                         var item = document.createElement("li"),
                             del = item.appendChild(document.createElement("div")),
@@ -1716,15 +1515,12 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         };
                         if (pExtra > 0) {
                             content.innerHTML = ['<span class="tradeResourceName">', pName, ' ', pLevel, '+', pExtra, ' (<label class="quantity">', quantity, '</label>)</span> <input type="text" style="width:75px;" value="', quantity, '" /><button type="button">-</button>'].join('');
-                        }
-                        else {
+                        } else {
                             content.innerHTML = ['<span class="tradeResourceName">', pName, ' ', pLevel, ' (<label class="quantity">', quantity, '</label>)</span> <input type="text" style="width:75px;" value="', quantity, '" /><button type="button">-</button>'].join('');
                         }
-
                         c.appendChild(item);
                         this.updatePushCargo(this.planSize * quantity);
-                    }
-                    else {
+                    } else {
                         var found = exists[0],
                             newTotal = found.Object.quantity + quantity,
                             diff = quantity,
@@ -1753,7 +1549,8 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         sSize = li.Ship.hold_size,
                         sBerth = li.Ship.berth_level,
                         sSpeed = li.Ship.speed,
-                        id = ['pushShip-', sName, sType, sSize, sBerth, sSpeed].join('-').titleCaps(' ', '_'),
+                        id = ['pushShip-', sName, sType, sSize, sBerth, sSpeed].join('-')
+                            .titleCaps(' ', '_'),
                         exists = Sel.query("#" + id, c);
                     if (exists.length == 0) {
                         var item = document.createElement("li"),
@@ -1780,17 +1577,12 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             size: this.shipSize
                         };
                         content.innerHTML = ['<span class="tradeResourceName">',
-                                                                                                 sName, ' - ', sType.titleCaps('_', ' '),
-                                                                                                 ' - Hold:', sSize,
-                                                                                                 ' - Berth:', sBerth,
-                                                                                                 ' - Speed:', sSpeed,
-                                                                                                 ' (<label class="quantity">', quantity,
-                                                                                                 '</label>)</span> <input type="text" style="width:75px;" value="',
-                                                                                                 quantity, '" /><button type="button">-</button>'].join('');
+                            sName, ' - ', sType.titleCaps('_', ' '), ' - Hold:', sSize, ' - Berth:', sBerth, ' - Speed:', sSpeed, ' (<label class="quantity">', quantity, '</label>)</span> <input type="text" style="width:75px;" value="',
+                            quantity, '" /><button type="button">-</button>'
+                        ].join('');
                         c.appendChild(item);
                         this.updatePushCargo(this.shipSize * quantity);
-                    }
-                    else {
+                    } else {
                         var found = exists[0],
                             newTotal = found.Object.quantity + quantity,
                             diff = quantity,
@@ -1816,7 +1608,8 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                     var obj = li.Prisoner,
                         gId = obj.id,
                         id = "pushPrisoner-" + gId;
-                    if (Sel.query("#" + id, c).length == 0) {
+                    if (Sel.query("#" + id, c)
+                        .length == 0) {
                         var item = document.createElement("li"),
                             del = item.appendChild(document.createElement("div")),
                             content = item.appendChild(document.createElement("div"));
@@ -1849,13 +1642,11 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                         newTotal = 0;
                         diff = li.Object.quantity * -1;
                     }
-
                     if (newTotal == 0) {
                         this.updatePushCargo(li.Object.quantity * -1);
                         Event.purgeElement(li);
                         li.parentNode.removeChild(li);
-                    }
-                    else {
+                    } else {
                         lq.innerHTML = newTotal;
                         li.Object.quantity = newTotal;
                         this.updatePushCargo(diff);
@@ -1878,7 +1669,6 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                     lis = Sel.query("li", "tradePushItems"),
                     items = [],
                     hasResources, hasPlans, hasGlyphs, hasShips, hasPrisoners;
-
                 for (var n = 0; n < lis.length; n++) {
                     if (lis[n].Object) {
                         items[n] = lis[n].Object;
@@ -1902,26 +1692,24 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                     }
                 }
                 data.items = items;
-
                 if (data.items.length == 0) {
-                    Dom.get("tradePushMessage").innerHTML = "Must add items to send to colony.";
-                }
-                else {
-                    Dom.get("tradePushMessage").innerHTML = "";
+                    Dom.get("tradePushMessage")
+                        .innerHTML = "Must add items to send to colony.";
+                } else {
+                    Dom.get("tradePushMessage")
+                        .innerHTML = "";
                     Lacuna.Pulser.Show();
                     this.service.push_items(data, {
                         success: function (o) {
                             this.rpcSuccess(o);
-
                             for (var i = 0; i < lis.length; i++) {
                                 if (lis[i].Object) {
                                     Event.purgeElement(lis[i]);
                                     lis[i].parentNode.removeChild(lis[i]);
                                 }
                             }
-
-                            Dom.get("tradePushCargo").innerHTML = "0";
-
+                            Dom.get("tradePushCargo")
+                                .innerHTML = "0";
                             if (hasResources) {
                                 this.getStoredResources(true);
                             }
@@ -1937,9 +1725,10 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                             if (hasShips) {
                                 this.getShips(true);
                             }
-
                             var msg = Dom.get("tradePushMessage");
-                            msg.innerHTML = ["Successfully pushed to ", Lib.getSelectedOption(Dom.get("tradePushColony")).innerHTML, '.'].join('');
+                            msg.innerHTML = ["Successfully pushed to ", Lib.getSelectedOption(Dom.get("tradePushColony"))
+                                .innerHTML, '.'
+                            ].join('');
                             Lib.fadeOutElm("tradePushMessage");
                             Lacuna.Pulser.Hide();
                         },
@@ -1947,16 +1736,12 @@ if (typeof YAHOO.lacuna.buildings.Transporter == "undefined" || !YAHOO.lacuna.bu
                     });
                 }
             }
-
         });
-
         Lacuna.buildings.Transporter = Transporter;
-
     })();
     YAHOO.register("transporter", YAHOO.lacuna.buildings.Transporter, {
         version: "1",
         build: "0"
     });
-
 }
 // vim: noet:ts=4:sw=4

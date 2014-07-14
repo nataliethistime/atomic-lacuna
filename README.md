@@ -41,6 +41,10 @@ Badges! :beginner:
 Changes
 =======
 
+###0.1.2 (Unreleased)
+- Cleaned all of the code out using `node-beautify`.
+- Fixed some errors introduced in the cleaning.
+
 ###0.1.1 (2014-07-13)
 - Include binaries for Windows (32 bit) and Linux (64 and 32 bit).
 

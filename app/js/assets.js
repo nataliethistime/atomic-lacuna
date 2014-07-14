@@ -1,11 +1,10 @@
 /*global YAHOO */
-
 // This is a data structure of all the assets used by the game. This should make
 // adding/changing assets in the templates easier.
 // The starting url all the assets are based off.
 var s = YAHOO.lacuna.Library.AssetUrl,
-    join = require('path').join;
-
+    join = require('path')
+        .join;
 module.exports = {
     ui: {
         small: {
@@ -18,9 +17,6 @@ module.exports = {
             time: join(s, 'ui', 's', 'time.png'),
             refresh: join(s, 'ui', 's', 'refresh.png')
         },
-
-        large: {
-
-        }
+        large: {}
     }
 };

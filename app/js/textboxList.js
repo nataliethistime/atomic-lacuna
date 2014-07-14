@@ -1,8 +1,6 @@
 YAHOO.namespace("lacuna");
-
 //only load this once
 if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList) {
-
     // enclose everything in an anonymous function ...
     (function () {
         // ... so that variables that you declare inside are local to the function and invisible outside
@@ -12,7 +10,6 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
             Lang = YAHOO.lang,
             Lib = YAHOO.lacuna.Library,
             CSS_PREFIX = "TextboxList";
-
         var TBL = function (elInput, oDataSource, oConfigs) {
             if (!oConfigs) {
                 oConfigs = {};
@@ -31,15 +28,12 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                 if (YAHOO.lang.isString(elInput)) {
                     idPrefix = elInput;
                     elInput = document.getElementById(elInput); //get dom object
-                }
-                else {
+                } else {
                     idPrefix = elInput.id;
                 }
-            }
-            else {
+            } else {
                 return;
             }
-
             //setup dom structure
             //Dom.setStyle(elInput, "display", "none"); //hide starting input and use it for storage and form submits
             var tblInput = Dom.get(elInput),
@@ -47,7 +41,6 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                 tblContainer = document.createElement("div"),
                 tblAC = document.createElement("div"),
                 ddIcon, tblListContainer, tblList, tblListInputLine, tblIndicator;
-
             //set needed id's
             tblContainer.id = idPrefix + "Tbl"; //TextboxList
             //tblInput.id = idPrefix + "TblInput"; //TextboxListInput
@@ -62,7 +55,6 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                 tblListContainer = document.createElement("div");
                 tblList = document.createElement("ul");
                 tblListInputLine = document.createElement("li");
-
                 //Dom.addClass(tblContainer, CSS_PREFIX + "Multi"); //add the control class to the Container
                 tblListContainer = tblContainer.appendChild(tblListContainer); //append our list to our textbox container
                 Dom.addClass(tblListContainer, CSS_PREFIX + "Container"); //add the class to the List Container
@@ -72,8 +64,7 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                 Dom.addClass(tblListInputLine, CSS_PREFIX + "Bit"); //add the control class to the LI
                 tblInput = tblListInputLine.appendChild(tblInput); //append our input to the LI
                 Dom.addClass(tblInput, CSS_PREFIX + "Input"); //add the control class to the Input
-            }
-            else {
+            } else {
                 tblInput = tblContainer.appendChild(tblInput); //append our input to the LI
                 Dom.addClass(tblInput, CSS_PREFIX + "InputSingle"); //add the control class to the Input
             }
@@ -90,8 +81,7 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                 Dom.addClass(tblIndicator, CSS_PREFIX + "Indicator");
                 if (oConfigs.multiSelect) {
                     tblIndicator = Dom.insertAfter(tblIndicator, tblInput);
-                }
-                else {
+                } else {
                     Dom.addClass(tblIndicator, CSS_PREFIX + "IndicatorSingle");
                     tblIndicator = Dom.insertBefore(tblIndicator, tblInput);
                 }
@@ -104,7 +94,6 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
             this.dirtyEvent = new Util.CustomEvent("dirty", this);
             this.selectSingleEvent = new Util.CustomEvent("selectSingle", this);
             this.beforeDeleteEvent = new Util.CustomEvent("beforeDelete", this);
-
             //assign private vars
             this._elTblListContainer = tblListContainer;
             this._elTblContainer = tblContainer;
@@ -135,7 +124,6 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
             Event.on(this._elContent, "mouseenter", mouseEnter, oSelf, true);
             //always add this listener
             Event.addListener(tblListContainer, "click", oSelf._onListContainerClick, oSelf);
-
             //if we're using indicator add events to hide and show it
             if (this.useIndicator) {
                 this.dataRequestEvent.subscribe(function (oSelf, sQuery, oRequest) {
@@ -149,7 +137,6 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                 });
             }
         };
-
         // now we are actually doing the inheritance part.
         Lang.extend(TBL, YAHOO.widget.AutoComplete, {
             // the third argument to extend are extra prototypes for the new function
@@ -182,7 +169,8 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
             },
             doBeforeExpandContainer: function (oTextbox, oContainer, sQuery, aResults) {
                 var pos = Dom.getXY(oTextbox);
-                pos[1] += Dom.get(oTextbox).offsetHeight + 2;
+                pos[1] += Dom.get(oTextbox)
+                    .offsetHeight + 2;
                 Dom.setXY(oContainer, pos);
                 return true;
             },
@@ -208,13 +196,12 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                         }
                     }
                     return arr;
-                }
-                else {
+                } else {
                     return this._oTblSingleSelection.Value;
                 }
             },
             /**
-             * items should be an array of objects with the same schema as the datasource.  
+             * items should be an array of objects with the same schema as the datasource.
              */
             SelectItems: function (items) {
                 //clear prior selections
@@ -233,7 +220,6 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                         }
                     }
                 }
-
             },
             /**
              * Reset selections
@@ -248,13 +234,11 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                         //if it doesn't have the bitbox class it's the input field so break out of the while loop because we're done
                         if (!Dom.hasClass(list.firstChild, CSS_PREFIX + "BitBox")) {
                             break;
-                        }
-                        else {
+                        } else {
                             list.removeChild(list.firstChild);
                         }
                     }
-                }
-                else {
+                } else {
                     this._oTblSingleSelection = null;
                     this._sOrigSingleSelection = "";
                     this._elTextbox.value = "";
@@ -272,7 +256,6 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                     this._focus();
                     //container won't show since it's a single request 
                     this._populateList(sQuery, oResponse, oPayload);
-
                     //get all list items
                     var elListItem, allListItemEls = this._elList.childNodes,
                         queue = (oPayload && oPayload.queue) ? oPayload.queue : null;
@@ -283,18 +266,15 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                                 this._selectItem(elListItem);
                             }
                         }
-                    }
-                    else {
+                    } else {
                         //get first
                         elListItem = allListItemEls[0];
                         //select it
                         this._selectItem(elListItem);
                     }
-
                     //remove single response flag
                     this._singleRequest = null;
                     this.dataSource._singleRequest = null;
-
                     //if indicator hide it
                     if (this.useIndicator) {
                         this.hideIndicator();
@@ -363,47 +343,38 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                 if (this._nTypeAheadDelayID != -1) {
                     clearTimeout(this._nTypeAheadDelayID);
                 }
-
                 sQuery = (oPayload && oPayload.query) ? oPayload.query : sQuery;
-
                 // Pass data through abstract method for any transformations
                 var ok = this.doBeforeLoadData(sQuery, oResponse, oPayload);
-
                 // Data is ok
                 if (ok && !oResponse.error) {
                     this.dataReturnEvent.fire(this, sQuery, oResponse.results);
-
                     // Continue only if instance is still focused (i.e., user hasn't already moved on)
                     // Null indicates initialized state, which is ok too
                     //if(this._bFocused || (this._bFocused === null)) {
                     //TODO: is this still necessary?
-/*var isOpera = (YAHOO.env.ua.opera);
+                    /*var isOpera = (YAHOO.env.ua.opera);
                 var contentStyle = this._elContent.style;
                 contentStyle.width = (!isOpera) ? null : "";
                 contentStyle.height = (!isOpera) ? null : "";*/
-
                     // Store state for this interaction
                     var sCurQuery = decodeURIComponent(sQuery);
                     this._sCurQuery = sCurQuery;
                     this._bItemSelected = false;
-
                     var allResults = oResponse.results,
                         nItemsToShow = Math.min(allResults.length, this.maxResultsDisplayed),
                         sMatchKey = (this.dataSource.responseSchema.fields) ? this.formatResultLabelKey : 0;
-
                     if (nItemsToShow > 0) {
                         // Make sure container and helpers are ready to go
                         if (!this._elList || (this._elList.childNodes.length < nItemsToShow)) {
                             this._initListEl();
                         }
                         this._initContainerHelperEls();
-
                         var allListItemEls = this._elList.childNodes;
                         // Fill items with data from the bottom up
                         for (var i = nItemsToShow - 1; i >= 0; i--) {
                             var elListItem = allListItemEls[i],
                                 oResult = allResults[i];
-
                             // Backward compatibility
                             if (this.resultTypeList) {
                                 // Results need to be converted back to an array
@@ -434,14 +405,12 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                                 }
                                 oResult = aResult;
                             }
-
                             // The matching value, including backward compatibility for array format and safety net
                             elListItem._sResultMatch = (YAHOO.lang.isString(oResult)) ? oResult : (YAHOO.lang.isArray(oResult)) ? oResult[0] : (oResult[sMatchKey] || "");
                             elListItem._oResultData = oResult; // Additional data
                             elListItem.innerHTML = this.formatResult(oResult, sCurQuery, elListItem._sResultMatch);
                             elListItem.style.display = "";
                         }
-
                         // Clear out extraneous items
                         if (nItemsToShow < allListItemEls.length) {
                             var extraListItem;
@@ -450,11 +419,8 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                                 extraListItem.style.display = "none";
                             }
                         }
-
                         this._nDisplayedItems = nItemsToShow;
-
                         this.containerPopulateEvent.fire(this, sQuery, allResults);
-
                         // Highlight the first item
                         if (this.autoHighlight) {
                             var elFirstListItem = this._elList.firstChild;
@@ -466,18 +432,15 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                         else {
                             this._toggleHighlight(this._elCurListItem, "from");
                         }
-
                         // If not a single request toggle container
                         if (!this._singleRequest) {
                             // Expand the container
                             ok = this.doBeforeExpandContainer(this._elTextbox, this._elContainer, sQuery, allResults);
                             this._toggleContainer(ok);
                         }
-                    }
-                    else {
+                    } else {
                         this._toggleContainer(false);
                     }
-
                     return;
                 }
                 // Error
@@ -489,7 +452,8 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
              * Enabled and disable the field
              */
             disable: function () {
-                this.getInputEl().disabled = true;
+                this.getInputEl()
+                    .disabled = true;
                 this.disabled = true;
                 Dom.addClass(this.getInputEl(), CSS_PREFIX + "Disabled");
                 Dom.addClass(this._elTblContainer, CSS_PREFIX + "Disabled");
@@ -503,7 +467,8 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                 }
             },
             enable: function () {
-                this.getInputEl().disabled = false;
+                this.getInputEl()
+                    .disabled = false;
                 this.disabled = undefined;
                 Dom.removeClass(this.getInputEl(), CSS_PREFIX + "Disabled");
                 Dom.removeClass(this._elTblContainer, CSS_PREFIX + "Disabled");
@@ -584,8 +549,7 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                         var bit = this._createBit(oData);
                         return bit;
                     }
-                }
-                else {
+                } else {
                     TBL.superclass._updateValue.call(this, elListItem);
                 }
             },
@@ -603,8 +567,7 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                             this.itemSelectEvent.fire(this, elListItem, elListItem._oResultData);
                         }
                         this._toggleContainer(false);
-                    }
-                    else {
+                    } else {
                         var oData = this._createDataObject(elListItem._oResultData);
                         this._oTblSingleSelection = oData;
                         TBL.superclass._selectItem.call(this, elListItem);
@@ -626,8 +589,7 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                     if (oSelf.minQueryLength == 0) {
                         oSelf._elTextbox.focus();
                         oSelf._sendQuery("");
-                    }
-                    else {
+                    } else {
                         oSelf._elTextbox.focus();
                     }
                 }
@@ -657,7 +619,6 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                     if (this.multiSelect) {
                         var cur = this._oTblSelections,
                             orig = this._aOrigSelections;
-
                         for (var s = 0; s < orig.length; s++) {
                             if (!cur[orig[s]]) {
                                 isDirty = true;
@@ -677,8 +638,7 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                                 isDirty = true;
                             }
                         }
-                    }
-                    else {
+                    } else {
                         isDirty = this._sOrigSingleSelection != this._oTblSingleSelection.Value;
                     }
                     //if it changes reset validity
@@ -689,7 +649,6 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
                 }
             }
         });
-
         // Copy static members to class
         Lang.augmentObject(TBL, YAHOO.widget.AutoComplete);
         Lang.augmentObject(TBL, {
@@ -699,15 +658,11 @@ if (typeof YAHOO.lacuna.TextboxList == "undefined" || !YAHOO.lacuna.TextboxList)
         });
         //assign to global
         YAHOO.lacuna.TextboxList = TBL;
-
     })();
-
-
     // Important to register it
     YAHOO.register("textboxList", YAHOO.lacuna.TextboxList, {
         version: "1.0.0",
         build: "1"
     });
-
 }
 // vim: noet:ts=4:sw=4

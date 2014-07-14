@@ -1,7 +1,5 @@
 YAHOO.namespace("lacuna.buildings");
-
 if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.buildings.Intelligence) {
-
     (function () {
         var Lang = YAHOO.lang,
             Util = YAHOO.util,
@@ -12,13 +10,10 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
             Lacuna = YAHOO.lacuna,
             Game = Lacuna.Game,
             Lib = Lacuna.Library;
-
         var Intelligence = function (result) {
             Intelligence.superclass.constructor.call(this, result);
-
             this.service = Game.Services.Buildings.Intelligence;
         };
-
         Lang.extend(Intelligence, Lacuna.buildings.Building, {
             destroy: function () {
                 if (this.pager) {
@@ -33,61 +28,29 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
                 var spies = this.result.spies;
                 this.trainTab = new YAHOO.widget.Tab({
                     label: "Train Spies",
-                    content: [
-                        '<div class="yui-g">',
-                        '    <div class="yui-u first">',
-                        '        <ul>',
-                        '            <li><span style="font-weight:bold;">Spies:</span> <span id="spiesCurrent">', spies.current, '</span> of ', spies.maximum, '</li>',
-                        '            <li id="spiesTrainOptions"><span style="font-weight:bold;">Train:</span> <select id="spiesTrainNumber"></select> new spies. <button type="button" id="spiesTrain">Train</button></li>',
-                        '        </ul>',
-                        '    </div>',
-                        '    <div class="yui-u">',
-                        '        <ul>',
-                        '            <li>Training Costs</li>',
-                        '            <li><span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/food.png" title="Food" class="smallFood" /></span><span class="buildingDetailsNum">', spies.training_costs.food, '</span></li>',
-                        '            <li><span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/ore.png" title="Ore" class="smallOre" /></span><span class="buildingDetailsNum">', spies.training_costs.ore, '</span></li>',
-                        '            <li><span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/water.png" title="Water" class="smallWater" /></span><span class="buildingDetailsNum">', spies.training_costs.water, '</span></li>',
-                        '            <li><span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/energy.png" title="Energy" class="smallEnergy" /></span><span class="buildingDetailsNum">', spies.training_costs.energy, '</span></li>',
-                        '            <li><span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/waste.png" title="Waste" class="smallWaste" /></span><span class="buildingDetailsNum">', spies.training_costs.waste, '</span></li>',
-                        '            <li><span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/time.png" title="Time" class="smallTime" /></span><span class="buildingDetailsNum">', Lib.formatTime(spies.training_costs.time), '</span></li>',
-                        '        </ul>',
-                        '    </div>',
-                        '</div>'
-                        ].join('')
+                    content: ['<div class="yui-g">', '    <div class="yui-u first">', '        <ul>', '            <li><span style="font-weight:bold;">Spies:</span> <span id="spiesCurrent">', spies.current, '</span> of ', spies.maximum, '</li>', '            <li id="spiesTrainOptions"><span style="font-weight:bold;">Train:</span> <select id="spiesTrainNumber"></select> new spies. <button type="button" id="spiesTrain">Train</button></li>', '        </ul>', '    </div>', '    <div class="yui-u">', '        <ul>', '            <li>Training Costs</li>', '            <li><span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/food.png" title="Food" class="smallFood" /></span><span class="buildingDetailsNum">', spies.training_costs.food, '</span></li>', '            <li><span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/ore.png" title="Ore" class="smallOre" /></span><span class="buildingDetailsNum">', spies.training_costs.ore, '</span></li>', '            <li><span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/water.png" title="Water" class="smallWater" /></span><span class="buildingDetailsNum">', spies.training_costs.water, '</span></li>', '            <li><span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/energy.png" title="Energy" class="smallEnergy" /></span><span class="buildingDetailsNum">', spies.training_costs.energy, '</span></li>', '            <li><span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/waste.png" title="Waste" class="smallWaste" /></span><span class="buildingDetailsNum">', spies.training_costs.waste, '</span></li>', '            <li><span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/time.png" title="Time" class="smallTime" /></span><span class="buildingDetailsNum">', Lib.formatTime(spies.training_costs.time), '</span></li>', '        </ul>', '    </div>', '</div>'].join('')
                 });
                 this.trainTab.subscribe("activeChange", this.trainView, this, true);
                 var btn = Sel.query("button", this.trainTab.get("contentEl"), true);
                 if (btn) {
                     Event.on(btn, "click", this.SpyTrain, this, true);
                 }
-
                 return this.trainTab;
             },
             _getSpiesTab: function () {
                 this.spiesTab = new YAHOO.widget.Tab({
                     label: "Spies",
-                    content: [
-                        '<div>',
-                        '    <p id="spiesSubsidizeOffer" style="display:none;">You may subsidize training for 1 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" /> per spy. <button type="button" id="spiesSubsidize">Subsidize</button></p>',
-                        '    <div>',
-                        '        <div id="spiesDetails">',
-                        '        </div>',
-                        '    </div>',
-                        '    <div id="spyPaginator"></div>',
-                        '</div>'
-                        ].join('')
+                    content: ['<div>', '    <p id="spiesSubsidizeOffer" style="display:none;">You may subsidize training for 1 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" /> per spy. <button type="button" id="spiesSubsidize">Subsidize</button></p>', '    <div>', '        <div id="spiesDetails">', '        </div>', '    </div>', '    <div id="spyPaginator"></div>', '</div>'].join('')
                 });
                 this.spiesTab.subscribe("activeChange", this.spiesView, this, true);
-
                 Event.on("spiesSubsidize", "click", this.Subsidize, this, true);
-
                 return this.spiesTab;
             },
-
             trainView: function (e) {
                 var spies = this.result.spies;
                 var canTrain = spies.maximum - spies.current;
-                Dom.get("spiesCurrent").innerHTML = spies.current;
+                Dom.get("spiesCurrent")
+                    .innerHTML = spies.current;
                 if (canTrain > 0) {
                     Dom.setStyle('spiesTrainOptions', 'display', '');
                     var elNumSelect = Dom.get('spiesTrainNumber');
@@ -104,11 +67,9 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
                         elOption.innerHTML = n;
                         elNumSelect.appendChild(elOption);
                     }
-                }
-                else {
+                } else {
                     Dom.setStyle('spiesTrainOptions', 'display', 'none');
                 }
-
             },
             spiesView: function (e) {
                 if (e.newValue) {
@@ -129,22 +90,18 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
                                     containers: 'spyPaginator',
                                     template: "{PreviousPageLink} {PageLinks} {NextPageLink}",
                                     alwaysVisible: false
-
                                 });
                                 this.pager.subscribe('changeRequest', this.SpyHandlePagination, this, true);
                                 this.pager.render();
-
                                 this.SpyPopulate();
                             },
                             scope: this
                         });
-                    }
-                    else {
+                    } else {
                         this.SpyPopulate();
                     }
                 }
             },
-
             SpyInfo: function (spy) {
                 var assign = spy.possible_assignments,
                     div = document.createElement("div"),
@@ -154,11 +111,9 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
                 var nDiv = div.cloneNode(false),
                     nUl = ul.cloneNode(false),
                     nLi = li.cloneNode(false);
-
                 Dom.addClass(nDiv, "spyInfo");
                 nDiv.id = 'spy' + spy.id;
                 Dom.addClass(nUl, "clearafter");
-
                 Dom.addClass(nLi, "spyName");
                 nLi.innerHTML = spy.name;
                 nUl.appendChild(nLi);
@@ -167,16 +122,13 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
                     Spy: spy,
                     el: nLi
                 }, true);
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, "spyAssignedTo");
                 nLi.innerHTML = '<label>Assigned To:</label> <a class="starmap_link" href="#' + spy.assigned_to.x + 'x' + spy.assigned_to.y + '">' + spy.assigned_to.name + '</a>';
                 Event.delegate(nLi, "click", this.handleStarmapLink, "a.starmap_link", this, true);
                 nUl.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, "spyAssignment");
-
                 var sel;
                 if (spy.is_available && spy.assignment != 'Mercenary Transport') {
                     sel = document.createElement("select");
@@ -194,9 +146,7 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
                         sel.appendChild(nOpt);
                     }
                     Event.on(sel, "change", this.SpyAssignChange);
-
                     nLi.appendChild(sel);
-
                     btn.setAttribute("type", "button");
                     btn.innerHTML = "Assign";
                     Dom.setStyle(btn, "display", "none");
@@ -207,14 +157,12 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
                         Line: nDiv
                     }, true);
                     sel.Button = nLi.appendChild(btn);
-                }
-                else {
+                } else {
                     nLi.innerHTML = spy.assignment;
                     if (!isTraining) {
                         isTraining = spy.assignment == "Training";
                     }
                 }
-
                 // Add mission results if they exist
                 if (spy.mission) {
                     var elem = sel ? sel : nLi;
@@ -232,99 +180,78 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
                         Line: nDiv
                     }, true);
                     Dom.setStyle(result_link, "display", "none");
-
                     elem.ResultText = result.appendChild(result_text);
                     elem.ResultLink = result.appendChild(result_link);
                     elem.Results = nLi.appendChild(result);
-
                     var mission = spy.mission;
-                    elem.ResultText.innerHTML = "Mission " + mission.result + (
-                    mission.reason ? ": " + mission.reason : ".");
+                    elem.ResultText.innerHTML = "Mission " + mission.result + (mission.reason ? ": " + mission.reason : ".");
                     Dom.setStyle(elem.Results, "display", "block");
                     if (mission.message_id) {
                         elem.ResultLink.MessageId = mission.message_id;
                         Dom.setStyle(elem.ResultLink, "display", "inline");
-                    }
-                    else {
+                    } else {
                         Dom.setStyle(elem.ResultLink, "display", "none");
                     }
                 }
-
                 nUl.appendChild(nLi);
-
                 nDiv.appendChild(nUl);
                 nUl = ul.cloneNode(false);
                 Dom.addClass(nUl, "clearafter");
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, "spyLevel");
                 nLi.innerHTML = "<label>Level:</label>" + spy.level;
                 nUl.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, "spyOffense");
                 nLi.innerHTML = "<label>Offense:</label>" + spy.offense_rating;
                 nUl.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, "spyDefense");
                 nLi.innerHTML = "<label>Defense:</label>" + spy.defense_rating;
                 nUl.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, "spyAvailableWhen");
                 nLi.innerHTML = "<label>Available:</label>" + (spy.is_available ? 'Now' : Lib.formatServerDate(spy.available_on));
                 nUl.appendChild(nLi);
-
                 nDiv.appendChild(nUl);
                 nUl = ul.cloneNode(false);
                 Dom.addClass(nUl, "clearafter");
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, "spyIntel");
                 nLi.innerHTML = "<label>Intel:</label>" + spy.intel;
                 nUl.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, "spyMayhem");
                 nLi.innerHTML = "<label>Mayhem:</label>" + spy.mayhem;
                 nUl.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, "spyPolitics");
                 nLi.innerHTML = "<label>Politics:</label>" + spy.politics;
                 nUl.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, "spyTheft");
                 nLi.innerHTML = "<label>Theft:</label>" + spy.theft;
                 nUl.appendChild(nLi);
-
                 var mission_count = spy.mission_count;
                 nDiv.appendChild(nUl);
                 nUl = ul.cloneNode(false);
                 Dom.addClass(nUl, "clearafter");
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, "spyMissionCounts");
                 nLi.innerHTML = "<label>Mission Count</label>";
                 nUl.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, "spyOffensiveMissions");
                 nLi.innerHTML = "<label>Offensive:</label>" + mission_count.offensive;
                 nUl.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, "spyDefensiveMissions");
                 nLi.innerHTML = "<label>Defensive:</label>" + mission_count.defensive;
                 nUl.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, "spyTotalMissions");
                 nLi.innerHTML = "<label>Total:</label>" + (parseInt(mission_count.defensive, 10) + parseInt(mission_count.offensive, 10));
                 nUl.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, "spyBurn");
                 var bbtn = document.createElement("button");
@@ -332,15 +259,12 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
                 bbtn.innerHTML = "Burn";
                 bbtn = nLi.appendChild(bbtn);
                 nUl.appendChild(nLi);
-
                 nDiv.appendChild(nUl);
-
                 Event.on(bbtn, "click", this.SpyBurn, {
                     Self: this,
                     Spy: spy,
                     Line: nDiv
                 }, true);
-
                 return [nDiv, isTraining];
             },
             SpyPopulate: function () {
@@ -348,12 +272,10 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
                 if (details) {
                     var spies = this.spies.spies,
                         nDiv, isTraining;
-
                     Event.purgeElement(details);
                     details.innerHTML = "";
                     Dom.setStyle(details.parentNode, "height", "");
                     Dom.setStyle(details.parentNode, "overflow-y", "");
-
                     for (var i = 0; i < spies.length; i++) {
                         var ret = this.SpyInfo(spies[i]);
                         nDiv = ret[0];
@@ -362,19 +284,19 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
                         }
                         details.appendChild(nDiv);
                     }
-
                     if (isTraining) {
-                        Dom.get("spiesSubsidize").disabled = false;
+                        Dom.get("spiesSubsidize")
+                            .disabled = false;
                         Dom.setStyle("spiesSubsidizeOffer", "display", "");
-                    }
-                    else {
-                        Dom.get("spiesSubsidize").disabled = true;
+                    } else {
+                        Dom.get("spiesSubsidize")
+                            .disabled = true;
                         Dom.setStyle("spiesSubsidizeOffer", "display", "none");
                     }
-
                     //wait for tab to display first
                     setTimeout(function () {
-                        var Ht = Game.GetSize().h - 150;
+                        var Ht = Game.GetSize()
+                            .h - 150;
                         if (Ht > 300) {
                             Ht = 300;
                         }
@@ -413,7 +335,6 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
                     },
                     scope: this
                 });
-
                 // Update the Paginator's state
                 this.pager.setState(newState);
             },
@@ -428,7 +349,6 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
             SpyAssign: function () {
                 Lacuna.Pulser.Show();
                 var assign = this.Assign[this.Assign.selectedIndex].value;
-
                 this.Self.service.assign_spy({
                     session_id: Game.GetSession(),
                     building_id: this.Self.building.id,
@@ -466,7 +386,6 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
             SpyBurn: function () {
                 if (confirm(["Are you sure you want to Burn ", this.Spy.name, "?"].join(''))) {
                     Lacuna.Pulser.Show();
-
                     this.Self.service.burn_spy({
                         session_id: Game.GetSession(),
                         building_id: this.Self.building.id,
@@ -492,7 +411,6 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
             },
             SpyName: function () {
                 this.el.innerHTML = "";
-
                 var inp = document.createElement("input"),
                     bSave = document.createElement("button"),
                     bCancel = bSave.cloneNode(false);
@@ -505,9 +423,7 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
                 bCancel.setAttribute("type", "button");
                 bCancel.innerHTML = "Cancel";
                 Event.on(bCancel, "click", this.Self.SpyNameClear, this, true);
-
                 Event.removeListener(this.el, "click");
-
                 this.el.appendChild(inp);
                 this.el.appendChild(document.createElement("br"));
                 this.el.appendChild(bSave);
@@ -517,7 +433,6 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
                 Event.stopEvent(e);
                 Lacuna.Pulser.Show();
                 var newName = this.Input.value;
-
                 this.Self.service.name_spy({
                     session_id: Game.GetSession(),
                     building_id: this.Self.building.id,
@@ -559,7 +474,6 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
             SpyTrain: function () {
                 var select = Dom.get("spiesTrainNumber"),
                     num = select[select.selectedIndex].value * 1;
-
                 if (Lang.isNumber(num) && num <= this.result.spies.maximum - this.result.spies.current) {
                     Lacuna.Pulser.Show();
                     this.service.train_spy({
@@ -590,8 +504,8 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
             },
             Subsidize: function (e) {
                 Lacuna.Pulser.Show();
-                Dom.get("spiesSubsidize").disabled = true;
-
+                Dom.get("spiesSubsidize")
+                    .disabled = true;
                 this.service.subsidize_training({
                     session_id: Game.GetSession(),
                     building_id: this.building.id
@@ -599,28 +513,24 @@ if (typeof YAHOO.lacuna.buildings.Intelligence == "undefined" || !YAHOO.lacuna.b
                     success: function (o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
-
                         delete this.spies;
                         this.spiesView({
                             newValue: 1
                         });
                     },
                     failure: function (o) {
-                        Dom.get("spiesSubsidize").disabled = false;
+                        Dom.get("spiesSubsidize")
+                            .disabled = false;
                     },
                     scope: this
                 });
             }
-
         });
-
         YAHOO.lacuna.buildings.Intelligence = Intelligence;
-
     })();
     YAHOO.register("Intelligence", YAHOO.lacuna.buildings.Intelligence, {
         version: "1",
         build: "0"
     });
-
 }
 // vim: noet:ts=4:sw=4

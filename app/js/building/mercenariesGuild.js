@@ -1,7 +1,5 @@
 YAHOO.namespace("lacuna.buildings");
-
 if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacuna.buildings.MercenariesGuild) {
-
     (function () {
         var Lang = YAHOO.lang,
             Util = YAHOO.util,
@@ -12,20 +10,15 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
             Lacuna = YAHOO.lacuna,
             Game = Lacuna.Game,
             Lib = Lacuna.Library;
-
         var MercenariesGuild = function (result) {
             MercenariesGuild.superclass.constructor.call(this, result);
-
             this.service = Game.Services.Buildings.MercenariesGuild;
-
             this.availableAcceptText = "Accept";
             var cost = Math.round((3 - (this.building.level * 0.1)) * 10) / 10;
             this.addMercenariesGuildText = ['Add for ', cost, '<img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" style="vertical-align:middle;" />'].join('');
-
             //defaults.  Values are updated to server numbers during get_* calls
             this.spySize = 350;
             this.createEvent("onLoadSpies");
-
             if (this.building.level > 0) {
                 this.subscribe("onLoad", function () {
                     this.getSpies();
@@ -35,7 +28,6 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                 }, this, true);
             }
         };
-
         Lang.extend(MercenariesGuild, Lacuna.buildings.Building, {
             destroy: function () {
                 if (this.availablePager) {
@@ -53,59 +45,26 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
             _getAvailTab: function () {
                 this.avail = new YAHOO.widget.Tab({
                     label: "Available Mercs",
-                    content: [
-                        '<div>',
-                        '    <ul class="tradeHeader tradeInfo clearafter">',
-                        '        <li class="tradeEmpire">Empire</li>',
-                        '        <li class="tradeOfferedDate">Offered Date</li>',
-                        '        <li class="tradeAsking">Cost</li>',
-                        '        <li class="tradeOffer">Offering</li>',
-                        '        <li class="tradeAction"></li>',
-                        '        <li class="tradeAction"></li>',
-                        '    </ul>',
-                        '    <div><div id="tradeAvailableDetails"></div></div>',
-                        '    <div id="tradeAvailablePaginator"></div>',
-                        '</div>'].join('')
+                    content: ['<div>', '    <ul class="tradeHeader tradeInfo clearafter">', '        <li class="tradeEmpire">Empire</li>', '        <li class="tradeOfferedDate">Offered Date</li>', '        <li class="tradeAsking">Cost</li>', '        <li class="tradeOffer">Offering</li>', '        <li class="tradeAction"></li>', '        <li class="tradeAction"></li>', '    </ul>', '    <div><div id="tradeAvailableDetails"></div></div>', '    <div id="tradeAvailablePaginator"></div>', '</div>'].join('')
                 });
-
                 return this.avail;
             },
             _getMineTab: function () {
                 this.mine = new YAHOO.widget.Tab({
                     label: "My Mercs",
-                    content: ['<div class="myMercenariesGuilds">',
-                                                                '    <ul class="tradeHeader tradeInfo clearafter">',
-                                                                '        <li class="tradeOfferedDate">Offered Date</li>',
-                                                                '        <li class="tradeAsking">Cost</li>',
-                                                                '        <li class="tradeOffer">Offering</li>',
-                                                                '        <li class="tradeAction"></li>',
-                                                                '    </ul>',
-                                                                '    <div><div id="tradeMineDetails"></div></div>',
-                                                                '    <div id="tradeMinePaginator"></div>',
-                                                                '</div>'].join('')
+                    content: ['<div class="myMercenariesGuilds">', '    <ul class="tradeHeader tradeInfo clearafter">', '        <li class="tradeOfferedDate">Offered Date</li>', '        <li class="tradeAsking">Cost</li>', '        <li class="tradeOffer">Offering</li>', '        <li class="tradeAction"></li>', '    </ul>', '    <div><div id="tradeMineDetails"></div></div>', '    <div id="tradeMinePaginator"></div>', '</div>'].join('')
                 });
-
                 return this.mine;
             },
             _getAddTab: function () {
                 this.add = new YAHOO.widget.Tab({
                     label: "Add Merc",
-                    content: [
-                        '<div id="aHt">',
-                        '<ul style="margin-top:5px;">',
-                        '    <li><label>Spy:</label><select id="tradeAddSpyName"></select></li>',
-                        '    <li style="margin: 5px 0;"><label>Asking Essentia:</label><input type="text" id="tradeAddAskingQuantity" /></li>',
-                        '    <li style="margin-bottom:5px;"><label>With Ship:</label><select id="tradeAddShip"></select></li>',
-                        '    <li id="tradeAddMessage" class="alert"></li>',
-                        '</ul></div><button id="tradeAdd" type="button">', this.addMercenariesGuildText, '</button>'].join('')
+                    content: ['<div id="aHt">', '<ul style="margin-top:5px;">', '    <li><label>Spy:</label><select id="tradeAddSpyName"></select></li>', '    <li style="margin: 5px 0;"><label>Asking Essentia:</label><input type="text" id="tradeAddAskingQuantity" /></li>', '    <li style="margin-bottom:5px;"><label>With Ship:</label><select id="tradeAddShip"></select></li>', '    <li id="tradeAddMessage" class="alert"></li>', '</ul></div><button id="tradeAdd" type="button">', this.addMercenariesGuildText, '</button>'].join('')
                 });
-
                 this.subscribe("onLoadSpies", this.populateAddSpyName, this, true);
-
                 Event.on("tradeAdd", "click", this.AddMerc, this, true);
                 return this.add;
             },
-
             getSpies: function (force) {
                 if (force || !this.spies) {
                     Lacuna.Pulser.Show();
@@ -124,7 +83,6 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                     });
                 }
             },
-
             //View Available
             getAvailable: function (e) {
                 if (e.newValue && !this.availableMercs) {
@@ -134,12 +92,10 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                         building_id: this.building.id,
                         page_number: 1
                     };
-
                     this.service.view_market(data, {
                         success: function (o) {
                             Lacuna.Pulser.Hide();
                             this.rpcSuccess(o);
-
                             delete o.result.status; //get rid of status after we process it, since it's big
                             this.availableMercs = o.result; //store: trades=[], trade_count = 1, page_number=1,  captcha = {guid, url}
                             this.availablePager = new Pager({
@@ -148,11 +104,9 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                                 containers: 'tradeAvailablePaginator',
                                 template: "{PreviousPageLink} {PageLinks} {NextPageLink}",
                                 alwaysVisible: false
-
                             });
                             this.availablePager.subscribe('changeRequest', this.AvailableHandlePagination, this, true);
                             this.availablePager.render();
-
                             this.AvailablePopulate();
                         },
                         scope: this
@@ -161,45 +115,36 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
             },
             AvailablePopulate: function () {
                 var details = Dom.get("tradeAvailableDetails");
-
                 if (details) {
                     var trades = this.availableMercs.trades,
                         ul = document.createElement("ul"),
                         li = document.createElement("li");
-
                     Event.purgeElement(details);
                     details.innerHTML = "";
-
                     for (var i = 0; i < trades.length; i++) {
                         var trade = trades[i],
                             bbtn, nUl = ul.cloneNode(false),
                             nLi = li.cloneNode(false);
-
                         nUl.MercenariesGuild = trade;
                         Dom.addClass(nUl, "tradeInfo");
                         Dom.addClass(nUl, "clearafter");
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeEmpire");
                         nLi.innerHTML = trade.empire.name;
                         Event.on(nLi, "click", this.EmpireProfile, trade.empire);
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeOfferedDate");
                         nLi.innerHTML = Lib.formatServerDateTimeShort(trade.date_offered);
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeAsking");
                         nLi.innerHTML = [trade.ask, '<img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" />'].join('');
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeOffer");
                         nLi.innerHTML = Lib.formatInlineList(trade.offer);
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeAction");
                         bbtn = document.createElement("button");
@@ -212,7 +157,6 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                             Line: nUl
                         }, true);
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeAction");
                         bbtn = document.createElement("button");
@@ -226,13 +170,12 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                             Line: nUl
                         }, true);
                         nUl.appendChild(nLi);
-
                         details.appendChild(nUl);
-
                     }
                     //wait for tab to display first
                     setTimeout(function () {
-                        var Ht = Game.GetSize().h - 240;
+                        var Ht = Game.GetSize()
+                            .h - 240;
                         if (Ht > 300) {
                             Ht = 300;
                         }
@@ -249,19 +192,16 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                     building_id: this.building.id,
                     page_number: newState.page
                 };
-
                 this.service.view_market(data, {
                     success: function (o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
-
                         delete o.result.status; //get rid of status after we process it, since it's big
                         this.availableMercs = o.result; //store: trades=[], trade_count = 1, page_number=1,  captcha = {guid, url}
                         this.AvailablePopulate();
                     },
                     scope: this
                 });
-
                 // Update the Paginator's state
                 this.availablePager.setState(newState);
             },
@@ -302,7 +242,6 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                     success: function (o) {
                         Event.purgeElement(btn);
                         btn.parentNode.removeChild(btn);
-
                         this.Self.rpcSuccess(o);
                         Lacuna.Pulser.Hide();
                     },
@@ -315,7 +254,6 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
             EmpireProfile: function (e, empire) {
                 Lacuna.Info.Empire.Load(empire.id);
             },
-
             //View Mine
             getMine: function (e) {
                 if (e.newValue && !this.mineMercs) {
@@ -328,7 +266,6 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                         success: function (o) {
                             Lacuna.Pulser.Hide();
                             this.rpcSuccess(o);
-
                             delete o.result.status; //get rid of status after we process it, since it's big
                             this.mineMercs = o.result; //store: trades=[], trade_count = 1, page_number=1
                             this.minePage = new Pager({
@@ -337,11 +274,9 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                                 containers: 'tradeMinePaginator',
                                 template: "{PreviousPageLink} {PageLinks} {NextPageLink}",
                                 alwaysVisible: false
-
                             });
                             this.minePage.subscribe('changeRequest', this.MineHandlePagination, this, true);
                             this.minePage.render();
-
                             this.MinePopulate();
                         },
                         scope: this
@@ -350,39 +285,31 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
             },
             MinePopulate: function () {
                 var details = Dom.get("tradeMineDetails");
-
                 if (details) {
                     var trades = this.mineMercs.trades,
                         ul = document.createElement("ul"),
                         li = document.createElement("li");
-
                     Event.purgeElement(details);
                     details.innerHTML = "";
-
                     for (var i = 0; i < trades.length; i++) {
                         var trade = trades[i],
                             nUl = ul.cloneNode(false),
                             nLi = li.cloneNode(false);
-
                         nUl.Trade = trade;
                         Dom.addClass(nUl, "tradeInfo");
                         Dom.addClass(nUl, "clearafter");
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeOfferedDate");
                         nLi.innerHTML = Lib.formatServerDateTimeShort(trade.date_offered);
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeAsking");
                         nLi.innerHTML = [trade.ask, '<img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" />'].join('');
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeOffer");
                         nLi.innerHTML = Lib.formatInlineList(trade.offer);
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "tradeAction");
                         var bbtn = document.createElement("button");
@@ -394,16 +321,13 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                             Trade: trade,
                             Line: nUl
                         }, true);
-
                         nUl.appendChild(nLi);
-
                         details.appendChild(nUl);
-
                     }
-
                     //wait for tab to display first
                     setTimeout(function () {
-                        var Ht = Game.GetSize().h - 240;
+                        var Ht = Game.GetSize()
+                            .h - 240;
                         if (Ht > 300) {
                             Ht = 300;
                         }
@@ -424,14 +348,12 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                         YAHOO.log(o, "info", "MercenariesGuild.view_available_trades.success");
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
-
                         delete o.result.status; //get rid of status after we process it, since it's big
                         this.mineMercs = o.result; //store: trades=[], trade_count = 1, page_number=1
                         this.MinePopulate();
                     },
                     scope: this
                 });
-
                 // Update the Paginator's state
                 this.minePage.setState(newState);
             },
@@ -456,7 +378,6 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                                 }
                             }
                             this.Line.parentNode.removeChild(this.Line);
-
                             Lacuna.Pulser.Hide();
                             //delete ships since we'll get one back on withdraw
                             delete this.Self.tradeShips;
@@ -467,18 +388,15 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                         },
                         scope: this
                     });
-                }
-                else {
+                } else {
                     btn.disabled = false;
                 }
             },
-
             //Add trade
             populateAddSpyName: function () {
                 var elm = Dom.get("tradeAddSpyName"),
                     opt = document.createElement("option"),
                     nOpt;
-
                 if (elm) {
                     elm.options.length = 0;
                     for (var x = 0; x < this.spies.length; x++) {
@@ -493,22 +411,18 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
             getAddShips: function (e) {
                 if (e.newValue && !this.tradeShips) {
                     Lacuna.Pulser.Show();
-
                     this.service.get_trade_ships({
                         session_id: Game.GetSession(""),
                         building_id: this.building.id
                     }, {
                         success: function (o) {
                             this.rpcSuccess(o);
-
                             var elm = Dom.get("tradeAddShip"),
                                 opt = document.createElement("option"),
                                 ships = o.result.ships,
                                 nOpt;
-
                             if (elm && ships) {
                                 this.tradeShips = ships;
-
                                 var selectedVal = Lib.getSelectedOptionValue(elm);
                                 elm.options.length = 0;
                                 for (var x = 0; x < ships.length; x++) {
@@ -520,7 +434,6 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                                     elm.appendChild(nOpt);
                                 }
                             }
-
                             Lacuna.Pulser.Hide();
                         },
                         scope: this
@@ -533,18 +446,18 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                 c.innerHTML = cv + byVal;
             },
             AddMerc: function (e) {
-                var qVal = Dom.get("tradeAddAskingQuantity").value * 1;
+                var qVal = Dom.get("tradeAddAskingQuantity")
+                    .value * 1;
                 if (!Lang.isNumber(qVal) || qVal <= 0) {
-                    Dom.get("tradeAddMessage").innerHTML = "Quantity of asking essentia must be a number and greater than 0";
+                    Dom.get("tradeAddMessage")
+                        .innerHTML = "Quantity of asking essentia must be a number and greater than 0";
                     return;
+                } else {
+                    Dom.get("tradeAddMessage")
+                        .innerHTML = "";
                 }
-                else {
-                    Dom.get("tradeAddMessage").innerHTML = "";
-                }
-
                 var btn = Event.getTarget(e);
                 btn.disabled = true;
-
                 var data = {
                     session_id: Game.GetSession(""),
                     building_id: this.building.id,
@@ -552,14 +465,14 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                     ask: qVal,
                     ship_id: Lib.getSelectedOptionValue("tradeAddShip")
                 };
-
                 Lacuna.Pulser.Show();
                 this.service.add_to_market(data, {
                     success: function (o) {
                         this.rpcSuccess(o);
                         delete this.tradeShips;
                         this.getSpies(true);
-                        Dom.get("tradeAddAskingQuantity").value = "";
+                        Dom.get("tradeAddAskingQuantity")
+                            .value = "";
                         delete this.mineMercs;
                         this.fireEvent("onSelectTab", this.mineTabIndex);
                         btn.disabled = false;
@@ -571,16 +484,12 @@ if (typeof YAHOO.lacuna.buildings.MercenariesGuild == "undefined" || !YAHOO.lacu
                     scope: this
                 });
             }
-
         });
-
         Lacuna.buildings.MercenariesGuild = MercenariesGuild;
-
     })();
     YAHOO.register("trade", YAHOO.lacuna.buildings.MercenariesGuild, {
         version: "1",
         build: "0"
     });
-
 }
 // vim: noet:ts=4:sw=4

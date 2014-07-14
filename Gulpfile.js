@@ -3,7 +3,7 @@ var gutil      = require('gulp-util');
 
 var cssConcat  = require('gulp-concat-css');
 var jslint     = require('gulp-jslint');
-var beautify   = require('gulp-beautify');
+var beautify   = require('gulp-js-prettify');
 
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
@@ -60,8 +60,10 @@ gulp.task('code-build', ['code-clean'], function() {
 gulp.task('code-clean', function () {
     gulp.src(JS_FILES)
         .pipe(beautify({
-            keepArrayIndentation : true,
-            lookup : false
+            preserve_newlines : false,
+            jslint_happy : true,
+            break_chained_methods : true,
+            good_stuff : true
         }))
         .pipe(gulp.dest('app/js'));
 });

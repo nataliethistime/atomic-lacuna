@@ -1,7 +1,5 @@
 YAHOO.namespace("lacuna");
-
 if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesDesigner) {
-
     (function () {
         var Util = YAHOO.util,
             Dom = Util.Dom,
@@ -11,14 +9,11 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
             Game = Lacuna.Game,
             Slider = YAHOO.widget.Slider,
             Lib = Lacuna.Library;
-
         var SpeciesDesigner = function (config) {
             if ((typeof config !== 'undefined') && (typeof config.templates !== 'undefined') && !config.templates) {
                 this.speciesTemplates = [];
-            }
-            else {
-                this.speciesTemplates = [
-                    {
+            } else {
+                this.speciesTemplates = [{
                     name: 'Average',
                     description: 'Not specializing in any area, but without any particular weaknesses.',
                     min_orbit: 3,
@@ -33,8 +28,8 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                     environmental_affinity: 4,
                     political_affinity: 4,
                     trade_affinity: 4,
-                    growth_affinity: 4},
-                {
+                    growth_affinity: 4
+                }, {
                     name: 'Resilient',
                     description: 'Resilient and able to colonize most any planet.  Somewhat docile, but very quick learners and above average at producing any resource.',
                     min_orbit: 2,
@@ -49,8 +44,8 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                     environmental_affinity: 5,
                     political_affinity: 1,
                     trade_affinity: 1,
-                    growth_affinity: 3},
-                {
+                    growth_affinity: 3
+                }, {
                     name: 'Warmonger',
                     description: 'Adept at ship building and espionage. They are bent on domination.',
                     min_orbit: 4,
@@ -65,8 +60,8 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                     environmental_affinity: 2,
                     political_affinity: 7,
                     trade_affinity: 1,
-                    growth_affinity: 5},
-                {
+                    growth_affinity: 5
+                }, {
                     name: 'Viral',
                     description: 'Proficient at growing at the most expedient pace like a virus in the Expanse.',
                     min_orbit: 1,
@@ -81,8 +76,8 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                     environmental_affinity: 1,
                     political_affinity: 7,
                     trade_affinity: 1,
-                    growth_affinity: 7},
-                {
+                    growth_affinity: 7
+                }, {
                     name: 'Trader',
                     description: 'Masters of commerce and ship building.',
                     min_orbit: 2,
@@ -97,8 +92,8 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                     environmental_affinity: 1,
                     political_affinity: 1,
                     trade_affinity: 7,
-                    growth_affinity: 2}
-                ];
+                    growth_affinity: 2
+                }];
             }
         };
         SpeciesDesigner.prototype = {
@@ -107,7 +102,6 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                 var container = document.createElement('div');
                 this.container = container;
                 container.innerHTML = this._getHtml();
-
                 this.elMessage = Sel.query(".speciesMessage", container, true);
                 this.elName = Sel.query(".speciesName", container, true);
                 this.elDesc = Sel.query(".speciesDesc", container, true);
@@ -117,7 +111,6 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                         Event.stopEvent(e);
                         this.selectTemplate(matchedEl.TemplateIndex);
                     }, '.speciesTemplate', this, true);
-
                     for (var i = 0; i < this.speciesTemplates.length; i++) {
                         var template = this.speciesTemplates[i];
                         var tButton = document.createElement('button');
@@ -127,8 +120,7 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                         Dom.addClass(tButton, 'speciesTemplate');
                         this.elTemplates.appendChild(tButton);
                     }
-                }
-                else {
+                } else {
                     Dom.setStyle(Sel.query(".speciesButtons", container, true), 'display', 'none');
                 }
                 el.appendChild(container);
@@ -151,32 +143,27 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                 this.speciesPolitical = this._createHorizSingle("speciesPolitical", "speciesPolitical_thumb", "speciesPolitical_num");
                 this.speciesTrade = this._createHorizSingle("speciesTrade", "speciesTrade_thumb", "speciesTrade_num");
                 this.speciesGrowth = this._createHorizSingle("speciesGrowth", "speciesGrowth_thumb", "speciesGrowth_num");
-
                 this.elTotal = Sel.query(".speciesPointTotal", this.container, true);
                 this.elTotal.innerHTML = 45;
                 this.elTotalLine = Sel.query(".speciesPointLine", this.container, true);
-
                 var updateTotal = function () {
-                    var total = this.getSpeciesData().affinity_total;
+                    var total = this.getSpeciesData()
+                        .affinity_total;
                     this.elTotal.innerHTML = total;
-
                     if (total > 45) {
                         Dom.removeClass(this.elTotalLine, "speciesPointsValid");
                         Dom.removeClass(this.elTotalLine, "speciesPointsLow");
                         Dom.addClass(this.elTotalLine, "speciesPointsInvalid");
-                    }
-                    else if (total == 45) {
+                    } else if (total == 45) {
                         Dom.addClass(this.elTotalLine, "speciesPointsValid");
                         Dom.removeClass(this.elTotalLine, "speciesPointsLow");
                         Dom.removeClass(this.elTotalLine, "speciesPointsInvalid");
-                    }
-                    else {
+                    } else {
                         Dom.removeClass(this.elTotalLine, "speciesPointsValid");
                         Dom.addClass(this.elTotalLine, "speciesPointsLow");
                         Dom.removeClass(this.elTotalLine, "speciesPointsInvalid");
                     }
                 };
-
                 this.speciesHO.subscribe('change', updateTotal, this, true);
                 this.speciesConst.subscribe('change', updateTotal, this, true);
                 this.speciesDecep.subscribe('change', updateTotal, this, true);
@@ -204,10 +191,8 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                     tickSize = 30,
                     from = Sel.query(".speciesHO_from", this.container, true),
                     to = Sel.query(".speciesHO_to", this.container, true);
-
                 // Create the DualSlider
                 var YW = YAHOO.widget;
-
                 var elMinThumb = Sel.query('.speciesHO_min_thumb', this.container, true);
                 elMinThumb.id = Dom.generateId();
                 var elMin = Sel.query('.speciesHO_min', this.container, true);
@@ -218,10 +203,8 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                 elMax.id = Dom.generateId();
                 var elSlider = Sel.query(".speciesHO", this.container, true);
                 elSlider.id = Dom.generateId();
-
                 var mint = new YW.SliderThumb(elMinThumb.id, elMin.id, 0, range, 0, 0, tickSize);
                 var maxt = new YW.SliderThumb(elMaxThumb.id, elMax.id, 0, range, 0, 0, tickSize);
-
                 var mins = new YW.Slider(elSlider.id, elSlider.id, mint, "horiz");
                 var maxs = new YW.Slider(elSlider.id, elSlider.id, maxt, "horiz");
                 var slider = new YW.DualSlider(mins, maxs, range, [90, 90]);
@@ -229,8 +212,7 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                 mint.setXConstraint = function (iLeft, iRight, iTickSize) {
                     if (slider.minLock) {
                         iRight = (slider.minLock - 1) * iTickSize;
-                    }
-                    else {
+                    } else {
                         iRight += iTickSize * 1.5;
                     }
                     mintSetX.apply(mint, [iLeft, iRight, iTickSize]);
@@ -239,13 +221,11 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                 maxt.setXConstraint = function (iLeft, iRight, iTickSize) {
                     if (slider.maxLock) {
                         iLeft = (1 - slider.maxLock) * iTickSize;
-                    }
-                    else {
+                    } else {
                         iLeft += iTickSize;
                     }
                     maxtSetX.apply(maxt, [iLeft, iRight, iTickSize]);
                 };
-
                 // slider.minRange = -15;
                 // Decorate the DualSlider instance with some new properties and
                 // methods to maintain the highlight element
@@ -295,14 +275,12 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                 slider.subscribe('change', slider.updateHighlight, slider, true);
                 //this.Dialog.showEvent.subscribe(slider.updateHighlight,slider,true);
                 slider.updateHighlight();
-
                 var updateUI = function () {
                     from.innerHTML = this.getMinOrbit();
                     to.innerHTML = this.getMaxOrbit();
                 };
                 slider.subscribe('ready', updateUI);
                 slider.subscribe('change', updateUI);
-
                 return slider;
             },
             _createHorizSingle: function (container, thumb, num) {
@@ -339,7 +317,6 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                 };
                 slider.subscribe('ready', updateUI);
                 slider.subscribe('change', updateUI);
-
                 return slider;
             },
             getSpeciesData: function () {
@@ -360,8 +337,7 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                     trade_affinity: this.speciesTrade.getAffinity(),
                     growth_affinity: this.speciesGrowth.getAffinity()
                 };
-                data.affinity_total =
-                data.max_orbit - data.min_orbit + 1 + data.manufacturing_affinity + data.deception_affinity + data.research_affinity + data.management_affinity + data.farming_affinity + data.mining_affinity + data.science_affinity + data.environmental_affinity + data.political_affinity + data.trade_affinity + data.growth_affinity;
+                data.affinity_total = data.max_orbit - data.min_orbit + 1 + data.manufacturing_affinity + data.deception_affinity + data.research_affinity + data.management_affinity + data.farming_affinity + data.mining_affinity + data.science_affinity + data.environmental_affinity + data.political_affinity + data.trade_affinity + data.growth_affinity;
                 return data;
             },
             setSpeciesData: function (data) {
@@ -385,8 +361,7 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                 this.speciesGrowth.setLock(data.min_growth);
             },
             compareSpeciesData: function (species1, species2) {
-                return (
-                species1.manufacturing_affinity == species2.manufacturing_affinity && species1.deception_affinity == species2.deception_affinity && species1.research_affinity == species2.research_affinity && species1.management_affinity == species2.management_affinity && species1.farming_affinity == species2.farming_affinity && species1.mining_affinity == species2.mining_affinity && species1.science_affinity == species2.science_affinity && species1.environmental_affinity == species2.environmental_affinity && species1.political_affinity == species2.political_affinity && species1.trade_affinity == species2.trade_affinity && species1.growth_affinity == species2.growth_affinity);
+                return (species1.manufacturing_affinity == species2.manufacturing_affinity && species1.deception_affinity == species2.deception_affinity && species1.research_affinity == species2.research_affinity && species1.management_affinity == species2.management_affinity && species1.farming_affinity == species2.farming_affinity && species1.mining_affinity == species2.mining_affinity && species1.science_affinity == species2.science_affinity && species1.environmental_affinity == species2.environmental_affinity && species1.political_affinity == species2.political_affinity && species1.trade_affinity == species2.trade_affinity && species1.growth_affinity == species2.growth_affinity);
             },
             setExpert: function () {
                 this._expert = true;
@@ -395,8 +370,7 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
                 delete this._expert;
             },
             needsExpert: function (data) {
-                return (
-                data.manufacturing_affinity == 1 || data.deception_affinity == 1 || data.research_affinity == 1 || data.management_affinity == 1 || data.farming_affinity == 1 || data.mining_affinity == 1 || data.science_affinity == 1 || data.environmental_affinity == 1 || data.political_affinity == 1 || data.trade_affinity == 1 || data.growth_affinity == 1);
+                return (data.manufacturing_affinity == 1 || data.deception_affinity == 1 || data.research_affinity == 1 || data.management_affinity == 1 || data.farming_affinity == 1 || data.mining_affinity == 1 || data.science_affinity == 1 || data.environmental_affinity == 1 || data.political_affinity == 1 || data.trade_affinity == 1 || data.growth_affinity == 1);
             },
             selectTemplate: function (index) {
                 var data = this.speciesTemplates[index];
@@ -405,15 +379,12 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
             validateSpecies: function (data) {
                 if (data.affinity_total > 45) {
                     throw "You can only have a maximum of 45 points.";
-                }
-                else if (data.affinity_total < 45) {
+                } else if (data.affinity_total < 45) {
                     throw "You must use exactly 45 points.";
-                }
-                else if (!this._expert && this.needsExpert(data)) {
+                } else if (!this._expert && this.needsExpert(data)) {
                     if (confirm("Setting an affinity to 1 is an expert setting, and is not recommended unless you're absolutely sure you know what you're doing.  Are you sure you want to continue?")) {
                         this._expert = true;
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 }
@@ -432,6 +403,5 @@ if (typeof YAHOO.lacuna.SpeciesDesigner == "undefined" || !YAHOO.lacuna.SpeciesD
         version: "1",
         build: "0"
     });
-
 }
 // vim: noet:ts=4:sw=4

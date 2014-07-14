@@ -1,7 +1,5 @@
 YAHOO.namespace("lacuna.buildings");
-
 if (typeof YAHOO.lacuna.buildings.TempleOfTheDrajilites == "undefined" || !YAHOO.lacuna.buildings.TempleOfTheDrajilites) {
-
     (function () {
         var Lang = YAHOO.lang,
             Util = YAHOO.util,
@@ -12,20 +10,15 @@ if (typeof YAHOO.lacuna.buildings.TempleOfTheDrajilites == "undefined" || !YAHOO
             Lacuna = YAHOO.lacuna,
             Game = Lacuna.Game,
             Lib = Lacuna.Library;
-
         var TempleOfTheDrajilites = function (result) {
             TempleOfTheDrajilites.superclass.constructor.call(this, result);
-
             this.service = Game.Services.Buildings.TempleOfTheDrajilites;
             this.maps = {};
-
-
             this.subscribe("onLoad", function () {
                 this.CreateFind();
                 Event.on("planetsDetailsCurrentStar", "click", this.GoToCurrentStar, this, true);
             }, this, true);
         };
-
         Lang.extend(TempleOfTheDrajilites, Lacuna.buildings.Building, {
             getChildTabs: function () {
                 return [this._getPlanetsTab()];
@@ -33,21 +26,11 @@ if (typeof YAHOO.lacuna.buildings.TempleOfTheDrajilites == "undefined" || !YAHOO
             _getPlanetsTab: function () {
                 this.planetsTab = new YAHOO.widget.Tab({
                     label: "Planets",
-                    content: [
-                        '<div>',
-                        '    <div><label for="planetsDetailsStarFind">Lookup Star Name:</label><div style="display:inline-block;width:300px;"><input type="text" id="planetsDetailsStarFind" /></div> or <button type="button" id="planetsDetailsCurrentStar">Go To Current Star</button></div>',
-                        '    <div id="planetsDetailsMessage"></div>',
-                        '    <div class="clearafter">',
-                        '        <ul id="planetsDetails" class="planetsInfo">',
-                        '        </ul>',
-                        '    </div>',
-                        '</div>'
-                        ].join('')
+                    content: ['<div>', '    <div><label for="planetsDetailsStarFind">Lookup Star Name:</label><div style="display:inline-block;width:300px;"><input type="text" id="planetsDetailsStarFind" /></div> or <button type="button" id="planetsDetailsCurrentStar">Go To Current Star</button></div>', '    <div id="planetsDetailsMessage"></div>', '    <div class="clearafter">', '        <ul id="planetsDetails" class="planetsInfo">', '        </ul>', '    </div>', '</div>'].join('')
                 });
                 //this.planetsTab.subscribe("activeChange", this.GetPlanets, this, true);
                 return this.planetsTab;
             },
-
             CreateFind: function () {
                 if (!this.findStar) {
                     var dataSource = new Util.XHRDataSource("/map");
@@ -58,7 +41,6 @@ if (typeof YAHOO.lacuna.buildings.TempleOfTheDrajilites == "undefined" || !YAHOO
                         resultsList: "result.stars",
                         fields: ["name", "color", "x", "y", "id"]
                     };
-
                     var oTextboxList = new YAHOO.lacuna.TextboxList("planetsDetailsStarFind", dataSource, { //config options
                         maxResultsDisplayed: 25,
                         minQueryLength: 3,
@@ -77,22 +59,21 @@ if (typeof YAHOO.lacuna.buildings.TempleOfTheDrajilites == "undefined" || !YAHOO
                             "params": [
                                 Game.GetSession(""),
                                 decodeURIComponent(sQuery)
-                                ]
+                            ]
                         });
                         return s;
                     };
                     oTextboxList.dirtyEvent.subscribe(function (event, isDirty, oSelf) {
                         var star = this._oTblSingleSelection.Object;
-
                         oSelf.GetPlanets(star.id);
                     }, this);
                     this.findStar = oTextboxList;
                 }
             },
             GoToCurrentStar: function () {
-                this.GetPlanets(Game.GetCurrentPlanet().star_id);
+                this.GetPlanets(Game.GetCurrentPlanet()
+                    .star_id);
             },
-
             GetPlanets: function (starId) {
                 Lacuna.Pulser.Show();
                 this.service.list_planets({
@@ -109,7 +90,6 @@ if (typeof YAHOO.lacuna.buildings.TempleOfTheDrajilites == "undefined" || !YAHOO
                     failure: function (o) {
                         var msg = Dom.get("planetsDetailsMessage"),
                             planetsDetails = Dom.get("planetsDetails");
-
                         msg.innerHTML = o.error.message;
                         Event.purgeElement(planetsDetails);
                         planetsDetails.innerHTML = "";
@@ -121,22 +101,16 @@ if (typeof YAHOO.lacuna.buildings.TempleOfTheDrajilites == "undefined" || !YAHOO
             PlanetsDisplay: function () {
                 var planets = this.planets,
                     planetsDetails = Dom.get("planetsDetails");
-
                 if (planetsDetails) {
                     Event.purgeElement(planetsDetails);
                     planetsDetails.innerHTML = "";
-
                     var li = document.createElement("li");
-
                     for (var i = 0; i < planets.length; i++) {
                         var pt = planets[i],
                             nLi = li.cloneNode(false);
-
                         nLi.Planet = pt;
                         Dom.addClass(nLi, "planetDisplay");
-
                         nLi.innerHTML = pt.name;
-
                         nLi = planetsDetails.appendChild(nLi);
                         Event.on(nLi, "click", this.PlanetView, this, true);
                     }
@@ -160,22 +134,17 @@ if (typeof YAHOO.lacuna.buildings.TempleOfTheDrajilites == "undefined" || !YAHOO
                             },
                             scope: this
                         });
-                    }
-                    else {
+                    } else {
                         Lacuna.Messaging.attachmentPanel.load(this.maps[nLi.Planet.id]);
                     }
                 }
             }
-
         });
-
         YAHOO.lacuna.buildings.TempleOfTheDrajilites = TempleOfTheDrajilites;
-
     })();
     YAHOO.register("templeofthedrajilites", YAHOO.lacuna.buildings.TempleOfTheDrajilites, {
         version: "1",
         build: "0"
     });
-
 }
 // vim: noet:ts=4:sw=4

@@ -1,21 +1,18 @@
 /*global YAHOO, $, _ */
 'use strict';
-
 YAHOO.namespace("lacuna");
-
 var Templates = require('js/templates'),
     assets = require('js/assets');
-
 (function () {
     var Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game;
-
     var Captcha = function () {
         this.id = "captcha";
-
-        var container = $('<div></div>').attr('id', this.id).addClass('nofooter');
-        $(document.body).prepend(container);
-
+        var container = $('<div></div>')
+            .attr('id', this.id)
+            .addClass('nofooter');
+        $(document.body)
+            .prepend(container);
         this.dialog = new YAHOO.widget.Panel(this.id, {
             constraintoviewport: true,
             postmethod: "none",
@@ -30,20 +27,15 @@ var Templates = require('js/templates'),
             width: "390px",
             zIndex: 9999
         });
-
         this.dialog.setHeader('Verify Your Humanity');
-
         this.dialog.hideEvent.subscribe(function () {
             this.failFunction();
         }, this, true);
-
         this.dialog.render();
         Game.OverlayManager.register(this.dialog);
     };
-
     Captcha.prototype = {
         template: Templates.get('menu.captcha'),
-
         show: function (retry, fail) {
             this.retyFunction = retry;
             this.failFunction = fail;
@@ -51,22 +43,24 @@ var Templates = require('js/templates'),
             this.render();
             this.dialog.show();
         },
-
         render: function () {
             this.dialog.setBody(this.template({
                 assets: assets
             }));
-            $('#captchaRefresh').click(_.bind(this.refreshCaptcha, this));
-            $('#solveCaptcha').click(_.bind(this.solveCaptcha, this));
-            $('#cancelCaptcha').click(_.bind(this.cancel, this));
+            $('#captchaRefresh')
+                .click(_.bind(this.refreshCaptcha, this));
+            $('#solveCaptcha')
+                .click(_.bind(this.solveCaptcha, this));
+            $('#cancelCaptcha')
+                .click(_.bind(this.cancel, this));
         },
-
         solveCaptcha: function () {
             Lacuna.Pulser.Show();
             Game.Services.Captcha.solve({
                 session_id: Game.GetSession(),
                 captcha_guid: this.captchaGuid,
-                captcha_solution: $('#captchaSolution').val()
+                captcha_solution: $('#captchaSolution')
+                    .val()
             }, {
                 success: function () {
                     Lacuna.Pulser.Hide();
@@ -75,17 +69,14 @@ var Templates = require('js/templates'),
                 },
                 failure: function (o) {
                     this.setError(o.error.message);
-
                     if (o.error.message === 'Captcha not valid.') {
                         this.refreshCaptcha();
                     }
-
                     return true;
                 },
                 scope: this
             });
         },
-
         refreshCaptcha: function () {
             Lacuna.Pulser.Show();
             this.clear();
@@ -94,30 +85,34 @@ var Templates = require('js/templates'),
             }, {
                 success: function (o) {
                     this.captchaGuid = o.result.guid;
-                    $('#captchaImage').attr('src', o.result.url);
+                    $('#captchaImage')
+                        .attr('src', o.result.url);
                     Lacuna.Pulser.Hide();
                     this.dialog.show();
                 },
                 scope: this
             });
         },
-
         cancel: function () {
             this.dialog.hide();
         },
-
         clear: function () {
-            $('#captchaSolution').text('');
-            $('#captchaImage').attr('src', '');
+            $('#captchaSolution')
+                .text('');
+            $('#captchaImage')
+                .attr('src', '');
         },
-
         setError: function (msg) {
-            $('#captchaSolution').text('').focus();
-            $('#captchaMessage').html(msg).fadeOut(5 * 1000, function () {
-                $(this).html('&nbsp;');
-            });
+            $('#captchaSolution')
+                .text('')
+                .focus();
+            $('#captchaMessage')
+                .html(msg)
+                .fadeOut(5 * 1000, function () {
+                    $(this)
+                        .html('&nbsp;');
+                });
         }
     };
-
     Lacuna.Captcha = new Captcha();
 }());

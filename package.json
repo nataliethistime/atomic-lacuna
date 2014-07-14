@@ -19,6 +19,6 @@
     "vinyl-source-stream": "0.1.x",
     "browserify": "4.2.x",
     "atom-shell-pull": "0.2.x",
-    "gulp-beautify": "1.1.x"
+    "gulp-js-prettify": "0.1.x"
   }
 }

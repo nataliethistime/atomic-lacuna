@@ -1,7 +1,5 @@
 YAHOO.namespace("lacuna");
-
 if (typeof YAHOO.lacuna.Pulse == "undefined" || !YAHOO.lacuna.Pulse) {
-
     (function () {
         var Pulse = function () {
             var panel = new YAHOO.widget.Panel("pulsing", {
@@ -25,7 +23,6 @@ if (typeof YAHOO.lacuna.Pulse == "undefined" || !YAHOO.lacuna.Pulse) {
                 this._panel.show();
                 //this.counter++;
             },
-
             Hide: function () {
                 //this.counter--;
                 //if(this.counter <= 0) {
@@ -40,7 +37,5 @@ if (typeof YAHOO.lacuna.Pulse == "undefined" || !YAHOO.lacuna.Pulse) {
         version: "1.0.1",
         build: "2"
     });
-
-
 }
 // vim: noet:ts=4:sw=4

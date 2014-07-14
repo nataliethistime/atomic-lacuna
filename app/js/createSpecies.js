@@ -1,7 +1,5 @@
 YAHOO.namespace("lacuna");
-
 if (typeof YAHOO.lacuna.CreateSpecies == "undefined" || !YAHOO.lacuna.CreateSpecies) {
-
     (function () {
         var Util = YAHOO.util,
             Dom = Util.Dom,
@@ -10,18 +8,15 @@ if (typeof YAHOO.lacuna.CreateSpecies == "undefined" || !YAHOO.lacuna.CreateSpec
             Lacuna = YAHOO.lacuna,
             Game = Lacuna.Game,
             Lib = Lacuna.Library;
-
         var CreateSpecies = function (Empire) {
             this.id = "createSpecies";
             this._empire = Empire;
             this.createEvent("onCreateSuccessful");
-
             var container = document.createElement("div");
             container.id = this.id;
             Dom.addClass(container, Lib.Styles.HIDDEN);
             container.innerHTML = this._getHtml();
             document.body.insertBefore(container, document.body.firstChild);
-
             this.Dialog = new YAHOO.widget.Dialog(this.id, {
                 constraintoviewport: false,
                 //fixedcenter:true,
@@ -33,13 +28,14 @@ if (typeof YAHOO.lacuna.CreateSpecies == "undefined" || !YAHOO.lacuna.CreateSpec
                         fn: this.handleCreate,
                         scope: this
                     },
-                    isDefault: true},
-                {
+                    isDefault: true
+                }, {
                     text: "Cancel",
                     handler: {
                         fn: this.handleCancel,
                         scope: this
-                    }}],
+                    }
+                }],
                 draggable: true,
                 effect: Game.GetContainerEffect(),
                 modal: false,
@@ -66,8 +62,7 @@ if (typeof YAHOO.lacuna.CreateSpecies == "undefined" || !YAHOO.lacuna.CreateSpec
                     if (!this.designer.validateSpecies(data)) {
                         return;
                     }
-                }
-                catch (e) {
+                } catch (e) {
                     this.setMessage(e);
                     return;
                 }
@@ -91,7 +86,6 @@ if (typeof YAHOO.lacuna.CreateSpecies == "undefined" || !YAHOO.lacuna.CreateSpec
                 this.hide();
                 this._empire.handleCancel();
             },
-
             _found: function () {
                 Lacuna.Pulser.Show();
                 var EmpireServ = Game.Services.Empire;
@@ -131,13 +125,11 @@ if (typeof YAHOO.lacuna.CreateSpecies == "undefined" || !YAHOO.lacuna.CreateSpec
             }
         };
         YAHOO.lang.augmentProto(CreateSpecies, Util.EventProvider);
-
         Lacuna.CreateSpecies = CreateSpecies;
     })();
     YAHOO.register("createSpecies", YAHOO.lacuna.CreateSpecies, {
         version: "1",
         build: "0"
     });
-
 }
 // vim: noet:ts=4:sw=4

@@ -1,22 +1,19 @@
 /*global YAHOO, $ */
 'use strict';
-
 YAHOO.namespace("lacuna");
-
 var Templates = require('js/templates');
-
 (function () {
     var Lang = YAHOO.lang,
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game;
-
     var About = function () {
         this.id = "about";
         this.createEvent("onShow");
-
-        var container = $('<div></div>').attr('id', this.id).addClass('nofooter');
-        $(document.body).prepend(container);
-
+        var container = $('<div></div>')
+            .attr('id', this.id)
+            .addClass('nofooter');
+        $(document.body)
+            .prepend(container);
         this.panel = new YAHOO.widget.Panel(this.id, {
             constraintoviewport: true,
             fixedcenter: true,
@@ -29,16 +26,12 @@ var Templates = require('js/templates');
             width: '450px',
             zIndex: 9999
         });
-
         this.panel.setHeader('About');
-
         this.panel.render();
         Game.OverlayManager.register(this.panel);
     };
-
     About.prototype = {
         template: Templates.get('menu.about'),
-
         show: function () {
             if (!this.hasCredits) {
                 Game.Services.Stats.credits({}, {
@@ -54,24 +47,23 @@ var Templates = require('js/templates');
                 this.open();
             }
         },
-
         open: function () {
             Game.OverlayManager.hideAll();
             this.panel.show();
             this.panel.center();
         },
-
         hide: function () {
             this.panel.hide();
         },
-
         render: function (o) {
             this.panel.setBody(this.template(o));
-            $('#aboutVersion').html(Game.ServerData.version);
-            $('#aboutYear').html((new Date()).getFullYear());
+            $('#aboutVersion')
+                .html(Game.ServerData.version);
+            $('#aboutYear')
+                .html((new Date())
+                    .getFullYear());
         }
     };
-
     Lang.augmentProto(About, YAHOO.util.EventProvider);
     Lacuna.About = new About();
 }());

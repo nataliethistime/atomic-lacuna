@@ -1,7 +1,5 @@
 YAHOO.namespace("lacuna");
-
 if (typeof YAHOO.lacuna.Essentia == "undefined" || !YAHOO.lacuna.Essentia) {
-
     (function () {
         var Lang = YAHOO.lang,
             Util = YAHOO.util,
@@ -11,19 +9,15 @@ if (typeof YAHOO.lacuna.Essentia == "undefined" || !YAHOO.lacuna.Essentia) {
             Lacuna = YAHOO.lacuna,
             Game = Lacuna.Game,
             Lib = Lacuna.Library;
-
         var Essentia = function () {
             this.createEvent("onRpc");
-
             this.id = "essentia";
-
             var container = document.createElement("div");
             container.id = this.id;
             Dom.addClass(container, Lib.Styles.HIDDEN);
             container.innerHTML = this._getHtml();
             document.body.insertBefore(container, document.body.firstChild);
             Dom.addClass(container, "nofooter");
-
             this.Dialog = new YAHOO.widget.Panel(this.id, {
                 constraintoviewport: true,
                 fixedcenter: true,
@@ -60,7 +54,6 @@ if (typeof YAHOO.lacuna.Essentia == "undefined" || !YAHOO.lacuna.Essentia) {
                 }, this, true);
                 Dom.removeClass(this.id, Lib.Styles.HIDDEN);
             }, this, true);
-
             this.Dialog.hideEvent.subscribe(function () {
                 if (this._interval) {
                     window.clearInterval(this._interval);
@@ -69,14 +62,13 @@ if (typeof YAHOO.lacuna.Essentia == "undefined" || !YAHOO.lacuna.Essentia) {
                 }
             }, this, true);
             this.timers = {};
-
             this.Dialog.render();
             Game.OverlayManager.register(this.Dialog);
         };
         Essentia.prototype = {
             _getHtml: function () {
                 return ['    <div class="hd">Essentia</div>', '    <div class="bd">', '        <div class="essentiaAmount">Current Essentia: <span id="essentiaAmount"></span></div>', '        <div id="essentiaTabs" class="yui-navset">', '            <ul class="yui-nav">', '                <li><a href="#essentiaTabBoost"><em>Boosts</em></a></li>', '                <li><a href="#essentiaGetMore"><em>Get More Essentia</em></a></li>', /*            '                <li><a href="#essentiaGiveEssentia"><em>Give Essentia</em></a></li>', */ '            </ul>', '            <div class="yui-content">', '                <div id="essentiaTabBoost">', '                    <table>', '                        <tr><td colspan="4">&nbsp;</td><th>Expires</th></tr>', '                        <tr>', '                            <td class="essentiaDetailsImg"><img class="smallFood" title="Food" src="', Lib.AssetUrl, 'ui/s/food.png" /></td>', '                            <td class="essentiaDetailsText">+25% food per hour</td>', '                            <td class="essentiaDetailsCost">5 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" /></td>', '                            <td class="essentiaDetailsBoost"><button id="essentiaBoostFood" type="button">Boost</button></td>', '                            <td class="essentiaDetailsTime" id="essentialDetailsTimeFood"></td>', '                        </tr>', '                        <tr>', '                            <td class="essentiaDetailsImg"><img class="smallOre" title="Ore" src="', Lib.AssetUrl, 'ui/s/ore.png" /></td>', '                            <td class="essentiaDetailsText">+25% ore per hour</td>', '                            <td class="essentiaDetailsCost">5 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" /></td>', '                            <td class="essentiaDetailsBoost"><button id="essentiaBoostOre" type="button">Boost</button></td>', '                            <td class="essentiaDetailsTime" id="essentialDetailsTimeOre"></td>', '                        </tr>', '                        <tr>', '                            <td class="essentiaDetailsImg"><img class="smallWater" title="Water" src="', Lib.AssetUrl, 'ui/s/water.png" /></td>', '                            <td class="essentiaDetailsText">+25% water per hour</td>', '                            <td class="essentiaDetailsCost">5 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" /></td>', '                            <td class="essentiaDetailsBoost"><button id="essentiaBoostWater" type="button">Boost</button></td>', '                            <td class="essentiaDetailsTime" id="essentialDetailsTimeWater"></td>', '                        </tr>', '                        <tr>', '                            <td class="essentiaDetailsImg"><img class="smallEnergy" title="Energy" src="', Lib.AssetUrl, 'ui/s/energy.png" /></td>', '                            <td class="essentiaDetailsText">+25% energy per hour</td>', '                            <td class="essentiaDetailsCost">5 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" /></td>', '                            <td class="essentiaDetailsBoost"><button id="essentiaBoostEnergy" type="button">Boost</button></td>', '                            <td class="essentiaDetailsTime" id="essentialDetailsTimeEnergy"></td>', '                        </tr>', '                        <tr>', '                            <td class="essentiaDetailsImg"><img class="smallHappiness" title="Happiness" src="', Lib.AssetUrl, 'ui/s/happiness.png" /></td>', '                            <td class="essentiaDetailsText">+25% happiness per hour</td>', '                            <td class="essentiaDetailsCost">5 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" /></td>', '                            <td class="essentiaDetailsBoost"><button id="essentiaBoostHappiness" type="button">Boost</button></td>', '                            <td class="essentiaDetailsTime" id="essentialDetailsTimeHappiness"></td>', '                        </tr>', '                        <tr>', '                            <td class="essentiaDetailsImg"><img class="smallStorage" title="Storage" src="', Lib.AssetUrl, 'ui/s/storage.png" /></td>', '                            <td class="essentiaDetailsText">+25% storage capacity</td>', '                            <td class="essentiaDetailsCost">5 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" /></td>', '                            <td class="essentiaDetailsBoost"><button id="essentiaBoostStorage" type="button">Boost</button></td>', '                            <td class="essentiaDetailsTime" id="essentialDetailsTimeStorage"></td>', '                        </tr>', '                       <tr>', '                           <td class="essentiaDetailsImg"><img class="smallBuilding" title="Building" src="', Lib.AssetUrl, 'ui/s/build.png" /></td>', '                           <td class="essentiaDetailsText">+25% build speed</td>', '                           <td class="essentiaDetailsCost">5 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" /></td>', '                           <td class="essentiaDetailsBoost"><button id="essentiaBoostBuilding" type="button">Boost</button></td>', '                           <td class="essentiaDetailsTime" id="essentialDetailsTimeBuilding"></td>', '                       </tr>', '                       <tr>', '                           <td class="essentiaDetailsImg"><img class="smallSpy" title="Spy" src="', Lib.AssetUrl, 'ui/s/spy.png" /></td>', '                           <td class="essentiaDetailsText">+50% spy training speed</td>', '                           <td class="essentiaDetailsCost">5 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" /></td>', '                           <td class="essentiaDetailsBoost"><button id="essentiaBoostSpyTraining" type="button">Boost</button></td>', '                           <td class="essentiaDetailsTime" id="essentialDetailsTimeSpyTraining"></td>', '                       </tr>', '                    </table>', '                </div>', '                <div id="essentiaGetMore">', '                    <b>Purchase Essentia for yourself.</b><br />', '                    <button id="essentiaPurchaseButton" type="button">Purchase Essentia</button>', '                    <hr />', '                    <div>', '                        <label><b>Redeem Essentia Code:</b><br /><input id="essentiaRedeemCode" /></label>', '                        <button id="essentiaRedeemButton" type="button">Redeem</button>', '                    </div>', '                    <hr />', '                    <div>', '                        <table>', '                            <tr><td><b>Invite your friends.</b></td></tr>', '                            <tr><td>Invite your friends to the game and you get free essentia. For every university level past 4 that they achieve, you\'ll get 5 essentia.</td></tr>', '                            <tr><td>That\'s up to 130 essentia per friend!</td></tr>', '                            <tr><td><button id="essentiaInvite" type="button">Invite Friends</button></td></tr>', '                        </table>', '                    </div>', '                </div>',
-/*            '                <div id="essentiaGetMore">',
+                    /*            '                <div id="essentiaGetMore">',
             '                    <p><b>Give the gift of Essentia.</b><br />Simply choose the amount you want, and pay for at it at PayPal with a credit card, or with your PayPal account. You\'ll then receive an email with an essentia code that can be redeemed in the game.</p>',
             '                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">',
             '                    <input type="hidden" name="cmd" value="_s-xclick">',
@@ -93,9 +85,8 @@ if (typeof YAHOO.lacuna.Essentia == "undefined" || !YAHOO.lacuna.Essentia) {
             '                    <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">',
             '                    </form>',
             '                </div>', */
-                '            </div>', '        </div>', '    </div>'].join('');
+                    '            </div>', '        </div>', '    </div>'].join('');
             },
-
             show: function () {
                 //this is called out of scope so make sure to pass the correct scope in
                 Lacuna.Essentia.tabView.selectTab(0);
@@ -186,32 +177,24 @@ if (typeof YAHOO.lacuna.Essentia == "undefined" || !YAHOO.lacuna.Essentia) {
             update: function (results) {
                 if (results.food_boost) {
                     this.updateTime(this.timeFood, results.food_boost);
-                }
-                else if (results.ore_boost) {
+                } else if (results.ore_boost) {
                     this.updateTime(this.timeOre, results.ore_boost);
-                }
-                else if (results.water_boost) {
+                } else if (results.water_boost) {
                     this.updateTime(this.timeWater, results.water_boost);
-                }
-                else if (results.energy_boost) {
+                } else if (results.energy_boost) {
                     this.updateTime(this.timeEnergy, results.energy_boost);
-                }
-                else if (results.happiness_boost) {
+                } else if (results.happiness_boost) {
                     this.updateTime(this.timeHappiness, results.happiness_boost);
-                }
-                else if (results.storage_boost) {
+                } else if (results.storage_boost) {
                     this.updateTime(this.timeStorage, results.storage_boost);
-                }
-                else if (results.building_boost) {
+                } else if (results.building_boost) {
                     this.updateTime(this.timeBuilding, results.building_boost);
-                }
-                else if (results.spy_training_boost) {
+                } else if (results.spy_training_boost) {
                     this.updateTime(this.timeSpyTraining, results.spy_training_boost);
                 }
             },
             populate: function (results) {
                 var boosts = results.boosts;
-
                 this.updateTime(this.timeFood, boosts.food);
                 this.updateTime(this.timeOre, boosts.ore);
                 this.updateTime(this.timeWater, boosts.water);
@@ -246,16 +229,12 @@ if (typeof YAHOO.lacuna.Essentia == "undefined" || !YAHOO.lacuna.Essentia) {
                 }
             }
         };
-
         Lang.augmentProto(Essentia, Util.EventProvider);
-
         Lacuna.Essentia = new Essentia();
-
     })();
     YAHOO.register("essentia", YAHOO.lacuna.Essentia, {
         version: "1",
         build: "0"
     });
-
 }
 // vim: noet:ts=4:sw=4

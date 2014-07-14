@@ -8,59 +8,57 @@ YAHOO.namespace("lacuna");
 if (!String.prototype.titleCaps) {
     String.small = "(a|an|and|as|at|but|by|en|for|if|in|of|on|or|the|to|v[.]?|via|vs[.]?)";
     String.punct = "([!\"#$%&'()*+,./:;<=>?@[\\\\\\]^_`{|}~-]*)";
-
     String.prototype.titleCaps = function (replaceVal, withVal) {
         var parts = [],
             split = /[:.;?!] |(?: |^)["�]/g,
             index = 0,
             processVal = this;
         var fnUpper = function (all) {
-            return (/[A-Za-z]\.[A-Za-z]/).test(all) ? all : String.upper(all);
+            return (/[A-Za-z]\.[A-Za-z]/)
+                .test(all) ? all : String.upper(all);
         },
             fnPuntUpper = function (all, punct, word) {
                 return punct + String.upper(word);
             };
-
         if (replaceVal) {
             var rg = new RegExp(replaceVal, 'g');
             processVal = processVal.replace(rg, withVal || '');
         }
-
         while (true) {
             var m = split.exec(processVal);
-
-            parts.push(processVal.substring(index, m ? m.index : processVal.length).replace(/\b([A-Za-z][a-z.'�]*)\b/g, fnUpper).replace(RegExp("\\b" + String.small + "\\b", "ig"), String.lower).replace(RegExp("^" + String.punct + String.small + "\\b", "ig"), fnPuntUpper).replace(RegExp("\\b" + String.small + String.punct + "$", "ig"), String.upper));
-
+            parts.push(processVal.substring(index, m ? m.index : processVal.length)
+                .replace(/\b([A-Za-z][a-z.'�]*)\b/g, fnUpper)
+                .replace(RegExp("\\b" + String.small + "\\b", "ig"), String.lower)
+                .replace(RegExp("^" + String.punct + String.small + "\\b", "ig"), fnPuntUpper)
+                .replace(RegExp("\\b" + String.small + String.punct + "$", "ig"), String.upper));
             index = split.lastIndex;
-
             if (m) {
                 parts.push(m[0]);
-            }
-            else {
+            } else {
                 break;
             }
         }
-
-        return parts.join("").replace(/ V(s?)\. /ig, " v$1. ").replace(/(['�])S\b/ig, "$1s").replace(/\b(AT&T|Q&A)\b/ig, function (all) {
-            return all.toUpperCase();
-        });
+        return parts.join("")
+            .replace(/ V(s?)\. /ig, " v$1. ")
+            .replace(/(['�])S\b/ig, "$1s")
+            .replace(/\b(AT&T|Q&A)\b/ig, function (all) {
+                return all.toUpperCase();
+            });
     };
     String.lower = function (word) {
         return word.toLowerCase();
     };
     String.upper = function (word) {
-        return word.substr(0, 1).toUpperCase() + word.substr(1);
+        return word.substr(0, 1)
+            .toUpperCase() + word.substr(1);
     };
 }
-
 if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
-
     (function () {
         var Util = YAHOO.util,
             Lang = YAHOO.lang,
             Dom = Util.Dom,
             assetUrl = window.lacuna_s3_base_url + 'assets/';
-
         var xPad = function (x, pad, r) {
             if (typeof r === 'undefined') {
                 r = 10;
@@ -70,23 +68,21 @@ if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
             }
             return x.toString();
         };
-
         // in-file, doesn't call String(val) on values (default)
         var db, settings;
         if (window.ATOM_SHELL) {
             var Storage = require('dom-storage');
-            var root = require('js/util').root();
+            var root = require('js/util')
+                .root();
             var path = require('path');
             var args = {
                 strict: false
             };
             db = new Storage(path.join(root, 'data', 'db.json'), args);
             settings = new Storage(path.join(root, 'data', 'settings.json'), args);
-        }
-        else {
+        } else {
             db = settings = window.localStorage;
         }
-
         var Library = {
             db: db,
             settings: settings,
@@ -127,35 +123,28 @@ if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
                 STAR: "2",
                 SYSTEM: "3"
             },
-
             formatInlineList: function (stringArray, start, end) {
                 if (Lang.isArray(stringArray)) {
                     var offering = ['<ul class="inlineList">'];
-
                     var len = stringArray.length,
                         begin = 0;
                     if (start) {
                         begin = start;
-
                         if (end) {
                             end += 1; //add one so we include the end index
                             len = end > len ? len : end;
                         }
                     }
-
                     for (var n = begin; n < len; n++) {
                         offering[offering.length] = '<li>';
                         offering[offering.length] = stringArray[n];
                         offering[offering.length] = '</li>';
                     }
-
                     offering[offering.length] = '</ul>';
                     return offering.join('');
-                }
-                else if (Lang.isString(stringArray)) {
+                } else if (Lang.isString(stringArray)) {
                     return stringArray;
-                }
-                else {
+                } else {
                     return 'Unrecognized stringArray in formatInlineList';
                 }
             },
@@ -166,7 +155,6 @@ if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
                 if (totalSeconds < 0) {
                     return "";
                 }
-
                 var secondsInDay = 60 * 60 * 24,
                     secondsInHour = 60 * 60,
                     day = Math.floor(totalSeconds / secondsInDay),
@@ -175,19 +163,15 @@ if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
                     sleft = hleft % secondsInHour,
                     min = Math.floor(sleft / 60),
                     seconds = Math.floor(sleft % 60);
-
                 if (day > 0) {
                     return [day, xPad(hour, '0'), xPad(min, '0'), xPad(seconds, '0')].join(':');
-                }
-                else if (hour > 0) {
+                } else if (hour > 0) {
                     return [hour, xPad(min, '0'), xPad(seconds, '0')].join(':');
-                }
-                else {
+                } else {
                     return [min, xPad(seconds, '0')].join(':');
                 }
             },
             formatNumber: function (num) {
-                debugger;
                 return Util.Number.format(num, {
                     thousandsSeparator: ","
                 });
@@ -195,9 +179,9 @@ if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
             getTime: function (dt) {
                 if (dt instanceof Date) {
                     return dt.getTime();
-                }
-                else {
-                    return Library.parseServerDate(dt).getTime();
+                } else {
+                    return Library.parseServerDate(dt)
+                        .getTime();
                 }
             },
             parseServerDate: function (strDate) {
@@ -227,8 +211,7 @@ if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
                         case 1012:
                             if (reason[2]) {
                                 output = [reason[1], ' Requires higher production of ', (Lang.isArray(reason[2]) ? reason[2].join(', ') : reason[2])].join('');
-                            }
-                            else {
+                            } else {
                                 output = reason[1];
                             }
                             break;
@@ -239,8 +222,7 @@ if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
                             output = defReason || reason[1];
                             break;
                         }
-                    }
-                    else {
+                    } else {
                         output = defReason || reason;
                     }
                 }
@@ -274,53 +256,41 @@ if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
                 if (number >= 100000000000000000 || number <= -100000000000000000) {
                     //101Q
                     return Math.floor(number / 1000000000000000) + 'Q';
-                }
-                else if (number >= 1000000000000000 || number <= -1000000000000000) {
+                } else if (number >= 1000000000000000 || number <= -1000000000000000) {
                     //75.3Q
                     return (Math.floor(number / 100000000000000) / 10) + 'Q';
-                }
-                else if (number >= 100000000000000 || number <= -100000000000000) {
+                } else if (number >= 100000000000000 || number <= -100000000000000) {
                     //101T
                     return Math.floor(number / 1000000000000) + 'T';
-                }
-                else if (number >= 1000000000000 || number <= -1000000000000) {
+                } else if (number >= 1000000000000 || number <= -1000000000000) {
                     //75.3T
                     return (Math.floor(number / 100000000000) / 10) + 'T';
-                }
-                else if (number >= 100000000000 || number <= -100000000000) {
+                } else if (number >= 100000000000 || number <= -100000000000) {
                     //101B
                     return Math.floor(number / 1000000000) + 'B';
-                }
-                else if (number >= 1000000000 || number <= -1000000000) {
+                } else if (number >= 1000000000 || number <= -1000000000) {
                     //75.3B
                     return (Math.floor(number / 100000000) / 10) + 'B';
-                }
-                else if (number >= 100000000 || number <= -100000000) {
+                } else if (number >= 100000000 || number <= -100000000) {
                     //101M
                     return Math.floor(number / 1000000) + 'M';
-                }
-                else if (number >= 1000000 || number <= -1000000) {
+                } else if (number >= 1000000 || number <= -1000000) {
                     //75.3M
                     return (Math.floor(number / 100000) / 10) + 'M';
-                }
-                else if (number >= 10000 || number <= -10000) {
+                } else if (number >= 10000 || number <= -10000) {
                     //123k
                     return Math.floor(number / 1000) + 'k';
-                }
-                else if (always) {
+                } else if (always) {
                     //8765
                     return Math.floor(number);
-                }
-                else {
+                } else {
                     //8765
                     return Math.floor(number) || "0";
                 }
             },
-
             getSelectedOption: function (select) {
                 //just making sure
                 select = Dom.get(select);
-
                 return Library.getSelectedOptionFromSelectElement(select);
             },
             getSelectedOptionFromSelectElement: function (select) {
@@ -336,7 +306,6 @@ if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
                 var opt = Library.getSelectedOptionFromSelectElement(select);
                 return opt ? opt.value : null;
             },
-
             fadeOutElm: function (id) {
                 var a = new Util.Anim(id, {
                     opacity: {
@@ -345,12 +314,12 @@ if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
                     }
                 }, 4);
                 a.onComplete.subscribe(function (e, dur, arg) {
-                    Dom.get(arg).innerHTML = "";
+                    Dom.get(arg)
+                        .innerHTML = "";
                     Dom.setStyle(arg, "opacity", 1);
                 }, id);
                 a.animate();
             },
-
             ResourceTypes: {
                 "energy": 1,
                 "essentia": 0,
@@ -359,70 +328,7 @@ if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
                 "waste": 1,
                 "water": 1
             },
-            UIImages: [
-                'ui/bkg.png',
-                'ui/button_bkg_200.png',
-                'ui/close.png',
-                'ui/down.png',
-                'ui/l/about.png',
-                'ui/l/bookmarks.png',
-                'ui/l/build-no.png',
-                'ui/l/build.png',
-                'ui/l/disable_self_destruct.png',
-                'ui/l/enable_self_destruct.png',
-                'ui/l/energy.png',
-                'ui/l/essentia.png',
-                'ui/l/food.png',
-                'ui/l/happiness.png',
-                'ui/l/inbox.png',
-                'ui/l/inbox_new.png',
-                'ui/l/invite_friend.png',
-                'ui/l/logout.png',
-                'ui/l/ore.png',
-                'ui/l/planet_side.png',
-                'ui/l/plots.png',
-                'ui/l/profile.png',
-                'ui/l/star_map.png',
-                'ui/l/stats.png',
-                'ui/l/support.png',
-                'ui/l/tutorial.png',
-                'ui/l/waste.png',
-                'ui/l/water.png',
-                'ui/mail-read.png',
-                'ui/rss.png',
-                'ui/s/build-no.png',
-                'ui/s/build.png',
-                'ui/s/energy.png',
-                'ui/s/essentia.png',
-                'ui/s/food.png',
-                'ui/s/happiness.png',
-                'ui/s/inbox.png',
-                'ui/s/ore.png',
-                'ui/s/refresh.png',
-                'ui/s/star_map.png',
-                'ui/s/storage.png',
-                'ui/s/time.png',
-                'ui/s/tutorial.png',
-                'ui/s/waste.png',
-                'ui/s/water.png',
-                'ui/tab.png',
-                'ui/tickbar.png',
-                'ui/transparent_black.png',
-                'ui/up.png',
-                'ui/web/bar_bottom_back.png',
-                'ui/web/bar_top_back.png',
-                'ui/web/facebook-login-button.png',
-                'ui/web/selector_bottom.png',
-                'ui/web/selector_bottom_shine.png',
-                'ui/web/selector_top.png',
-                'ui/web/selector_top_shine.png',
-                'ui/web/slider-thumb-half-left.png',
-                'ui/web/slider-thumb-half-right.png',
-                'ui/web/slider-thumb.png',
-                'ui/web/t.png',
-                'ui/zoom.png',
-                'ui/zoom_slider.png'
-                ],
+            UIImages: ['ui/bkg.png', 'ui/button_bkg_200.png', 'ui/close.png', 'ui/down.png', 'ui/l/about.png', 'ui/l/bookmarks.png', 'ui/l/build-no.png', 'ui/l/build.png', 'ui/l/disable_self_destruct.png', 'ui/l/enable_self_destruct.png', 'ui/l/energy.png', 'ui/l/essentia.png', 'ui/l/food.png', 'ui/l/happiness.png', 'ui/l/inbox.png', 'ui/l/inbox_new.png', 'ui/l/invite_friend.png', 'ui/l/logout.png', 'ui/l/ore.png', 'ui/l/planet_side.png', 'ui/l/plots.png', 'ui/l/profile.png', 'ui/l/star_map.png', 'ui/l/stats.png', 'ui/l/support.png', 'ui/l/tutorial.png', 'ui/l/waste.png', 'ui/l/water.png', 'ui/mail-read.png', 'ui/rss.png', 'ui/s/build-no.png', 'ui/s/build.png', 'ui/s/energy.png', 'ui/s/essentia.png', 'ui/s/food.png', 'ui/s/happiness.png', 'ui/s/inbox.png', 'ui/s/ore.png', 'ui/s/refresh.png', 'ui/s/star_map.png', 'ui/s/storage.png', 'ui/s/time.png', 'ui/s/tutorial.png', 'ui/s/waste.png', 'ui/s/water.png', 'ui/tab.png', 'ui/tickbar.png', 'ui/transparent_black.png', 'ui/up.png', 'ui/web/bar_bottom_back.png', 'ui/web/bar_top_back.png', 'ui/web/facebook-login-button.png', 'ui/web/selector_bottom.png', 'ui/web/selector_bottom_shine.png', 'ui/web/selector_top.png', 'ui/web/selector_top_shine.png', 'ui/web/slider-thumb-half-left.png', 'ui/web/slider-thumb-half-right.png', 'ui/web/slider-thumb.png', 'ui/web/t.png', 'ui/zoom.png', 'ui/zoom_slider.png'],
             // planetarySort - Input: Game.EmpireData.planets, Output: A sorted array of planetary objects
             planetarySort: function (planets) {
                 var newplanets = [];
@@ -432,24 +338,20 @@ if (typeof YAHOO.lacuna.Library == "undefined" || !YAHOO.lacuna.Library) {
                 newplanets.sort(function (a, b) {
                     if (a.name > b.name) {
                         return 1;
-                    }
-                    else if (a.name < b.name) {
+                    } else if (a.name < b.name) {
                         return -1;
-                    }
-                    else {
+                    } else {
                         return 0;
                     }
                 });
                 return newplanets;
             }
         };
-
         YAHOO.lacuna.Library = Library;
     })();
     YAHOO.register("library", YAHOO.lacuna.Library, {
         version: "1",
         build: "0"
     });
-
 }
 // vim: noet:ts=4:sw=4

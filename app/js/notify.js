@@ -1,7 +1,5 @@
 YAHOO.namespace("lacuna");
-
 if (typeof YAHOO.lacuna.Notify == "undefined" || !YAHOO.lacuna.Notify) {
-
     (function () {
         var Lang = YAHOO.lang,
             Util = YAHOO.util,
@@ -10,7 +8,6 @@ if (typeof YAHOO.lacuna.Notify == "undefined" || !YAHOO.lacuna.Notify) {
             Lacuna = YAHOO.lacuna,
             Game = Lacuna.Game,
             Lib = Lacuna.Library;
-
         var Notify = function () {
             this.skip_incoming_ships = {};
             this.incoming_own = {};
@@ -29,7 +26,6 @@ if (typeof YAHOO.lacuna.Notify == "undefined" || !YAHOO.lacuna.Notify) {
                     Dom.addClass(container, "nofooter");
                     container.innerHTML = this._getHtml();
                     document.body.insertBefore(container, document.body.firstChild);
-
                     this.Display = new YAHOO.widget.Panel("notify", {
                         constraintoviewport: true,
                         visible: false,
@@ -39,16 +35,18 @@ if (typeof YAHOO.lacuna.Notify == "undefined" || !YAHOO.lacuna.Notify) {
                         underlay: false,
                         modal: false,
                         width: "180px",
-                        context: ["header", "tr", "br", ["beforeShow", "windowResize"], [0, 40]]
+                        context: ["header", "tr", "br", ["beforeShow", "windowResize"],
+                            [0, 40]
+                        ]
                     });
                     this.Display.renderEvent.subscribe(function () {
                         this.notifyList = Dom.get('notifyList');
                         this.notify = Dom.get("notify");
-
                         Dom.removeClass(this.notify, Lib.Styles.HIDDEN);
                     });
                     this.Display.showEvent.subscribe(function () {
-                        Dom.setStyle(this.notifyList.parentNode, "max-height", (Game.GetSize().h - 125) + "px");
+                        Dom.setStyle(this.notifyList.parentNode, "max-height", (Game.GetSize()
+                            .h - 125) + "px");
                     });
                     this.Display.render();
                 }
@@ -69,7 +67,6 @@ if (typeof YAHOO.lacuna.Notify == "undefined" || !YAHOO.lacuna.Notify) {
                 if (skip_incoming_ships == 1) {
                     arr = arr.concat(['<li><span style="color:#f00">DISABLED (see profile)</span></li>']);
                 }
-
                 if (num_incoming_enemy > 0) {
                     arr = arr.concat(['<li><span style="color:#fff">', num_incoming_enemy, ' foreign</span></li>']);
                     var serverTime = Lib.getTime(Game.ServerData.time),
@@ -80,8 +77,7 @@ if (typeof YAHOO.lacuna.Notify == "undefined" || !YAHOO.lacuna.Notify) {
                             arrTime;
                         if (ms > 0) {
                             arrTime = Lib.formatMillisecondTime(ms);
-                        }
-                        else {
+                        } else {
                             arrTime = 'Overdue ' + Lib.formatMillisecondTime(-ms);
                         }
                         arr = arr.concat(['<li><span style="color:#fff;">', arrTime, '</span></li>']);
@@ -97,8 +93,7 @@ if (typeof YAHOO.lacuna.Notify == "undefined" || !YAHOO.lacuna.Notify) {
                             arrTime;
                         if (ms > 0) {
                             arrTime = Lib.formatMillisecondTime(ms);
-                        }
-                        else {
+                        } else {
                             arrTime = 'Overdue ' + Lib.formatMillisecondTime(-ms);
                         }
                         arr = arr.concat(['<li><span style="color:#b0b;">', arrTime, '</span></li>']);
@@ -114,8 +109,7 @@ if (typeof YAHOO.lacuna.Notify == "undefined" || !YAHOO.lacuna.Notify) {
                             arrTime;
                         if (ms > 0) {
                             arrTime = Lib.formatMillisecondTime(ms);
-                        }
-                        else {
+                        } else {
                             arrTime = 'Overdue ' + Lib.formatMillisecondTime(-ms);
                         }
                         arr = arr.concat(['<li><span style="color:#0f0;">', arrTime, '</span></li>']);
@@ -139,7 +133,6 @@ if (typeof YAHOO.lacuna.Notify == "undefined" || !YAHOO.lacuna.Notify) {
                 planet_num_own = this.num_incoming_own[planet.id] || 0;
                 planet_num_ally = this.num_incoming_ally[planet.id] || 0;
                 planet_num_enemy = this.num_incoming_enemy[planet.id] || 0;
-
                 this._createDisplay();
                 this.skip_incoming_ships[planet.id] = skip_incoming_ships;
                 this.incoming_own[planet.id] = incoming_own;
@@ -149,7 +142,6 @@ if (typeof YAHOO.lacuna.Notify == "undefined" || !YAHOO.lacuna.Notify) {
                 this.incoming_enemy[planet.id] = incoming_enemy;
                 this.num_incoming_enemy[planet.id] = num_incoming_enemy;
                 this.planetId = planet.id;
-
                 if (!this.subscribed) {
                     Game.onTick.subscribe(this._updating, this, true);
                     this.subscribed = 1;
@@ -157,7 +149,6 @@ if (typeof YAHOO.lacuna.Notify == "undefined" || !YAHOO.lacuna.Notify) {
                 this.Display.show();
                 this.Display.bringToTop();
             },
-
             Show: function (planetId) {
                 this.planetId = planetId;
                 if (this.Display) {
@@ -172,14 +163,11 @@ if (typeof YAHOO.lacuna.Notify == "undefined" || !YAHOO.lacuna.Notify) {
                 delete this.planetId;
             }
         };
-
         Lacuna.Notify = new Notify();
-
     })();
     YAHOO.register("notify", YAHOO.lacuna.Notify, {
         version: "1",
         build: "0"
     });
-
 }
 // vim: noet:ts=4:sw=4

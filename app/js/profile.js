@@ -1,7 +1,5 @@
 YAHOO.namespace("lacuna");
-
 if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
-
     (function () {
         var Lang = YAHOO.lang,
             Util = YAHOO.util,
@@ -11,17 +9,14 @@ if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
             Lacuna = YAHOO.lacuna,
             Game = Lacuna.Game,
             Lib = Lacuna.Library;
-
         var Profile = function () {
             this.createEvent("onRpc");
             this.id = "profile";
-
             var container = document.createElement("div");
             container.id = this.id;
             Dom.addClass(container, Lib.Styles.HIDDEN);
             container.innerHTML = this._getHtml();
             document.body.insertBefore(container, document.body.firstChild);
-
             this.Dialog = new YAHOO.widget.Dialog(this.id, {
                 constraintoviewport: true,
                 postmethod: "none",
@@ -31,7 +26,8 @@ if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
                         fn: this.handleUpdate,
                         scope: this
                     },
-                    isDefault: true}],
+                    isDefault: true
+                }],
                 visible: false,
                 draggable: true,
                 effect: Game.GetContainerEffect(),
@@ -69,53 +65,65 @@ if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
                 this.dontReplaceExcavator = Dom.get("profileDontReplaceExcavator");
                 Event.on(this.skipFoundNothing, 'change', function () {
                     if (!this.checked) {
-                        Dom.get("profileSkipAllExcavator").checked = false;
+                        Dom.get("profileSkipAllExcavator")
+                            .checked = false;
                     }
                 });
                 Event.on(this.skipExcavatorResources, 'change', function () {
                     if (!this.checked) {
-                        Dom.get("profileSkipAllExcavator").checked = false;
+                        Dom.get("profileSkipAllExcavator")
+                            .checked = false;
                     }
                 });
                 Event.on(this.skipExcavatorGlyph, 'change', function () {
                     if (!this.checked) {
-                        Dom.get("profileSkipAllExcavator").checked = false;
+                        Dom.get("profileSkipAllExcavator")
+                            .checked = false;
                     }
                 });
                 Event.on(this.skipExcavatorPlan, 'change', function () {
                     if (!this.checked) {
-                        Dom.get("profileSkipAllExcavator").checked = false;
+                        Dom.get("profileSkipAllExcavator")
+                            .checked = false;
                     }
                 });
                 Event.on(this.skipExcavatorArtifact, 'change', function () {
                     if (!this.checked) {
-                        Dom.get("profileSkipAllExcavator").checked = false;
+                        Dom.get("profileSkipAllExcavator")
+                            .checked = false;
                     }
                 });
                 Event.on(this.skipExcavatorDestroyed, 'change', function () {
                     if (!this.checked) {
-                        Dom.get("profileSkipAllExcavator").checked = false;
+                        Dom.get("profileSkipAllExcavator")
+                            .checked = false;
                     }
                 });
                 Event.on(this.skipExcavatorReplaceMsg, 'change', function () {
                     if (!this.checked) {
-                        Dom.get("profileSkipExcavatorReplaceMsg").checked = false;
+                        Dom.get("profileSkipExcavatorReplaceMsg")
+                            .checked = false;
                     }
                 });
                 Event.on(this.skipAllExcavator, 'change', function () {
                     if (this.checked) {
-                        Dom.get("profileSkipFoundNothing").checked = true;
-                        Dom.get("profileSkipExcavatorResources").checked = true;
-                        Dom.get("profileSkipExcavatorGlyph").checked = true;
-                        Dom.get("profileSkipExcavatorPlan").checked = true;
-                        Dom.get("profileSkipExcavatorArtifact").checked = true;
-                        Dom.get("profileSkipExcavatorDestroyed").checked = true;
-                        Dom.get("profileSkipExcavatorReplaceMsg").checked = true;
+                        Dom.get("profileSkipFoundNothing")
+                            .checked = true;
+                        Dom.get("profileSkipExcavatorResources")
+                            .checked = true;
+                        Dom.get("profileSkipExcavatorGlyph")
+                            .checked = true;
+                        Dom.get("profileSkipExcavatorPlan")
+                            .checked = true;
+                        Dom.get("profileSkipExcavatorArtifact")
+                            .checked = true;
+                        Dom.get("profileSkipExcavatorDestroyed")
+                            .checked = true;
+                        Dom.get("profileSkipExcavatorReplaceMsg")
+                            .checked = true;
                     }
                 });
-
                 this.rpc = Dom.get("profileRpc");
-
                 this.medals = Dom.get("profileMedalsList");
                 this.species = Dom.get("profileSpecies");
                 this.notes = Dom.get("profileNotes");
@@ -129,94 +137,78 @@ if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
                 Event.on(this.sitter_password, 'blur', function () {
                     this.type = 'password';
                 });
-
                 this.stopAnim = Dom.get("profileDisableDialogAnim");
                 this.showLevels = Dom.get("profileShowBuildingLevels");
                 this.hidePlanets = Dom.get("profileHidePlanets");
                 this.hideTips = Dom.get("profileHideTips");
                 this.assetsPath = Dom.get("assetsPath");
-
                 this.tabView = new YAHOO.widget.TabView("profileTabs");
                 //species tab
                 this.hasSpecies = false;
-                this.tabView.getTab(2).subscribe("activeChange", function (e) {
-                    if (e.newValue && !this.hasSpecies) {
-                        this.hasSpecies = true;
-                        var requests = 0;
-                        Game.Services.Empire.view_species_stats({
-                            session_id: Game.GetSession("")
-                        }, {
-                            success: function (o) {
-                                YAHOO.log(o, "info", "Profile.show.view_stats.success");
-                                this.fireEvent('onRpc', o.result);
-                                this.speciesStats = o.result.species;
-                                requests++;
-                                if (requests == 2) {
-                                    this.populateSpecies();
-                                }
-                            },
-                            scope: this
-                        });
-                        Game.Services.Empire.redefine_species_limits({
-                            session_id: Game.GetSession("")
-                        }, {
-                            success: function (o) {
-                                YAHOO.log(o, "info", "Profile.redefine_species_limits.success");
-                                this.fireEvent('onRpc', o.result);
-                                this.speciesRedefineLimits = o.result;
-                                requests++;
-                                if (requests == 2) {
-                                    this.populateSpecies();
-                                }
-                            },
-                            scope: this
-                        });
-                    }
-                }, this, true);
+                this.tabView.getTab(2)
+                    .subscribe("activeChange", function (e) {
+                        if (e.newValue && !this.hasSpecies) {
+                            this.hasSpecies = true;
+                            var requests = 0;
+                            Game.Services.Empire.view_species_stats({
+                                session_id: Game.GetSession("")
+                            }, {
+                                success: function (o) {
+                                    YAHOO.log(o, "info", "Profile.show.view_stats.success");
+                                    this.fireEvent('onRpc', o.result);
+                                    this.speciesStats = o.result.species;
+                                    requests++;
+                                    if (requests == 2) {
+                                        this.populateSpecies();
+                                    }
+                                },
+                                scope: this
+                            });
+                            Game.Services.Empire.redefine_species_limits({
+                                session_id: Game.GetSession("")
+                            }, {
+                                success: function (o) {
+                                    YAHOO.log(o, "info", "Profile.redefine_species_limits.success");
+                                    this.fireEvent('onRpc', o.result);
+                                    this.speciesRedefineLimits = o.result;
+                                    requests++;
+                                    if (requests == 2) {
+                                        this.populateSpecies();
+                                    }
+                                },
+                                scope: this
+                            });
+                        }
+                    }, this, true);
                 this.tabView.set('activeIndex', 0);
                 Dom.removeClass(this.id, Lib.Styles.HIDDEN);
             }, this, true);
             this.Dialog.render();
             Game.OverlayManager.register(this.Dialog);
-
             this.speciesId = 'profileSpeciesRedefine';
             var speciesContainer = document.createElement("div");
             speciesContainer.id = this.speciesId;
             Dom.addClass(speciesContainer, Lib.Styles.HIDDEN);
-            speciesContainer.innerHTML = [
-                '    <div class="hd">Redefine Species</div>',
-                '    <div class="bd">',
-                '        <div id="profileSpeciesRedefineWarning">',
-                '            Changing your species affinities is risky business and will affect the game in many ways you cannot foresee. ',
-                '            In addition, you can only change your affinities once per month. Use at your own risk!',
-                '        </div>',
-                '        <form name="profileSpeciesRedefineForm">',
-                '            <div id="profileSpeciesDesigner"></div>',
-                '            <div id="profileSpeciesMessage" class="hidden"></div>',
-                '        </form>',
-                '    </div>',
-                '    <div class="ft"></div>'
-                ].join('');
+            speciesContainer.innerHTML = ['    <div class="hd">Redefine Species</div>', '    <div class="bd">', '        <div id="profileSpeciesRedefineWarning">', '            Changing your species affinities is risky business and will affect the game in many ways you cannot foresee. ', '            In addition, you can only change your affinities once per month. Use at your own risk!', '        </div>', '        <form name="profileSpeciesRedefineForm">', '            <div id="profileSpeciesDesigner"></div>', '            <div id="profileSpeciesMessage" class="hidden"></div>', '        </form>', '    </div>', '    <div class="ft"></div>'].join('');
             document.body.insertBefore(speciesContainer, document.body.firstChild);
             this.SpeciesDialog = new YAHOO.widget.Dialog(this.speciesId, {
                 constraintoviewport: true,
                 postmethod: "none",
-                buttons: [
-                    {
+                buttons: [{
                     text: ' <img src="' + Lib.AssetUrl + 'ui/s/essentia.png" class="smallEssentia" /> Update',
                     handler: {
                         fn: this.redefineSpecies,
                         scope: this
                     },
-                    isDefault: true},
-                {
+                    isDefault: true
+                }, {
                     text: "Cancel",
                     handler: {
                         fn: function () {
                             this.hide();
                         }
-                    }}
-                ],
+                    }
+                }],
                 visible: false,
                 draggable: true,
                 effect: Game.GetContainerEffect(),
@@ -248,8 +240,7 @@ if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
                         this.tabView.set('activeIndex', 4);
                         this.confirm_password.focus();
                         return;
-                    }
-                    else {
+                    } else {
                         updatesLeft++;
                         Game.Services.Empire.change_password({
                             session_id: Game.GetSession(""),
@@ -272,21 +263,19 @@ if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
                         });
                     }
                 }
-
                 var pmc = Sel.query("li", "profileMedalsList"),
                     publicMedals = [];
                 for (var i = 0; i < pmc.length; i++) {
-                    if (Sel.query('input[type="checkbox"]', pmc[i], true).checked) {
+                    if (Sel.query('input[type="checkbox"]', pmc[i], true)
+                        .checked) {
                         publicMedals.push(pmc[i].MedalId);
                     }
                 }
-
                 if (Game.GetCookieSettings("disableDialogAnim", "0") != (this.stopAnim.checked ? "1" : "0")) {
                     var newEffect;
                     if (this.stopAnim.checked) {
                         Game.SetCookieSettings("disableDialogAnim", "1");
-                    }
-                    else {
+                    } else {
                         Game.RemoveCookieSettings("disableDialogAnim");
                         newEffect = Game.GetContainerEffect();
                     }
@@ -298,8 +287,7 @@ if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
                 if (Game.GetCookieSettings("showLevels", "0") != (this.showLevels.checked ? "1" : "0")) {
                     if (this.showLevels.checked) {
                         Game.SetCookieSettings("showLevels", "1");
-                    }
-                    else {
+                    } else {
                         Game.RemoveCookieSettings("showLevels");
                     }
                     var levels = Sel.query("#planetMap .tileContainer .planetMapTileActionLevel");
@@ -310,8 +298,7 @@ if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
                 if (Game.GetCookieSettings("hidePlanets", "0") != (this.hidePlanets.checked ? "1" : "0")) {
                     if (this.hidePlanets.checked) {
                         Game.SetCookieSettings("hidePlanets", "1");
-                    }
-                    else {
+                    } else {
                         Game.RemoveCookieSettings("hidePlanets");
                     }
                     if (YAHOO.lacuna.MapStar.IsVisible()) {
@@ -322,17 +309,14 @@ if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
                 if (Game.GetCookieSettings("hideTips", "0") != (this.hideTips.checked ? "1" : "0")) {
                     if (this.hideTips.checked) {
                         Game.SetCookieSettings("hideTips", "1");
-                    }
-                    else {
+                    } else {
                         Game.RemoveCookieSettings("hideTips");
                     }
                 }
-
                 if (Game.GetCookieSettings("assetsPath") != this.assetsPath.value) {
                     Game.SetCookieSettings('assetsPath', this.assetsPath.value);
                     Lib.AssetUrl = this.assetsPath.value;
                 }
-
                 Game.Services.Empire.edit_profile({
                     session_id: Game.GetSession(""),
                     profile: {
@@ -394,7 +378,6 @@ if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
             hide: function () {
                 this.Dialog.hide();
             },
-
             populateProfile: function (results) {
                 var p = results.profile;
                 this.description.value = p.description;
@@ -404,7 +387,6 @@ if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
                 this.country.value = p.country;
                 this.skype.value = p.skype;
                 this.player_name.value = p.player_name;
-
                 this.skipFacebook.checked = p.skip_facebook_wall_posts == "1";
                 this.skipMedal.checked = p.skip_medal_messages == "1";
                 this.skipHappiness.checked = p.skip_happiness_warnings == "1";
@@ -423,175 +405,102 @@ if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
                 this.skipExcavatorReplaceMsg.checked = p.skip_excavator_replace_msg == "1";
                 this.dontReplaceExcavator.checked = p.dont_replace_excavator == "1";
                 this.skipAllExcavator.checked = this.skipFoundNothing.checked && this.skipExcavatorResources.checked && this.skipExcavatorGlyph.checked && this.skipExcavatorPlan.checked && this.skipExcavatorArtifact.checked && this.skipExcavatorDestroyed.checked && this.skipExcavatorReplaceMsg.checked;
-
                 this.stopAnim.checked = Game.GetCookieSettings("disableDialogAnim", "0") == "1";
                 this.showLevels.checked = Game.GetCookieSettings("showLevels", "0") == "1";
                 this.hidePlanets.checked = Game.GetCookieSettings("hidePlanets", "0") == "1";
                 this.hideTips.checked = Game.GetCookieSettings("hideTips", "0") == "1";
                 this.assetsPath.value = Game.GetCookieSettings("assetsPath") || '';
-
                 this.rpc.innerHTML = [(Game.EmpireData.rpc_count || 0), ' / ', (Game.ServerData.rpc_limit || 0)].join('');
-
                 this.notes.value = p.notes;
                 this.sitter_password.value = p.sitter_password;
                 this.sitter_password.type = "password";
-                this.new_password.value =
-                this.confirm_password.value = "";
+                this.new_password.value = this.confirm_password.value = "";
                 Dom.removeClass(this.account_tab, 'password-changed');
-
                 var frag = document.createDocumentFragment(),
                     li = document.createElement('li');
                 for (var id in p.medals) {
                     if (p.medals.hasOwnProperty(id)) {
                         var medal = p.medals[id],
                             nLi = li.cloneNode(false);
-
                         Dom.addClass(nLi, "medal");
                         nLi.MedalId = id;
-                        nLi.innerHTML = [
-                            '    <div class="medalPublic"><input type="checkbox"', (medal["public"] == "1" ? ' checked' : ''), ' /></div>',
-                            '    <div class="medalContainer">',
-                            '        <img src="', Lib.AssetUrl, 'medal/', medal.image, '.png" alt="', medal.name, '" title="', medal.name, ' on ', Lib.formatServerDate(medal.date), '" />',
-                            '    </div>'
-                            ].join('');
-
+                        nLi.innerHTML = ['    <div class="medalPublic"><input type="checkbox"', (medal["public"] == "1" ? ' checked' : ''), ' /></div>', '    <div class="medalContainer">', '        <img src="', Lib.AssetUrl, 'medal/', medal.image, '.png" alt="', medal.name, '" title="', medal.name, ' on ', Lib.formatServerDate(medal.date), '" />', '    </div>'].join('');
                         frag.appendChild(nLi);
                     }
                 }
-
                 this.medals.innerHTML = "";
                 this.medals.appendChild(frag);
-
-                var Ht = Game.GetSize().h - 195;
+                var Ht = Game.GetSize()
+                    .h - 195;
                 if (Ht > 270) {
                     Ht = 270;
                 }
                 Dom.setStyle('profilePlayer', 'height', Ht + 'px');
                 Dom.setStyle(this.notes, 'height', Ht + 'px');
                 Dom.setStyle(this.medals, 'height', Ht + 'px');
-
                 this.Dialog.center();
             },
             populateSpecies: function () {
                 var frag = document.createDocumentFragment(),
                     li = document.createElement('li');
                 stat = this.speciesStats;
-
                 var nLi = li.cloneNode(false);
-                nLi.innerHTML = [
-                    '<label>Name</label>',
-                    '<span>', stat.name, '</span>'
-                    ].join('');
+                nLi.innerHTML = ['<label>Name</label>', '<span>', stat.name, '</span>'].join('');
                 frag.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
-                nLi.innerHTML = [
-                    '<label>Description</label>',
-                    '<span>', stat.description, '</span>'
-                    ].join('');
+                nLi.innerHTML = ['<label>Description</label>', '<span>', stat.description, '</span>'].join('');
                 frag.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
-                nLi.innerHTML = [
-                    '<label>Habitable Orbits</label>',
-                    '<span>', stat.min_orbit,
-                    stat.max_orbit > stat.min_orbit ? ' to ' + stat.max_orbit : '',
-                    '</span>'
-                    ].join('');
+                nLi.innerHTML = ['<label>Habitable Orbits</label>', '<span>', stat.min_orbit,
+                    stat.max_orbit > stat.min_orbit ? ' to ' + stat.max_orbit : '', '</span>'
+                ].join('');
                 frag.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
-                nLi.innerHTML = [
-                    '<label>Manufacturing</label>',
-                    '<span>', stat.manufacturing_affinity, '</span>'
-                    ].join('');
+                nLi.innerHTML = ['<label>Manufacturing</label>', '<span>', stat.manufacturing_affinity, '</span>'].join('');
                 frag.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
-                nLi.innerHTML = [
-                    '<label>Deception</label>',
-                    '<span>', stat.deception_affinity, '</span>'
-                    ].join('');
+                nLi.innerHTML = ['<label>Deception</label>', '<span>', stat.deception_affinity, '</span>'].join('');
                 frag.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
-                nLi.innerHTML = [
-                    '<label>Research</label>',
-                    '<span>', stat.research_affinity, '</span>'
-                    ].join('');
+                nLi.innerHTML = ['<label>Research</label>', '<span>', stat.research_affinity, '</span>'].join('');
                 frag.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
-                nLi.innerHTML = [
-                    '<label>Management</label>',
-                    '<span>', stat.management_affinity, '</span>'
-                    ].join('');
+                nLi.innerHTML = ['<label>Management</label>', '<span>', stat.management_affinity, '</span>'].join('');
                 frag.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
-                nLi.innerHTML = [
-                    '<label>Farming</label>',
-                    '<span>', stat.farming_affinity, '</span>'
-                    ].join('');
+                nLi.innerHTML = ['<label>Farming</label>', '<span>', stat.farming_affinity, '</span>'].join('');
                 frag.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
-                nLi.innerHTML = [
-                    '<label>Mining</label>',
-                    '<span>', stat.mining_affinity, '</span>'
-                    ].join('');
+                nLi.innerHTML = ['<label>Mining</label>', '<span>', stat.mining_affinity, '</span>'].join('');
                 frag.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
-                nLi.innerHTML = [
-                    '<label>Science</label>',
-                    '<span>', stat.science_affinity, '</span>'
-                    ].join('');
+                nLi.innerHTML = ['<label>Science</label>', '<span>', stat.science_affinity, '</span>'].join('');
                 frag.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
-                nLi.innerHTML = [
-                    '<label>Environmental</label>',
-                    '<span>', stat.environmental_affinity, '</span>'
-                    ].join('');
+                nLi.innerHTML = ['<label>Environmental</label>', '<span>', stat.environmental_affinity, '</span>'].join('');
                 frag.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
-                nLi.innerHTML = [
-                    '<label>Political</label>',
-                    '<span>', stat.political_affinity, '</span>'
-                    ].join('');
+                nLi.innerHTML = ['<label>Political</label>', '<span>', stat.political_affinity, '</span>'].join('');
                 frag.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
-                nLi.innerHTML = [
-                    '<label>Trade</label>',
-                    '<span>', stat.trade_affinity, '</span>'
-                    ].join('');
+                nLi.innerHTML = ['<label>Trade</label>', '<span>', stat.trade_affinity, '</span>'].join('');
                 frag.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
-                nLi.innerHTML = [
-                    '<label>Growth</label>',
-                    '<span>', stat.growth_affinity, '</span>'
-                    ].join('');
+                nLi.innerHTML = ['<label>Growth</label>', '<span>', stat.growth_affinity, '</span>'].join('');
                 frag.appendChild(nLi);
-
                 nLi = li.cloneNode(false);
                 Dom.addClass(nLi, 'profileSpeciesRedefineButton');
                 var redefineButton = document.createElement('button');
                 redefineButton.innerHTML = [
-                    this.speciesRedefineLimits.essentia_cost,
-                    ' <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia smallImg" /> Redefine Species'
-                    ].join('');
+                    this.speciesRedefineLimits.essentia_cost, ' <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia smallImg" /> Redefine Species'
+                ].join('');
                 nLi.appendChild(redefineButton);
                 frag.appendChild(nLi);
-
                 Event.on(redefineButton, 'click', this.showSpeciesRedefine, this, true);
-
                 this.species.innerHTML = "";
                 this.species.appendChild(frag);
-                var Ht = Game.GetSize().h - 180;
+                var Ht = Game.GetSize()
+                    .h - 180;
                 if (Ht > 290) {
                     Ht = 290;
                 }
@@ -608,8 +517,7 @@ if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
                     this.SpeciesDesigner.setSpeciesLocks(this.speciesRedefineLimits);
                     this.SpeciesDialog.getButtons()[0].innerHTML = [this.speciesRedefineLimits.essentia_cost, ' <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia smallImg" /> Update'].join('');
                     this.SpeciesDialog.show();
-                }
-                else {
+                } else {
                     alert("Can't redefine species: " + this.speciesRedefineLimits.reason);
                 }
             },
@@ -623,8 +531,7 @@ if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
                     if (!this.SpeciesDesigner.validateSpecies(data)) {
                         return;
                     }
-                }
-                catch (e) {
+                } catch (e) {
                     alert(e);
                     return;
                 }
@@ -645,13 +552,11 @@ if (typeof YAHOO.lacuna.Profile == "undefined" || !YAHOO.lacuna.Profile) {
             }
         };
         Lang.augmentProto(Profile, Util.EventProvider);
-
         Lacuna.Profile = new Profile();
     })();
     YAHOO.register("profile", YAHOO.lacuna.Profile, {
         version: "1",
         build: "0"
     });
-
 }
 // vim: noet:ts=4:sw=4

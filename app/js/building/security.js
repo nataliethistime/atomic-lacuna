@@ -1,7 +1,5 @@
 YAHOO.namespace("lacuna.buildings");
-
 if (typeof YAHOO.lacuna.buildings.Security == "undefined" || !YAHOO.lacuna.buildings.Security) {
-
     (function () {
         var Lang = YAHOO.lang,
             Util = YAHOO.util,
@@ -12,15 +10,11 @@ if (typeof YAHOO.lacuna.buildings.Security == "undefined" || !YAHOO.lacuna.build
             Lacuna = YAHOO.lacuna,
             Game = Lacuna.Game,
             Lib = Lacuna.Library;
-
         var Security = function (result) {
             Security.superclass.constructor.call(this, result);
-
             this.service = Game.Services.Buildings.Security;
-
             this.foreignSpiesMessage = "There may be spies on your planet that we don't know about.";
         };
-
         Lang.extend(Security, Lacuna.buildings.Building, {
             destroy: function () {
                 if (this.pagerPrisoners) {
@@ -38,47 +32,19 @@ if (typeof YAHOO.lacuna.buildings.Security == "undefined" || !YAHOO.lacuna.build
                 var spies = this.result.spies;
                 this.prisonersTab = new YAHOO.widget.Tab({
                     label: "Prisoners",
-                    content: [
-                        '<div>',
-                        '    <ul class="spiesHeader securityInfo clearafter">',
-                        '        <li class="securityName">Name</li>',
-                        '        <li class="securityLevel">Level</li>',
-                        '        <li class="securitySentence">Sentence Expires</li>',
-                        '        <li class="securityStatus">Status</li>',
-                        '        <li class="securityExecute">Execute</li>',
-                        '        <li class="securityRelease">Release</li>',
-                        '    </ul>',
-                        '    <div><div id="prisonersDetails"></div></div>',
-                        '    <div id="prisonersPaginator"></div>',
-                        '</div>'
-                        ].join('')
+                    content: ['<div>', '    <ul class="spiesHeader securityInfo clearafter">', '        <li class="securityName">Name</li>', '        <li class="securityLevel">Level</li>', '        <li class="securitySentence">Sentence Expires</li>', '        <li class="securityStatus">Status</li>', '        <li class="securityExecute">Execute</li>', '        <li class="securityRelease">Release</li>', '    </ul>', '    <div><div id="prisonersDetails"></div></div>', '    <div id="prisonersPaginator"></div>', '</div>'].join('')
                 });
                 this.prisonersTab.subscribe("activeChange", this.prisonersView, this, true);
-
                 return this.prisonersTab;
             },
             _getSpiesTab: function () {
                 this.spiesTab = new YAHOO.widget.Tab({
                     label: "Foreign Spies",
-                    content: [
-                        '<div>',
-                        '    <p>', this.foreignSpiesMessage, '</p>',
-                        '    <ul class="spiesHeader securityInfo clearafter">',
-                        '        <li class="securityName">Name</li>',
-                        '        <li class="securityLevel">Level</li>',
-                        '        <li class="securityNextMisson">Next Misson</li>',
-                        '        <li class="securityNextMisson">Current Misson</li>',
-                        '    </ul>',
-                        '    <div><div id="securityDetails"></div></div>',
-                        '    <div id="securityPaginator"></div>',
-                        '</div>'
-                        ].join('')
+                    content: ['<div>', '    <p>', this.foreignSpiesMessage, '</p>', '    <ul class="spiesHeader securityInfo clearafter">', '        <li class="securityName">Name</li>', '        <li class="securityLevel">Level</li>', '        <li class="securityNextMisson">Next Misson</li>', '        <li class="securityNextMisson">Current Misson</li>', '    </ul>', '    <div><div id="securityDetails"></div></div>', '    <div id="securityPaginator"></div>', '</div>'].join('')
                 });
                 this.spiesTab.subscribe("activeChange", this.spiesView, this, true);
-
                 return this.spiesTab;
             },
-
             prisonersView: function (e) {
                 if (e.newValue) {
                     if (!this.prisoners) {
@@ -98,17 +64,14 @@ if (typeof YAHOO.lacuna.buildings.Security == "undefined" || !YAHOO.lacuna.build
                                     containers: 'prisonersPaginator',
                                     template: "{PreviousPageLink} {PageLinks} {NextPageLink}",
                                     alwaysVisible: false
-
                                 });
                                 this.pagerPrisoners.subscribe('changeRequest', this.PrisonersHandlePagination, this, true);
                                 this.pagerPrisoners.render();
-
                                 this.PrisonersPopulate();
                             },
                             scope: this
                         });
-                    }
-                    else {
+                    } else {
                         this.SpyPopulate();
                     }
                 }
@@ -120,7 +83,6 @@ if (typeof YAHOO.lacuna.buildings.Security == "undefined" || !YAHOO.lacuna.build
                         div = document.createElement("div"),
                         ul = document.createElement("ul"),
                         li = document.createElement("li");
-
                     Event.purgeElement(details);
                     details.innerHTML = "";
                     Dom.setStyle(details.parentNode, "height", "");
@@ -130,29 +92,23 @@ if (typeof YAHOO.lacuna.buildings.Security == "undefined" || !YAHOO.lacuna.build
                             nDiv = div.cloneNode(false),
                             nUl = ul.cloneNode(false),
                             nLi = li.cloneNode(false);
-
                         Dom.addClass(nDiv, "securityInfo");
                         Dom.addClass(nUl, "clearafter");
-
                         Dom.addClass(nLi, "securityName");
                         nLi.innerHTML = prisoner.name;
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "securityLevel");
                         nLi.innerHTML = prisoner.level;
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "securitySentence");
                         nLi.innerHTML = Lib.formatServerDate(prisoner.sentence_expires);
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "securityStatus");
                         nLi.innerHTML = prisoner.task;
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "securityExecute");
                         var Ebtn = document.createElement("button");
@@ -160,7 +116,6 @@ if (typeof YAHOO.lacuna.buildings.Security == "undefined" || !YAHOO.lacuna.build
                         Ebtn.innerHTML = "Execute";
                         Ebtn = nLi.appendChild(Ebtn);
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "securityRelease");
                         var Rbtn = document.createElement("button");
@@ -168,11 +123,8 @@ if (typeof YAHOO.lacuna.buildings.Security == "undefined" || !YAHOO.lacuna.build
                         Rbtn.innerHTML = "Release";
                         Rbtn = nLi.appendChild(Rbtn);
                         nUl.appendChild(nLi);
-
                         nDiv.appendChild(nUl);
-
                         details.appendChild(nDiv);
-
                         Event.on(Ebtn, "click", this.PrisonersExecute, {
                             Self: this,
                             Prisoner: prisoner,
@@ -186,7 +138,8 @@ if (typeof YAHOO.lacuna.buildings.Security == "undefined" || !YAHOO.lacuna.build
                     }
                     //wait for tab to display first
                     setTimeout(function () {
-                        var Ht = Game.GetSize().h - 200;
+                        var Ht = Game.GetSize()
+                            .h - 200;
                         if (Ht > 300) {
                             Ht = 300;
                         }
@@ -211,14 +164,12 @@ if (typeof YAHOO.lacuna.buildings.Security == "undefined" || !YAHOO.lacuna.build
                     },
                     scope: this
                 });
-
                 // Update the Paginator's state
                 this.pagerPrisoners.setState(newState);
             },
             PrisonersExecute: function () {
                 if (confirm(["Are you sure you want to execute ", this.Prisoner.name, "?"].join(''))) {
                     Lacuna.Pulser.Show();
-
                     this.Self.service.execute_prisoner({
                         session_id: Game.GetSession(),
                         building_id: this.Self.building.id,
@@ -244,7 +195,6 @@ if (typeof YAHOO.lacuna.buildings.Security == "undefined" || !YAHOO.lacuna.build
             PrisonersRelease: function () {
                 if (confirm(["Are you sure you want to release ", this.Prisoner.name, "?"].join(''))) {
                     Lacuna.Pulser.Show();
-
                     this.Self.service.release_prisoner({
                         session_id: Game.GetSession(),
                         building_id: this.Self.building.id,
@@ -267,7 +217,6 @@ if (typeof YAHOO.lacuna.buildings.Security == "undefined" || !YAHOO.lacuna.build
                     });
                 }
             },
-
             spiesView: function (e) {
                 if (e.newValue) {
                     if (!this.spies) {
@@ -287,17 +236,14 @@ if (typeof YAHOO.lacuna.buildings.Security == "undefined" || !YAHOO.lacuna.build
                                     containers: 'securityPaginator',
                                     template: "{PreviousPageLink} {PageLinks} {NextPageLink}",
                                     alwaysVisible: false
-
                                 });
                                 this.pagerSpies.subscribe('changeRequest', this.SpyHandlePagination, this, true);
                                 this.pagerSpies.render();
-
                                 this.SpyPopulate();
                             },
                             scope: this
                         });
-                    }
-                    else {
+                    } else {
                         this.SpyPopulate();
                     }
                 }
@@ -309,46 +255,39 @@ if (typeof YAHOO.lacuna.buildings.Security == "undefined" || !YAHOO.lacuna.build
                         div = document.createElement("div"),
                         ul = document.createElement("ul"),
                         li = document.createElement("li");
-
                     Event.purgeElement(details);
                     details.innerHTML = "";
                     Dom.setStyle(details.parentNode, "height", "");
                     Dom.setStyle(details.parentNode, "overflow-y", "");
-
                     for (var i = 0; i < spies.length; i++) {
                         var spy = spies[i],
                             nDiv = div.cloneNode(false),
                             nUl = ul.cloneNode(false),
                             nLi = li.cloneNode(false);
-
                         Dom.addClass(nDiv, "securityInfo");
                         Dom.addClass(nUl, "clearafter");
-
                         Dom.addClass(nLi, "securityName");
                         nLi.innerHTML = spy.name;
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "securityLevel");
                         nLi.innerHTML = spy.level;
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "securityNextMisson");
                         nLi.innerHTML = Lib.formatServerDate(spy.next_mission);
                         nUl.appendChild(nLi);
-
                         nLi = li.cloneNode(false);
                         Dom.addClass(nLi, "securityTask");
                         nLi.innerHTML = spy.task;
                         nUl.appendChild(nLi);
                         nDiv.appendChild(nUl);
-
                         details.appendChild(nDiv);
                     }
                     //wait for tab to display first
                     setTimeout(function () {
-                        var Ht = Game.GetSize().h - 200;
+                        var Ht = Game.GetSize()
+                            .h - 200;
                         if (Ht > 300) {
                             Ht = 300;
                         }
@@ -373,20 +312,15 @@ if (typeof YAHOO.lacuna.buildings.Security == "undefined" || !YAHOO.lacuna.build
                     },
                     scope: this
                 });
-
                 // Update the Paginator's state
                 this.pagerSpies.setState(newState);
             }
-
         });
-
         YAHOO.lacuna.buildings.Security = Security;
-
     })();
     YAHOO.register("Security", YAHOO.lacuna.buildings.Security, {
         version: "1",
         build: "0"
     });
-
 }
 // vim: noet:ts=4:sw=4

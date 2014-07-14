@@ -1,7 +1,5 @@
 YAHOO.namespace("lacuna.buildings");
-
 if (typeof YAHOO.lacuna.buildings.SubspaceSupplyDepot == "undefined" || !YAHOO.lacuna.buildings.SubspaceSupplyDepot) {
-
     (function () {
         var Util = YAHOO.util,
             Dom = Util.Dom,
@@ -9,35 +7,18 @@ if (typeof YAHOO.lacuna.buildings.SubspaceSupplyDepot == "undefined" || !YAHOO.l
             Lacuna = YAHOO.lacuna,
             Game = Lacuna.Game,
             Lib = Lacuna.Library;
-
         var SubspaceSupplyDepot = function (result) {
             SubspaceSupplyDepot.superclass.constructor.call(this, result);
-
             this.service = Game.Services.Buildings.SubspaceSupplyDepot;
         };
-
         YAHOO.lang.extend(SubspaceSupplyDepot, Lacuna.buildings.Building, {
             getChildTabs: function () {
                 return [this._getTransmitTab()];
             },
             _getTransmitTab: function () {
                 var div = document.createElement("div");
-                div.innerHTML = [
-                    '<div>',
-                    '    <button class="subspaceTransmit" id="subspaceTransmitFood">Transmit <span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/food.png" class="smallFood" /></span>3600 Food</button>',
-                    '    <button class="subspaceTransmit" id="subspaceTransmitOre">Transmit <span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/ore.png" class="smallOre" /></span>3600 Ore</button>',
-                    '</div>',
-                    '<div>',
-                    '    <button class="subspaceTransmit" id="subspaceTransmitWater">Transmit <span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/water.png" class="smallWater" /></span>3600 Water</button>',
-                    '    <button class="subspaceTransmit" id="subspaceTransmitEnergy">Transmit <span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/energy.png" class="smallEnergy" /></span>3600 Energy</button>',
-                    '</div>',
-                    '<div>',
-                    '    <button class="subspaceTransmit" id="subspaceCompleteBuildQueue">Complete Build Queue (<span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/time.png" class="smallTime" /></span><span id="subspaceQueueTime"></span>)</button>',
-                    '</div>',
-                    '<div id="subspaceMessage">&nbsp;</div>'
-                    ].join('');
+                div.innerHTML = ['<div>', '    <button class="subspaceTransmit" id="subspaceTransmitFood">Transmit <span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/food.png" class="smallFood" /></span>3600 Food</button>', '    <button class="subspaceTransmit" id="subspaceTransmitOre">Transmit <span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/ore.png" class="smallOre" /></span>3600 Ore</button>', '</div>', '<div>', '    <button class="subspaceTransmit" id="subspaceTransmitWater">Transmit <span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/water.png" class="smallWater" /></span>3600 Water</button>', '    <button class="subspaceTransmit" id="subspaceTransmitEnergy">Transmit <span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/energy.png" class="smallEnergy" /></span>3600 Energy</button>', '</div>', '<div>', '    <button class="subspaceTransmit" id="subspaceCompleteBuildQueue">Complete Build Queue (<span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/time.png" class="smallTime" /></span><span id="subspaceQueueTime"></span>)</button>', '</div>', '<div id="subspaceMessage">&nbsp;</div>'].join('');
                 Dom.setStyle(div, 'text-align', 'center');
-
                 Event.on('subspaceTransmitFood', 'click', this.Transmit, {
                     method: "transmit_food"
                 }, this);
@@ -53,7 +34,6 @@ if (typeof YAHOO.lacuna.buildings.SubspaceSupplyDepot == "undefined" || !YAHOO.l
                 Event.on('subspaceCompleteBuildQueue', 'click', this.Transmit, {
                     method: "complete_build_queue"
                 }, this);
-
                 var tab = new YAHOO.widget.Tab({
                     label: "Transmit Resources",
                     contentEl: div
@@ -77,18 +57,19 @@ if (typeof YAHOO.lacuna.buildings.SubspaceSupplyDepot == "undefined" || !YAHOO.l
                         this.UpdateQueueTime(buildQueueTotal);
                     }
                 }, this, true);
-
                 return tab;
             },
             UpdateQueueTime: function (remaining) {
                 if (remaining < 1) {
                     remaining = 0;
-                    Dom.get('subspaceCompleteBuildQueue').disabled = true;
+                    Dom.get('subspaceCompleteBuildQueue')
+                        .disabled = true;
+                } else {
+                    Dom.get('subspaceCompleteBuildQueue')
+                        .disabled = false;
                 }
-                else {
-                    Dom.get('subspaceCompleteBuildQueue').disabled = false;
-                }
-                Dom.get('subspaceQueueTime').innerHTML = Lib.formatTime(remaining);
+                Dom.get('subspaceQueueTime')
+                    .innerHTML = Lib.formatTime(remaining);
             },
             Transmit: function (e, opt) {
                 var btn = Event.getTarget(e);
@@ -106,8 +87,7 @@ if (typeof YAHOO.lacuna.buildings.SubspaceSupplyDepot == "undefined" || !YAHOO.l
                             this.resetQueue();
                             this.UpdateQueueTime(0);
                             elMessage.innerHTML = 'Build queue completed.';
-                        }
-                        else {
+                        } else {
                             btn.disabled = false;
                             elMessage.innerHTML = 'Transmission completed.';
                         }
@@ -131,14 +111,11 @@ if (typeof YAHOO.lacuna.buildings.SubspaceSupplyDepot == "undefined" || !YAHOO.l
                 });
             }
         });
-
         Lacuna.buildings.SubspaceSupplyDepot = SubspaceSupplyDepot;
-
     })();
     YAHOO.register("SubspaceSupplyDepot", YAHOO.lacuna.buildings.SubspaceSupplyDepot, {
         version: "1",
         build: "0"
     });
-
 }
 // vim: noet:ts=4:sw=4

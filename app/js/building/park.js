@@ -1,7 +1,5 @@
 YAHOO.namespace("lacuna.buildings");
-
 if (typeof YAHOO.lacuna.buildings.Park == "undefined" || !YAHOO.lacuna.buildings.Park) {
-
     (function () {
         var Lang = YAHOO.lang,
             Util = YAHOO.util,
@@ -11,13 +9,10 @@ if (typeof YAHOO.lacuna.buildings.Park == "undefined" || !YAHOO.lacuna.buildings
             Lacuna = YAHOO.lacuna,
             Game = Lacuna.Game,
             Lib = Lacuna.Library;
-
         var Park = function (result) {
             Park.superclass.constructor.call(this, result);
-
             this.service = Game.Services.Buildings.Park;
         };
-
         Lang.extend(Park, Lacuna.buildings.Building, {
             getChildTabs: function () {
                 return [this._getPartyTab()];
@@ -26,13 +21,11 @@ if (typeof YAHOO.lacuna.buildings.Park == "undefined" || !YAHOO.lacuna.buildings
                 var div = document.createElement("div");
                 if (this.result.party.can_throw) {
                     div.appendChild(this.PartyGetDisplay());
-                }
-                else if (this.result.party.seconds_remaining * 1 > 0) {
+                } else if (this.result.party.seconds_remaining * 1 > 0) {
                     div.innerHTML = [].join('');
                     div.appendChild(this.PartyGetTimeDisplay(this.result.party));
                     this.addQueue(this.result.party.seconds_remaining, this.PartyQueue, "partyTime");
-                }
-                else {
+                } else {
                     div.innerHTML = '<p>You need at least 10,000 food to throw a party.</p>';
                 }
                 this.partyTab = new YAHOO.widget.Tab({
@@ -43,7 +36,6 @@ if (typeof YAHOO.lacuna.buildings.Park == "undefined" || !YAHOO.lacuna.buildings
             },
             Party: function (e) {
                 Lacuna.Pulser.Show();
-
                 this.service.throw_a_party({
                     session_id: Game.GetSession(),
                     building_id: this.building.id
@@ -67,11 +59,9 @@ if (typeof YAHOO.lacuna.buildings.Park == "undefined" || !YAHOO.lacuna.buildings
                     if (this.work && this.work.seconds_remaining && this.work.seconds_remaining * 1 > 0) {
                         ce.appendChild(this.PartyGetTimeDisplay(party));
                         this.addQueue(this.work.seconds_remaining, this.PartyQueue, "partyTime");
-                    }
-                    else if (party && party.can_throw) {
+                    } else if (party && party.can_throw) {
                         ce.appendChild(this.PartyGetDisplay());
-                    }
-                    else {
+                    } else {
                         ce.innerHTML = "<p>You need at least 10,000 food to throw a party.</p>";
                     }
                 }
@@ -85,10 +75,7 @@ if (typeof YAHOO.lacuna.buildings.Park == "undefined" || !YAHOO.lacuna.buildings
             },
             PartyGetTimeDisplay: function (party) {
                 var ul = document.createElement("ul");
-                ul.innerHTML = ['<li>You will get ', Lib.formatNumber(party.happiness), ' happiness from your party!</li>',
-                                                        '<li>Party time remaining: <span id="partyTime">', Lib.formatTime(party.seconds_remaining), '</span></li>',
-                                                        '<li>You may subsidize the party for 2 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" />.</li>',
-                                                        '<li><button type="button" id="parkSubsidize">Subsidize</button></li>'].join('');
+                ul.innerHTML = ['<li>You will get ', Lib.formatNumber(party.happiness), ' happiness from your party!</li>', '<li>Party time remaining: <span id="partyTime">', Lib.formatTime(party.seconds_remaining), '</span></li>', '<li>You may subsidize the party for 2 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" />.</li>', '<li><button type="button" id="parkSubsidize">Subsidize</button></li>'].join('');
                 Event.on("parkSubsidize", "click", this.Subsidize, this, true);
                 return ul;
             },
@@ -98,15 +85,15 @@ if (typeof YAHOO.lacuna.buildings.Park == "undefined" || !YAHOO.lacuna.buildings
                         p = span.parentNode;
                     p.removeChild(span);
                     p.innerHTML = "No Parties being thrown.";
-                }
-                else {
-                    Dom.get(el).innerHTML = Lib.formatTime(Math.round(remaining));
+                } else {
+                    Dom.get(el)
+                        .innerHTML = Lib.formatTime(Math.round(remaining));
                 }
             },
             Subsidize: function (e) {
                 Lacuna.Pulser.Show();
-                Dom.get("parkSubsidize").disabled = true;
-
+                Dom.get("parkSubsidize")
+                    .disabled = true;
                 this.service.subsidize_party({
                     session_id: Game.GetSession(),
                     building_id: this.building.id
@@ -114,29 +101,24 @@ if (typeof YAHOO.lacuna.buildings.Park == "undefined" || !YAHOO.lacuna.buildings
                     success: function (o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
-
                         //delete this.work;
                         //this.updateBuildingTile(o.result.building);
                         this.resetQueue();
-
                         this.UpdatePartyTab(o.result.party);
                     },
                     failure: function (o) {
-                        Dom.get("parkSubsidize").disabled = false;
+                        Dom.get("parkSubsidize")
+                            .disabled = false;
                     },
                     scope: this
                 });
             }
-
         });
-
         YAHOO.lacuna.buildings.Park = Park;
-
     })();
     YAHOO.register("park", YAHOO.lacuna.buildings.Park, {
         version: "1",
         build: "0"
     });
-
 }
 // vim: noet:ts=4:sw=4

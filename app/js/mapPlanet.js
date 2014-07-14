@@ -1,7 +1,5 @@
 YAHOO.namespace("lacuna");
-
 if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
-
     (function () {
         var Lang = YAHOO.lang,
             Util = YAHOO.util,
@@ -11,7 +9,6 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
             Lacuna = YAHOO.lacuna,
             Game = Lacuna.Game,
             Lib = Lacuna.Library;
-
         var FactoryMap = {
             //buildings
             "/archaeology": Lacuna.buildings.Archaeology,
@@ -57,10 +54,8 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
             "/policestation": Lacuna.modules.PoliceStation,
             "/stationcommand": Lacuna.modules.StationCommand
         };
-
         var MapPlanet = function () {
             this.createEvent("onMapRpc");
-
             this._buildDetailsPanel();
             this._buildBuilderPanel();
         };
@@ -69,30 +64,9 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                 var panelId = "buildingDetails";
                 var panel = document.createElement("div");
                 panel.id = panelId;
-                panel.innerHTML = ['<div class="hd">Details</div>',
-                                                        '<div class="bd">',
-                                                        '    <div class="yui-gf" style="padding-bottom:5px;">',
-                                                        '        <div class="yui-u first" id="buildingDetailsImgBkgd" style="text-align:center;">',
-                                                        '            <img id="buildingDetailsImg" src="" alt="" style="width:100px;height:100px;" />',
-                                                        '        </div>',
-                                                        '        <div class="yui-u">',
-                                                        '            <ul>',
-                                                        '                <li id="buildingDetailsName"></li>',
-                                                        '                <li id="buildingDetailsTimeLeft"></li>',
-                                                        '                <li id="buildingDetailsDesc"></li>',
-                                                        '            </ul>',
-                                                        '        </div>',
-                                                        '    </div>',
-                                                        '    <div id="buildingDetailTabs" class="yui-navset">',
-                                                        '        <ul class="yui-nav">',
-                                                        '        </ul>',
-                                                        '        <div class="yui-content">',
-                                                        '        </div>',
-                                                        '    </div>',
-                                                        '</div>'].join('');
+                panel.innerHTML = ['<div class="hd">Details</div>', '<div class="bd">', '    <div class="yui-gf" style="padding-bottom:5px;">', '        <div class="yui-u first" id="buildingDetailsImgBkgd" style="text-align:center;">', '            <img id="buildingDetailsImg" src="" alt="" style="width:100px;height:100px;" />', '        </div>', '        <div class="yui-u">', '            <ul>', '                <li id="buildingDetailsName"></li>', '                <li id="buildingDetailsTimeLeft"></li>', '                <li id="buildingDetailsDesc"></li>', '            </ul>', '        </div>', '    </div>', '    <div id="buildingDetailTabs" class="yui-navset">', '        <ul class="yui-nav">', '        </ul>', '        <div class="yui-content">', '        </div>', '    </div>', '</div>'].join('');
                 document.body.insertBefore(panel, document.body.firstChild);
                 Dom.addClass(panel, "nofooter");
-
                 this.buildingDetails = new YAHOO.widget.Panel(panelId, {
                     constraintoviewport: true,
                     visible: false,
@@ -126,7 +100,6 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                         var queue = this.queue,
                             diff = oArgs[0] / 1000,
                             newq = [];
-
                         while (queue.length > 0) {
                             var callback = queue.pop();
                             callback.secondsRemaining -= diff;
@@ -135,8 +108,7 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                             }
                         }
                         this.queue = newq;
-                    }
-                    else {
+                    } else {
                         Game.onTick.unsubscribe(this.processQueue);
                     }
                 };
@@ -160,13 +132,11 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                         Util.Connect.abort(oSelf.currentViewConnection);
                     }
                 };
-
                 this.buildingDetails.renderEvent.subscribe(function () {
                     this.img = Dom.get("buildingDetailsImg");
                     this.name = Dom.get("buildingDetailsName");
                     this.desc = Dom.get("buildingDetailsDesc");
                     this.timeLeftLi = Dom.get("buildingDetailsTimeLeft");
-
                     this.tabView = new YAHOO.widget.TabView("buildingDetailTabs");
                     this.tabView.getTabByLabel = function (label) {
                         var tabs = this.get("tabs");
@@ -178,76 +148,22 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                         }
                     };
                     this.tabView.set('activeIndex', 0);
-
                     this.queue = [];
                     this.dataStore = {};
                 });
                 this.buildingDetails.hideEvent.subscribe(function () {
                     this.buildingDetails.resetDisplay(this);
                 }, this, true);
-
                 this.buildingDetails.render();
                 Game.OverlayManager.register(this.buildingDetails);
             },
             _buildBuilderPanel: function () {
                 var panelId = "buildingBuilder";
-
                 var panel = document.createElement("div");
                 panel.id = panelId;
-                panel.innerHTML = [
-                    '<div class="hd">Builder</div>',
-                    '    <div class="bd">',
-                    '        <div>Building on X<span id="builderX"></span>:Y<span id="builderY"></span></div>',
-                    '        <div id="builderMenu" class="yui-content" style="overflow:auto;">',
-                    '            <ul>',
-                    '                <li class="builderMenuGroup">',
-                    '                    <em>Resources</em>',
-                    '                    <ul>',
-                    '                        <li><a class="button" href="#Resources/Food">Food</a></li>',
-                    '                        <li><a class="button" href="#Resources/Ore">Ore</a></li>',
-                    '                        <li><a class="button" href="#Resources/Water">Water</a></li>',
-                    '                        <li><a class="button" href="#Resources/Energy">Energy</a></li>',
-                    '                        <li><a class="button" href="#Resources/Waste">Waste</a></li>',
-                    '                        <li><a class="button" href="#Resources/Storage">Storage</a></li>',
-                    '                        <li><a class="button" href="#Resources">All Resources</a></li>',
-                    '                    </ul>',
-                    '                </li>',
-                    '                <li class="builderMenuGroup">',
-                    '                    <em>Infrastructure</em>',
-                    '                    <ul>',
-                    '                        <li><a class="button" href="#Infrastructure/Construction">Construction</a></li>',
-                    '                        <li><a class="button" href="#Infrastructure/Intelligence">Intelligence</a></li>',
-                    '                        <li><a class="button" href="#Infrastructure/Happiness">Happiness</a></li>',
-                    '                        <li><a class="button" href="#Infrastructure/Ships">Ships</a></li>',
-                    '                        <li><a class="button" href="#Infrastructure/Colonization">Colonization</a></li>',
-                    '                        <li><a class="button" href="#Infrastructure/Trade">Trade</a></li>',
-                    '                        <li><a class="button" href="#Infrastructure">All Infrastructure</a></li>',
-                    '                    </ul>',
-                    '                </li>',
-                    '                <li class="builderMenuGroup"><a class="button" href="#Plan"><em>Plans</em></a></li>',
-                    '                <li class="builderMenuGroup"><a class="button" href="#"><em>All Buildings</em></a></li>',
-                    '            </ul>',
-                    '        </div>',
-                    '        <div id="builderListContainer">',
-                    '            <div id="builderFilter" style="overflow:hidden">',
-                    '                <div style="float: right">',
-                    '                    Available: ',
-                    '                    <select id="builderTimeFilter">',
-                    '                        <option value="">All</option>',
-                    '                        <option value="Now" selected="selected">Now</option>',
-                    '                        <option value="Soon">Soon</option>',
-                    '                        <option value="Later">Later</option>',
-                    '                    </select>',
-                    '                </div>',
-                    '                <a href="#" id="builderBuildLink">Build</a><span id="builderFilterTrail"> &gt; <a href="#Resources" class="buildMenuLink">Resources</a> &gt; <span class="buildMenuLink">Ore</span></span>',
-                    '            </div>',
-                    '            <div class="yui-content" style="overflow:auto;"><ul id="builderList"></ul></div>',
-                    '        </div>',
-                    '    </div>',
-                    '</div>'].join('');
+                panel.innerHTML = ['<div class="hd">Builder</div>', '    <div class="bd">', '        <div>Building on X<span id="builderX"></span>:Y<span id="builderY"></span></div>', '        <div id="builderMenu" class="yui-content" style="overflow:auto;">', '            <ul>', '                <li class="builderMenuGroup">', '                    <em>Resources</em>', '                    <ul>', '                        <li><a class="button" href="#Resources/Food">Food</a></li>', '                        <li><a class="button" href="#Resources/Ore">Ore</a></li>', '                        <li><a class="button" href="#Resources/Water">Water</a></li>', '                        <li><a class="button" href="#Resources/Energy">Energy</a></li>', '                        <li><a class="button" href="#Resources/Waste">Waste</a></li>', '                        <li><a class="button" href="#Resources/Storage">Storage</a></li>', '                        <li><a class="button" href="#Resources">All Resources</a></li>', '                    </ul>', '                </li>', '                <li class="builderMenuGroup">', '                    <em>Infrastructure</em>', '                    <ul>', '                        <li><a class="button" href="#Infrastructure/Construction">Construction</a></li>', '                        <li><a class="button" href="#Infrastructure/Intelligence">Intelligence</a></li>', '                        <li><a class="button" href="#Infrastructure/Happiness">Happiness</a></li>', '                        <li><a class="button" href="#Infrastructure/Ships">Ships</a></li>', '                        <li><a class="button" href="#Infrastructure/Colonization">Colonization</a></li>', '                        <li><a class="button" href="#Infrastructure/Trade">Trade</a></li>', '                        <li><a class="button" href="#Infrastructure">All Infrastructure</a></li>', '                    </ul>', '                </li>', '                <li class="builderMenuGroup"><a class="button" href="#Plan"><em>Plans</em></a></li>', '                <li class="builderMenuGroup"><a class="button" href="#"><em>All Buildings</em></a></li>', '            </ul>', '        </div>', '        <div id="builderListContainer">', '            <div id="builderFilter" style="overflow:hidden">', '                <div style="float: right">', '                    Available: ', '                    <select id="builderTimeFilter">', '                        <option value="">All</option>', '                        <option value="Now" selected="selected">Now</option>', '                        <option value="Soon">Soon</option>', '                        <option value="Later">Later</option>', '                    </select>', '                </div>', '                <a href="#" id="builderBuildLink">Build</a><span id="builderFilterTrail"> &gt; <a href="#Resources" class="buildMenuLink">Resources</a> &gt; <span class="buildMenuLink">Ore</span></span>', '            </div>', '            <div class="yui-content" style="overflow:auto;"><ul id="builderList"></ul></div>', '        </div>', '    </div>', '</div>'].join('');
                 document.body.insertBefore(panel, document.body.firstChild);
                 Dom.addClass(panel, "nofooter");
-
                 this.buildingBuilder = new YAHOO.widget.Panel(panelId, {
                     constraintoviewport: true,
                     visible: false,
@@ -268,7 +184,6 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                     this.buildingList = Dom.get("builderList");
                     this.timeFilter = Dom.get("builderTimeFilter");
                     this.filterTrail = Dom.get("builderFilterTrail");
-
                     Event.on("builderTimeFilter", "change", this.updateDisplay, this, true);
                     Event.on("builderBuildLink", "click", function (e) {
                         Event.preventDefault(e);
@@ -301,8 +216,7 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                     var displayTag = mainTag ? mainTag : "All";
                     if (subTag) {
                         this.filterTrail.innerHTML = ' &gt; <a class="buildMenuLink" href="#' + mainTag + '">' + displayTag + '</a> &gt; <span class="buildMenuLink">' + subTag + '</span>';
-                    }
-                    else {
+                    } else {
                         this.filterTrail.innerHTML = ' &gt; <span class="buildMenuLink">' + displayTag + '</span>';
                     }
                     var filterTag = subTag ? subTag : mainTag;
@@ -314,8 +228,7 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                             y: this.currentTile.y,
                             tag: filterTag
                         });
-                    }
-                    else {
+                    } else {
                         this.updateDisplay();
                     }
                 };
@@ -330,7 +243,6 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                 this.buildingBuilder.load = function (b, q, request) {
                     this.buildable[request.tag] = b; //store
                     this.queue_status = q;
-
                     this.updateDisplay();
                 };
                 this.buildingBuilder.build = function (e, matchedEl, container) {
@@ -362,23 +274,19 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                         filters[this.timeFilter.value] = 1;
                     }
                     var isQueueFull = this.queue_status.max == this.queue_status.current;
-
                     list.parentNode.scrollTop = 0;
                     list.innerHTML = "";
-
                     var frag = document.createDocumentFragment(),
                         li = document.createElement("li"),
                         filterCount = 0,
                         names = [],
                         reason, br, planet = Game.GetCurrentPlanet(),
                         isMaxPlots = planet.plots_available * 1 === 0;
-
                     for (var key in filters) {
                         if (filters.hasOwnProperty(key)) {
                             filterCount++;
                         }
                     }
-
                     for (var name in b) {
                         if (b.hasOwnProperty(name)) {
                             var tags = b[name].build.tags,
@@ -394,13 +302,11 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                         }
                     }
                     names.sort();
-
                     if (names.length == 0) {
                         var mLi = li.cloneNode(false);
                         mLi.innerHTML = "No available buildings.";
                         list.appendChild(mLi);
                     }
-
                     for (var i = 0; i < names.length; i++) {
                         var bd = b[names[i]],
                             nLi = li.cloneNode(false),
@@ -410,91 +316,43 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                             isLater = bd.build.tags.indexOf('Later') > -1,
                             isPlan = bd.build.tags.indexOf('Plan') > -1,
                             isNotBuildable = (isLater || isQueueFull || noPlots);
-
                         bd.name = names[i];
-
                         if (bd.build.reason) {
                             reason = bd.build.reason[1];
-                        }
-                        else {
+                        } else {
                             reason = undefined;
                             if (isQueueFull) {
                                 reason = "Build queue is full.";
-                            }
-                            else if (noPlots) {
+                            } else if (noPlots) {
                                 reason = "No plots available.";
-                            }
-                            else if (isPlan) {
+                            } else if (isPlan) {
                                 var extra_level = bd.build.extra_level * 1;
                                 if (extra_level) {
                                     reason = "Will build to level " + (extra_level + 1) + " for free with plan.";
-                                }
-                                else {
+                                } else {
                                     reason = "Will build for free with plan.";
                                 }
                             }
                         }
-
-                        nLi.innerHTML = [
-                            '<div class="yui-gb" style="padding-bottom: 2px; margin-bottom:2px; border-bottom: 1px solid #52acff;">',
-                            '    <div class="yui-u first" style="width:200px;background:transparent url(', Lacuna.MapPlanet.surfaceUrl, ') no-repeat center;text-align:center">',
-                            '        <img src="', Lib.AssetUrl, 'planet_side/', bd.image, '.png" style="width:200px;height:200px;cursor:pointer" class="buildingImage" />',
-                            '    </div>',
-                            '    <div class="yui-u" style="margin-left: 10px; width:349px">',
-                            '        <div class="buildingName">', bd.name, ':</div>',
-                            reason ? '        <div class="buildingReason">' + reason + '</div>' : '',
-                            '        <div class="buildingDesc">', Game.GetBuildingDesc(bd.url), '</div>',
-                            '        <table class="buildingStats" cellpadding="0" cellspacing="0">',
-                            '            <tr><td></td>',
-                            '                <th><img src="', Lib.AssetUrl, 'ui/s/food.png" title="Food" class="smallFood" /></th>',
-                            '                <th><img src="', Lib.AssetUrl, 'ui/s/ore.png" title="Ore" class="smallOre"  /></th>',
-                            '                <th><img src="', Lib.AssetUrl, 'ui/s/water.png" title="Water" class="smallWater" /></th>',
-                            '                <th><img src="', Lib.AssetUrl, 'ui/s/energy.png" title="Energy" class="smallEnergy" /></th>',
-                            '                <th><img src="', Lib.AssetUrl, 'ui/s/waste.png" title="Waste" class="smallWaste" /></th>',
-                            '                <th><img src="', Lib.AssetUrl, 'ui/s/happiness.png" title="Happiness" class="smallHappy" /></th>',
-                            '            </tr>',
-                            '            <tr><th>Cost:</th>',
-                            '                <td class=', costs.food > planet.food_stored ? 'low-resource' : '', '>', costs.food, '</td>',
-                            '                <td class=', costs.ore > planet.ore_stored ? 'low-resource' : '', '>', costs.ore, '</td>',
-                            '                <td class=', costs.water > planet.water_stored ? 'low-resource' : '', '>', costs.water, '</td>',
-                            '                <td class=', costs.energy > planet.energy_stored ? 'low-resource' : '', '>', costs.energy, '</td>',
-                            '                <td>', costs.waste, '</td>',
-                            '                <td></td>',
-                            '            </tr>',
-                            '            <tr><th>Prod:</th>',
-                            '                <td class=', -1 * prod.food_hour > planet.food_hour ? 'low-resource' : '', '>', prod.food_hour, '/hr</td>',
-                            '                <td class=', -1 * prod.ore_hour > planet.ore_hour ? 'low-resource' : '', '>', prod.ore_hour, '/hr</td>',
-                            '                <td class=', -1 * prod.water_hour > planet.water_hour ? 'low-resource' : '', '>', prod.water_hour, '/hr</td>',
-                            '                <td class=', -1 * prod.energy_hour > planet.energy_hour ? 'low-resource' : '', '>', prod.energy_hour, '/hr</td>',
-                            '                <td>', prod.waste_hour, '/hr</td>',
-                            '                <td>', prod.happiness_hour, '/hr</td>',
-                            '            </tr>',
-                            '        </table>',
-                            '        <div style="margin-top: 5px; text-align: center; padding-left: 20px; height: 30px">',
-                            isNotBuildable ? '' : '            <button style="width: 100px; height: 30px; font-size: 12pt">Build</button>',
-                            '            <img class="smallTime" style="margin-left: ',
-                            isNotBuildable ? '120px' : '20px',
-                            '; vertical-align: middle" src="', Lib.AssetUrl, 'ui/s/time.png" />', Lib.formatTime(costs.time), ' sec',
-                            '        </div>',
-                            '    </div>',
-                            '</div>'].join('');
-
+                        nLi.innerHTML = ['<div class="yui-gb" style="padding-bottom: 2px; margin-bottom:2px; border-bottom: 1px solid #52acff;">', '    <div class="yui-u first" style="width:200px;background:transparent url(', Lacuna.MapPlanet.surfaceUrl, ') no-repeat center;text-align:center">', '        <img src="', Lib.AssetUrl, 'planet_side/', bd.image, '.png" style="width:200px;height:200px;cursor:pointer" class="buildingImage" />', '    </div>', '    <div class="yui-u" style="margin-left: 10px; width:349px">', '        <div class="buildingName">', bd.name, ':</div>',
+                            reason ? '        <div class="buildingReason">' + reason + '</div>' : '', '        <div class="buildingDesc">', Game.GetBuildingDesc(bd.url), '</div>', '        <table class="buildingStats" cellpadding="0" cellspacing="0">', '            <tr><td></td>', '                <th><img src="', Lib.AssetUrl, 'ui/s/food.png" title="Food" class="smallFood" /></th>', '                <th><img src="', Lib.AssetUrl, 'ui/s/ore.png" title="Ore" class="smallOre"  /></th>', '                <th><img src="', Lib.AssetUrl, 'ui/s/water.png" title="Water" class="smallWater" /></th>', '                <th><img src="', Lib.AssetUrl, 'ui/s/energy.png" title="Energy" class="smallEnergy" /></th>', '                <th><img src="', Lib.AssetUrl, 'ui/s/waste.png" title="Waste" class="smallWaste" /></th>', '                <th><img src="', Lib.AssetUrl, 'ui/s/happiness.png" title="Happiness" class="smallHappy" /></th>', '            </tr>', '            <tr><th>Cost:</th>', '                <td class=', costs.food > planet.food_stored ? 'low-resource' : '', '>', costs.food, '</td>', '                <td class=', costs.ore > planet.ore_stored ? 'low-resource' : '', '>', costs.ore, '</td>', '                <td class=', costs.water > planet.water_stored ? 'low-resource' : '', '>', costs.water, '</td>', '                <td class=', costs.energy > planet.energy_stored ? 'low-resource' : '', '>', costs.energy, '</td>', '                <td>', costs.waste, '</td>', '                <td></td>', '            </tr>', '            <tr><th>Prod:</th>', '                <td class=', -1 * prod.food_hour > planet.food_hour ? 'low-resource' : '', '>', prod.food_hour, '/hr</td>', '                <td class=', -1 * prod.ore_hour > planet.ore_hour ? 'low-resource' : '', '>', prod.ore_hour, '/hr</td>', '                <td class=', -1 * prod.water_hour > planet.water_hour ? 'low-resource' : '', '>', prod.water_hour, '/hr</td>', '                <td class=', -1 * prod.energy_hour > planet.energy_hour ? 'low-resource' : '', '>', prod.energy_hour, '/hr</td>', '                <td>', prod.waste_hour, '/hr</td>', '                <td>', prod.happiness_hour, '/hr</td>', '            </tr>', '        </table>', '        <div style="margin-top: 5px; text-align: center; padding-left: 20px; height: 30px">',
+                            isNotBuildable ? '' : '            <button style="width: 100px; height: 30px; font-size: 12pt">Build</button>', '            <img class="smallTime" style="margin-left: ',
+                            isNotBuildable ? '120px' : '20px', '; vertical-align: middle" src="', Lib.AssetUrl, 'ui/s/time.png" />', Lib.formatTime(costs.time), ' sec', '        </div>', '    </div>', '</div>'
+                        ].join('');
                         if (!isNotBuildable) {
-                            Sel.query("button", nLi, true).building = bd;
-                            Sel.query("img.buildingImage", nLi, true).building = bd;
+                            Sel.query("button", nLi, true)
+                                .building = bd;
+                            Sel.query("img.buildingImage", nLi, true)
+                                .building = bd;
                         }
-
                         frag.appendChild(nLi);
                     }
-
                     list.appendChild(frag);
                     list.parentNode.scrollTop = 0;
                 };
-
                 this.buildingBuilder.render();
                 Game.OverlayManager.register(this.buildingBuilder);
             },
-
             _fireRpcSuccess: function (result) {
                 this.fireEvent("onMapRpc", result);
             },
@@ -529,7 +387,8 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                 if (this.currentBuildingObj) {
                     var panel = this.buildingDetails;
                     //remove any tabs
-                    while (panel.tabView.get("tabs").length > 0) {
+                    while (panel.tabView.get("tabs")
+                        .length > 0) {
                         var tab = panel.tabView.getTab(0);
                         Event.purgeElement(tab.get("contentEl"));
                         panel.tabView.removeTab(tab);
@@ -560,7 +419,6 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
             _fireHide: function () {
                 this.buildingDetails.hide();
             },
-
             IsVisible: function () {
                 return this._isVisible;
             },
@@ -571,11 +429,11 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                         //YAHOO.log(visible, "info", "MapPlanet.MapVisible");
                         if (visible) {
                             if (!Dom.inDocument(this._elGrid)) {
-                                document.getElementById("content").appendChild(this._elGrid);
+                                document.getElementById("content")
+                                    .appendChild(this._elGrid);
                             }
                             //Dom.setStyle(this._elGrid, "display", visible ? "" : "none");
-                        }
-                        else {
+                        } else {
                             this._elGrid = this._elGrid.parentNode.removeChild(this._elGrid);
                         }
                         if (visible && this._map) {
@@ -603,10 +461,10 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                 if (!this._gridCreated) {
                     var planetMap = document.createElement("div");
                     planetMap.id = "planetMap";
-                    this._elGrid = document.getElementById("content").appendChild(planetMap);
+                    this._elGrid = document.getElementById("content")
+                        .appendChild(planetMap);
                     this.MapVisible(true); //needs to be visible before we set sizing and  map
                     this.SetSize();
-
                     var map = new Lacuna.Mapper.PlanetMap("planetMap", {
                         surfaceUrl: this.surfaceUrl
                     });
@@ -618,30 +476,27 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                     map.redraw();
                     //move to command
                     map.setCenterToCommand();
-
                     this._map = map;
                     this._gridCreated = true;
-
                     Event.delegate(this._map.mapDiv, "click", function (e, matchedEl, container) {
                         var planet = Game.GetCurrentPlanet();
                         if (!this._map.controller.isDragging()) {
                             var tile = this._map.tileLayer.findTileById(matchedEl.parentNode.id);
                             if (tile && tile.data) {
                                 this.DetailsView(tile);
-                            }
-                            else { //if(planet.size*1 > planet.building_count*1) {
+                            } else { //if(planet.size*1 > planet.building_count*1) {
                                 this.BuilderView(tile);
                             }
-/*else {
+                            /*else {
                             alert("You've already reached the maximum number of buildings for this planet");
                         }*/
                         }
                     }, "div.planetMapTileActionContainer", this, true); //"button.planetMapTileActionButton"
-                }
-                else {
+                } else {
                     this.MapVisible(true); //needs to be visible before we set sizing and  map
                     if (!this._elGrid.parentNode) {
-                        document.getElementById("content").appendChild(this._elGrid);
+                        document.getElementById("content")
+                            .appendChild(this._elGrid);
                     }
                     this._map.reset();
                     this._map.setSurfaceUrl(this.surfaceUrl);
@@ -649,15 +504,13 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                     this._map.addTileData(this.buildings);
                     this._map.refresh();
                 }
-
                 Lacuna.Pulser.Hide();
             },
             Load: function (planetId, showNotify, silent) {
                 Lacuna.Pulser.Show();
                 if (showNotify) {
                     Lacuna.Notify.Show(planetId);
-                }
-                else {
+                } else {
                     Lacuna.Notify.Hide();
                 }
                 this.locationId = planetId;
@@ -670,7 +523,6 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                             session_id: Game.GetSession(""),
                             body_id: this.locationId
                         };
-
                     BodyServ.get_buildings(data, {
                         success: function (o) {
                             //YAHOO.log(o, "info", "MapPlanet.Refresh");
@@ -691,15 +543,13 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                             session_id: Game.GetSession(""),
                             body_id: this.locationId
                         };
-
                     BodyServ.get_buildings(data, {
                         success: function (o) {
                             //YAHOO.log(o, "info", "MapPlanet.ReLoad");
                             this.fireEvent("onMapRpc", o.result);
                             if (silent) {
                                 Lacuna.Pulser.Hide();
-                            }
-                            else {
+                            } else {
                                 this.Mapper(o.result);
                             }
                         },
@@ -738,20 +588,20 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                 this.buildingBuilder.resetFilter();
                 this.MapVisible(false);
             },
-
             BuilderView: function (tile) {
                 //YAHOO.log(tile, "info", "BuilderView");
                 Game.OverlayManager.hideAllBut(this.buildingBuilder.id);
                 this.buildingBuilder.resetDisplay(this);
                 this.buildingBuilder.setTile(tile);
                 this.buildingBuilder.show();
-
-                var Ht = Game.GetSize().h - 75;
+                var Ht = Game.GetSize()
+                    .h - 75;
                 if (Ht > 420) {
                     Ht = 420;
                 }
                 Dom.setStyle(Dom.get('builderMenu'), 'height', Ht + 'px');
-                Dom.setStyle(Dom.get('builderList').parentNode, 'height', Ht + 'px');
+                Dom.setStyle(Dom.get('builderList')
+                    .parentNode, 'height', Ht + 'px');
             },
             BuilderGet: function (data) {
                 Lacuna.Pulser.Show();
@@ -760,7 +610,6 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                         delete this.currentBuildConnection;
                         //YAHOO.log(o, "info", "MapPlanet.BuilderGet.success");
                         this.fireEvent("onMapRpc", o.result);
-
                         this.BuilderProcess(o.result, data);
                     },
                     failure: function (o) {
@@ -783,8 +632,7 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                 if (Game.EmpireData.is_isolationist == "1") {
                     if (building.url == "/espionage" && !confirm("If you build an Espionage Ministry you will no longer be considered an Isolationist and you will be open to attack.  Are you sure you want to do this?")) {
                         return true;
-                    }
-                    else if (building.url == "/munitionslab" && !confirm("If you build a Munitions Lab you will no longer be considered an Isolationist and you will be open to attack.  Are you sure you want to do this?")) {
+                    } else if (building.url == "/munitionslab" && !confirm("If you build a Munitions Lab you will no longer be considered an Isolationist and you will be open to attack.  Are you sure you want to do this?")) {
                         return true;
                     }
                 }
@@ -793,7 +641,6 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                 if (this.NotIsolationist(building)) {
                     return;
                 }
-
                 Lacuna.Pulser.Show();
                 var BuildingServ = Game.Services.Buildings.Generic,
                     data = {
@@ -802,14 +649,12 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                         x: x,
                         y: y
                     };
-
                 BuildingServ.build(data, {
                     success: function (o) {
                         //YAHOO.log(o, "info", "MapPlanet.Build.success");
                         Lacuna.Pulser.Hide();
                         this.fireEvent("onMapRpc", o.result);
                         this.buildingBuilder.hide();
-
                         var b = building; //originally passed in building data from BuildProcess
                         b.id = o.result.building.id;
                         b.level = o.result.building.level;
@@ -827,14 +672,12 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                     target: building.url
                 });
             },
-
             ViewData: function (id, url, callback, x, y) {
                 var BuildingServ = Game.Services.Buildings.Generic,
                     data = {
                         session_id: Game.GetSession(""),
                         building_id: id
                     };
-
                 return BuildingServ.view(data, {
                     success: function (o) {
                         //YAHOO.log(o, "info", "MapPlanet.ViewData.success");
@@ -845,11 +688,10 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                         newB.y = y;
                         newB.updated = (newB.level != this.buildings[newB.id].level);
                         this.ReloadBuilding(newB);
-/*newB = this.CleanBuilding(newB);
+                        /*newB = this.CleanBuilding(newB);
                     this.buildings[newB.id] = newB;
                     this._map.refreshTile(newB);
                     */
-
                         if (callback && callback.success) {
                             callback.success.call(this, o.result, callback.url, x, y);
                         }
@@ -876,7 +718,7 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                 panel.img.src = this.surfaceUrl;
                 panel.desc.innerHTML = "";
                 panel.timeLeftLi.innerHTML = "";
-/*panel.curEnergy.innerHTML = "";
+                /*panel.curEnergy.innerHTML = "";
             panel.curFood.innerHTML = "";
             panel.curHappiness.innerHTML = "";
             panel.curOre.innerHTML = "";
@@ -886,14 +728,13 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
             panel.upgradeUl.innerHTML = "";
             Event.purgeElement(panel.upgradeProdUl);
             panel.upgradeProdUl.innerHTML = "";*/
-
                 panel.tabView.set('activeTab', null);
-                while (panel.tabView.get("tabs").length > 0) {
+                while (panel.tabView.get("tabs")
+                    .length > 0) {
                     var tab = panel.tabView.getTab(0);
                     Event.purgeElement(tab.get("contentEl"), true);
                     panel.tabView.removeTab(tab);
                 }
-
                 this.buildingDetails.show(); //show before we get data so it looks like we're doing something
                 this.currentViewConnection = this.ViewData(tile.data.id, tile.data.url, {
                     success: function (oResults, url, x, y) {
@@ -922,7 +763,6 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                     classObj.subscribe("onRemoveTile", this._fireRemoveTile, this, true);
                     classObj.subscribe("onHide", this._fireHide, this, true);
                 }
-
                 return classObj;
             },
             DetailsProcess: function (oResults, url, x, y) {
@@ -934,11 +774,9 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                     building.x = x;
                     building.y = y;
                     oResults.building = building;
-
                     if (panel.pager) {
                         panel.pager.destroy();
                     }
-
                     this.currentBuilding = oResults; //assign new building            
                     //fill production tab
                     panel.name.innerHTML = [building.name, ' ', building.level].join('');
@@ -960,24 +798,21 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                                         x: building.x,
                                         y: building.y
                                     });
-                                }
-                                else {
+                                } else {
                                     elm.innerHTML = "<label>Build Time Remaining:</label>" + Lib.formatTime(rf);
                                 }
                             }, panel.timeLeftLi, this);
                         }
-                    }
-                    else {
+                    } else {
                         panel.timeLeftLi.innerHTML = "";
                     }
-
                     var output, stored, bq, ul, li, div;
-
                     //create building specific tabs and functionality
                     this.currentBuildingObj = this.BuildingFactory(oResults);
                     if (this.currentBuildingObj) {
                         //remove any tabs
-                        while (panel.tabView.get("tabs").length > 0) {
+                        while (panel.tabView.get("tabs")
+                            .length > 0) {
                             var tab = panel.tabView.getTab(0);
                             Event.purgeElement(tab.get("contentEl"));
                             panel.tabView.removeTab(tab);
@@ -988,14 +823,12 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                         }
                         this.currentBuildingObj.load();
                     }
-
                     Dom.setStyle("buildingDetailTabs", "display", "");
                     panel.tabView.selectTab(0);
                     panel.setFirstLastFocusable();
                     panel.focusFirst();
                 }
             },
-
             CleanBuilding: function (building) {
                 building.efficiency = (building.efficiency || 100) * 1;
                 if (building.repair_costs && building.efficiency == 100) {
@@ -1014,7 +847,7 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
                 building = this.CleanBuilding(building);
                 this.buildings[building.id] = building;
                 this._map.refreshTile(building);
-/*
+                /*
             var ms = (building.pending_build.seconds_remaining * 1000);
             YAHOO.log({b:building, time:ms}, "debug", "MapPlanet.ReloadBuilding");
             Game.QueueAdd(building.id, Lib.QueueTypes.PLANET, ms);
@@ -1022,13 +855,11 @@ if (typeof YAHOO.lacuna.MapPlanet == "undefined" || !YAHOO.lacuna.MapPlanet) {
             }
         };
         Lang.augmentProto(MapPlanet, Util.EventProvider);
-
         Lacuna.MapPlanet = new MapPlanet();
     })();
     YAHOO.register("mapPlanet", YAHOO.lacuna.MapPlanet, {
         version: "1",
         build: "0"
     });
-
 }
 // vim: noet:ts=4:sw=4

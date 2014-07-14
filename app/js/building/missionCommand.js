@@ -1,7 +1,5 @@
 YAHOO.namespace("lacuna.buildings");
-
 if (typeof YAHOO.lacuna.buildings.MissionCommand == "undefined" || !YAHOO.lacuna.buildings.MissionCommand) {
-
     (function () {
         var Lang = YAHOO.lang,
             Util = YAHOO.util,
@@ -11,13 +9,10 @@ if (typeof YAHOO.lacuna.buildings.MissionCommand == "undefined" || !YAHOO.lacuna
             Lacuna = YAHOO.lacuna,
             Game = Lacuna.Game,
             Lib = Lacuna.Library;
-
         var MissionCommand = function (result) {
             MissionCommand.superclass.constructor.call(this, result);
-
             this.service = Game.Services.Buildings.MissionCommand;
         };
-
         Lang.extend(MissionCommand, Lacuna.buildings.Building, {
             getChildTabs: function () {
                 return [this._getMissionTab()];
@@ -25,20 +20,13 @@ if (typeof YAHOO.lacuna.buildings.MissionCommand == "undefined" || !YAHOO.lacuna
             _getMissionTab: function () {
                 this.missionTab = new YAHOO.widget.Tab({
                     label: "Missions",
-                    content: [
-                        '<div>',
-                        '    <div class="missionsHeader"></div>',
-                        '    <div id="missionsHt" style="overflow:auto;">',
-                        '        <ul id="missionsAvailable">',
-                        '        </ul>',
-                        '    </div>',
-                        '</div>'
-                        ].join('')
+                    content: ['<div>', '    <div class="missionsHeader"></div>', '    <div id="missionsHt" style="overflow:auto;">', '        <ul id="missionsAvailable">', '        </ul>', '    </div>', '</div>'].join('')
                 });
                 this.missionTab.subscribe("activeChange", function (e) {
                     if (e.newValue) {
                         this.getMissions();
-                        var mHt = Game.GetSize().h - 150;
+                        var mHt = Game.GetSize()
+                            .h - 150;
                         if (mHt > 300) {
                             mHt = 300;
                         }
@@ -62,22 +50,19 @@ if (typeof YAHOO.lacuna.buildings.MissionCommand == "undefined" || !YAHOO.lacuna
                         },
                         scope: this
                     });
-                }
-                else {
+                } else {
                     this.displayMissions();
                 }
             },
             displayMissions: function () {
                 var missions = this.missions,
                     ul = Dom.get("missionsAvailable");
-
                 if (ul) {
                     var ulParent = ul.parentNode,
                         li = document.createElement("li");
-
                     ul = ulParent.removeChild(ul);
                     ul.innerHTML = "";
-/*
+                    /*
                 {
                     "id" : "id-goes-here",
                     "max_university_level" : 12,
@@ -99,28 +84,10 @@ if (typeof YAHOO.lacuna.buildings.MissionCommand == "undefined" || !YAHOO.lacuna
                             var ms = missions[i],
                                 nLi = li.cloneNode(false);
                             Dom.addClass(nLi, "mission");
-                            nLi.innerHTML = ['<div class="yui-ge">',
-                                                                                        '    <div class="yui-u first">',
-                                                                                        '        <div class="missionName">', ms.name, '</div>',
-                                                                                        '        <div class="missionPosted">Posted: ', Lib.formatServerDate(ms.date_posted), '</div>',
-                                                                                        '        <div class="missionUniversity">Max University: ', ms.max_university_level, '</div>',
-                                                                                        '    </div>',
-                                                                                        '    <div class="yui-u">',
-                                                                                        '        <button type="button" id="complete', ms.id, '" class="missionComplete">Complete</button>',
-                                                                                        '        <button type="button" id="skip', ms.id, '" class="missionSkip">Skip</button>',
-                                                                                        '    </div>',
-                                                                                        '</div>',
-                                                                                        '<div class="missionDesc">', ms.description, '</div>',
-                                                                                        '<div class="yui-g">',
-                                                                                        '    <div class="yui-u first">',
-                                                                                        '        <div><label style="font-weight:bold;">Objectives:</label></div>',
-                                                                                        this.parseObjectives(ms.objectives),
-                                                                                        '    </div>',
-                                                                                        '    <div class="yui-u">',
-                                                                                        '        <div><label style="font-weight:bold;">Rewards:</label></div>',
-                                                                                        this.parseRewards(ms.rewards),
-                                                                                        '    </div>',
-                                                                                        '</div>'].join('');
+                            nLi.innerHTML = ['<div class="yui-ge">', '    <div class="yui-u first">', '        <div class="missionName">', ms.name, '</div>', '        <div class="missionPosted">Posted: ', Lib.formatServerDate(ms.date_posted), '</div>', '        <div class="missionUniversity">Max University: ', ms.max_university_level, '</div>', '    </div>', '    <div class="yui-u">', '        <button type="button" id="complete', ms.id, '" class="missionComplete">Complete</button>', '        <button type="button" id="skip', ms.id, '" class="missionSkip">Skip</button>', '    </div>', '</div>', '<div class="missionDesc">', ms.description, '</div>', '<div class="yui-g">', '    <div class="yui-u first">', '        <div><label style="font-weight:bold;">Objectives:</label></div>',
+                                this.parseObjectives(ms.objectives), '    </div>', '    <div class="yui-u">', '        <div><label style="font-weight:bold;">Rewards:</label></div>',
+                                this.parseRewards(ms.rewards), '    </div>', '</div>'
+                            ].join('');
                             Event.on(Sel.query("button.missionComplete", nLi, true), "click", this.completeMission, {
                                 Self: this,
                                 Mission: ms,
@@ -131,7 +98,6 @@ if (typeof YAHOO.lacuna.buildings.MissionCommand == "undefined" || !YAHOO.lacuna
                                 Mission: ms,
                                 Line: nLi
                             }, true);
-
                             ul.appendChild(nLi);
                         }
                     }
@@ -171,7 +137,6 @@ if (typeof YAHOO.lacuna.buildings.MissionCommand == "undefined" || !YAHOO.lacuna
                     success: function (o) {
                         Lacuna.Pulser.Hide();
                         this.Self.rpcSuccess(o);
-
                         this.Self.missions = undefined;
                         this.Self.getMissions();
                     },
@@ -193,7 +158,6 @@ if (typeof YAHOO.lacuna.buildings.MissionCommand == "undefined" || !YAHOO.lacuna
                     success: function (o) {
                         Lacuna.Pulser.Hide();
                         this.Self.rpcSuccess(o);
-
                         this.Self.missions = undefined;
                         this.Self.getMissions();
                     },
@@ -204,14 +168,11 @@ if (typeof YAHOO.lacuna.buildings.MissionCommand == "undefined" || !YAHOO.lacuna
                 });
             }
         });
-
         YAHOO.lacuna.buildings.MissionCommand = MissionCommand;
-
     })();
     YAHOO.register("MissionCommand", YAHOO.lacuna.buildings.MissionCommand, {
         version: "1",
         build: "0"
     });
-
 }
 // vim: noet:ts=4:sw=4
