@@ -206,6 +206,7 @@ if (typeof YAHOO.lacuna.Game == "undefined" || !YAHOO.lacuna.Game) {
                     setTimeout(GameLoop, 1000);
                 }
             })();
+            
             Game.planetRefreshInterval = setInterval(function(){
                 var BodyServ = Game.Services.Body,
                     session = Game.GetSession(),

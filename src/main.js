@@ -1,27 +1,24 @@
-var app = require('app'); // Module to control application life.
-var BrowserWindow = require('browser-window'); // Module to create native browser window.
-var fs = require('fs');
-var path = require('path');
+var app = require('app'),
+    BrowserWindow = require('browser-window'),
+    fs = require('fs'),
+    path = require('path'),
 
-var Handlebars = require('handlebars');
-var development = process.env.ATOMIC_LACUNA_DEVELOPMENT || false;
-
-// Report crashes to our server.
-require('crash-reporter').start();
+    Handlebars = require('handlebars'),
+    development = process.env.ATOMIC_LACUNA_DEVELOPMENT || false,
 
 // Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the javascript object is GCed.
-var mainWindow = null;
+// be closed automatically when the JavaScript object is GCed.
+    mainWindow = null;
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
-    if (process.platform != 'darwin') {
+    if (process.platform !== 'darwin') {
         app.quit();
     }
 });
 
-// This method will be called when atom-shell has done everything
-// initialization and ready for creating browser windows.
+// This method will be called when atom-shell has done all
+// initialization and is ready to create browser windows.
 app.on('ready', function () {
 
     // Create the browser window.

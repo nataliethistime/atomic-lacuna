@@ -38,6 +38,7 @@ end
 print "\n\n"
 
 
+
 # Run the Gulp task which downloads the atom-shell for different platforms.
 unless system 'gulp download-shell'
     puts "ERR: Failed to download atom-shell"
