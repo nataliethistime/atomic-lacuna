@@ -18,7 +18,7 @@ var fs      = require('fs');
 var JS_FILES = ['app/js/**/*.js'];
 var packageJson = require(path.join(__dirname, 'package.json'));
 
-gulp.task('lint', ['code-clean'], function() {
+gulp.task('lint', function() {
     gulp.src(JS_FILES)
         // Note: the following options need to be enabled sometime later:
         // ~> es3 : true
@@ -31,7 +31,7 @@ gulp.task('lint', ['code-clean'], function() {
         .pipe(jshint.reporter('fail'));
 });
 
-gulp.task('code-build', ['code-clean'], function() {
+gulp.task('code-build', function() {
     process.env.NODE_PATH = path.join(__dirname, 'app')
 
     browserify('./app/js/main.js')
