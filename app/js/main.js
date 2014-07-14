@@ -1,4 +1,8 @@
+'use strict';
 (function () {
+    // Load jQuery, and Lodash before anything else just to make sure.
+    window.$ = require('jquery');
+    window._ = require('lodash');
     // Initialize the menu, this should be the last part of GUI initialization
     // before the JS code starts to load.
     if (window.ATOM_SHELL) {
@@ -49,7 +53,7 @@
     }
     if (window.history.replaceState) {
         window.history.replaceState({}, document.title, l.protocol + '//' + l.host + l.pathname + l.search);
-    } else if (l.hash != '') {
+    } else if (l.hash !== '') {
         l.hash = '';
     }
     // Make sure the pulser is hidden.
@@ -74,9 +78,6 @@
     // List of YUI2 components that need to be loaded.
     loader.require(["autocomplete", "logger", "yahoo", "dom", "connection", "get", "json", "event", "container", "dragdrop", "slider", "animation", "selector", "event-delegate", "event-mouseenter", "paginator", "tabview", "menu", "datatable"]);
     loader.onSuccess = function (o) {
-        // Require the new boyz on the street!
-        window.$ = require('jquery');
-        window._ = require('lodash');
         // RPC and core stuff
         require('js/smd');
         require('js/rpc');

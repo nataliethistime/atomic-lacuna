@@ -1,3 +1,4 @@
+'use strict';
 var Handlebars = require('handlebars');
 var Lacuna = YAHOO.lacuna,
     Lib = Lacuna.Library;

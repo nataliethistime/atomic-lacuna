@@ -39,7 +39,8 @@ gulp.task('lint', ['code-clean'], function() {
             node : true,
             yui : true
         }))
-        .pipe(jshint.reporter(stylish));
+        .pipe(jshint.reporter(stylish))
+        .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('code-build', ['code-clean'], function() {

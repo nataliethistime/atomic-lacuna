@@ -1,3 +1,4 @@
+'use strict';
 var Handlebars = require('handlebars'),
     fs = require('fs'),
     path = require('path'),
@@ -42,4 +43,4 @@ module.exports = {
     getLocation: function (name) {
         return path.join(Util.root(), 'templates', name);
     }
-}
+};
