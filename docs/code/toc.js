@@ -625,48 +625,6 @@ window.files = [
   ]
 },
 {
-  "path": "app/templates/menu/about.html.html",
-  "originalName": "about.html",
-  "originalPath": "app/templates/menu/about.html",
-  "name": "about.html.html",
-  "toc": []
-},
-{
-  "path": "app/templates/menu/announcement.html.html",
-  "originalName": "announcement.html",
-  "originalPath": "app/templates/menu/announcement.html",
-  "name": "announcement.html.html",
-  "toc": []
-},
-{
-  "path": "app/templates/menu/captcha.html.html",
-  "originalName": "captcha.html",
-  "originalPath": "app/templates/menu/captcha.html",
-  "name": "captcha.html.html",
-  "toc": []
-},
-{
-  "path": "app/templates/tab/building/production.html.html",
-  "originalName": "production.html",
-  "originalPath": "app/templates/tab/building/production.html",
-  "name": "production.html.html",
-  "toc": []
-},
-{
-  "path": "app/templates/tab/building/repair.html.html",
-  "originalName": "repair.html",
-  "originalPath": "app/templates/tab/building/repair.html",
-  "name": "repair.html.html",
-  "toc": []
-},
-{
-  "path": "app/templates/tab/building/storage.html.html",
-  "originalName": "storage.html",
-  "originalPath": "app/templates/tab/building/storage.html",
-  "name": "storage.html.html",
-  "toc": []
-},
-{
   "path": "app/css/styles.css.html",
   "originalName": "styles.css",
   "originalPath": "app/css/styles.css",

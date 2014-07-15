@@ -35,7 +35,7 @@ module.exports = {
     },
     fixName: function (name) {
         name = name.replace(/\./g, path.sep);
-        return name + '.html';
+        return name + '.hbs';
     },
     addPrefix: function (name) {
         return '__' + name;
