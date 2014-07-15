@@ -29,9 +29,9 @@ if (!String.prototype.titleCaps) {
             var m = split.exec(processVal);
             parts.push(processVal.substring(index, m ? m.index : processVal.length)
                 .replace(/\b([A-Za-z][a-z.'�]*)\b/g, fnUpper)
-                .replace(RegExp("\\b" + String.small + "\\b", "ig"), String.lower)
-                .replace(RegExp("^" + String.punct + String.small + "\\b", "ig"), fnPuntUpper)
-                .replace(RegExp("\\b" + String.small + String.punct + "$", "ig"), String.upper));
+                .replace(new RegExp("\\b" + String.small + "\\b", "ig"), String.lower)
+                .replace(new RegExp("^" + String.punct + String.small + "\\b", "ig"), fnPuntUpper)
+                .replace(new RegExp("\\b" + String.small + String.punct + "$", "ig"), String.upper));
             index = split.lastIndex;
             if (m) {
                 parts.push(m[0]);
