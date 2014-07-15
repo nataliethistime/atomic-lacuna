@@ -25,225 +25,225 @@
       <div class="segment">
       
       
-        <div class="code"><pre class="wrapper">YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
-<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> YAHOO.lacuna.buildings.BlackHoleGenerator == <span class="hljs-string">"undefined"</span> || !YAHOO.lacuna.buildings.BlackHoleGenerator) {
-    (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-        <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
-            Util = YAHOO.util,
-            Dom = Util.Dom,
-            Event = Util.Event,
-            Sel = Util.Selector,
-            Pager = YAHOO.widget.Paginator,
-            Lacuna = YAHOO.lacuna,
-            Game = Lacuna.Game,
-            Lib = Lacuna.Library;
-        <span class="hljs-keyword">var</span> BlackHoleGenerator = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
-            BlackHoleGenerator.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
-            <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.BlackHoleGenerator;
-        };
-        Lang.extend(BlackHoleGenerator, Lacuna.buildings.Building, {
-            getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getBHGTab()];
-            },
-            _getBHGTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                <span class="hljs-keyword">var</span> zoneOptions = <span class="hljs-string">""</span>;
-                <span class="hljs-keyword">var</span> zones = <span class="hljs-keyword">this</span>.result.task_options.zones;
-                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; zones.length; i++) {
-                    zoneOptions += <span class="hljs-string">'&lt;option value="'</span> + zones[i] + <span class="hljs-string">'"&gt;'</span> + zones[i] + <span class="hljs-string">'&lt;/option&gt;'</span>;
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Sel = Util.Selector,
+        Pager = YAHOO.widget.Paginator,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> BlackHoleGenerator = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        BlackHoleGenerator.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.BlackHoleGenerator;
+    };
+    Lang.extend(BlackHoleGenerator, Lacuna.buildings.Building, {
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getBHGTab()];
+        },
+        _getBHGTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> zoneOptions = <span class="hljs-string">""</span>;
+            <span class="hljs-keyword">var</span> zones = <span class="hljs-keyword">this</span>.result.task_options.zones;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; zones.length; i++) {
+                zoneOptions += <span class="hljs-string">'&lt;option value="'</span> + zones[i] + <span class="hljs-string">'"&gt;'</span> + zones[i] + <span class="hljs-string">'&lt;/option&gt;'</span>;
+            }
+            <span class="hljs-keyword">this</span>.tab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Singularity"</span>,
+                content: [<span class="hljs-string">'&lt;div id="bhgContainer"&gt;'</span>, <span class="hljs-string">'  Target &lt;select id="bhgTargetType"&gt;'</span>, <span class="hljs-string">'    &lt;option value="body_name"&gt;Body Name&lt;/option&gt;'</span>, <span class="hljs-string">'    &lt;option value="body_id"&gt;Body Id&lt;/option&gt;'</span>, <span class="hljs-string">'    &lt;option value="star_name"&gt;Star Name&lt;/option&gt;'</span>, <span class="hljs-string">'    &lt;option value="star_id"&gt;Star Id&lt;/option&gt;'</span>, <span class="hljs-string">'    &lt;option value="xy"&gt;X,Y&lt;/option&gt;'</span>, <span class="hljs-string">'    &lt;option value="zone"&gt;Zone (X|Y)&lt;/option&gt;'</span>, <span class="hljs-string">'  &lt;/select&gt;'</span>, <span class="hljs-string">'  &lt;span id="bhgTargetSelectText"&gt;&lt;input type="text" id="bhgTargetText" /&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'  &lt;span id="bhgTargetSelectXY" style="display:none;"&gt;'</span>, <span class="hljs-string">'    X:&lt;input size="5" type="text" id="bhgTargetX" /&gt;'</span>, <span class="hljs-string">'    Y:&lt;input size="5" type="text" id="bhgTargetY" /&gt;'</span>, <span class="hljs-string">'  &lt;/span&gt;'</span>, <span class="hljs-string">'  &lt;span id="bhgTargetSelectZone" style="display:none;"&gt;'</span>, <span class="hljs-string">'    &lt;select id="bhgTargetZone"&gt;&lt;option value=""&gt;Select Zone&lt;/option&gt;'</span>,
+                    zoneOptions, <span class="hljs-string">'    &lt;/select&gt;'</span>, <span class="hljs-string">'  &lt;/span&gt;'</span>, <span class="hljs-string">'  &lt;button type="button" id="bhgGetActions"&gt;Get Actions&lt;/button&gt;'</span>, <span class="hljs-string">'  &lt;div id="bhgTaskInfo"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;div id="bhgActions" style="display:none;border-top:1px solid #52ACFF;margin-top:5px;padding-top:5px"&gt;'</span>, <span class="hljs-string">'    Singularity Target: &lt;span id="bhgTargetNote"&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'    &lt;div style="border-top:1px solid #52ACFF;margin-top:5px;"&gt;'</span>, <span class="hljs-string">'      &lt;ul id="bhgActionsAvail"&gt;&lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div style="border-top:1px solid #52ACFF;margin-top:5px;"&gt;'</span>, <span class="hljs-string">'      &lt;ul id="bhgResult"&gt;&lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div id="bhgWorkingContainer"&gt;'</span>, <span class="hljs-string">'  &lt;ul&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;Cool-down time remaining: &lt;span id="bhgCooldownTime"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;You may subsidize the cool-down for 2 &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" /&gt;.&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;button type="button" id="bhgCooldownSubsidize"&gt;Subsidize&lt;/button&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'  &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>
+                ].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">this</span>.tab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                <span class="hljs-keyword">if</span> (e.newValue) {
+                    <span class="hljs-keyword">this</span>.checkIfWorking();
                 }
-                <span class="hljs-keyword">this</span>.tab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
-                    label: <span class="hljs-string">"Singularity"</span>,
-                    content: [<span class="hljs-string">'&lt;div id="bhgContainer"&gt;'</span>, <span class="hljs-string">'  Target &lt;select id="bhgTargetType"&gt;'</span>, <span class="hljs-string">'    &lt;option value="body_name"&gt;Body Name&lt;/option&gt;'</span>, <span class="hljs-string">'    &lt;option value="body_id"&gt;Body Id&lt;/option&gt;'</span>, <span class="hljs-string">'    &lt;option value="star_name"&gt;Star Name&lt;/option&gt;'</span>, <span class="hljs-string">'    &lt;option value="star_id"&gt;Star Id&lt;/option&gt;'</span>, <span class="hljs-string">'    &lt;option value="xy"&gt;X,Y&lt;/option&gt;'</span>, <span class="hljs-string">'    &lt;option value="zone"&gt;Zone (X|Y)&lt;/option&gt;'</span>, <span class="hljs-string">'  &lt;/select&gt;'</span>, <span class="hljs-string">'  &lt;span id="bhgTargetSelectText"&gt;&lt;input type="text" id="bhgTargetText" /&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'  &lt;span id="bhgTargetSelectXY" style="display:none;"&gt;'</span>, <span class="hljs-string">'    X:&lt;input size="5" type="text" id="bhgTargetX" /&gt;'</span>, <span class="hljs-string">'    Y:&lt;input size="5" type="text" id="bhgTargetY" /&gt;'</span>, <span class="hljs-string">'  &lt;/span&gt;'</span>, <span class="hljs-string">'  &lt;span id="bhgTargetSelectZone" style="display:none;"&gt;'</span>, <span class="hljs-string">'    &lt;select id="bhgTargetZone"&gt;&lt;option value=""&gt;Select Zone&lt;/option&gt;'</span>,
-                        zoneOptions, <span class="hljs-string">'    &lt;/select&gt;'</span>, <span class="hljs-string">'  &lt;/span&gt;'</span>, <span class="hljs-string">'  &lt;button type="button" id="bhgGetActions"&gt;Get Actions&lt;/button&gt;'</span>, <span class="hljs-string">'  &lt;div id="bhgTaskInfo"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;div id="bhgActions" style="display:none;border-top:1px solid #52ACFF;margin-top:5px;padding-top:5px"&gt;'</span>, <span class="hljs-string">'    Singularity Target: &lt;span id="bhgTargetNote"&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'    &lt;div style="border-top:1px solid #52ACFF;margin-top:5px;"&gt;'</span>, <span class="hljs-string">'      &lt;ul id="bhgActionsAvail"&gt;&lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div style="border-top:1px solid #52ACFF;margin-top:5px;"&gt;'</span>, <span class="hljs-string">'      &lt;ul id="bhgResult"&gt;&lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div id="bhgWorkingContainer"&gt;'</span>, <span class="hljs-string">'  &lt;ul&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;Cool-down time remaining: &lt;span id="bhgCooldownTime"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;You may subsidize the cool-down for 2 &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" /&gt;.&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;button type="button" id="bhgCooldownSubsidize"&gt;Subsidize&lt;/button&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'  &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>
-                    ].join(<span class="hljs-string">''</span>)
-                });
-                <span class="hljs-keyword">this</span>.tab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
-                    <span class="hljs-keyword">if</span> (e.newValue) {
-                        <span class="hljs-keyword">this</span>.checkIfWorking();
-                    }
-                }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                Event.on(<span class="hljs-string">"bhgTargetType"</span>, <span class="hljs-string">"change"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                    <span class="hljs-keyword">if</span> (Lib.getSelectedOptionValue(<span class="hljs-keyword">this</span>) == <span class="hljs-string">"xy"</span>) {
-                        Dom.setStyle(<span class="hljs-string">"bhgTargetSelectText"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
-                        Dom.setStyle(<span class="hljs-string">"bhgTargetSelectXY"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
-                        Dom.setStyle(<span class="hljs-string">"bhgTargetSelectZone"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
-                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (Lib.getSelectedOptionValue(<span class="hljs-keyword">this</span>) == <span class="hljs-string">"zone"</span>) {
-                        Dom.setStyle(<span class="hljs-string">"bhgTargetSelectText"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
-                        Dom.setStyle(<span class="hljs-string">"bhgTargetSelectXY"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
-                        Dom.setStyle(<span class="hljs-string">"bhgTargetSelectZone"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
-                    } <span class="hljs-keyword">else</span> {
-                        Dom.setStyle(<span class="hljs-string">"bhgTargetSelectText"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
-                        Dom.setStyle(<span class="hljs-string">"bhgTargetSelectXY"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
-                        Dom.setStyle(<span class="hljs-string">"bhgTargetSelectZone"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
-                    }
-                });
-                Event.on(<span class="hljs-string">"bhgGetActions"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.bhgGetActions, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                Event.on(<span class="hljs-string">"bhgCooldownSubsidize"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.cooldownSubsidize, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tab;
-            },
-            bhgGetActions: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                Lacuna.Pulser.Show();
-                Dom.setStyle(<span class="hljs-string">"bhgActions"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
-                <span class="hljs-keyword">var</span> type = Lib.getSelectedOptionValue(<span class="hljs-string">"bhgTargetType"</span>),
-                    target = {};
-                <span class="hljs-keyword">if</span> (type == <span class="hljs-string">"xy"</span>) {
-                    target.x = Dom.get(<span class="hljs-string">"bhgTargetX"</span>)
-                        .value;
-                    target.y = Dom.get(<span class="hljs-string">"bhgTargetY"</span>)
-                        .value;
-                    Dom.get(<span class="hljs-string">"bhgTargetNote"</span>)
-                        .innerHTML = [<span class="hljs-string">'X: '</span>, target.x, <span class="hljs-string">', Y: '</span>, target.y].join(<span class="hljs-string">''</span>);
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == <span class="hljs-string">"zone"</span>) {
-                    target.zone = Dom.get(<span class="hljs-string">"bhgTargetZone"</span>)
-                        .value;
-                    Dom.get(<span class="hljs-string">"bhgTargetNote"</span>)
-                        .innerHTML = [<span class="hljs-string">'Zone: '</span>, target.zone].join(<span class="hljs-string">''</span>);
+            }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.on(<span class="hljs-string">"bhgTargetType"</span>, <span class="hljs-string">"change"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">if</span> (Lib.getSelectedOptionValue(<span class="hljs-keyword">this</span>) === <span class="hljs-string">"xy"</span>) {
+                    Dom.setStyle(<span class="hljs-string">"bhgTargetSelectText"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                    Dom.setStyle(<span class="hljs-string">"bhgTargetSelectXY"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                    Dom.setStyle(<span class="hljs-string">"bhgTargetSelectZone"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (Lib.getSelectedOptionValue(<span class="hljs-keyword">this</span>) === <span class="hljs-string">"zone"</span>) {
+                    Dom.setStyle(<span class="hljs-string">"bhgTargetSelectText"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                    Dom.setStyle(<span class="hljs-string">"bhgTargetSelectXY"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                    Dom.setStyle(<span class="hljs-string">"bhgTargetSelectZone"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
                 } <span class="hljs-keyword">else</span> {
-                    target[type] = Dom.get(<span class="hljs-string">"bhgTargetText"</span>)
-                        .value;
-                    Dom.get(<span class="hljs-string">"bhgTargetNote"</span>)
-                        .innerHTML = target[type];
+                    Dom.setStyle(<span class="hljs-string">"bhgTargetSelectText"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                    Dom.setStyle(<span class="hljs-string">"bhgTargetSelectXY"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                    Dom.setStyle(<span class="hljs-string">"bhgTargetSelectZone"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                 }
-                <span class="hljs-keyword">this</span>.service.get_actions_for({
+            });
+            Event.on(<span class="hljs-string">"bhgGetActions"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.bhgGetActions, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.on(<span class="hljs-string">"bhgCooldownSubsidize"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.cooldownSubsidize, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tab;
+        },
+        bhgGetActions: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Lacuna.Pulser.Show();
+            Dom.setStyle(<span class="hljs-string">"bhgActions"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+            <span class="hljs-keyword">var</span> type = Lib.getSelectedOptionValue(<span class="hljs-string">"bhgTargetType"</span>),
+                target = {};
+            <span class="hljs-keyword">if</span> (type === <span class="hljs-string">"xy"</span>) {
+                target.x = Dom.get(<span class="hljs-string">"bhgTargetX"</span>)
+                    .value;
+                target.y = Dom.get(<span class="hljs-string">"bhgTargetY"</span>)
+                    .value;
+                Dom.get(<span class="hljs-string">"bhgTargetNote"</span>)
+                    .innerHTML = [<span class="hljs-string">'X: '</span>, target.x, <span class="hljs-string">', Y: '</span>, target.y].join(<span class="hljs-string">''</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type === <span class="hljs-string">"zone"</span>) {
+                target.zone = Dom.get(<span class="hljs-string">"bhgTargetZone"</span>)
+                    .value;
+                Dom.get(<span class="hljs-string">"bhgTargetNote"</span>)
+                    .innerHTML = [<span class="hljs-string">'Zone: '</span>, target.zone].join(<span class="hljs-string">''</span>);
+            } <span class="hljs-keyword">else</span> {
+                target[type] = Dom.get(<span class="hljs-string">"bhgTargetText"</span>)
+                    .value;
+                Dom.get(<span class="hljs-string">"bhgTargetNote"</span>)
+                    .innerHTML = target[type];
+            }
+            <span class="hljs-keyword">this</span>.service.get_actions_for({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.building.id,
+                target: target
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    <span class="hljs-keyword">this</span>.PopulateBHGTab(target, o.result.tasks);
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        PopulateBHGTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(target, actions)</span> {</span>
+            <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"bhgActionsAvail"</span>),
+                detailsParent = details.parentNode,
+                li = document.createElement(<span class="hljs-string">"li"</span>);
+            Event.purgeElement(details, <span class="hljs-literal">true</span>); <span class="hljs-comment">//clear any events before we remove</span>
+            details = detailsParent.removeChild(details); <span class="hljs-comment">//remove from DOM to make this faster</span>
+            details.innerHTML = <span class="hljs-string">""</span>;
+            Dom.setStyle(<span class="hljs-string">"bhgActions"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+            Dom.setStyle(detailsParent, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+            Dom.setStyle(Dom.get(<span class="hljs-string">"bhgResult"</span>)
+                .parentNode, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+            <span class="hljs-keyword">if</span> (actions.length === <span class="hljs-number">0</span>) {
+                details.innerHTML = <span class="hljs-string">"No available actions for singularity."</span>;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; actions.length; i++) {
+                    <span class="hljs-keyword">var</span> task = actions[i],
+                        nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    <span class="hljs-keyword">var</span> waste_out;
+                    <span class="hljs-keyword">if</span> (task.waste_cost &lt; <span class="hljs-number">1000000000</span>) {
+                        waste_out = [Lib.formatNumber(task.waste_cost / <span class="hljs-number">1000000</span>), <span class="hljs-string">'M'</span>].join(<span class="hljs-string">''</span>);
+                    } <span class="hljs-keyword">else</span> {
+                        waste_out = [Lib.formatNumber(task.waste_cost / <span class="hljs-number">1000000000</span>), <span class="hljs-string">'B'</span>].join(<span class="hljs-string">''</span>);
+                    }
+                    <span class="hljs-keyword">var</span> canGenerate = <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">if</span> (Game.GetCurrentPlanet()
+                        .waste_stored &lt; task.waste_cost) {
+                        canGenerate = <span class="hljs-number">0</span>;
+                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (task.success === <span class="hljs-number">0</span>) {
+                        <span class="hljs-keyword">continue</span>;
+                    }
+                    <span class="hljs-keyword">var</span> typeSelector = <span class="hljs-string">""</span>;
+                    <span class="hljs-keyword">if</span> (task.name === <span class="hljs-string">"Change Type"</span>) {
+                        <span class="hljs-keyword">var</span> label = task.body_type === <span class="hljs-string">'asteroid'</span> ? <span class="hljs-string">'Asteroid'</span> : <span class="hljs-string">'Planet'</span>;
+                        typeSelector = <span class="hljs-string">'&lt;select id="bhgChangeTypeSelect"&gt;&lt;option value=""&gt;New '</span> + label + <span class="hljs-string">' Type&lt;/option&gt;'</span>;
+                        <span class="hljs-keyword">var</span> options = task.body_type === <span class="hljs-string">'asteroid'</span> ? <span class="hljs-keyword">this</span>.result.task_options.asteroid_types : <span class="hljs-keyword">this</span>.result.task_options.planet_types;
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>; j &lt; options.length; j++) {
+                            typeSelector = typeSelector + [<span class="hljs-string">'&lt;option value="'</span>, options[j], <span class="hljs-string">'"&gt;'</span>, options[j], <span class="hljs-string">'&lt;/option&gt;'</span>].join(<span class="hljs-string">''</span>);
+                        }
+                        typeSelector = typeSelector + <span class="hljs-string">'&lt;/select&gt;'</span>;
+                    }
+                    nLi.Task = task;
+                    nLi.innerHTML = [<span class="hljs-string">'&lt;div class="yui-gd" style="margin-bottom:2px; border: 1px white solid; padding: 2px"&gt;'</span>, <span class="hljs-string">'  &lt;div class="yui-u first" style="width:70%"&gt;'</span>, <span class="hljs-string">'    &lt;label style="font-weight:bold;"&gt;'</span>, task.name, <span class="hljs-string">'&lt;/label&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;'</span>, <span class="hljs-string">'      Distance: '</span>, task.dist, <span class="hljs-string">', '</span>, <span class="hljs-string">'      Range: '</span>, task.range, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;'</span>, <span class="hljs-string">'      Base Chance: '</span>, <span class="hljs-number">100</span> - task.base_fail, <span class="hljs-string">'%,'</span>, <span class="hljs-string">'      Success Chance: '</span>, task.success, <span class="hljs-string">'%,'</span>, <span class="hljs-string">'      Cost to subsidize: '</span>, task.essentia_cost, <span class="hljs-string">'&lt;br/&gt;'</span>, <span class="hljs-string">'      Waste Needed: '</span>, waste_out, <span class="hljs-string">'      Recovery Time: '</span>, Lib.formatTime(task.recovery), <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;div class="yui-u" style="width:25%; text-align:right;"&gt;'</span>,
+                        canGenerate === <span class="hljs-number">1</span> ? typeSelector + <span class="hljs-string">'&lt;button type="button" name="generate"&gt;Generate&lt;/button&gt;&lt;button type="button" name="subsidize"&gt;Subsidize&lt;/button&gt;'</span> : <span class="hljs-string">'&lt;b&gt;Insufficient Waste&lt;/b&gt;'</span>, <span class="hljs-string">'  &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>
+                    ].join(<span class="hljs-string">''</span>);
+                    details.appendChild(nLi);
+                    <span class="hljs-keyword">if</span> (task.success &gt; <span class="hljs-number">0</span>) {
+                        Event.on(Sel.query(<span class="hljs-string">"button[name=generate]"</span>, nLi, <span class="hljs-literal">true</span>), <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.bhgGenerate, {
+                            Self: <span class="hljs-keyword">this</span>,
+                            Target: target,
+                            Task: task,
+                            building_id: <span class="hljs-keyword">this</span>.building_id
+                        }, <span class="hljs-literal">true</span>);
+                        Event.on(Sel.query(<span class="hljs-string">"button[name=subsidize]"</span>, nLi, <span class="hljs-literal">true</span>), <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.bhgGenerate, {
+                            Self: <span class="hljs-keyword">this</span>,
+                            Target: target,
+                            Task: task,
+                            building_id: <span class="hljs-keyword">this</span>.building_id,
+                            subsidize: <span class="hljs-literal">true</span>
+                        }, <span class="hljs-literal">true</span>);
+                    }
+                }
+            }
+            detailsParent.appendChild(details); <span class="hljs-comment">//add back as child</span>
+            <span class="hljs-comment">//wait for tab to display first</span>
+            setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                    .h - <span class="hljs-number">250</span>;
+                <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">250</span>) {
+                    Ht = <span class="hljs-number">250</span>;
+                }
+                Dom.setStyle(detailsParent, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                Dom.setStyle(detailsParent, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+            }, <span class="hljs-number">10</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tab;
+        },
+        bhgGenerate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">var</span> oSelf = <span class="hljs-keyword">this</span>.Self,
+                target = <span class="hljs-keyword">this</span>.Target,
+                task = <span class="hljs-keyword">this</span>.Task;
+            <span class="hljs-keyword">if</span> (target) {
+                <span class="hljs-keyword">var</span> rpcParams = {
                     session_id: Game.GetSession(),
-                    building_id: <span class="hljs-keyword">this</span>.building.id,
-                    target: target
+                    building_id: oSelf.building.id,
+                    target: target,
+                    task_name: task.name
+                };
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.subsidize) {
+                    rpcParams.subsidize = <span class="hljs-number">1</span>;
+                }
+                <span class="hljs-keyword">if</span> (task.name === <span class="hljs-string">"Change Type"</span>) {
+                    <span class="hljs-keyword">var</span> selectValue = Lib.getSelectedOptionValue(<span class="hljs-string">"bhgChangeTypeSelect"</span>);
+                    <span class="hljs-keyword">if</span> (selectValue === <span class="hljs-string">""</span>) {
+                        alert(<span class="hljs-string">"Please select Type"</span>);
+                        <span class="hljs-keyword">return</span>;
+                    }
+                    rpcParams.params = {
+                        newtype: selectValue
+                    };
+                }
+                <span class="hljs-keyword">this</span>.Self.service.generate_singularity({
+                    params: rpcParams
                 }, {
                     success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
                         Lacuna.Pulser.Hide();
-                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
-                        <span class="hljs-keyword">this</span>.PopulateBHGTab(target, o.result.tasks);
+                        <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                        <span class="hljs-keyword">this</span>.Self.PopulateBHGResult(target, o.result.effect);
                     },
                     scope: <span class="hljs-keyword">this</span>
                 });
-            },
-            PopulateBHGTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(target, actions)</span> {</span>
-                <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"bhgActionsAvail"</span>),
-                    detailsParent = details.parentNode,
-                    li = document.createElement(<span class="hljs-string">"li"</span>);
-                Event.purgeElement(details, <span class="hljs-literal">true</span>); <span class="hljs-comment">//clear any events before we remove</span>
-                details = detailsParent.removeChild(details); <span class="hljs-comment">//remove from DOM to make this faster</span>
-                details.innerHTML = <span class="hljs-string">""</span>;
-                Dom.setStyle(<span class="hljs-string">"bhgActions"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
-                Dom.setStyle(detailsParent, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
-                Dom.setStyle(Dom.get(<span class="hljs-string">"bhgResult"</span>)
-                    .parentNode, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
-                <span class="hljs-keyword">if</span> (actions.length === <span class="hljs-number">0</span>) {
-                    details.innerHTML = <span class="hljs-string">"No available actions for singularity."</span>;
-                } <span class="hljs-keyword">else</span> {
-                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; actions.length; i++) {
-                        <span class="hljs-keyword">var</span> task = actions[i],
-                            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
-                        <span class="hljs-keyword">var</span> waste_out;
-                        <span class="hljs-keyword">if</span> (task.waste_cost &lt; <span class="hljs-number">1000000000</span>) {
-                            waste_out = [Lib.formatNumber(task.waste_cost / <span class="hljs-number">1000000</span>), <span class="hljs-string">'M'</span>].join(<span class="hljs-string">''</span>);
-                        } <span class="hljs-keyword">else</span> {
-                            waste_out = [Lib.formatNumber(task.waste_cost / <span class="hljs-number">1000000000</span>), <span class="hljs-string">'B'</span>].join(<span class="hljs-string">''</span>);
-                        }
-                        <span class="hljs-keyword">var</span> canGenerate = <span class="hljs-number">1</span>;
-                        <span class="hljs-keyword">if</span> (Game.GetCurrentPlanet()
-                            .waste_stored &lt; task.waste_cost) {
-                            canGenerate = <span class="hljs-number">0</span>;
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (task.success == <span class="hljs-number">0</span>) {
-                            <span class="hljs-keyword">continue</span>;
-                        }
-                        <span class="hljs-keyword">var</span> typeSelector = <span class="hljs-string">""</span>;
-                        <span class="hljs-keyword">if</span> (task.name === <span class="hljs-string">"Change Type"</span>) {
-                            <span class="hljs-keyword">var</span> label = task.body_type == <span class="hljs-string">'asteroid'</span> ? <span class="hljs-string">'Asteroid'</span> : <span class="hljs-string">'Planet'</span>;
-                            typeSelector = <span class="hljs-string">'&lt;select id="bhgChangeTypeSelect"&gt;&lt;option value=""&gt;New '</span> + label + <span class="hljs-string">' Type&lt;/option&gt;'</span>;
-                            <span class="hljs-keyword">var</span> options = task.body_type == <span class="hljs-string">'asteroid'</span> ? <span class="hljs-keyword">this</span>.result.task_options.asteroid_types : <span class="hljs-keyword">this</span>.result.task_options.planet_types;
-                            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>; j &lt; options.length; j++) {
-                                typeSelector = typeSelector + [<span class="hljs-string">'&lt;option value="'</span>, options[j], <span class="hljs-string">'"&gt;'</span>, options[j], <span class="hljs-string">'&lt;/option&gt;'</span>].join(<span class="hljs-string">''</span>);
-                            }
-                            typeSelector = typeSelector + <span class="hljs-string">'&lt;/select&gt;'</span>;
-                        }
-                        nLi.Task = task;
-                        nLi.innerHTML = [<span class="hljs-string">'&lt;div class="yui-gd" style="margin-bottom:2px; border: 1px white solid; padding: 2px"&gt;'</span>, <span class="hljs-string">'  &lt;div class="yui-u first" style="width:70%"&gt;'</span>, <span class="hljs-string">'    &lt;label style="font-weight:bold;"&gt;'</span>, task.name, <span class="hljs-string">'&lt;/label&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;'</span>, <span class="hljs-string">'      Distance: '</span>, task.dist, <span class="hljs-string">', '</span>, <span class="hljs-string">'      Range: '</span>, task.range, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;'</span>, <span class="hljs-string">'      Base Chance: '</span>, <span class="hljs-number">100</span> - task.base_fail, <span class="hljs-string">'%,'</span>, <span class="hljs-string">'      Success Chance: '</span>, task.success, <span class="hljs-string">'%,'</span>, <span class="hljs-string">'      Cost to subsidize: '</span>, task.essentia_cost, <span class="hljs-string">'&lt;br/&gt;'</span>, <span class="hljs-string">'      Waste Needed: '</span>, waste_out, <span class="hljs-string">'      Recovery Time: '</span>, Lib.formatTime(task.recovery), <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;div class="yui-u" style="width:25%; text-align:right;"&gt;'</span>,
-                            canGenerate == <span class="hljs-number">1</span> ? typeSelector + <span class="hljs-string">'&lt;button type="button" name="generate"&gt;Generate&lt;/button&gt;&lt;button type="button" name="subsidize"&gt;Subsidize&lt;/button&gt;'</span> : <span class="hljs-string">'&lt;b&gt;Insufficient Waste&lt;/b&gt;'</span>, <span class="hljs-string">'  &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>
-                        ].join(<span class="hljs-string">''</span>);
-                        details.appendChild(nLi);
-                        <span class="hljs-keyword">if</span> (task.success &gt; <span class="hljs-number">0</span>) {
-                            Event.on(Sel.query(<span class="hljs-string">"button[name=generate]"</span>, nLi, <span class="hljs-literal">true</span>), <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.bhgGenerate, {
-                                Self: <span class="hljs-keyword">this</span>,
-                                Target: target,
-                                Task: task,
-                                building_id: <span class="hljs-keyword">this</span>.building_id
-                            }, <span class="hljs-literal">true</span>);
-                            Event.on(Sel.query(<span class="hljs-string">"button[name=subsidize]"</span>, nLi, <span class="hljs-literal">true</span>), <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.bhgGenerate, {
-                                Self: <span class="hljs-keyword">this</span>,
-                                Target: target,
-                                Task: task,
-                                building_id: <span class="hljs-keyword">this</span>.building_id,
-                                subsidize: <span class="hljs-literal">true</span>
-                            }, <span class="hljs-literal">true</span>);
-                        }
-                    }
-                }
-                detailsParent.appendChild(details); <span class="hljs-comment">//add back as child</span>
-                <span class="hljs-comment">//wait for tab to display first</span>
-                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                    <span class="hljs-keyword">var</span> Ht = Game.GetSize()
-                        .h - <span class="hljs-number">250</span>;
-                    <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">250</span>) {
-                        Ht = <span class="hljs-number">250</span>;
-                    }
-                    Dom.setStyle(detailsParent, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
-                    Dom.setStyle(detailsParent, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
-                }, <span class="hljs-number">10</span>);
-                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tab;
-            },
-            bhgGenerate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
-                <span class="hljs-keyword">var</span> oSelf = <span class="hljs-keyword">this</span>.Self,
-                    target = <span class="hljs-keyword">this</span>.Target,
-                    task = <span class="hljs-keyword">this</span>.Task;
-                <span class="hljs-keyword">if</span> (target) {
-                    <span class="hljs-keyword">var</span> rpcParams = {
-                        session_id: Game.GetSession(),
-                        building_id: oSelf.building.id,
-                        target: target,
-                        task_name: task.name
-                    };
-                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.subsidize) {
-                        rpcParams.subsidize = <span class="hljs-number">1</span>;
-                    }
-                    <span class="hljs-keyword">if</span> (task.name === <span class="hljs-string">"Change Type"</span>) {
-                        <span class="hljs-keyword">var</span> selectValue = Lib.getSelectedOptionValue(<span class="hljs-string">"bhgChangeTypeSelect"</span>);
-                        <span class="hljs-keyword">if</span> (selectValue == <span class="hljs-string">""</span>) {
-                            alert(<span class="hljs-string">"Please select Type"</span>);
-                            <span class="hljs-keyword">return</span>;
-                        }
-                        rpcParams.params = {
-                            newtype: selectValue
-                        };
-                    }
-                    <span class="hljs-keyword">this</span>.Self.service.generate_singularity({
-                        params: rpcParams
-                    }, {
-                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
-                            Lacuna.Pulser.Hide();
-                            <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
-                            <span class="hljs-keyword">this</span>.Self.PopulateBHGResult(target, o.result.effect);
-                        },
-                        scope: <span class="hljs-keyword">this</span>
-                    });
-                }
-            },
-            PopulateBHGResult: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(target, effect)</span> {</span>
-                <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"bhgResult"</span>),
-                    detailsParent = details.parentNode,
-                    li = document.createElement(<span class="hljs-string">"li"</span>);
-                Event.purgeElement(details, <span class="hljs-literal">true</span>); <span class="hljs-comment">//clear any events before we remove</span>
-                details = detailsParent.removeChild(details); <span class="hljs-comment">//remove from DOM to make this faster</span>
-                details.innerHTML = <span class="hljs-string">""</span>;
-                Dom.setStyle(Dom.get(<span class="hljs-string">"bhgActionsAvail"</span>)
-                    .parentNode, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
-                Dom.setStyle(detailsParent, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
-                detailsParent.appendChild(details); <span class="hljs-comment">//add back as child</span>
-                <span class="hljs-keyword">if</span> (effect.fail) {
-                    <span class="hljs-keyword">var</span> nLi = li.cloneNode(<span class="hljs-literal">false</span>);
-                    nLi.innerHTML = [<span class="hljs-string">'&lt;div class="yui-gd" style="margin-bottom:2px;"&gt;'</span>, <span class="hljs-string">'  &lt;div style="border:1px white solid;" class="yui-u" style="width:100%"&gt;'</span>, <span class="hljs-string">'    &lt;label style="font-weight:bold;"&gt;Failure&lt;/label&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;'</span>, effect.fail.message, <span class="hljs-string">' at '</span>, effect.fail.name, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;/div&gt;&lt;/div&gt;'</span>, ].join(<span class="hljs-string">''</span>);
-                    details.appendChild(nLi);
-                } <span class="hljs-keyword">else</span> {</pre></div>
+            }
+        },
+        PopulateBHGResult: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(target, effect)</span> {</span>
+            <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"bhgResult"</span>),
+                detailsParent = details.parentNode,
+                li = document.createElement(<span class="hljs-string">"li"</span>);
+            Event.purgeElement(details, <span class="hljs-literal">true</span>); <span class="hljs-comment">//clear any events before we remove</span>
+            details = detailsParent.removeChild(details); <span class="hljs-comment">//remove from DOM to make this faster</span>
+            details.innerHTML = <span class="hljs-string">""</span>;
+            Dom.setStyle(Dom.get(<span class="hljs-string">"bhgActionsAvail"</span>)
+                .parentNode, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+            Dom.setStyle(detailsParent, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+            detailsParent.appendChild(details); <span class="hljs-comment">//add back as child</span>
+            <span class="hljs-keyword">if</span> (effect.fail) {
+                <span class="hljs-keyword">var</span> nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                nLi.innerHTML = [<span class="hljs-string">'&lt;div class="yui-gd" style="margin-bottom:2px;"&gt;'</span>, <span class="hljs-string">'  &lt;div style="border:1px white solid;" class="yui-u" style="width:100%"&gt;'</span>, <span class="hljs-string">'    &lt;label style="font-weight:bold;"&gt;Failure&lt;/label&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;'</span>, effect.fail.message, <span class="hljs-string">' at '</span>, effect.fail.name, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;/div&gt;&lt;/div&gt;'</span>, ].join(<span class="hljs-string">''</span>);
+                details.appendChild(nLi);
+            } <span class="hljs-keyword">else</span> {</pre></div>
       
       </div>
     
@@ -255,124 +255,110 @@
         </div>
       
       
-        <div class="code"><pre class="wrapper">                    <span class="hljs-keyword">if</span> (effect.target) {
-                        <span class="hljs-keyword">var</span> nLi = li.cloneNode(<span class="hljs-literal">false</span>);
-                        nLi.innerHTML = <span class="hljs-keyword">this</span>.bhgParseResult(effect.target, <span class="hljs-string">'Success'</span>);
-                        details.appendChild(nLi);
-                    }
-                    <span class="hljs-keyword">if</span> (effect.side) {
-                        <span class="hljs-keyword">var</span> nLi = li.cloneNode(<span class="hljs-literal">false</span>);
-                        nLi.innerHTML = <span class="hljs-keyword">this</span>.bhgParseResult(effect.side, <span class="hljs-string">'Side-Effect'</span>);
-                        details.appendChild(nLi);
-                    }
+        <div class="code"><pre class="wrapper">                <span class="hljs-keyword">if</span> (effect.target) {
+                    <span class="hljs-keyword">var</span> nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    nLi.innerHTML = <span class="hljs-keyword">this</span>.bhgParseResult(effect.target, <span class="hljs-string">'Success'</span>);
+                    details.appendChild(nLi);
                 }
-                <span class="hljs-comment">//wait for tab to display first</span>
-                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                    <span class="hljs-keyword">var</span> Ht = Game.GetSize()
-                        .h - <span class="hljs-number">250</span>;
-                    <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">250</span>) {
-                        Ht = <span class="hljs-number">250</span>;
-                    }
-                    Dom.setStyle(detailsParent, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
-                    Dom.setStyle(detailsParent, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
-                }, <span class="hljs-number">10</span>);
-            },
-            bhgParseResult: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result, type)</span> {</span>
-                <span class="hljs-keyword">var</span> out = [<span class="hljs-string">'&lt;div class="yui-gd" style="margin-bottom:2px;"&gt;'</span>, <span class="hljs-string">'  &lt;div style="border:1px white solid;" class="yui-u" style="width:100%"&gt;'</span>, <span class="hljs-string">'    &lt;label style="font-weight:bold;"&gt;'</span>, type, <span class="hljs-string">'&lt;/label&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;'</span>].join(<span class="hljs-string">''</span>);
-                <span class="hljs-keyword">if</span> (result.message === <span class="hljs-string">"Swapped Places"</span>) {
-                    out = out + [
-                        result.message, <span class="hljs-string">' with '</span>, result.swapname, <span class="hljs-string">' at orbit '</span>, result.orbit
-                    ].join(<span class="hljs-string">''</span>);
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (result.message === <span class="hljs-string">"Changed Size"</span>) {
-                    out = out + [
-                        result.name, <span class="hljs-string">' changed size from '</span>, result.old_size, <span class="hljs-string">' to '</span>, result.size
-                    ].join(<span class="hljs-string">''</span>);
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (result.message === <span class="hljs-string">"Changed Type"</span>) {
-                    <span class="hljs-keyword">var</span> newtype = result[<span class="hljs-string">'class'</span>].replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">".*::"</span>, <span class="hljs-string">"g"</span>), <span class="hljs-string">""</span>);
-                    out = out + [
-                        result.name, <span class="hljs-string">' changed to type '</span>, newtype, <span class="hljs-string">' planet'</span>
-                    ].join(<span class="hljs-string">''</span>);
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (result.message === <span class="hljs-string">"Made Asteroid"</span>) {
-                    <span class="hljs-keyword">var</span> newtype = result[<span class="hljs-string">'class'</span>].replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">".*::"</span>, <span class="hljs-string">"g"</span>), <span class="hljs-string">""</span>);
-                    out = out + [
-                        result.name, <span class="hljs-string">' is now a type '</span>, newtype, <span class="hljs-string">' asteroid of size '</span>,
-                        result.size
-                    ].join(<span class="hljs-string">''</span>);
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (result.message === <span class="hljs-string">"Made Planet"</span>) {
-                    <span class="hljs-keyword">var</span> newtype = result[<span class="hljs-string">'class'</span>].replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">".*::"</span>, <span class="hljs-string">"g"</span>), <span class="hljs-string">""</span>);
-                    out = out + [
-                        result.name, <span class="hljs-string">' is now a type '</span>, newtype, <span class="hljs-string">' planet of size '</span>,
-                        result.size
-                    ].join(<span class="hljs-string">''</span>);
-                } <span class="hljs-keyword">else</span> {
-                    out = out + [
-                        result.message, <span class="hljs-string">' at '</span>, result.name
-                    ].join(<span class="hljs-string">''</span>);
+                <span class="hljs-keyword">if</span> (effect.side) {
+                    <span class="hljs-keyword">var</span> nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    nLi.innerHTML = <span class="hljs-keyword">this</span>.bhgParseResult(effect.side, <span class="hljs-string">'Side-Effect'</span>);
+                    details.appendChild(nLi);
                 }
-                out = out + <span class="hljs-string">'  &lt;/div&gt;&lt;/div&gt;&lt;/div&gt;'</span>;
-                <span class="hljs-keyword">return</span> out;
-            },
-            checkIfWorking: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.work &amp;&amp; <span class="hljs-keyword">this</span>.work.seconds_remaining) {
-                    Dom.setStyle(<span class="hljs-string">"bhgContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
-                    Dom.setStyle(<span class="hljs-string">"bhgWorkingContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
-                    <span class="hljs-keyword">this</span>.populateCooldownTimer(<span class="hljs-keyword">this</span>.work.seconds_remaining);
-                } <span class="hljs-keyword">else</span> {
-                    Dom.setStyle(<span class="hljs-string">"bhgContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
-                    Dom.setStyle(<span class="hljs-string">"bhgWorkingContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
-                }
-            },
-            populateCooldownTimer: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(seconds_remaining)</span> {</span>
-                <span class="hljs-keyword">this</span>.addQueue(seconds_remaining, <span class="hljs-keyword">this</span>.cooldownQueue, <span class="hljs-string">"bhgCooldownTime"</span>);
-            },
-            cooldownQueue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(remaining, el)</span> {</span>
-                <span class="hljs-keyword">if</span> (remaining &lt;= <span class="hljs-number">0</span>) {
-                    <span class="hljs-keyword">var</span> span = Dom.get(el),
-                        p = span.parentNode;
-                    p.removeChild(span);
-                    p.innerHTML = <span class="hljs-string">"Cool-down Complete"</span>;
-                } <span class="hljs-keyword">else</span> {
-                    Dom.get(el)
-                        .innerHTML = Lib.formatTime(<span class="hljs-built_in">Math</span>.round(remaining));
-                }
-            },
-            cooldownSubsidize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                Lacuna.Pulser.Show();
-                <span class="hljs-keyword">this</span>.service.subsidize_cooldown({
-                    session_id: Game.GetSession(),
-                    building_id: <span class="hljs-keyword">this</span>.building.id
-                }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
-                        Lacuna.Pulser.Hide();
-                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
-                        <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.work;
-                        <span class="hljs-keyword">this</span>.updateBuildingTile(o.result.building);
-                        <span class="hljs-keyword">this</span>.resetQueue();
-                        Dom.get(<span class="hljs-string">"bhgCooldownTime"</span>)
-                            .innerHTML = <span class="hljs-string">""</span>;
-                        <span class="hljs-keyword">this</span>.checkIfWorking();
-                    },
-                    scope: <span class="hljs-keyword">this</span>
-                });
             }
-        });
-        YAHOO.lacuna.buildings.BlackHoleGenerator = BlackHoleGenerator;
-    })();
-    YAHOO.register(<span class="hljs-string">"blackholegenerator"</span>, YAHOO.lacuna.buildings.BlackHoleGenerator, {
-        version: <span class="hljs-string">"1"</span>,
-        build: <span class="hljs-string">"0"</span>
+            <span class="hljs-comment">//wait for tab to display first</span>
+            setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                    .h - <span class="hljs-number">250</span>;
+                <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">250</span>) {
+                    Ht = <span class="hljs-number">250</span>;
+                }
+                Dom.setStyle(detailsParent, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                Dom.setStyle(detailsParent, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+            }, <span class="hljs-number">10</span>);
+        },
+        bhgParseResult: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result, type)</span> {</span>
+            <span class="hljs-keyword">var</span> out = [<span class="hljs-string">'&lt;div class="yui-gd" style="margin-bottom:2px;"&gt;'</span>, <span class="hljs-string">'  &lt;div style="border:1px white solid;" class="yui-u" style="width:100%"&gt;'</span>, <span class="hljs-string">'    &lt;label style="font-weight:bold;"&gt;'</span>, type, <span class="hljs-string">'&lt;/label&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;'</span>].join(<span class="hljs-string">''</span>);
+            <span class="hljs-keyword">if</span> (result.message === <span class="hljs-string">"Swapped Places"</span>) {
+                out = out + [
+                    result.message, <span class="hljs-string">' with '</span>, result.swapname, <span class="hljs-string">' at orbit '</span>, result.orbit
+                ].join(<span class="hljs-string">''</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (result.message === <span class="hljs-string">"Changed Size"</span>) {
+                out = out + [
+                    result.name, <span class="hljs-string">' changed size from '</span>, result.old_size, <span class="hljs-string">' to '</span>, result.size
+                ].join(<span class="hljs-string">''</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (result.message === <span class="hljs-string">"Changed Type"</span>) {
+                <span class="hljs-keyword">var</span> newtype = result[<span class="hljs-string">'class'</span>].replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">".*::"</span>, <span class="hljs-string">"g"</span>), <span class="hljs-string">""</span>);
+                out = out + [
+                    result.name, <span class="hljs-string">' changed to type '</span>, newtype, <span class="hljs-string">' planet'</span>
+                ].join(<span class="hljs-string">''</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (result.message === <span class="hljs-string">"Made Asteroid"</span>) {
+                <span class="hljs-keyword">var</span> newtype = result[<span class="hljs-string">'class'</span>].replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">".*::"</span>, <span class="hljs-string">"g"</span>), <span class="hljs-string">""</span>);
+                out = out + [
+                    result.name, <span class="hljs-string">' is now a type '</span>, newtype, <span class="hljs-string">' asteroid of size '</span>,
+                    result.size
+                ].join(<span class="hljs-string">''</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (result.message === <span class="hljs-string">"Made Planet"</span>) {
+                <span class="hljs-keyword">var</span> newtype = result[<span class="hljs-string">'class'</span>].replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">".*::"</span>, <span class="hljs-string">"g"</span>), <span class="hljs-string">""</span>);
+                out = out + [
+                    result.name, <span class="hljs-string">' is now a type '</span>, newtype, <span class="hljs-string">' planet of size '</span>,
+                    result.size
+                ].join(<span class="hljs-string">''</span>);
+            } <span class="hljs-keyword">else</span> {
+                out = out + [
+                    result.message, <span class="hljs-string">' at '</span>, result.name
+                ].join(<span class="hljs-string">''</span>);
+            }
+            out = out + <span class="hljs-string">'  &lt;/div&gt;&lt;/div&gt;&lt;/div&gt;'</span>;
+            <span class="hljs-keyword">return</span> out;
+        },
+        checkIfWorking: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.work &amp;&amp; <span class="hljs-keyword">this</span>.work.seconds_remaining) {
+                Dom.setStyle(<span class="hljs-string">"bhgContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                Dom.setStyle(<span class="hljs-string">"bhgWorkingContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                <span class="hljs-keyword">this</span>.populateCooldownTimer(<span class="hljs-keyword">this</span>.work.seconds_remaining);
+            } <span class="hljs-keyword">else</span> {
+                Dom.setStyle(<span class="hljs-string">"bhgContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                Dom.setStyle(<span class="hljs-string">"bhgWorkingContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+            }
+        },
+        populateCooldownTimer: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(seconds_remaining)</span> {</span>
+            <span class="hljs-keyword">this</span>.addQueue(seconds_remaining, <span class="hljs-keyword">this</span>.cooldownQueue, <span class="hljs-string">"bhgCooldownTime"</span>);
+        },
+        cooldownQueue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(remaining, el)</span> {</span>
+            <span class="hljs-keyword">if</span> (remaining &lt;= <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">var</span> span = Dom.get(el),
+                    p = span.parentNode;
+                p.removeChild(span);
+                p.innerHTML = <span class="hljs-string">"Cool-down Complete"</span>;
+            } <span class="hljs-keyword">else</span> {
+                Dom.get(el)
+                    .innerHTML = Lib.formatTime(<span class="hljs-built_in">Math</span>.round(remaining));
+            }
+        },
+        cooldownSubsidize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.service.subsidize_cooldown({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.building.id
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.work;
+                    <span class="hljs-keyword">this</span>.updateBuildingTile(o.result.building);
+                    <span class="hljs-keyword">this</span>.resetQueue();
+                    Dom.get(<span class="hljs-string">"bhgCooldownTime"</span>)
+                        .innerHTML = <span class="hljs-string">""</span>;
+                    <span class="hljs-keyword">this</span>.checkIfWorking();
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        }
     });
-}</pre></div>
-      
-      </div>
-    
-      <div class="segment">
-      
-        <div class="comments ">
-          <div class="wrapper"><p>vim: noet:ts=4:sw=4</p>
-</div>
-        </div>
-      
+    YAHOO.lacuna.buildings.BlackHoleGenerator = BlackHoleGenerator;
+})();
+</pre></div>
       
       </div>
     

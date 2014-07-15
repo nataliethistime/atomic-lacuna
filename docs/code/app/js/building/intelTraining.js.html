@@ -25,55 +25,41 @@
       <div class="segment">
       
       
-        <div class="code"><pre class="wrapper">YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
-<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> YAHOO.lacuna.buildings.IntelTraining == <span class="hljs-string">"undefined"</span> || !YAHOO.lacuna.buildings.IntelTraining) {
-    (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-        <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
-            Util = YAHOO.util,
-            Dom = Util.Dom,
-            Event = Util.Event,
-            Pager = YAHOO.widget.Paginator,
-            Sel = Util.Selector,
-            Lacuna = YAHOO.lacuna,
-            Game = Lacuna.Game,
-            Lib = Lacuna.Library;
-        <span class="hljs-keyword">var</span> IntelTraining = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
-            IntelTraining.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
-            <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.IntelTraining;
-        };
-        Lang.extend(IntelTraining, Lacuna.buildings.Building, {
-            destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                IntelTraining.superclass.destroy.call(<span class="hljs-keyword">this</span>);
-            },
-            getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getTrainTab()];
-            },
-            _getTrainTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                <span class="hljs-keyword">var</span> spies = <span class="hljs-keyword">this</span>.result.spies;
-                <span class="hljs-keyword">this</span>.trainTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
-                    label: <span class="hljs-string">"Train Spies"</span>,
-                    content: [<span class="hljs-string">'&lt;div class="yui-g"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'        &lt;ul&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span style="font-weight:bold;"&gt;Spies Training : &lt;/span&gt; &lt;span id="spiesCurrent"&gt;'</span>, spies.in_training, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span style="font-weight:bold;"&gt;Points per hour : &lt;/span&gt; &lt;span id="pointsper"&gt;'</span>, spies.points_per, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span style="font-weight:bold;"&gt;Max Points : &lt;/span&gt; &lt;span id="pointsper"&gt;'</span>, spies.max_points, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
-                });
-                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.trainTab;
-            }
-        });
-        YAHOO.lacuna.buildings.IntelTraining = IntelTraining;
-    })();
-    YAHOO.register(<span class="hljs-string">"IntelTraining"</span>, YAHOO.lacuna.buildings.IntelTraining, {
-        version: <span class="hljs-string">"1"</span>,
-        build: <span class="hljs-string">"0"</span>
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Pager = YAHOO.widget.Paginator,
+        Sel = Util.Selector,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> IntelTraining = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        IntelTraining.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.IntelTraining;
+    };
+    Lang.extend(IntelTraining, Lacuna.buildings.Building, {
+        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            IntelTraining.superclass.destroy.call(<span class="hljs-keyword">this</span>);
+        },
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getTrainTab()];
+        },
+        _getTrainTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> spies = <span class="hljs-keyword">this</span>.result.spies;
+            <span class="hljs-keyword">this</span>.trainTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Train Spies"</span>,
+                content: [<span class="hljs-string">'&lt;div class="yui-g"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'        &lt;ul&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span style="font-weight:bold;"&gt;Spies Training : &lt;/span&gt; &lt;span id="spiesCurrent"&gt;'</span>, spies.in_training, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span style="font-weight:bold;"&gt;Points per hour : &lt;/span&gt; &lt;span id="pointsper"&gt;'</span>, spies.points_per, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span style="font-weight:bold;"&gt;Max Points : &lt;/span&gt; &lt;span id="pointsper"&gt;'</span>, spies.max_points, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.trainTab;
+        }
     });
-}</pre></div>
-      
-      </div>
-    
-      <div class="segment">
-      
-        <div class="comments ">
-          <div class="wrapper"><p>vim: noet:ts=4:sw=4</p>
-</div>
-        </div>
-      
+    YAHOO.lacuna.buildings.IntelTraining = IntelTraining;
+})();
+</pre></div>
       
       </div>
     

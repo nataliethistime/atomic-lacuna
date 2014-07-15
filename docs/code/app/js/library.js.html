@@ -58,9 +58,9 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-keyword">var</span> m = split.exec(processVal);
             parts.push(processVal.substring(index, m ? m.index : processVal.length)
                 .replace(<span class="hljs-regexp">/\b([A-Za-z][a-z.'�]*)\b/g</span>, fnUpper)
-                .replace(<span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"\\b"</span> + <span class="hljs-built_in">String</span>.small + <span class="hljs-string">"\\b"</span>, <span class="hljs-string">"ig"</span>), <span class="hljs-built_in">String</span>.lower)
-                .replace(<span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"^"</span> + <span class="hljs-built_in">String</span>.punct + <span class="hljs-built_in">String</span>.small + <span class="hljs-string">"\\b"</span>, <span class="hljs-string">"ig"</span>), fnPuntUpper)
-                .replace(<span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"\\b"</span> + <span class="hljs-built_in">String</span>.small + <span class="hljs-built_in">String</span>.punct + <span class="hljs-string">"$"</span>, <span class="hljs-string">"ig"</span>), <span class="hljs-built_in">String</span>.upper));
+                .replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"\\b"</span> + <span class="hljs-built_in">String</span>.small + <span class="hljs-string">"\\b"</span>, <span class="hljs-string">"ig"</span>), <span class="hljs-built_in">String</span>.lower)
+                .replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"^"</span> + <span class="hljs-built_in">String</span>.punct + <span class="hljs-built_in">String</span>.small + <span class="hljs-string">"\\b"</span>, <span class="hljs-string">"ig"</span>), fnPuntUpper)
+                .replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"\\b"</span> + <span class="hljs-built_in">String</span>.small + <span class="hljs-built_in">String</span>.punct + <span class="hljs-string">"$"</span>, <span class="hljs-string">"ig"</span>), <span class="hljs-built_in">String</span>.upper));
             index = split.lastIndex;
             <span class="hljs-keyword">if</span> (m) {
                 parts.push(m[<span class="hljs-number">0</span>]);
@@ -399,7 +399,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         }
     };
     YAHOO.lacuna.Library = Library;
-})();</pre></div>
+})();
+</pre></div>
       
       </div>
     

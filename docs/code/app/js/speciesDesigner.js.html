@@ -25,199 +25,199 @@
       <div class="segment">
       
       
-        <div class="code"><pre class="wrapper">YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
-<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> YAHOO.lacuna.SpeciesDesigner == <span class="hljs-string">"undefined"</span> || !YAHOO.lacuna.SpeciesDesigner) {
-    (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-        <span class="hljs-keyword">var</span> Util = YAHOO.util,
-            Dom = Util.Dom,
-            Event = Util.Event,
-            Sel = Util.Selector,
-            Lacuna = YAHOO.lacuna,
-            Game = Lacuna.Game,
-            Slider = YAHOO.widget.Slider,
-            Lib = Lacuna.Library;
-        <span class="hljs-keyword">var</span> SpeciesDesigner = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(config)</span> {</span>
-            <span class="hljs-keyword">if</span> ((<span class="hljs-keyword">typeof</span> config !== <span class="hljs-string">'undefined'</span>) &amp;&amp; (<span class="hljs-keyword">typeof</span> config.templates !== <span class="hljs-string">'undefined'</span>) &amp;&amp; !config.templates) {
-                <span class="hljs-keyword">this</span>.speciesTemplates = [];
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Sel = Util.Selector,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Slider = YAHOO.widget.Slider,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> SpeciesDesigner = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(config)</span> {</span>
+        <span class="hljs-keyword">if</span> ((<span class="hljs-keyword">typeof</span> config !== <span class="hljs-string">'undefined'</span>) &amp;&amp; (<span class="hljs-keyword">typeof</span> config.templates !== <span class="hljs-string">'undefined'</span>) &amp;&amp; !config.templates) {
+            <span class="hljs-keyword">this</span>.speciesTemplates = [];
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">this</span>.speciesTemplates = [{
+                name: <span class="hljs-string">'Average'</span>,
+                description: <span class="hljs-string">'Not specializing in any area, but without any particular weaknesses.'</span>,
+                min_orbit: <span class="hljs-number">3</span>,
+                max_orbit: <span class="hljs-number">3</span>,
+                manufacturing_affinity: <span class="hljs-number">4</span>,
+                deception_affinity: <span class="hljs-number">4</span>,
+                research_affinity: <span class="hljs-number">4</span>,
+                management_affinity: <span class="hljs-number">4</span>,
+                farming_affinity: <span class="hljs-number">4</span>,
+                mining_affinity: <span class="hljs-number">4</span>,
+                science_affinity: <span class="hljs-number">4</span>,
+                environmental_affinity: <span class="hljs-number">4</span>,
+                political_affinity: <span class="hljs-number">4</span>,
+                trade_affinity: <span class="hljs-number">4</span>,
+                growth_affinity: <span class="hljs-number">4</span>
+            }, {
+                name: <span class="hljs-string">'Resilient'</span>,
+                description: <span class="hljs-string">'Resilient and able to colonize most any planet.  Somewhat docile, but very quick learners and above average at producing any resource.'</span>,
+                min_orbit: <span class="hljs-number">2</span>,
+                max_orbit: <span class="hljs-number">7</span>,
+                manufacturing_affinity: <span class="hljs-number">3</span>,
+                deception_affinity: <span class="hljs-number">3</span>,
+                research_affinity: <span class="hljs-number">3</span>,
+                management_affinity: <span class="hljs-number">5</span>,
+                farming_affinity: <span class="hljs-number">5</span>,
+                mining_affinity: <span class="hljs-number">5</span>,
+                science_affinity: <span class="hljs-number">5</span>,
+                environmental_affinity: <span class="hljs-number">5</span>,
+                political_affinity: <span class="hljs-number">1</span>,
+                trade_affinity: <span class="hljs-number">1</span>,
+                growth_affinity: <span class="hljs-number">3</span>
+            }, {
+                name: <span class="hljs-string">'Warmonger'</span>,
+                description: <span class="hljs-string">'Adept at ship building and espionage. They are bent on domination.'</span>,
+                min_orbit: <span class="hljs-number">4</span>,
+                max_orbit: <span class="hljs-number">5</span>,
+                manufacturing_affinity: <span class="hljs-number">4</span>,
+                deception_affinity: <span class="hljs-number">7</span>,
+                research_affinity: <span class="hljs-number">2</span>,
+                management_affinity: <span class="hljs-number">4</span>,
+                farming_affinity: <span class="hljs-number">2</span>,
+                mining_affinity: <span class="hljs-number">2</span>,
+                science_affinity: <span class="hljs-number">7</span>,
+                environmental_affinity: <span class="hljs-number">2</span>,
+                political_affinity: <span class="hljs-number">7</span>,
+                trade_affinity: <span class="hljs-number">1</span>,
+                growth_affinity: <span class="hljs-number">5</span>
+            }, {
+                name: <span class="hljs-string">'Viral'</span>,
+                description: <span class="hljs-string">'Proficient at growing at the most expedient pace like a virus in the Expanse.'</span>,
+                min_orbit: <span class="hljs-number">1</span>,
+                max_orbit: <span class="hljs-number">7</span>,
+                manufacturing_affinity: <span class="hljs-number">1</span>,
+                deception_affinity: <span class="hljs-number">4</span>,
+                research_affinity: <span class="hljs-number">7</span>,
+                management_affinity: <span class="hljs-number">7</span>,
+                farming_affinity: <span class="hljs-number">1</span>,
+                mining_affinity: <span class="hljs-number">1</span>,
+                science_affinity: <span class="hljs-number">1</span>,
+                environmental_affinity: <span class="hljs-number">1</span>,
+                political_affinity: <span class="hljs-number">7</span>,
+                trade_affinity: <span class="hljs-number">1</span>,
+                growth_affinity: <span class="hljs-number">7</span>
+            }, {
+                name: <span class="hljs-string">'Trader'</span>,
+                description: <span class="hljs-string">'Masters of commerce and ship building.'</span>,
+                min_orbit: <span class="hljs-number">2</span>,
+                max_orbit: <span class="hljs-number">3</span>,
+                manufacturing_affinity: <span class="hljs-number">5</span>,
+                deception_affinity: <span class="hljs-number">4</span>,
+                research_affinity: <span class="hljs-number">7</span>,
+                management_affinity: <span class="hljs-number">7</span>,
+                farming_affinity: <span class="hljs-number">1</span>,
+                mining_affinity: <span class="hljs-number">1</span>,
+                science_affinity: <span class="hljs-number">7</span>,
+                environmental_affinity: <span class="hljs-number">1</span>,
+                political_affinity: <span class="hljs-number">1</span>,
+                trade_affinity: <span class="hljs-number">7</span>,
+                growth_affinity: <span class="hljs-number">2</span>
+            }];
+        }
+    };
+    SpeciesDesigner.prototype = {
+        render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> {</span>
+            el = Dom.get(el);
+            <span class="hljs-keyword">var</span> container = document.createElement(<span class="hljs-string">'div'</span>);
+            <span class="hljs-keyword">this</span>.container = container;
+            container.innerHTML = <span class="hljs-keyword">this</span>._getHtml();
+            <span class="hljs-keyword">this</span>.elMessage = Sel.query(<span class="hljs-string">".speciesMessage"</span>, container, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.elName = Sel.query(<span class="hljs-string">".speciesName"</span>, container, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.elDesc = Sel.query(<span class="hljs-string">".speciesDesc"</span>, container, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.elTemplates = Sel.query(<span class="hljs-string">".speciesTemplates"</span>, container, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.speciesTemplates.length &gt; <span class="hljs-number">0</span>) {
+                Event.delegate(<span class="hljs-keyword">this</span>.elTemplates, <span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl)</span> {</span>
+                    Event.stopEvent(e);
+                    <span class="hljs-keyword">this</span>.selectTemplate(matchedEl.TemplateIndex);
+                }, <span class="hljs-string">'.speciesTemplate'</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">this</span>.speciesTemplates.length; i++) {
+                    <span class="hljs-keyword">var</span> template = <span class="hljs-keyword">this</span>.speciesTemplates[i];
+                    <span class="hljs-keyword">var</span> tButton = document.createElement(<span class="hljs-string">'button'</span>);
+                    tButton.innerHTML = template.name;
+                    tButton.title = template.description;
+                    tButton.TemplateIndex = i;
+                    Dom.addClass(tButton, <span class="hljs-string">'speciesTemplate'</span>);
+                    <span class="hljs-keyword">this</span>.elTemplates.appendChild(tButton);
+                }
             } <span class="hljs-keyword">else</span> {
-                <span class="hljs-keyword">this</span>.speciesTemplates = [{
-                    name: <span class="hljs-string">'Average'</span>,
-                    description: <span class="hljs-string">'Not specializing in any area, but without any particular weaknesses.'</span>,
-                    min_orbit: <span class="hljs-number">3</span>,
-                    max_orbit: <span class="hljs-number">3</span>,
-                    manufacturing_affinity: <span class="hljs-number">4</span>,
-                    deception_affinity: <span class="hljs-number">4</span>,
-                    research_affinity: <span class="hljs-number">4</span>,
-                    management_affinity: <span class="hljs-number">4</span>,
-                    farming_affinity: <span class="hljs-number">4</span>,
-                    mining_affinity: <span class="hljs-number">4</span>,
-                    science_affinity: <span class="hljs-number">4</span>,
-                    environmental_affinity: <span class="hljs-number">4</span>,
-                    political_affinity: <span class="hljs-number">4</span>,
-                    trade_affinity: <span class="hljs-number">4</span>,
-                    growth_affinity: <span class="hljs-number">4</span>
-                }, {
-                    name: <span class="hljs-string">'Resilient'</span>,
-                    description: <span class="hljs-string">'Resilient and able to colonize most any planet.  Somewhat docile, but very quick learners and above average at producing any resource.'</span>,
-                    min_orbit: <span class="hljs-number">2</span>,
-                    max_orbit: <span class="hljs-number">7</span>,
-                    manufacturing_affinity: <span class="hljs-number">3</span>,
-                    deception_affinity: <span class="hljs-number">3</span>,
-                    research_affinity: <span class="hljs-number">3</span>,
-                    management_affinity: <span class="hljs-number">5</span>,
-                    farming_affinity: <span class="hljs-number">5</span>,
-                    mining_affinity: <span class="hljs-number">5</span>,
-                    science_affinity: <span class="hljs-number">5</span>,
-                    environmental_affinity: <span class="hljs-number">5</span>,
-                    political_affinity: <span class="hljs-number">1</span>,
-                    trade_affinity: <span class="hljs-number">1</span>,
-                    growth_affinity: <span class="hljs-number">3</span>
-                }, {
-                    name: <span class="hljs-string">'Warmonger'</span>,
-                    description: <span class="hljs-string">'Adept at ship building and espionage. They are bent on domination.'</span>,
-                    min_orbit: <span class="hljs-number">4</span>,
-                    max_orbit: <span class="hljs-number">5</span>,
-                    manufacturing_affinity: <span class="hljs-number">4</span>,
-                    deception_affinity: <span class="hljs-number">7</span>,
-                    research_affinity: <span class="hljs-number">2</span>,
-                    management_affinity: <span class="hljs-number">4</span>,
-                    farming_affinity: <span class="hljs-number">2</span>,
-                    mining_affinity: <span class="hljs-number">2</span>,
-                    science_affinity: <span class="hljs-number">7</span>,
-                    environmental_affinity: <span class="hljs-number">2</span>,
-                    political_affinity: <span class="hljs-number">7</span>,
-                    trade_affinity: <span class="hljs-number">1</span>,
-                    growth_affinity: <span class="hljs-number">5</span>
-                }, {
-                    name: <span class="hljs-string">'Viral'</span>,
-                    description: <span class="hljs-string">'Proficient at growing at the most expedient pace like a virus in the Expanse.'</span>,
-                    min_orbit: <span class="hljs-number">1</span>,
-                    max_orbit: <span class="hljs-number">7</span>,
-                    manufacturing_affinity: <span class="hljs-number">1</span>,
-                    deception_affinity: <span class="hljs-number">4</span>,
-                    research_affinity: <span class="hljs-number">7</span>,
-                    management_affinity: <span class="hljs-number">7</span>,
-                    farming_affinity: <span class="hljs-number">1</span>,
-                    mining_affinity: <span class="hljs-number">1</span>,
-                    science_affinity: <span class="hljs-number">1</span>,
-                    environmental_affinity: <span class="hljs-number">1</span>,
-                    political_affinity: <span class="hljs-number">7</span>,
-                    trade_affinity: <span class="hljs-number">1</span>,
-                    growth_affinity: <span class="hljs-number">7</span>
-                }, {
-                    name: <span class="hljs-string">'Trader'</span>,
-                    description: <span class="hljs-string">'Masters of commerce and ship building.'</span>,
-                    min_orbit: <span class="hljs-number">2</span>,
-                    max_orbit: <span class="hljs-number">3</span>,
-                    manufacturing_affinity: <span class="hljs-number">5</span>,
-                    deception_affinity: <span class="hljs-number">4</span>,
-                    research_affinity: <span class="hljs-number">7</span>,
-                    management_affinity: <span class="hljs-number">7</span>,
-                    farming_affinity: <span class="hljs-number">1</span>,
-                    mining_affinity: <span class="hljs-number">1</span>,
-                    science_affinity: <span class="hljs-number">7</span>,
-                    environmental_affinity: <span class="hljs-number">1</span>,
-                    political_affinity: <span class="hljs-number">1</span>,
-                    trade_affinity: <span class="hljs-number">7</span>,
-                    growth_affinity: <span class="hljs-number">2</span>
-                }];
+                Dom.setStyle(Sel.query(<span class="hljs-string">".speciesButtons"</span>, container, <span class="hljs-literal">true</span>), <span class="hljs-string">'display'</span>, <span class="hljs-string">'none'</span>);
             }
-        };
-        SpeciesDesigner.prototype = {
-            render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> {</span>
-                el = Dom.get(el);
-                <span class="hljs-keyword">var</span> container = document.createElement(<span class="hljs-string">'div'</span>);
-                <span class="hljs-keyword">this</span>.container = container;
-                container.innerHTML = <span class="hljs-keyword">this</span>._getHtml();
-                <span class="hljs-keyword">this</span>.elMessage = Sel.query(<span class="hljs-string">".speciesMessage"</span>, container, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.elName = Sel.query(<span class="hljs-string">".speciesName"</span>, container, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.elDesc = Sel.query(<span class="hljs-string">".speciesDesc"</span>, container, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.elTemplates = Sel.query(<span class="hljs-string">".speciesTemplates"</span>, container, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.speciesTemplates.length &gt; <span class="hljs-number">0</span>) {
-                    Event.delegate(<span class="hljs-keyword">this</span>.elTemplates, <span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl)</span> {</span>
-                        Event.stopEvent(e);
-                        <span class="hljs-keyword">this</span>.selectTemplate(matchedEl.TemplateIndex);
-                    }, <span class="hljs-string">'.speciesTemplate'</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">this</span>.speciesTemplates.length; i++) {
-                        <span class="hljs-keyword">var</span> template = <span class="hljs-keyword">this</span>.speciesTemplates[i];
-                        <span class="hljs-keyword">var</span> tButton = document.createElement(<span class="hljs-string">'button'</span>);
-                        tButton.innerHTML = template.name;
-                        tButton.title = template.description;
-                        tButton.TemplateIndex = i;
-                        Dom.addClass(tButton, <span class="hljs-string">'speciesTemplate'</span>);
-                        <span class="hljs-keyword">this</span>.elTemplates.appendChild(tButton);
-                    }
+            el.appendChild(container);
+            <span class="hljs-keyword">this</span>._createSliders();
+            <span class="hljs-keyword">this</span>._createTooltips();
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.speciesTemplates.length &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">this</span>.selectTemplate(<span class="hljs-number">0</span>);
+            }
+        },
+        _createSliders: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.speciesHO = <span class="hljs-keyword">this</span>._createHabitableOrbits();
+            <span class="hljs-keyword">this</span>.speciesConst = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesConst"</span>, <span class="hljs-string">"speciesConst_thumb"</span>, <span class="hljs-string">"speciesConst_num"</span>);
+            <span class="hljs-keyword">this</span>.speciesDecep = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesDecep"</span>, <span class="hljs-string">"speciesDecep_thumb"</span>, <span class="hljs-string">"speciesDecep_num"</span>);
+            <span class="hljs-keyword">this</span>.speciesResearch = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesResearch"</span>, <span class="hljs-string">"speciesResearch_thumb"</span>, <span class="hljs-string">"speciesResearch_num"</span>);
+            <span class="hljs-keyword">this</span>.speciesManagement = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesManagement"</span>, <span class="hljs-string">"speciesManagement_thumb"</span>, <span class="hljs-string">"speciesManagement_num"</span>);
+            <span class="hljs-keyword">this</span>.speciesFarming = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesFarming"</span>, <span class="hljs-string">"speciesFarming_thumb"</span>, <span class="hljs-string">"speciesFarming_num"</span>);
+            <span class="hljs-keyword">this</span>.speciesMining = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesMining"</span>, <span class="hljs-string">"speciesMining_thumb"</span>, <span class="hljs-string">"speciesMining_num"</span>);
+            <span class="hljs-keyword">this</span>.speciesScience = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesScience"</span>, <span class="hljs-string">"speciesScience_thumb"</span>, <span class="hljs-string">"speciesScience_num"</span>);
+            <span class="hljs-keyword">this</span>.speciesEnviro = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesEnviro"</span>, <span class="hljs-string">"speciesEnviro_thumb"</span>, <span class="hljs-string">"speciesEnviro_num"</span>);
+            <span class="hljs-keyword">this</span>.speciesPolitical = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesPolitical"</span>, <span class="hljs-string">"speciesPolitical_thumb"</span>, <span class="hljs-string">"speciesPolitical_num"</span>);
+            <span class="hljs-keyword">this</span>.speciesTrade = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesTrade"</span>, <span class="hljs-string">"speciesTrade_thumb"</span>, <span class="hljs-string">"speciesTrade_num"</span>);
+            <span class="hljs-keyword">this</span>.speciesGrowth = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesGrowth"</span>, <span class="hljs-string">"speciesGrowth_thumb"</span>, <span class="hljs-string">"speciesGrowth_num"</span>);
+            <span class="hljs-keyword">this</span>.elTotal = Sel.query(<span class="hljs-string">".speciesPointTotal"</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.elTotal.innerHTML = <span class="hljs-number">45</span>;
+            <span class="hljs-keyword">this</span>.elTotalLine = Sel.query(<span class="hljs-string">".speciesPointLine"</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">var</span> updateTotal = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> total = <span class="hljs-keyword">this</span>.getSpeciesData()
+                    .affinity_total;
+                <span class="hljs-keyword">this</span>.elTotal.innerHTML = total;
+                <span class="hljs-keyword">if</span> (total &gt; <span class="hljs-number">45</span>) {
+                    Dom.removeClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsValid"</span>);
+                    Dom.removeClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsLow"</span>);
+                    Dom.addClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsInvalid"</span>);
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (total === <span class="hljs-number">45</span>) {
+                    Dom.addClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsValid"</span>);
+                    Dom.removeClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsLow"</span>);
+                    Dom.removeClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsInvalid"</span>);
                 } <span class="hljs-keyword">else</span> {
-                    Dom.setStyle(Sel.query(<span class="hljs-string">".speciesButtons"</span>, container, <span class="hljs-literal">true</span>), <span class="hljs-string">'display'</span>, <span class="hljs-string">'none'</span>);
+                    Dom.removeClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsValid"</span>);
+                    Dom.addClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsLow"</span>);
+                    Dom.removeClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsInvalid"</span>);
                 }
-                el.appendChild(container);
-                <span class="hljs-keyword">this</span>._createSliders();
-                <span class="hljs-keyword">this</span>._createTooltips();
-                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.speciesTemplates.length &gt; <span class="hljs-number">0</span>) {
-                    <span class="hljs-keyword">this</span>.selectTemplate(<span class="hljs-number">0</span>);
-                }
-            },
-            _createSliders: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                <span class="hljs-keyword">this</span>.speciesHO = <span class="hljs-keyword">this</span>._createHabitableOrbits();
-                <span class="hljs-keyword">this</span>.speciesConst = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesConst"</span>, <span class="hljs-string">"speciesConst_thumb"</span>, <span class="hljs-string">"speciesConst_num"</span>);
-                <span class="hljs-keyword">this</span>.speciesDecep = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesDecep"</span>, <span class="hljs-string">"speciesDecep_thumb"</span>, <span class="hljs-string">"speciesDecep_num"</span>);
-                <span class="hljs-keyword">this</span>.speciesResearch = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesResearch"</span>, <span class="hljs-string">"speciesResearch_thumb"</span>, <span class="hljs-string">"speciesResearch_num"</span>);
-                <span class="hljs-keyword">this</span>.speciesManagement = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesManagement"</span>, <span class="hljs-string">"speciesManagement_thumb"</span>, <span class="hljs-string">"speciesManagement_num"</span>);
-                <span class="hljs-keyword">this</span>.speciesFarming = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesFarming"</span>, <span class="hljs-string">"speciesFarming_thumb"</span>, <span class="hljs-string">"speciesFarming_num"</span>);
-                <span class="hljs-keyword">this</span>.speciesMining = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesMining"</span>, <span class="hljs-string">"speciesMining_thumb"</span>, <span class="hljs-string">"speciesMining_num"</span>);
-                <span class="hljs-keyword">this</span>.speciesScience = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesScience"</span>, <span class="hljs-string">"speciesScience_thumb"</span>, <span class="hljs-string">"speciesScience_num"</span>);
-                <span class="hljs-keyword">this</span>.speciesEnviro = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesEnviro"</span>, <span class="hljs-string">"speciesEnviro_thumb"</span>, <span class="hljs-string">"speciesEnviro_num"</span>);
-                <span class="hljs-keyword">this</span>.speciesPolitical = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesPolitical"</span>, <span class="hljs-string">"speciesPolitical_thumb"</span>, <span class="hljs-string">"speciesPolitical_num"</span>);
-                <span class="hljs-keyword">this</span>.speciesTrade = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesTrade"</span>, <span class="hljs-string">"speciesTrade_thumb"</span>, <span class="hljs-string">"speciesTrade_num"</span>);
-                <span class="hljs-keyword">this</span>.speciesGrowth = <span class="hljs-keyword">this</span>._createHorizSingle(<span class="hljs-string">"speciesGrowth"</span>, <span class="hljs-string">"speciesGrowth_thumb"</span>, <span class="hljs-string">"speciesGrowth_num"</span>);
-                <span class="hljs-keyword">this</span>.elTotal = Sel.query(<span class="hljs-string">".speciesPointTotal"</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.elTotal.innerHTML = <span class="hljs-number">45</span>;
-                <span class="hljs-keyword">this</span>.elTotalLine = Sel.query(<span class="hljs-string">".speciesPointLine"</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">var</span> updateTotal = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                    <span class="hljs-keyword">var</span> total = <span class="hljs-keyword">this</span>.getSpeciesData()
-                        .affinity_total;
-                    <span class="hljs-keyword">this</span>.elTotal.innerHTML = total;
-                    <span class="hljs-keyword">if</span> (total &gt; <span class="hljs-number">45</span>) {
-                        Dom.removeClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsValid"</span>);
-                        Dom.removeClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsLow"</span>);
-                        Dom.addClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsInvalid"</span>);
-                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (total == <span class="hljs-number">45</span>) {
-                        Dom.addClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsValid"</span>);
-                        Dom.removeClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsLow"</span>);
-                        Dom.removeClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsInvalid"</span>);
-                    } <span class="hljs-keyword">else</span> {
-                        Dom.removeClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsValid"</span>);
-                        Dom.addClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsLow"</span>);
-                        Dom.removeClass(<span class="hljs-keyword">this</span>.elTotalLine, <span class="hljs-string">"speciesPointsInvalid"</span>);
-                    }
-                };
-                <span class="hljs-keyword">this</span>.speciesHO.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesConst.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesDecep.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesResearch.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesManagement.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesFarming.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesMining.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesScience.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesEnviro.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesPolitical.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesTrade.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesGrowth.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-            },
-            _createTooltips: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                <span class="hljs-keyword">this</span>._affinityTooltip = <span class="hljs-keyword">new</span> YAHOO.widget.Tooltip(Dom.generateId(), {
-                    <span class="hljs-comment">//iframe:true,</span>
-                    zIndex: <span class="hljs-number">1</span>,
-                    container: <span class="hljs-keyword">this</span>.container,
-                    xyoffset: [<span class="hljs-number">0</span>, <span class="hljs-number">10</span>],
-                    context: Sel.query(<span class="hljs-string">'.speciesAffinities label'</span>, <span class="hljs-keyword">this</span>.container)
-                });
-            },
-            _createHabitableOrbits: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                <span class="hljs-keyword">var</span> range = <span class="hljs-number">180</span>,
-                    tickSize = <span class="hljs-number">30</span>,
-                    from = Sel.query(<span class="hljs-string">".speciesHO_from"</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>),
-                    to = Sel.query(<span class="hljs-string">".speciesHO_to"</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);</pre></div>
+            };
+            <span class="hljs-keyword">this</span>.speciesHO.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesConst.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesDecep.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesResearch.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesManagement.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesFarming.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesMining.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesScience.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesEnviro.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesPolitical.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesTrade.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesGrowth.subscribe(<span class="hljs-string">'change'</span>, updateTotal, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+        },
+        _createTooltips: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>._affinityTooltip = <span class="hljs-keyword">new</span> YAHOO.widget.Tooltip(Dom.generateId(), {
+                <span class="hljs-comment">//iframe:true,</span>
+                zIndex: <span class="hljs-number">1</span>,
+                container: <span class="hljs-keyword">this</span>.container,
+                xyoffset: [<span class="hljs-number">0</span>, <span class="hljs-number">10</span>],
+                context: Sel.query(<span class="hljs-string">'.speciesAffinities label'</span>, <span class="hljs-keyword">this</span>.container)
+            });
+        },
+        _createHabitableOrbits: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> range = <span class="hljs-number">180</span>,
+                tickSize = <span class="hljs-number">30</span>,
+                from = Sel.query(<span class="hljs-string">".speciesHO_from"</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>),
+                to = Sel.query(<span class="hljs-string">".speciesHO_to"</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);</pre></div>
       
       </div>
     
@@ -229,40 +229,40 @@
         </div>
       
       
-        <div class="code"><pre class="wrapper">                <span class="hljs-keyword">var</span> YW = YAHOO.widget;
-                <span class="hljs-keyword">var</span> elMinThumb = Sel.query(<span class="hljs-string">'.speciesHO_min_thumb'</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
-                elMinThumb.id = Dom.generateId();
-                <span class="hljs-keyword">var</span> elMin = Sel.query(<span class="hljs-string">'.speciesHO_min'</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
-                elMin.id = Dom.generateId();
-                <span class="hljs-keyword">var</span> elMaxThumb = Sel.query(<span class="hljs-string">'.speciesHO_max_thumb'</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
-                elMaxThumb.id = Dom.generateId();
-                <span class="hljs-keyword">var</span> elMax = Sel.query(<span class="hljs-string">'.speciesHO_max'</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
-                elMax.id = Dom.generateId();
-                <span class="hljs-keyword">var</span> elSlider = Sel.query(<span class="hljs-string">".speciesHO"</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
-                elSlider.id = Dom.generateId();
-                <span class="hljs-keyword">var</span> mint = <span class="hljs-keyword">new</span> YW.SliderThumb(elMinThumb.id, elMin.id, <span class="hljs-number">0</span>, range, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, tickSize);
-                <span class="hljs-keyword">var</span> maxt = <span class="hljs-keyword">new</span> YW.SliderThumb(elMaxThumb.id, elMax.id, <span class="hljs-number">0</span>, range, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, tickSize);
-                <span class="hljs-keyword">var</span> mins = <span class="hljs-keyword">new</span> YW.Slider(elSlider.id, elSlider.id, mint, <span class="hljs-string">"horiz"</span>);
-                <span class="hljs-keyword">var</span> maxs = <span class="hljs-keyword">new</span> YW.Slider(elSlider.id, elSlider.id, maxt, <span class="hljs-string">"horiz"</span>);
-                <span class="hljs-keyword">var</span> slider = <span class="hljs-keyword">new</span> YW.DualSlider(mins, maxs, range, [<span class="hljs-number">90</span>, <span class="hljs-number">90</span>]);
-                <span class="hljs-keyword">var</span> mintSetX = mint.setXConstraint;
-                mint.setXConstraint = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(iLeft, iRight, iTickSize)</span> {</span>
-                    <span class="hljs-keyword">if</span> (slider.minLock) {
-                        iRight = (slider.minLock - <span class="hljs-number">1</span>) * iTickSize;
-                    } <span class="hljs-keyword">else</span> {
-                        iRight += iTickSize * <span class="hljs-number">1.5</span>;
-                    }
-                    mintSetX.apply(mint, [iLeft, iRight, iTickSize]);
-                };
-                <span class="hljs-keyword">var</span> maxtSetX = maxt.setXConstraint;
-                maxt.setXConstraint = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(iLeft, iRight, iTickSize)</span> {</span>
-                    <span class="hljs-keyword">if</span> (slider.maxLock) {
-                        iLeft = (<span class="hljs-number">1</span> - slider.maxLock) * iTickSize;
-                    } <span class="hljs-keyword">else</span> {
-                        iLeft += iTickSize;
-                    }
-                    maxtSetX.apply(maxt, [iLeft, iRight, iTickSize]);
-                };</pre></div>
+        <div class="code"><pre class="wrapper">            <span class="hljs-keyword">var</span> YW = YAHOO.widget;
+            <span class="hljs-keyword">var</span> elMinThumb = Sel.query(<span class="hljs-string">'.speciesHO_min_thumb'</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
+            elMinThumb.id = Dom.generateId();
+            <span class="hljs-keyword">var</span> elMin = Sel.query(<span class="hljs-string">'.speciesHO_min'</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
+            elMin.id = Dom.generateId();
+            <span class="hljs-keyword">var</span> elMaxThumb = Sel.query(<span class="hljs-string">'.speciesHO_max_thumb'</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
+            elMaxThumb.id = Dom.generateId();
+            <span class="hljs-keyword">var</span> elMax = Sel.query(<span class="hljs-string">'.speciesHO_max'</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
+            elMax.id = Dom.generateId();
+            <span class="hljs-keyword">var</span> elSlider = Sel.query(<span class="hljs-string">".speciesHO"</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
+            elSlider.id = Dom.generateId();
+            <span class="hljs-keyword">var</span> mint = <span class="hljs-keyword">new</span> YW.SliderThumb(elMinThumb.id, elMin.id, <span class="hljs-number">0</span>, range, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, tickSize);
+            <span class="hljs-keyword">var</span> maxt = <span class="hljs-keyword">new</span> YW.SliderThumb(elMaxThumb.id, elMax.id, <span class="hljs-number">0</span>, range, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, tickSize);
+            <span class="hljs-keyword">var</span> mins = <span class="hljs-keyword">new</span> YW.Slider(elSlider.id, elSlider.id, mint, <span class="hljs-string">"horiz"</span>);
+            <span class="hljs-keyword">var</span> maxs = <span class="hljs-keyword">new</span> YW.Slider(elSlider.id, elSlider.id, maxt, <span class="hljs-string">"horiz"</span>);
+            <span class="hljs-keyword">var</span> slider = <span class="hljs-keyword">new</span> YW.DualSlider(mins, maxs, range, [<span class="hljs-number">90</span>, <span class="hljs-number">90</span>]);
+            <span class="hljs-keyword">var</span> mintSetX = mint.setXConstraint;
+            mint.setXConstraint = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(iLeft, iRight, iTickSize)</span> {</span>
+                <span class="hljs-keyword">if</span> (slider.minLock) {
+                    iRight = (slider.minLock - <span class="hljs-number">1</span>) * iTickSize;
+                } <span class="hljs-keyword">else</span> {
+                    iRight += iTickSize * <span class="hljs-number">1.5</span>;
+                }
+                mintSetX.apply(mint, [iLeft, iRight, iTickSize]);
+            };
+            <span class="hljs-keyword">var</span> maxtSetX = maxt.setXConstraint;
+            maxt.setXConstraint = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(iLeft, iRight, iTickSize)</span> {</span>
+                <span class="hljs-keyword">if</span> (slider.maxLock) {
+                    iLeft = (<span class="hljs-number">1</span> - slider.maxLock) * iTickSize;
+                } <span class="hljs-keyword">else</span> {
+                    iLeft += iTickSize;
+                }
+                maxtSetX.apply(maxt, [iLeft, iRight, iTickSize]);
+            };</pre></div>
       
       </div>
     
@@ -276,18 +276,18 @@ methods to maintain the highlight element</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">                YAHOO.lang.augmentObject(slider, {
-                    setLocks: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(min, max)</span> {</span>
-                        <span class="hljs-keyword">this</span>.minLock = min;
-                        <span class="hljs-keyword">this</span>.maxLock = max;
-                        <span class="hljs-keyword">var</span> delta = max - min;
-                        Dom.setStyle(<span class="hljs-keyword">this</span>._lock, <span class="hljs-string">'display'</span>, <span class="hljs-string">'block'</span>);
-                        Dom.setStyle(<span class="hljs-keyword">this</span>._lock, <span class="hljs-string">'left'</span>, (min * tickSize - <span class="hljs-number">23</span>) + <span class="hljs-string">'px'</span>);
-                        Dom.setStyle(<span class="hljs-keyword">this</span>._lock, <span class="hljs-string">'width'</span>, <span class="hljs-built_in">Math</span>.max(delta * tickSize, <span class="hljs-number">0</span>) + <span class="hljs-string">'px'</span>);
-                    },
-                    minLock: <span class="hljs-literal">undefined</span>,
-                    maxLock: <span class="hljs-literal">undefined</span>,
-                    _lock: Sel.query(<span class="hljs-string">'.speciesSlider_lock'</span>, elSlider, <span class="hljs-literal">true</span>),</pre></div>
+        <div class="code"><pre class="wrapper">            YAHOO.lang.augmentObject(slider, {
+                setLocks: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(min, max)</span> {</span>
+                    <span class="hljs-keyword">this</span>.minLock = min;
+                    <span class="hljs-keyword">this</span>.maxLock = max;
+                    <span class="hljs-keyword">var</span> delta = max - min;
+                    Dom.setStyle(<span class="hljs-keyword">this</span>._lock, <span class="hljs-string">'display'</span>, <span class="hljs-string">'block'</span>);
+                    Dom.setStyle(<span class="hljs-keyword">this</span>._lock, <span class="hljs-string">'left'</span>, (min * tickSize - <span class="hljs-number">23</span>) + <span class="hljs-string">'px'</span>);
+                    Dom.setStyle(<span class="hljs-keyword">this</span>._lock, <span class="hljs-string">'width'</span>, <span class="hljs-built_in">Math</span>.max(delta * tickSize, <span class="hljs-number">0</span>) + <span class="hljs-string">'px'</span>);
+                },
+                minLock: <span class="hljs-literal">undefined</span>,
+                maxLock: <span class="hljs-literal">undefined</span>,
+                _lock: Sel.query(<span class="hljs-string">'.speciesSlider_lock'</span>, elSlider, <span class="hljs-literal">true</span>),</pre></div>
       
       </div>
     
@@ -299,7 +299,7 @@ methods to maintain the highlight element</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">                    _highlight: Sel.query(<span class="hljs-string">'.speciesHO_highlight'</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>),</pre></div>
+        <div class="code"><pre class="wrapper">                _highlight: Sel.query(<span class="hljs-string">'.speciesHO_highlight'</span>, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>),</pre></div>
       
       </div>
     
@@ -311,33 +311,33 @@ methods to maintain the highlight element</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">                    updateHighlight: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                        <span class="hljs-keyword">var</span> delta = <span class="hljs-keyword">this</span>.maxVal - <span class="hljs-keyword">this</span>.minVal;
-                        Dom.setStyle(<span class="hljs-keyword">this</span>._highlight, <span class="hljs-string">'left'</span>, (<span class="hljs-keyword">this</span>.minVal - <span class="hljs-number">5</span>) + <span class="hljs-string">'px'</span>);
-                        Dom.setStyle(<span class="hljs-keyword">this</span>._highlight, <span class="hljs-string">'width'</span>, <span class="hljs-built_in">Math</span>.max(delta + <span class="hljs-number">27</span>, <span class="hljs-number">0</span>) + <span class="hljs-string">'px'</span>);
-                    },
-                    getMinOrbit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                        <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.round((<span class="hljs-keyword">this</span>.minVal - <span class="hljs-number">14</span>) / tickSize) + <span class="hljs-number">1</span>;
-                    },
-                    getMaxOrbit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                        <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.round((<span class="hljs-keyword">this</span>.maxVal + <span class="hljs-number">14</span>) / tickSize) + <span class="hljs-number">1</span>;
-                    },
-                    setMinOrbit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(orbit, skipAnim, force, silent)</span> {</span>
-                        <span class="hljs-keyword">var</span> value = (orbit - <span class="hljs-number">1</span>) * tickSize + <span class="hljs-number">14</span>;
-                        <span class="hljs-keyword">this</span>.setMinValue(value, skipAnim, force, silent);
-                        <span class="hljs-keyword">return</span> orbit;
-                    },
-                    setMaxOrbit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(orbit, skipAnim, force, silent)</span> {</span>
-                        <span class="hljs-keyword">var</span> value = (orbit - <span class="hljs-number">1</span>) * tickSize - <span class="hljs-number">14</span>;
-                        <span class="hljs-keyword">this</span>.setMaxValue(value, skipAnim, force, silent);
-                        <span class="hljs-keyword">return</span> orbit;
-                    },
-                    setOrbits: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(minOrbit, maxOrbit, skipAnim, force, silent)</span> {</span>
-                        <span class="hljs-keyword">var</span> min = (minOrbit - <span class="hljs-number">1</span>) * tickSize + <span class="hljs-number">14</span>;
-                        <span class="hljs-keyword">var</span> max = (maxOrbit - <span class="hljs-number">1</span>) * tickSize - <span class="hljs-number">14</span>;
-                        <span class="hljs-keyword">this</span>.setValues(min, max, skipAnim, force, silent);
-                    }
-                }, <span class="hljs-literal">true</span>);</pre></div>
+        <div class="code"><pre class="wrapper">                updateHighlight: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> delta = <span class="hljs-keyword">this</span>.maxVal - <span class="hljs-keyword">this</span>.minVal;
+                    Dom.setStyle(<span class="hljs-keyword">this</span>._highlight, <span class="hljs-string">'left'</span>, (<span class="hljs-keyword">this</span>.minVal - <span class="hljs-number">5</span>) + <span class="hljs-string">'px'</span>);
+                    Dom.setStyle(<span class="hljs-keyword">this</span>._highlight, <span class="hljs-string">'width'</span>, <span class="hljs-built_in">Math</span>.max(delta + <span class="hljs-number">27</span>, <span class="hljs-number">0</span>) + <span class="hljs-string">'px'</span>);
+                },
+                getMinOrbit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.round((<span class="hljs-keyword">this</span>.minVal - <span class="hljs-number">14</span>) / tickSize) + <span class="hljs-number">1</span>;
+                },
+                getMaxOrbit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.round((<span class="hljs-keyword">this</span>.maxVal + <span class="hljs-number">14</span>) / tickSize) + <span class="hljs-number">1</span>;
+                },
+                setMinOrbit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(orbit, skipAnim, force, silent)</span> {</span>
+                    <span class="hljs-keyword">var</span> value = (orbit - <span class="hljs-number">1</span>) * tickSize + <span class="hljs-number">14</span>;
+                    <span class="hljs-keyword">this</span>.setMinValue(value, skipAnim, force, silent);
+                    <span class="hljs-keyword">return</span> orbit;
+                },
+                setMaxOrbit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(orbit, skipAnim, force, silent)</span> {</span>
+                    <span class="hljs-keyword">var</span> value = (orbit - <span class="hljs-number">1</span>) * tickSize - <span class="hljs-number">14</span>;
+                    <span class="hljs-keyword">this</span>.setMaxValue(value, skipAnim, force, silent);
+                    <span class="hljs-keyword">return</span> orbit;
+                },
+                setOrbits: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(minOrbit, maxOrbit, skipAnim, force, silent)</span> {</span>
+                    <span class="hljs-keyword">var</span> min = (minOrbit - <span class="hljs-number">1</span>) * tickSize + <span class="hljs-number">14</span>;
+                    <span class="hljs-keyword">var</span> max = (maxOrbit - <span class="hljs-number">1</span>) * tickSize - <span class="hljs-number">14</span>;
+                    <span class="hljs-keyword">this</span>.setValues(min, max, skipAnim, force, silent);
+                }
+            }, <span class="hljs-literal">true</span>);</pre></div>
       
       </div>
     
@@ -349,25 +349,25 @@ methods to maintain the highlight element</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">                slider.subscribe(<span class="hljs-string">'change'</span>, slider.updateHighlight, slider, <span class="hljs-literal">true</span>);
-                <span class="hljs-comment">//this.Dialog.showEvent.subscribe(slider.updateHighlight,slider,true);</span>
-                slider.updateHighlight();
-                <span class="hljs-keyword">var</span> updateUI = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                    from.innerHTML = <span class="hljs-keyword">this</span>.getMinOrbit();
-                    to.innerHTML = <span class="hljs-keyword">this</span>.getMaxOrbit();
-                };
-                slider.subscribe(<span class="hljs-string">'ready'</span>, updateUI);
-                slider.subscribe(<span class="hljs-string">'change'</span>, updateUI);
-                <span class="hljs-keyword">return</span> slider;
-            },
-            _createHorizSingle: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(container, thumb, num)</span> {</span>
-                <span class="hljs-keyword">var</span> range = <span class="hljs-number">180</span>,
-                    tickSize = <span class="hljs-number">30</span>,
-                    elNum = Sel.query(<span class="hljs-string">'.'</span> + num, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
-                container = Sel.query(<span class="hljs-string">'.'</span> + container, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
-                container.id = Dom.generateId();
-                thumb = Sel.query(<span class="hljs-string">'.'</span> + thumb, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
-                thumb.id = Dom.generateId();</pre></div>
+        <div class="code"><pre class="wrapper">            slider.subscribe(<span class="hljs-string">'change'</span>, slider.updateHighlight, slider, <span class="hljs-literal">true</span>);
+            <span class="hljs-comment">//this.Dialog.showEvent.subscribe(slider.updateHighlight,slider,true);</span>
+            slider.updateHighlight();
+            <span class="hljs-keyword">var</span> updateUI = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                from.innerHTML = <span class="hljs-keyword">this</span>.getMinOrbit();
+                to.innerHTML = <span class="hljs-keyword">this</span>.getMaxOrbit();
+            };
+            slider.subscribe(<span class="hljs-string">'ready'</span>, updateUI);
+            slider.subscribe(<span class="hljs-string">'change'</span>, updateUI);
+            <span class="hljs-keyword">return</span> slider;
+        },
+        _createHorizSingle: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(container, thumb, num)</span> {</span>
+            <span class="hljs-keyword">var</span> range = <span class="hljs-number">180</span>,
+                tickSize = <span class="hljs-number">30</span>,
+                elNum = Sel.query(<span class="hljs-string">'.'</span> + num, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
+            container = Sel.query(<span class="hljs-string">'.'</span> + container, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
+            container.id = Dom.generateId();
+            thumb = Sel.query(<span class="hljs-string">'.'</span> + thumb, <span class="hljs-keyword">this</span>.container, <span class="hljs-literal">true</span>);
+            thumb.id = Dom.generateId();</pre></div>
       
       </div>
     
@@ -379,128 +379,113 @@ methods to maintain the highlight element</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">                <span class="hljs-keyword">var</span> slider = Slider.getHorizSlider(container.id, thumb.id, <span class="hljs-number">0</span>, range, tickSize);
-                slider.key = container.id;
-                YAHOO.lang.augmentObject(slider, {
-                    setLock: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(min)</span> {</span>
-                        Dom.setStyle(<span class="hljs-keyword">this</span>._lock, <span class="hljs-string">'display'</span>, <span class="hljs-string">'block'</span>);
-                        Dom.setStyle(<span class="hljs-keyword">this</span>._lock, <span class="hljs-string">'left'</span>, <span class="hljs-string">'0px'</span>);
-                        Dom.setStyle(<span class="hljs-keyword">this</span>._lock, <span class="hljs-string">'width'</span>, ((min - <span class="hljs-number">1</span>) * tickSize + <span class="hljs-number">8</span>) + <span class="hljs-string">'px'</span>);
-                        <span class="hljs-keyword">this</span>.thumb.setXConstraint((<span class="hljs-number">1</span> - min) * tickSize, range, tickSize);
-                    },
-                    _lock: Sel.query(<span class="hljs-string">'.speciesSlider_lock'</span>, container, <span class="hljs-literal">true</span>),
-                    getAffinity: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                        <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.round(<span class="hljs-keyword">this</span>.getValue() / tickSize + <span class="hljs-number">1</span>);
-                    },
-                    setAffinity: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(affinity, skipAnim, force, silent)</span> {</span>
-                        <span class="hljs-keyword">var</span> value = (affinity - <span class="hljs-number">1</span>) * tickSize;
-                        <span class="hljs-keyword">this</span>.setValue(value, skipAnim, force, silent);
-                        <span class="hljs-keyword">return</span> affinity;
-                    }
-                }, <span class="hljs-literal">true</span>);
-                slider.setAffinity(<span class="hljs-number">4</span>);
-                <span class="hljs-keyword">var</span> updateUI = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                    elNum.innerHTML = <span class="hljs-keyword">this</span>.getAffinity();
-                };
-                slider.subscribe(<span class="hljs-string">'ready'</span>, updateUI);
-                slider.subscribe(<span class="hljs-string">'change'</span>, updateUI);
-                <span class="hljs-keyword">return</span> slider;
-            },
-            getSpeciesData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                <span class="hljs-keyword">var</span> data = {
-                    name: <span class="hljs-keyword">this</span>.elName.value,
-                    description: <span class="hljs-keyword">this</span>.elDesc.value.substr(<span class="hljs-number">0</span>, <span class="hljs-number">1024</span>),
-                    min_orbit: <span class="hljs-keyword">this</span>.speciesHO.getMinOrbit(),
-                    max_orbit: <span class="hljs-keyword">this</span>.speciesHO.getMaxOrbit(),
-                    manufacturing_affinity: <span class="hljs-keyword">this</span>.speciesConst.getAffinity(),
-                    deception_affinity: <span class="hljs-keyword">this</span>.speciesDecep.getAffinity(),
-                    research_affinity: <span class="hljs-keyword">this</span>.speciesResearch.getAffinity(),
-                    management_affinity: <span class="hljs-keyword">this</span>.speciesManagement.getAffinity(),
-                    farming_affinity: <span class="hljs-keyword">this</span>.speciesFarming.getAffinity(),
-                    mining_affinity: <span class="hljs-keyword">this</span>.speciesMining.getAffinity(),
-                    science_affinity: <span class="hljs-keyword">this</span>.speciesScience.getAffinity(),
-                    environmental_affinity: <span class="hljs-keyword">this</span>.speciesEnviro.getAffinity(),
-                    political_affinity: <span class="hljs-keyword">this</span>.speciesPolitical.getAffinity(),
-                    trade_affinity: <span class="hljs-keyword">this</span>.speciesTrade.getAffinity(),
-                    growth_affinity: <span class="hljs-keyword">this</span>.speciesGrowth.getAffinity()
-                };
-                data.affinity_total = data.max_orbit - data.min_orbit + <span class="hljs-number">1</span> + data.manufacturing_affinity + data.deception_affinity + data.research_affinity + data.management_affinity + data.farming_affinity + data.mining_affinity + data.science_affinity + data.environmental_affinity + data.political_affinity + data.trade_affinity + data.growth_affinity;
-                <span class="hljs-keyword">return</span> data;
-            },
-            setSpeciesData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
-                <span class="hljs-keyword">this</span>.elName.value = data.name;
-                <span class="hljs-keyword">this</span>.elDesc.value = data.description;
-                <span class="hljs-keyword">this</span>.speciesHO.setOrbits(data.min_orbit, data.max_orbit, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesConst.setAffinity(data.manufacturing_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesDecep.setAffinity(data.deception_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesResearch.setAffinity(data.research_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesManagement.setAffinity(data.management_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesFarming.setAffinity(data.farming_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesMining.setAffinity(data.mining_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesScience.setAffinity(data.science_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesEnviro.setAffinity(data.environmental_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesPolitical.setAffinity(data.political_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesTrade.setAffinity(data.trade_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.speciesGrowth.setAffinity(data.growth_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
-            },
-            setSpeciesLocks: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
-                <span class="hljs-keyword">this</span>.speciesHO.setLocks(data.min_orbit, data.max_orbit);
-                <span class="hljs-keyword">this</span>.speciesGrowth.setLock(data.min_growth);
-            },
-            compareSpeciesData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(species1, species2)</span> {</span>
-                <span class="hljs-keyword">return</span> (species1.manufacturing_affinity == species2.manufacturing_affinity &amp;&amp; species1.deception_affinity == species2.deception_affinity &amp;&amp; species1.research_affinity == species2.research_affinity &amp;&amp; species1.management_affinity == species2.management_affinity &amp;&amp; species1.farming_affinity == species2.farming_affinity &amp;&amp; species1.mining_affinity == species2.mining_affinity &amp;&amp; species1.science_affinity == species2.science_affinity &amp;&amp; species1.environmental_affinity == species2.environmental_affinity &amp;&amp; species1.political_affinity == species2.political_affinity &amp;&amp; species1.trade_affinity == species2.trade_affinity &amp;&amp; species1.growth_affinity == species2.growth_affinity);
-            },
-            setExpert: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                <span class="hljs-keyword">this</span>._expert = <span class="hljs-literal">true</span>;
-            },
-            clearExpert: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>._expert;
-            },
-            needsExpert: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
-                <span class="hljs-keyword">return</span> (data.manufacturing_affinity == <span class="hljs-number">1</span> || data.deception_affinity == <span class="hljs-number">1</span> || data.research_affinity == <span class="hljs-number">1</span> || data.management_affinity == <span class="hljs-number">1</span> || data.farming_affinity == <span class="hljs-number">1</span> || data.mining_affinity == <span class="hljs-number">1</span> || data.science_affinity == <span class="hljs-number">1</span> || data.environmental_affinity == <span class="hljs-number">1</span> || data.political_affinity == <span class="hljs-number">1</span> || data.trade_affinity == <span class="hljs-number">1</span> || data.growth_affinity == <span class="hljs-number">1</span>);
-            },
-            selectTemplate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(index)</span> {</span>
-                <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>.speciesTemplates[index];
-                <span class="hljs-keyword">this</span>.setSpeciesData(data);
-            },
-            validateSpecies: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
-                <span class="hljs-keyword">if</span> (data.affinity_total &gt; <span class="hljs-number">45</span>) {
-                    <span class="hljs-keyword">throw</span> <span class="hljs-string">"You can only have a maximum of 45 points."</span>;
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (data.affinity_total &lt; <span class="hljs-number">45</span>) {
-                    <span class="hljs-keyword">throw</span> <span class="hljs-string">"You must use exactly 45 points."</span>;
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._expert &amp;&amp; <span class="hljs-keyword">this</span>.needsExpert(data)) {
-                    <span class="hljs-keyword">if</span> (confirm(<span class="hljs-string">"Setting an affinity to 1 is an expert setting, and is not recommended unless you're absolutely sure you know what you're doing.  Are you sure you want to continue?"</span>)) {
-                        <span class="hljs-keyword">this</span>._expert = <span class="hljs-literal">true</span>;
-                    } <span class="hljs-keyword">else</span> {
-                        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-                    }
+        <div class="code"><pre class="wrapper">            <span class="hljs-keyword">var</span> slider = Slider.getHorizSlider(container.id, thumb.id, <span class="hljs-number">0</span>, range, tickSize);
+            slider.key = container.id;
+            YAHOO.lang.augmentObject(slider, {
+                setLock: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(min)</span> {</span>
+                    Dom.setStyle(<span class="hljs-keyword">this</span>._lock, <span class="hljs-string">'display'</span>, <span class="hljs-string">'block'</span>);
+                    Dom.setStyle(<span class="hljs-keyword">this</span>._lock, <span class="hljs-string">'left'</span>, <span class="hljs-string">'0px'</span>);
+                    Dom.setStyle(<span class="hljs-keyword">this</span>._lock, <span class="hljs-string">'width'</span>, ((min - <span class="hljs-number">1</span>) * tickSize + <span class="hljs-number">8</span>) + <span class="hljs-string">'px'</span>);
+                    <span class="hljs-keyword">this</span>.thumb.setXConstraint((<span class="hljs-number">1</span> - min) * tickSize, range, tickSize);
+                },
+                _lock: Sel.query(<span class="hljs-string">'.speciesSlider_lock'</span>, container, <span class="hljs-literal">true</span>),
+                getAffinity: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.round(<span class="hljs-keyword">this</span>.getValue() / tickSize + <span class="hljs-number">1</span>);
+                },
+                setAffinity: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(affinity, skipAnim, force, silent)</span> {</span>
+                    <span class="hljs-keyword">var</span> value = (affinity - <span class="hljs-number">1</span>) * tickSize;
+                    <span class="hljs-keyword">this</span>.setValue(value, skipAnim, force, silent);
+                    <span class="hljs-keyword">return</span> affinity;
                 }
-                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-            },
-            _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                <span class="hljs-keyword">var</span> nameId = Dom.generateId();
-                <span class="hljs-keyword">var</span> descId = Dom.generateId();
-                <span class="hljs-keyword">return</span> [<span class="hljs-string">'&lt;div class="speciesButtons"&gt;'</span>, <span class="hljs-string">'    Presets: '</span>, <span class="hljs-string">'    &lt;span class="speciesTemplates"&gt;'</span>, <span class="hljs-string">'    &lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="speciesCreate"&gt;'</span>, <span class="hljs-string">'    &lt;ul&gt;'</span>, <span class="hljs-string">'        &lt;li style="margin-bottom:3px;"&gt;&lt;label for="'</span>, nameId, <span class="hljs-string">'"&gt;Species Name&lt;/label&gt;&lt;input id="'</span>, nameId, <span class="hljs-string">'" type="text" class="speciesName" maxlength="30" size="30" /&gt;&lt;/label&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label for="'</span>, descId, <span class="hljs-string">'"&gt;Description&lt;/label&gt;&lt;textarea id="'</span>, descId, <span class="hljs-string">'" class="speciesDesc" cols="40" rows="4"&gt;&lt;/textarea&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li style="margin: 10px 0;"&gt;&lt;span class="affinitiesLabel"&gt;Affinities:&lt;/span&gt;&lt;span class="speciesPointLine speciesPointsValid"&gt;&lt;label&gt;Points&lt;/label&gt;&lt;span class="speciesPointTotal"&gt;0&lt;/span&gt;/45&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-g speciesAffinities"&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'            &lt;ul&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Determines the orbits your species can inhabit. Orbits 2-5 have the most abundant food. Orbits 1,6 and 7 have less competition from other players."&gt;Habitable Orbits&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesHO speciesSlider_bg" title="Habitable Orbits Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesHO_highlight"&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesHO_min"&gt;'</span>, <span class="hljs-string">'                                 &lt;div class="speciesHO_min_thumb speciesSliderThumb"&gt;&lt;span class="speciesHO_from thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb-half-left.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                        &lt;/div&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesHO_max"&gt;'</span>, <span class="hljs-string">'                            &lt;div class="speciesHO_max_thumb speciesSliderThumb"&gt;&lt;span class="speciesHO_to thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb-half-right.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                        &lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Increases the output of buildings that convert one resource into another."&gt;Manufacturing&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesConst speciesSlider_bg" title="Manufacturing Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesConst_thumb speciesSliderThumb"&gt;&lt;span class="speciesConst_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Determines how skilled your spies are naturally."&gt;Deception&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesDecep speciesSlider_bg" title="Deception Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesDecep_thumb speciesSliderThumb"&gt;&lt;span class="speciesDecep_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Decreases the amount of resources it takes to upgrade buildings."&gt;Research&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesResearch speciesSlider_bg" title="Research Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesResearch_thumb speciesSliderThumb"&gt;&lt;span class="speciesResearch_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Decreases the amount of time it takes to build and process everything."&gt;Management&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesManagement speciesSlider_bg" title="Management Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesManagement_thumb speciesSliderThumb"&gt;&lt;span class="speciesManagement_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Increases your production of food."&gt;Farming&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesFarming speciesSlider_bg" title="Farming Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesFarming_thumb speciesSliderThumb"&gt;&lt;span class="speciesFarming_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;/ul&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'            &lt;ul&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Increases your production of ore."&gt;Mining&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesMining speciesSlider_bg" title="Mining Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesMining_thumb speciesSliderThumb"&gt;&lt;span class="speciesMining_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Increases production from power plants, and technological upgrades such as the Propulsion Factory."&gt;Science&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesScience speciesSlider_bg" title="Science Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesScience_thumb speciesSliderThumb"&gt;&lt;span class="speciesScience_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Increases your production of water, and decreases your production of waste."&gt;Environmental&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesEnviro speciesSlider_bg" title="Environmental Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesEnviro_thumb speciesSliderThumb"&gt;&lt;span class="speciesEnviro_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Increases happiness production, and lowers the cost of settling new colonies."&gt;Political&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesPolitical speciesSlider_bg" title="Political Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesPolitical_thumb speciesSliderThumb"&gt;&lt;span class="speciesPolitical_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Increases the amount of goods that can be hauled on cargo ships and transported through Subspace Transporters, and gives you some advantages trading with Lacuna Expanse Corp."&gt;Trade&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesTrade speciesSlider_bg" title="Trade Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesTrade_thumb speciesSliderThumb"&gt;&lt;span class="speciesTrade_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Sets the starting size of your Planetary Command Center on each colony you create, which gives you more starting production and storage."&gt;Growth&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesGrowth speciesSlider_bg" title="Growth Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesGrowth_thumb speciesSliderThumb"&gt;&lt;span class="speciesGrowth_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;/ul&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+            }, <span class="hljs-literal">true</span>);
+            slider.setAffinity(<span class="hljs-number">4</span>);
+            <span class="hljs-keyword">var</span> updateUI = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                elNum.innerHTML = <span class="hljs-keyword">this</span>.getAffinity();
+            };
+            slider.subscribe(<span class="hljs-string">'ready'</span>, updateUI);
+            slider.subscribe(<span class="hljs-string">'change'</span>, updateUI);
+            <span class="hljs-keyword">return</span> slider;
+        },
+        getSpeciesData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> data = {
+                name: <span class="hljs-keyword">this</span>.elName.value,
+                description: <span class="hljs-keyword">this</span>.elDesc.value.substr(<span class="hljs-number">0</span>, <span class="hljs-number">1024</span>),
+                min_orbit: <span class="hljs-keyword">this</span>.speciesHO.getMinOrbit(),
+                max_orbit: <span class="hljs-keyword">this</span>.speciesHO.getMaxOrbit(),
+                manufacturing_affinity: <span class="hljs-keyword">this</span>.speciesConst.getAffinity(),
+                deception_affinity: <span class="hljs-keyword">this</span>.speciesDecep.getAffinity(),
+                research_affinity: <span class="hljs-keyword">this</span>.speciesResearch.getAffinity(),
+                management_affinity: <span class="hljs-keyword">this</span>.speciesManagement.getAffinity(),
+                farming_affinity: <span class="hljs-keyword">this</span>.speciesFarming.getAffinity(),
+                mining_affinity: <span class="hljs-keyword">this</span>.speciesMining.getAffinity(),
+                science_affinity: <span class="hljs-keyword">this</span>.speciesScience.getAffinity(),
+                environmental_affinity: <span class="hljs-keyword">this</span>.speciesEnviro.getAffinity(),
+                political_affinity: <span class="hljs-keyword">this</span>.speciesPolitical.getAffinity(),
+                trade_affinity: <span class="hljs-keyword">this</span>.speciesTrade.getAffinity(),
+                growth_affinity: <span class="hljs-keyword">this</span>.speciesGrowth.getAffinity()
+            };
+            data.affinity_total = data.max_orbit - data.min_orbit + <span class="hljs-number">1</span> + data.manufacturing_affinity + data.deception_affinity + data.research_affinity + data.management_affinity + data.farming_affinity + data.mining_affinity + data.science_affinity + data.environmental_affinity + data.political_affinity + data.trade_affinity + data.growth_affinity;
+            <span class="hljs-keyword">return</span> data;
+        },
+        setSpeciesData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+            <span class="hljs-keyword">this</span>.elName.value = data.name;
+            <span class="hljs-keyword">this</span>.elDesc.value = data.description;
+            <span class="hljs-keyword">this</span>.speciesHO.setOrbits(data.min_orbit, data.max_orbit, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesConst.setAffinity(data.manufacturing_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesDecep.setAffinity(data.deception_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesResearch.setAffinity(data.research_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesManagement.setAffinity(data.management_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesFarming.setAffinity(data.farming_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesMining.setAffinity(data.mining_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesScience.setAffinity(data.science_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesEnviro.setAffinity(data.environmental_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesPolitical.setAffinity(data.political_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesTrade.setAffinity(data.trade_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.speciesGrowth.setAffinity(data.growth_affinity, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+        },
+        setSpeciesLocks: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+            <span class="hljs-keyword">this</span>.speciesHO.setLocks(data.min_orbit, data.max_orbit);
+            <span class="hljs-keyword">this</span>.speciesGrowth.setLock(data.min_growth);
+        },
+        compareSpeciesData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(species1, species2)</span> {</span>
+            <span class="hljs-keyword">return</span> (species1.manufacturing_affinity === species2.manufacturing_affinity &amp;&amp; species1.deception_affinity === species2.deception_affinity &amp;&amp; species1.research_affinity === species2.research_affinity &amp;&amp; species1.management_affinity === species2.management_affinity &amp;&amp; species1.farming_affinity === species2.farming_affinity &amp;&amp; species1.mining_affinity === species2.mining_affinity &amp;&amp; species1.science_affinity === species2.science_affinity &amp;&amp; species1.environmental_affinity === species2.environmental_affinity &amp;&amp; species1.political_affinity === species2.political_affinity &amp;&amp; species1.trade_affinity === species2.trade_affinity &amp;&amp; species1.growth_affinity === species2.growth_affinity);
+        },
+        setExpert: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>._expert = <span class="hljs-literal">true</span>;
+        },
+        clearExpert: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>._expert;
+        },
+        needsExpert: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+            <span class="hljs-keyword">return</span> (data.manufacturing_affinity === <span class="hljs-number">1</span> || data.deception_affinity === <span class="hljs-number">1</span> || data.research_affinity === <span class="hljs-number">1</span> || data.management_affinity === <span class="hljs-number">1</span> || data.farming_affinity === <span class="hljs-number">1</span> || data.mining_affinity === <span class="hljs-number">1</span> || data.science_affinity === <span class="hljs-number">1</span> || data.environmental_affinity === <span class="hljs-number">1</span> || data.political_affinity === <span class="hljs-number">1</span> || data.trade_affinity === <span class="hljs-number">1</span> || data.growth_affinity === <span class="hljs-number">1</span>);
+        },
+        selectTemplate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(index)</span> {</span>
+            <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>.speciesTemplates[index];
+            <span class="hljs-keyword">this</span>.setSpeciesData(data);
+        },
+        validateSpecies: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+            <span class="hljs-keyword">if</span> (data.affinity_total &gt; <span class="hljs-number">45</span>) {
+                <span class="hljs-keyword">throw</span> <span class="hljs-string">"You can only have a maximum of 45 points."</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (data.affinity_total &lt; <span class="hljs-number">45</span>) {
+                <span class="hljs-keyword">throw</span> <span class="hljs-string">"You must use exactly 45 points."</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._expert &amp;&amp; <span class="hljs-keyword">this</span>.needsExpert(data)) {
+                <span class="hljs-keyword">if</span> (confirm(<span class="hljs-string">"Setting an affinity to 1 is an expert setting, and is not recommended unless you're absolutely sure you know what you're doing.  Are you sure you want to continue?"</span>)) {
+                    <span class="hljs-keyword">this</span>._expert = <span class="hljs-literal">true</span>;
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+                }
             }
-        };
-        <span class="hljs-comment">//YAHOO.lang.augmentProto(SpeciesDesigner, Util.EventProvider);</span>
-        Lacuna.SpeciesDesigner = SpeciesDesigner;
-    })();
-    YAHOO.register(<span class="hljs-string">"speciesDesigner"</span>, YAHOO.lacuna.SpeciesDesigner, {
-        version: <span class="hljs-string">"1"</span>,
-        build: <span class="hljs-string">"0"</span>
-    });
-}</pre></div>
-      
-      </div>
-    
-      <div class="segment">
-      
-        <div class="comments ">
-          <div class="wrapper"><p>vim: noet:ts=4:sw=4</p>
-</div>
-        </div>
-      
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        },
+        _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> nameId = Dom.generateId();
+            <span class="hljs-keyword">var</span> descId = Dom.generateId();
+            <span class="hljs-keyword">return</span> [<span class="hljs-string">'&lt;div class="speciesButtons"&gt;'</span>, <span class="hljs-string">'    Presets: '</span>, <span class="hljs-string">'    &lt;span class="speciesTemplates"&gt;'</span>, <span class="hljs-string">'    &lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="speciesCreate"&gt;'</span>, <span class="hljs-string">'    &lt;ul&gt;'</span>, <span class="hljs-string">'        &lt;li style="margin-bottom:3px;"&gt;&lt;label for="'</span>, nameId, <span class="hljs-string">'"&gt;Species Name&lt;/label&gt;&lt;input id="'</span>, nameId, <span class="hljs-string">'" type="text" class="speciesName" maxlength="30" size="30" /&gt;&lt;/label&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label for="'</span>, descId, <span class="hljs-string">'"&gt;Description&lt;/label&gt;&lt;textarea id="'</span>, descId, <span class="hljs-string">'" class="speciesDesc" cols="40" rows="4"&gt;&lt;/textarea&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li style="margin: 10px 0;"&gt;&lt;span class="affinitiesLabel"&gt;Affinities:&lt;/span&gt;&lt;span class="speciesPointLine speciesPointsValid"&gt;&lt;label&gt;Points&lt;/label&gt;&lt;span class="speciesPointTotal"&gt;0&lt;/span&gt;/45&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-g speciesAffinities"&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'            &lt;ul&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Determines the orbits your species can inhabit. Orbits 2-5 have the most abundant food. Orbits 1,6 and 7 have less competition from other players."&gt;Habitable Orbits&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesHO speciesSlider_bg" title="Habitable Orbits Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesHO_highlight"&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesHO_min"&gt;'</span>, <span class="hljs-string">'                                 &lt;div class="speciesHO_min_thumb speciesSliderThumb"&gt;&lt;span class="speciesHO_from thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb-half-left.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                        &lt;/div&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesHO_max"&gt;'</span>, <span class="hljs-string">'                            &lt;div class="speciesHO_max_thumb speciesSliderThumb"&gt;&lt;span class="speciesHO_to thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb-half-right.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                        &lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Increases the output of buildings that convert one resource into another."&gt;Manufacturing&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesConst speciesSlider_bg" title="Manufacturing Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesConst_thumb speciesSliderThumb"&gt;&lt;span class="speciesConst_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Determines how skilled your spies are naturally."&gt;Deception&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesDecep speciesSlider_bg" title="Deception Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesDecep_thumb speciesSliderThumb"&gt;&lt;span class="speciesDecep_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Decreases the amount of resources it takes to upgrade buildings."&gt;Research&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesResearch speciesSlider_bg" title="Research Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesResearch_thumb speciesSliderThumb"&gt;&lt;span class="speciesResearch_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Decreases the amount of time it takes to build and process everything."&gt;Management&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesManagement speciesSlider_bg" title="Management Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesManagement_thumb speciesSliderThumb"&gt;&lt;span class="speciesManagement_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Increases your production of food."&gt;Farming&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesFarming speciesSlider_bg" title="Farming Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesFarming_thumb speciesSliderThumb"&gt;&lt;span class="speciesFarming_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;/ul&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'            &lt;ul&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Increases your production of ore."&gt;Mining&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesMining speciesSlider_bg" title="Mining Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesMining_thumb speciesSliderThumb"&gt;&lt;span class="speciesMining_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Increases production from power plants, and technological upgrades such as the Propulsion Factory."&gt;Science&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesScience speciesSlider_bg" title="Science Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesScience_thumb speciesSliderThumb"&gt;&lt;span class="speciesScience_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Increases your production of water, and decreases your production of waste."&gt;Environmental&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesEnviro speciesSlider_bg" title="Environmental Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesEnviro_thumb speciesSliderThumb"&gt;&lt;span class="speciesEnviro_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Increases happiness production, and lowers the cost of settling new colonies."&gt;Political&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesPolitical speciesSlider_bg" title="Political Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesPolitical_thumb speciesSliderThumb"&gt;&lt;span class="speciesPolitical_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Increases the amount of goods that can be hauled on cargo ships and transported through Subspace Transporters, and gives you some advantages trading with Lacuna Expanse Corp."&gt;Trade&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesTrade speciesSlider_bg" title="Trade Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesTrade_thumb speciesSliderThumb"&gt;&lt;span class="speciesTrade_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="Sets the starting size of your Planetary Command Center on each colony you create, which gives you more starting production and storage."&gt;Growth&lt;/label&gt;'</span>, <span class="hljs-string">'                    &lt;div class="speciesGrowth speciesSlider_bg" title="Growth Selector"&gt;'</span>, <span class="hljs-string">'                        &lt;span class="speciesSlider_lock"&gt;&lt;span class="speciesSlider_lock_bg"&gt;&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                        &lt;div class="speciesGrowth_thumb speciesSliderThumb"&gt;&lt;span class="speciesGrowth_num thumbDisplay"&gt;1&lt;/span&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/web/slider-thumb.png" /&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;/ul&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+        }
+    };
+    Lacuna.SpeciesDesigner = SpeciesDesigner;
+})();
+</pre></div>
       
       </div>
     
