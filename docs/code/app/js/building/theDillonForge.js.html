@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - theDillonForge.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/theDillonForge.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/theDillonForge.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> TheDillonForge = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        TheDillonForge.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.TheDillonForge;
+    };
+    Lang.extend(TheDillonForge, Lacuna.buildings.Building, {
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getForgeTab()];
+        },
+        _getForgeTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.splitTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Forge"</span>,
+                content: [<span class="hljs-string">'&lt;div id="forgeSplitPlan"&gt;'</span>, <span class="hljs-string">'  &lt;div&gt;&lt;b&gt;Split a plan into glyphs.&lt;/b&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;div id="forgeSplitPlanForm"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;hr/&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div id="forgeMakePlan"&gt;'</span>, <span class="hljs-string">'  &lt;div&gt;&lt;b&gt;Combine level 1 plans into a higher level plan.&lt;/b&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;div id="forgeMakePlanForm"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div id="forgeSubsidize"&gt;'</span>, <span class="hljs-string">'  &lt;div&gt;&lt;b&gt;Subsidize current task.&lt;/b&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;div id="forgeSubsidizeForm"&gt;&lt;div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">this</span>.splitTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.viewForgeTab, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.splitTab;
+        },
+        viewForgeTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.result.tasks.can === <span class="hljs-number">1</span>) {
+                Dom.setStyle(<span class="hljs-string">"forgeMakePlan"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                Dom.setStyle(<span class="hljs-string">"forgeSplitPlan"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                Dom.setStyle(<span class="hljs-string">"forgeSubsidize"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                <span class="hljs-keyword">this</span>.viewForgeMakePlan();
+                <span class="hljs-keyword">this</span>.viewForgeSplitPlan();
+            } <span class="hljs-keyword">else</span> {
+                Dom.setStyle(<span class="hljs-string">"forgeMakePlan"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                Dom.setStyle(<span class="hljs-string">"forgeSplitPlan"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                Dom.setStyle(<span class="hljs-string">"forgeSubsidize"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                <span class="hljs-keyword">this</span>.viewForgeSubsidize();
+            }
+        },
+        viewForgeMakePlan: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> make_plan = <span class="hljs-keyword">this</span>.result.tasks.make_plan,
+                make_form = Dom.get(<span class="hljs-string">"forgeMakePlanForm"</span>);
+            <span class="hljs-keyword">if</span> (make_plan.length === <span class="hljs-number">0</span>) {
+                make_form.innerHTML = <span class="hljs-string">"No plans available to make."</span>;
+                <span class="hljs-keyword">return</span>;
+            }
+            make_form.innerHTML = <span class="hljs-string">''</span>;
+            <span class="hljs-keyword">var</span> select = document.createElement(<span class="hljs-string">"select"</span>);
+            <span class="hljs-keyword">var</span> option = document.createElement(<span class="hljs-string">"option"</span>);
+            select.setAttribute(<span class="hljs-string">"id"</span>, <span class="hljs-string">"forgeMakePlanSelect"</span>);
+            <span class="hljs-keyword">var</span> emptyFirst = option.cloneNode(<span class="hljs-literal">false</span>);
+            emptyFirst.setAttribute(<span class="hljs-string">"value"</span>, <span class="hljs-string">""</span>);
+            emptyFirst.innerHTML = <span class="hljs-string">"Select plan (maximum level) &amp;#91;time to make&amp;#93;"</span>;
+            select.appendChild(emptyFirst);
+            make_plan.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span>
+                <span class="hljs-keyword">if</span> (a[<span class="hljs-string">"class"</span>] &gt; b[<span class="hljs-string">"class"</span>]) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a[<span class="hljs-string">"class"</span>] &lt; b[<span class="hljs-string">"class"</span>]) {
+                    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">if</span> (a.name &gt; b.name) {
+                        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.name &lt; b.name) {
+                        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+                    } <span class="hljs-keyword">else</span> {
+                        <span class="hljs-keyword">if</span> (a.level &gt; b.level) {
+                            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.level &lt; b.level) {
+                            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+                        } <span class="hljs-keyword">else</span> {
+                            <span class="hljs-keyword">if</span> (a.extra_build_level &gt; b.extra_build_level) {
+                                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+                            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.extra_build_level &lt; b.extra_build_level) {
+                                <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+                            } <span class="hljs-keyword">else</span> {
+                                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+                            }
+                        }
+                    }
+                }
+            });
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; make_plan.length; i++) {
+                <span class="hljs-keyword">var</span> nOpt = option.cloneNode(<span class="hljs-literal">false</span>);
+                nOpt.setAttribute(<span class="hljs-string">"value"</span>, make_plan[i][<span class="hljs-string">'class'</span>]);
+                nOpt.innerHTML = [
+                    make_plan[i].name, <span class="hljs-string">' ('</span>,
+                    make_plan[i].max_level, <span class="hljs-string">') &amp;#91;'</span>,
+                    Lib.formatTime(make_plan[i].reset_sec_per_level), <span class="hljs-string">'&amp;#93;'</span>
+                ].join(<span class="hljs-string">''</span>);
+                select.appendChild(nOpt);
+            }
+            <span class="hljs-keyword">var</span> input = document.createElement(<span class="hljs-string">"input"</span>);
+            input.setAttribute(<span class="hljs-string">"id"</span>, <span class="hljs-string">"forgeMakePlanLevel"</span>);
+            input.setAttribute(<span class="hljs-string">"size"</span>, <span class="hljs-number">3</span>);
+            option.appendChild(input);
+            <span class="hljs-keyword">var</span> button = document.createElement(<span class="hljs-string">"button"</span>);
+            button.innerHTML = <span class="hljs-string">"Make Plan"</span>;
+            Dom.setStyle(button, <span class="hljs-string">"margin-left"</span>, <span class="hljs-string">"1em"</span>);
+            option.appendChild(button);
+            make_form.appendChild(select);
+            make_form.appendChild(document.createTextNode(<span class="hljs-string">" Level: "</span>));
+            make_form.appendChild(input);
+            make_form.appendChild(button);
+            Event.on(button, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.MakePlan, {
+                Self: <span class="hljs-keyword">this</span>
+            }, <span class="hljs-literal">true</span>);
+        },
+        MakePlan: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> plan_class = Lib.getSelectedOptionValue(<span class="hljs-string">"forgeMakePlanSelect"</span>),
+                level = Dom.get(<span class="hljs-string">"forgeMakePlanLevel"</span>)
+                    .value;
+            <span class="hljs-keyword">if</span> (plan_class === <span class="hljs-string">""</span>) {
+                alert(<span class="hljs-string">"Select a plan"</span>);
+                <span class="hljs-keyword">return</span>;
+            }
+            <span class="hljs-keyword">if</span> (level &lt; <span class="hljs-number">2</span>) {
+                alert(<span class="hljs-string">"Enter a valid plan level"</span>);
+                <span class="hljs-keyword">return</span>;
+            }
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.Self.service.make_plan({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.Self.building.id,
+                plan_class: plan_class,
+                level: level
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"TheDillonForge.MakePlan.success"</span>);
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                    <span class="hljs-keyword">this</span>.Self.result = o.result;
+                    <span class="hljs-keyword">this</span>.Self.viewForgeTab();
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        viewForgeSplitPlan: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> split_plan = <span class="hljs-keyword">this</span>.result.tasks.split_plan,
+                split_form = Dom.get(<span class="hljs-string">"forgeSplitPlanForm"</span>);
+            <span class="hljs-keyword">if</span> (split_plan.length === <span class="hljs-number">0</span>) {
+                split_form.innerHTML = <span class="hljs-string">"No plans available to split."</span>;
+                <span class="hljs-keyword">return</span>;
+            }
+            split_form.innerHTML = <span class="hljs-string">""</span>;
+            <span class="hljs-keyword">var</span> select = document.createElement(<span class="hljs-string">"select"</span>);
+            <span class="hljs-keyword">var</span> option = document.createElement(<span class="hljs-string">"option"</span>);
+            select.setAttribute(<span class="hljs-string">"id"</span>, <span class="hljs-string">"forgeSplitPlanSelect"</span>);
+            <span class="hljs-keyword">var</span> emptyFirst = option.cloneNode(<span class="hljs-literal">false</span>);
+            emptyFirst.setAttribute(<span class="hljs-string">"value"</span>, <span class="hljs-string">""</span>);
+            emptyFirst.innerHTML = <span class="hljs-string">"Select plan (levels) &amp;#91;time to split&amp;#93;"</span>;
+            select.appendChild(emptyFirst);
+            split_plan.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span>
+                <span class="hljs-keyword">if</span> (a.name &gt; b.name) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.name &lt; b.name) {
+                    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">if</span> (a.level &gt; b.level) {
+                        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.level &lt; b.level) {
+                        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+                    } <span class="hljs-keyword">else</span> {
+                        <span class="hljs-keyword">if</span> (a.extra_build_level &gt; b.extra_build_level) {
+                            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.extra_build_level &lt; b.extra_build_level) {
+                            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+                        } <span class="hljs-keyword">else</span> {
+                            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+                        }
+                    }
+                }
+            });
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; split_plan.length; i++) {
+                <span class="hljs-keyword">var</span> nOpt = option.cloneNode(<span class="hljs-literal">false</span>);
+                <span class="hljs-keyword">var</span> value = [
+                    split_plan[i][<span class="hljs-string">'class'</span>], <span class="hljs-string">';'</span>,
+                    split_plan[i].level, <span class="hljs-string">';'</span>,
+                    split_plan[i].extra_build_level
+                ].join(<span class="hljs-string">''</span>);
+                nOpt.setAttribute(<span class="hljs-string">"value"</span>, value);
+                nOpt.innerHTML = [
+                    split_plan[i].name, <span class="hljs-string">' ('</span>,
+                    split_plan[i].level, <span class="hljs-string">'+'</span>,
+                    split_plan[i].extra_build_level, <span class="hljs-string">') : '</span>,
+                    split_plan[i].quantity, <span class="hljs-string">' &amp;#91;'</span>,
+                    Lib.formatTime(split_plan[i].reset_seconds), <span class="hljs-string">'&amp;#93;'</span>
+                ].join(<span class="hljs-string">''</span>);
+                select.appendChild(nOpt);
+            }
+            <span class="hljs-keyword">var</span> input = document.createElement(<span class="hljs-string">"input"</span>);
+            input.setAttribute(<span class="hljs-string">"id"</span>, <span class="hljs-string">"forgeSplitPlanQuantity"</span>);
+            input.setAttribute(<span class="hljs-string">"size"</span>, <span class="hljs-number">6</span>);
+            option.appendChild(input);
+            <span class="hljs-keyword">var</span> button = document.createElement(<span class="hljs-string">"button"</span>);
+            button.innerHTML = <span class="hljs-string">"Split Plan"</span>;
+            Dom.setStyle(button, <span class="hljs-string">"margin-left"</span>, <span class="hljs-string">"1em"</span>);
+            option.appendChild(button);
+            split_form.appendChild(select);
+            split_form.appendChild(document.createTextNode(<span class="hljs-string">" Quantity: "</span>));
+            split_form.appendChild(input);
+            split_form.appendChild(button);
+            Event.on(button, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.SplitPlan, {
+                Self: <span class="hljs-keyword">this</span>
+            }, <span class="hljs-literal">true</span>);
+        },
+        SplitPlan: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> selected = Lib.getSelectedOptionValue(<span class="hljs-string">"forgeSplitPlanSelect"</span>),
+                quantity = Dom.get(<span class="hljs-string">"forgeSplitPlanQuantity"</span>)
+                    .value;
+            <span class="hljs-keyword">if</span> (selected === <span class="hljs-string">""</span>) {
+                alert(<span class="hljs-string">"Select a plan"</span>);
+                <span class="hljs-keyword">return</span>;
+            }
+            <span class="hljs-keyword">if</span> (quantity &lt; <span class="hljs-number">2</span>) {
+                quantity = <span class="hljs-number">1</span>;
+            }
+            selected = selected.split(<span class="hljs-string">";"</span>);
+            <span class="hljs-keyword">if</span> (selected.length === <span class="hljs-number">3</span>) {
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">this</span>.Self.service.split_plan({
+                    session_id: Game.GetSession(),
+                    building_id: <span class="hljs-keyword">this</span>.Self.building.id,
+                    plan_class: selected[<span class="hljs-number">0</span>],
+                    level: selected[<span class="hljs-number">1</span>],
+                    extra_build_level: selected[<span class="hljs-number">2</span>],
+                    quantity: quantity,
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"TheDillonForge.SplitPlan.success"</span>);
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                        <span class="hljs-keyword">this</span>.Self.result = o.result;
+                        <span class="hljs-keyword">this</span>.Self.viewForgeTab();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        viewForgeSubsidize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> form = Dom.get(<span class="hljs-string">"forgeSubsidizeForm"</span>),
+                cost = <span class="hljs-keyword">this</span>.result.tasks.subsidy_cost,
+                work = <span class="hljs-keyword">this</span>.result.tasks.working,
+                seconds = <span class="hljs-keyword">this</span>.result.tasks.seconds_remaining;
+            form.innerHTML = [<span class="hljs-string">'&lt;div&gt;'</span>, work, <span class="hljs-string">" for "</span>, Lib.formatTime(seconds), <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+            <span class="hljs-keyword">var</span> button = document.createElement(<span class="hljs-string">"button"</span>);
+            button.innerHTML = <span class="hljs-string">"Subsidize for "</span> + cost + <span class="hljs-string">"E"</span>;
+            form.appendChild(button);
+            Event.on(button, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Subsidize, {
+                Self: <span class="hljs-keyword">this</span>
+            }, <span class="hljs-literal">true</span>);
+        },
+        Subsidize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.Self.service.subsidize({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.Self.building.id
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"TheDillonForge.Subsidize.success"</span>);
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                    <span class="hljs-keyword">this</span>.Self.result = o.result;
+                    <span class="hljs-keyword">this</span>.Self.viewForgeTab();
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        }
+    });
+    YAHOO.lacuna.buildings.TheDillonForge = TheDillonForge;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

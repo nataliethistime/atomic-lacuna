@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - createEmpire.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/createEmpire.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/createEmpire.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper">YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> YAHOO.lacuna.CreateEmpire == <span class="hljs-string">"undefined"</span> || !YAHOO.lacuna.CreateEmpire) {
+    (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> Util = YAHOO.util,
+            Cookie = Util.Cookie,
+            Dom = Util.Dom,
+            Event = Util.Event,
+            Lacuna = YAHOO.lacuna,
+            Game = Lacuna.Game,
+            Lib = Lacuna.Library;
+        <span class="hljs-keyword">var</span> CreateEmpire = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Login)</span> {</span>
+            <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"createEmpire"</span>;
+            <span class="hljs-keyword">this</span>._login = Login;
+            <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onCreateSuccessful"</span>);
+            <span class="hljs-keyword">var</span> container = document.createElement(<span class="hljs-string">"div"</span>);
+            container.id = <span class="hljs-keyword">this</span>.id;
+            Dom.addClass(container, <span class="hljs-string">"hidden"</span>);
+            container.innerHTML = [<span class="hljs-string">'    &lt;div class="hd"&gt;Create Empire&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="bd"&gt;'</span>, <span class="hljs-string">'        &lt;form name="empireForm" autocomplete="no"&gt;'</span>, <span class="hljs-string">'            &lt;div style="overflow: hidden"&gt;'</span>, <span class="hljs-string">'                &lt;ul style="float:left"&gt;'</span>, <span class="hljs-string">'                    &lt;li&gt;&lt;label for="empireName" title="Empire name must be between 3 and 30 characters and cannot contain the characters @, &amp;amp;, &lt;, &gt;, or ;"&gt;&lt;span class="requiredField"&gt;* &lt;/span&gt;Empire Name&lt;/label&gt;&lt;input type="text" id="empireName" maxlength="30" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li class="empirePassword"&gt;&lt;label for="empirePass" title="Password must be between 6 and 30 characters long."&gt;&lt;span class="requiredField"&gt;* &lt;/span&gt;Password&lt;/label&gt;&lt;input type="password" id="empirePass" maxlength="30"/&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li class="empirePassword"&gt;&lt;label for="empirePassConfirm" title="Must be the same as the password"&gt;&lt;span class="requiredField"&gt;* &lt;/span&gt;Password Confirm&lt;/label&gt;&lt;input type="password" id="empirePassConfirm" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li class="empireEmail"&gt;&lt;label for="empireEmail" title="Used for password recovery and otifications."&gt;EMail&lt;/label&gt;&lt;input type="text" id="empireEmail" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li class="empireDesc"&gt;&lt;label for="empireDesc" title="Description of your empire to show to other players."&gt;Description&lt;/label&gt;&lt;textarea id="empireDesc"&gt;&lt;/textarea&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li class="empireFriendCode"&gt;&lt;label for="empireFriendCode" title="If you don\'t have a friend invite code, this can be ignored."&gt;Friend Invite Code&lt;/label&gt;&lt;input type="text" id="empireFriendCode" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;/ul&gt;'</span>, <span class="hljs-string">'                &lt;ul style="float:right"&gt;'</span>, <span class="hljs-string">'                    &lt;li class="empireCaptcha"&gt;&lt;span id="empireCaptchaBorder"&gt;&lt;img alt="" width="300" height="80" src="" id="empireCaptchaImage" /&gt;&lt;/span&gt;&lt;button id="empireRefreshCaptcha" type="button"&gt;&lt;img alt="Refresh" src="'</span> + Lib.AssetUrl + <span class="hljs-string">'ui/s/refresh.png" /&gt;&lt;/button&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li class="empireCaptcha"&gt;&lt;span class="requiredField"&gt;* &lt;/span&gt;&lt;label for="empireCaptcha"&gt;Answer: &lt;/label&gt;&lt;input type="text" id="empireCaptcha" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li class="empireAgreeCheck"&gt;&lt;span class="requiredField"&gt;* &lt;/span&gt;&lt;input type="checkbox" id="empireAgreeTOS" /&gt;&lt;label for="empireAgreeTOS"&gt;I agree to the &lt;a href="http://www.lacunaexpanse.com/terms/" target="_blank"&gt;Terms of Service&lt;/a&gt;.&lt;/label&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li class="empireAgreeCheck"&gt;&lt;span class="requiredField"&gt;* &lt;/span&gt;&lt;input type="checkbox" id="empireAgreeRules" /&gt;&lt;label for="empireAgreeRules"&gt;I agree to abide by &lt;a href="http://www.lacunaexpanse.com/rules/" target="_blank"&gt;the rules&lt;/a&gt;.&lt;/label&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li class="requiredField"&gt;* Required field&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;/ul&gt;'</span>, <span class="hljs-string">'            &lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div id="empireMessage" class="hidden"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/form&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="ft"&gt;&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+            document.body.insertBefore(container, document.body.firstChild);
+            <span class="hljs-keyword">this</span>.Dialog = <span class="hljs-keyword">new</span> YAHOO.widget.Dialog(<span class="hljs-keyword">this</span>.id, {
+                constraintoviewport: <span class="hljs-literal">true</span>,
+                fixedcenter: <span class="hljs-literal">true</span>,
+                postmethod: <span class="hljs-string">"none"</span>,
+                visible: <span class="hljs-literal">false</span>,
+                buttons: [{
+                    text: <span class="hljs-string">"Create"</span>,
+                    handler: {
+                        fn: <span class="hljs-keyword">this</span>.handleCreate,
+                        scope: <span class="hljs-keyword">this</span>
+                    },
+                    isDefault: <span class="hljs-literal">true</span>
+                }, {
+                    text: <span class="hljs-string">"Cancel"</span>,
+                    handler: {
+                        fn: <span class="hljs-keyword">this</span>.handleCancel,
+                        scope: <span class="hljs-keyword">this</span>
+                    }
+                }],
+                draggable: <span class="hljs-literal">false</span>,
+                effect: Game.GetContainerEffect(),
+                modal: <span class="hljs-literal">false</span>,
+                close: <span class="hljs-literal">false</span>,
+                width: <span class="hljs-string">"750px"</span>,
+                underlay: <span class="hljs-literal">false</span>,
+                zIndex: <span class="hljs-number">9999</span>
+            });
+            <span class="hljs-keyword">this</span>.Dialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-comment">//get el's after rendered</span>
+                <span class="hljs-keyword">this</span>.elName = Dom.get(<span class="hljs-string">"empireName"</span>);
+                <span class="hljs-keyword">this</span>.elDesc = Dom.get(<span class="hljs-string">"empireDesc"</span>);
+                <span class="hljs-keyword">this</span>.elEmail = Dom.get(<span class="hljs-string">"empireEmail"</span>);
+                <span class="hljs-keyword">this</span>.elFriendCode = Dom.get(<span class="hljs-string">"empireFriendCode"</span>);
+                <span class="hljs-keyword">this</span>.elPass = Dom.get(<span class="hljs-string">"empirePass"</span>);
+                <span class="hljs-keyword">this</span>.elPassConfirm = Dom.get(<span class="hljs-string">"empirePassConfirm"</span>);
+                <span class="hljs-keyword">this</span>.elAgreeTOS = Dom.get(<span class="hljs-string">"empireAgreeTOS"</span>);
+                <span class="hljs-keyword">this</span>.elAgreeRules = Dom.get(<span class="hljs-string">"empireAgreeRules"</span>);
+                <span class="hljs-keyword">this</span>.elMessage = Dom.get(<span class="hljs-string">"empireMessage"</span>);
+                <span class="hljs-keyword">this</span>.elCaptchaImage = Dom.get(<span class="hljs-string">"empireCaptchaImage"</span>);
+                <span class="hljs-keyword">this</span>.elCaptcha = Dom.get(<span class="hljs-string">"empireCaptcha"</span>);
+                Event.on(<span class="hljs-keyword">this</span>.elCaptchaImage, <span class="hljs-string">'load'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    Dom.setStyle(<span class="hljs-keyword">this</span>, <span class="hljs-string">'visibility'</span>, <span class="hljs-string">'inherit'</span>);
+                });
+                Event.on(<span class="hljs-string">'empireRefreshCaptcha'</span>, <span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                    Event.stopEvent(e);
+                    <span class="hljs-keyword">this</span>.refreshCaptcha();
+                }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                Dom.removeClass(<span class="hljs-keyword">this</span>.id, Lib.Styles.HIDDEN);
+            }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.Dialog.cfg.queueProperty(<span class="hljs-string">"keylisteners"</span>, <span class="hljs-keyword">new</span> YAHOO.util.KeyListener(<span class="hljs-string">"empirePassConfirm"</span>, {
+                keys: <span class="hljs-number">13</span>
+            }, {
+                fn: <span class="hljs-keyword">this</span>.handleCreate,
+                scope: <span class="hljs-keyword">this</span>,
+                correctScope: <span class="hljs-literal">true</span>
+            }));
+            <span class="hljs-keyword">this</span>.Dialog.render();
+            Game.OverlayManager.register(<span class="hljs-keyword">this</span>.Dialog);
+            <span class="hljs-keyword">this</span>.initSpecies();
+        };
+        CreateEmpire.prototype = {
+            refreshCaptcha: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                Dom.setStyle(<span class="hljs-keyword">this</span>.elCaptchaImage, <span class="hljs-string">'visibility'</span>, <span class="hljs-string">'hidden'</span>);
+                Game.Services.Empire.fetch_captcha({}, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"RefreshCaptcha"</span>);
+                        <span class="hljs-keyword">this</span>.captchaGUID = o.result.guid;
+                        <span class="hljs-keyword">this</span>.elCaptchaImage.src = o.result.url;
+                    },
+                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        <span class="hljs-keyword">this</span>.setMessage(o.error.message);
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            },
+            handleCreate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.elAgreeTOS.checked || !<span class="hljs-keyword">this</span>.elAgreeRules.checked) {
+                    <span class="hljs-keyword">this</span>.setMessage(<span class="hljs-string">"You must agree to the Terms of Service and the rules before registering."</span>);
+                    <span class="hljs-keyword">return</span>;
+                }
+                <span class="hljs-keyword">this</span>.setMessage(<span class="hljs-string">""</span>);
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.savedEmpire &amp;&amp; <span class="hljs-keyword">this</span>.savedEmpire.name == <span class="hljs-keyword">this</span>.elName.value) {
+                    Game.SpeciesCreator.show(<span class="hljs-keyword">this</span>.savedEmpire.id);
+                    <span class="hljs-keyword">this</span>.hide(); <span class="hljs-comment">//hide empire</span>
+                } <span class="hljs-keyword">else</span> {
+                    Lacuna.Pulser.Show();
+                    <span class="hljs-keyword">var</span> EmpireServ = Game.Services.Empire,
+                        data = {
+                            name: <span class="hljs-keyword">this</span>.elName.value,
+                            description: <span class="hljs-keyword">this</span>.elDesc.value,
+                            email: <span class="hljs-keyword">this</span>.elEmail.value
+                        };
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.facebook) {
+                        data.facebook_uid = <span class="hljs-keyword">this</span>.facebook.uid;
+                        data.facebook_token = <span class="hljs-keyword">this</span>.facebook.token;
+                    } <span class="hljs-keyword">else</span> {
+                        data.captcha_guid = <span class="hljs-keyword">this</span>.captchaGUID;
+                        data.captcha_solution = <span class="hljs-keyword">this</span>.elCaptcha.value;
+                    }
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.elPass.value.length &gt; <span class="hljs-number">0</span>) {
+                        data.password = <span class="hljs-keyword">this</span>.elPass.value;
+                        data.password1 = <span class="hljs-keyword">this</span>.elPassConfirm.value;
+                    }
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.elFriendCode.value.length &gt; <span class="hljs-number">0</span>) {
+                        data.invite_code = <span class="hljs-keyword">this</span>.elFriendCode.value;
+                    }
+                    EmpireServ.create(data, {
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                            YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"CreateEmpire"</span>);
+                            <span class="hljs-keyword">this</span>.savedEmpire = data;
+                            <span class="hljs-keyword">this</span>.savedEmpire.id = o.result;
+                            Game.SpeciesCreator.show(o.result);
+                            Lacuna.Pulser.Hide();
+                            <span class="hljs-keyword">this</span>.hide(); <span class="hljs-comment">//hide empire</span>
+                        },
+                        failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                            <span class="hljs-keyword">this</span>.setMessage(o.error.message);
+                            <span class="hljs-keyword">if</span> (o.error.code == <span class="hljs-number">1014</span>) {
+                                <span class="hljs-keyword">this</span>.captchaGUID = o.error.data.guid;
+                                <span class="hljs-keyword">this</span>.elCaptchaImage.src = o.error.data.url;
+                                <span class="hljs-keyword">this</span>.elCaptcha.value = <span class="hljs-string">''</span>;
+                                <span class="hljs-keyword">this</span>.elCaptcha.focus();
+                            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (o.error.code == <span class="hljs-number">1100</span>) {
+                                <span class="hljs-keyword">this</span>.savedEmpire = data;
+                                <span class="hljs-keyword">this</span>.savedEmpire.id = o.error.data;
+                                Game.SpeciesCreator.show(o.error.data.empire_id);
+                                <span class="hljs-keyword">this</span>.hide(); <span class="hljs-comment">//hide empire</span>
+                            }
+                            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                        },
+                        scope: <span class="hljs-keyword">this</span>
+                    });
+                }
+            },
+            handleCancel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.hide();
+                <span class="hljs-keyword">this</span>._login.show();
+            },
+            setMessage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> {</span>
+                Dom.replaceClass(<span class="hljs-keyword">this</span>.elMessage, Lib.Styles.HIDDEN, Lib.Styles.ALERT);
+                <span class="hljs-keyword">this</span>.elMessage.innerHTML = str;
+            },
+            facebookReturn: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(uid, token, name)</span> {</span>
+                <span class="hljs-keyword">this</span>.savedEmpire = <span class="hljs-literal">undefined</span>;
+                <span class="hljs-keyword">this</span>.elName.value = name + <span class="hljs-string">"'s Empire"</span>;
+                <span class="hljs-keyword">this</span>.elAgreeTOS.checked = <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">this</span>.elAgreeRules.checked = <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">this</span>.facebook = {
+                    uid: uid,
+                    token: token
+                };
+                Dom.addClass(<span class="hljs-keyword">this</span>.id, <span class="hljs-string">'facebookLogin'</span>);
+                Game.OverlayManager.hideAll();
+                <span class="hljs-keyword">this</span>.Dialog.show();
+            },
+            show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(doNotClear)</span> {</span>
+                Game.OverlayManager.hideAll();
+                Dom.removeClass(<span class="hljs-keyword">this</span>.id, <span class="hljs-string">'facebookLogin'</span>);
+                <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.facebook;
+                <span class="hljs-keyword">if</span> (!doNotClear) {
+                    <span class="hljs-keyword">this</span>.savedEmpire = <span class="hljs-literal">undefined</span>;
+                    <span class="hljs-keyword">this</span>.elName.value = <span class="hljs-string">""</span>;
+                    <span class="hljs-keyword">this</span>.elDesc.value = <span class="hljs-string">""</span>;
+                    <span class="hljs-keyword">this</span>.elEmail.value = <span class="hljs-string">""</span>;
+                    <span class="hljs-keyword">this</span>.elFriendCode.value = Cookie.get(<span class="hljs-string">"lacunaReferral"</span>) || <span class="hljs-string">""</span>;
+                    <span class="hljs-keyword">this</span>.elPass.value = <span class="hljs-string">""</span>;
+                    <span class="hljs-keyword">this</span>.elPassConfirm.value = <span class="hljs-string">""</span>;
+                    <span class="hljs-keyword">this</span>.elAgreeTOS.checked = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">this</span>.elAgreeRules.checked = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">this</span>.elCaptcha.value = <span class="hljs-string">''</span>;
+                }
+                <span class="hljs-keyword">this</span>.refreshCaptcha();
+                <span class="hljs-keyword">this</span>.Dialog.show();
+            },
+            hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                Dom.replaceClass(<span class="hljs-keyword">this</span>.elMessage, Lib.Styles.ALERT, Lib.Styles.HIDDEN);
+                <span class="hljs-keyword">this</span>.Dialog.hide();
+            },
+            initSpecies: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">if</span> (!Game.SpeciesCreator) {
+                    Game.SpeciesCreator = <span class="hljs-keyword">new</span> Lacuna.CreateSpecies(<span class="hljs-keyword">this</span>);
+                    Game.SpeciesCreator.subscribe(<span class="hljs-string">"onCreateSuccessful"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oArgs)</span> {</span>
+                        <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onCreateSuccessful"</span>, oArgs);
+                    }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                }
+            }
+        };
+        YAHOO.lang.augmentProto(CreateEmpire, Util.EventProvider);
+        Lacuna.CreateEmpire = CreateEmpire;
+    })();
+    YAHOO.register(<span class="hljs-string">"createEmpire"</span>, YAHOO.lacuna.CreateEmpire, {
+        version: <span class="hljs-string">"1"</span>,
+        build: <span class="hljs-string">"0"</span>
+    });
+}</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>vim: noet:ts=4:sw=4</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

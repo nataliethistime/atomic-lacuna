@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - spaceStationLab.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/spaceStationLab.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/spaceStationLab.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Sel = Util.Selector,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> SpaceStationLab = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        SpaceStationLab.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.SpaceStationLab;
+    };
+    Lang.extend(SpaceStationLab, Lacuna.buildings.Building, {
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.result.make_plan &amp;&amp; <span class="hljs-keyword">this</span>.result.make_plan.level_costs.length &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getPlanTab()];
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">return</span>;
+            }
+        },
+        _getPlanTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Event.onContentReady(<span class="hljs-string">"stationLabLevelsContainer"</span>, <span class="hljs-keyword">this</span>.PlanPopulate, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.on(<span class="hljs-string">"stationLabGoToPlan"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.selectedType;
+                Dom.get(<span class="hljs-string">"stationLabPlanSelected"</span>)
+                    .innerHTML = <span class="hljs-string">""</span>;
+                Dom.setStyle(<span class="hljs-string">"stationLabPlansContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                Dom.setStyle(<span class="hljs-string">"stationLabLevelsContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+            }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.on(<span class="hljs-string">"stationLabMakingSubsidize"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.PlanSubsidize, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.delegate(<span class="hljs-string">"stationLabPlans"</span>, <span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+                <span class="hljs-keyword">this</span>.selectedType = matchedEl.value;
+                Dom.get(<span class="hljs-string">"stationLabPlanSelected"</span>)
+                    .innerHTML = Sel.query(<span class="hljs-string">'div.buildingName'</span>, matchedEl.parentNode.parentNode, <span class="hljs-literal">true</span>)
+                    .innerHTML;
+                Dom.setStyle(<span class="hljs-string">"stationLabPlansContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                Dom.setStyle(<span class="hljs-string">"stationLabLevelsContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+            }, <span class="hljs-string">'button'</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.delegate(<span class="hljs-string">"stationLabLevels"</span>, <span class="hljs-string">'click'</span>, <span class="hljs-keyword">this</span>.PlanMake, <span class="hljs-string">'button'</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Make Plan"</span>,
+                content: [<span class="hljs-string">'&lt;div id="stationLabPlansContainer" style="display:none;"&gt;&lt;div style="overflow-y:auto;"&gt;&lt;ul id="stationLabPlans"&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div id="stationLabLevelsContainer" style="display:none;"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-g" style="padding-bottom:3px;margin-bottom:3px;border-bottom: 1px solid #52acff;"&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u first" style="font-weight:bold;"&gt;Building a &lt;span id="stationLabPlanSelected"&gt;&lt;/span&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u" style="text-align:right;"&gt;&lt;button type="button" id="stationLabGoToPlan"&gt;Go Back&lt;/button&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;'</span>, <span class="hljs-string">'        &lt;table class="buildingStats" cellpadding="0" cellspacing="0"&gt;'</span>, <span class="hljs-string">'            &lt;col width="53" /&gt;&lt;colgroup span="6" width="110" /&gt;'</span>, <span class="hljs-string">'            &lt;tr&gt;&lt;td&gt;Level&lt;/td&gt;'</span>, <span class="hljs-string">'                &lt;th&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/food.png" title="Food" class="smallFood" /&gt;&lt;/th&gt;'</span>, <span class="hljs-string">'                &lt;th&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/ore.png" title="Ore" class="smallOre"  /&gt;&lt;/th&gt;'</span>, <span class="hljs-string">'                &lt;th&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/water.png" title="Water" class="smallWater" /&gt;&lt;/th&gt;'</span>, <span class="hljs-string">'                &lt;th&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/energy.png" title="Energy" class="smallEnergy" /&gt;&lt;/th&gt;'</span>, <span class="hljs-string">'                &lt;th&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/waste.png" title="Waste" class="smallWaste" /&gt;&lt;/th&gt;'</span>, <span class="hljs-string">'                &lt;th&gt;&lt;/th&gt;'</span>, <span class="hljs-string">'            &lt;/tr&gt;'</span>, <span class="hljs-string">'        &lt;/table&gt;'</span>, <span class="hljs-string">'        &lt;div id="stationLabLevelsList" style="overflow-y:auto;"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div id="stationLabMakingContainer" style="display:none;"&gt;'</span>, <span class="hljs-string">'    &lt;div style="margin-bottom:10px;"&gt;&lt;span id="stationLabMakingName"&gt;&lt;/span&gt; will complete in &lt;span id="stationLabMakingTime"&gt;&lt;/span&gt;.&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;button type="button" id="stationLabMakingSubsidize"&gt;Subsidize for '</span>, <span class="hljs-keyword">this</span>.result.make_plan.subsidy_cost, <span class="hljs-string">' &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" style="vertical-align: middle;" /&gt;&lt;/button&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+        },
+        buildPlans: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(types)</span> {</span>
+            <span class="hljs-keyword">var</span> frag = [];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; types.length; n++) {
+                <span class="hljs-keyword">var</span> plan = types[n];
+                frag[frag.length] = [<span class="hljs-string">'&lt;li style="padding-bottom: 2px; margin-bottom:2px; border-bottom: 1px solid #52acff;"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-gb"&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u first" style="width:200px;background:transparent url('</span>, Lib.AssetUrl, <span class="hljs-string">'planet_side/surface-station.jpg) no-repeat center;text-align:center"&gt;'</span>, <span class="hljs-string">'            &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'planet_side/'</span>, plan.image, <span class="hljs-string">'.png" style="width:200px;height:200px;cursor:pointer;" class="buildingImage" /&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'            &lt;div class="buildingName"&gt;'</span>, plan.name, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div class="buildingDesc"&gt;'</span>, Game.GetBuildingDesc(plan.url), <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u"&gt;'</span>,
+                    <span class="hljs-comment">//'            &lt;input type="radio" name="stationLabSelectType" value="',plan.type,'" style="margin-top:30px;margin-left:30px;" /&gt;','            &lt;button type="button" value="', plan.type, '"&gt;Select&lt;/button&gt;','        &lt;/div&gt;','    &lt;/div&gt;',</span>
+                    <span class="hljs-string">'&lt;/li&gt;'</span>
+                ].join(<span class="hljs-string">''</span>);
+            }
+            <span class="hljs-keyword">return</span> frag.join(<span class="hljs-string">''</span>);
+        },
+        buildLevels: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(levelCosts)</span> {</span>
+            <span class="hljs-keyword">var</span> frag = [<span class="hljs-string">'&lt;table id="stationLabLevels" class="buildingStats" cellpadding="0" cellspacing="0"&gt;&lt;col width="53" /&gt;&lt;colgroup span="6" width="110" /&gt;'</span>],
+                planet = Game.GetCurrentPlanet();
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; levelCosts.length; n++) {
+                <span class="hljs-keyword">var</span> costs = levelCosts[n];
+                frag[frag.length] = [<span class="hljs-string">'&lt;tr&gt;&lt;th&gt;'</span>, costs.level, <span class="hljs-string">':&lt;/th&gt;'</span>, <span class="hljs-string">'    &lt;td class='</span>, costs.food &gt; planet.food_stored ? <span class="hljs-string">'low-resource'</span> : <span class="hljs-string">''</span>, <span class="hljs-string">'&gt;'</span>, costs.food, <span class="hljs-string">'&lt;/td&gt;'</span>, <span class="hljs-string">'    &lt;td class='</span>, costs.ore &gt; planet.ore_stored ? <span class="hljs-string">'low-resource'</span> : <span class="hljs-string">''</span>, <span class="hljs-string">'&gt;'</span>, costs.ore, <span class="hljs-string">'&lt;/td&gt;'</span>, <span class="hljs-string">'    &lt;td class='</span>, costs.water &gt; planet.water_stored ? <span class="hljs-string">'low-resource'</span> : <span class="hljs-string">''</span>, <span class="hljs-string">'&gt;'</span>, costs.water, <span class="hljs-string">'&lt;/td&gt;'</span>, <span class="hljs-string">'    &lt;td class='</span>, costs.energy &gt; planet.energy_stored ? <span class="hljs-string">'low-resource'</span> : <span class="hljs-string">''</span>, <span class="hljs-string">'&gt;'</span>, costs.energy, <span class="hljs-string">'&lt;/td&gt;'</span>, <span class="hljs-string">'    &lt;td&gt;'</span>, costs.waste, <span class="hljs-string">'&lt;/td&gt;'</span>, <span class="hljs-string">'    &lt;td&gt;&lt;button type="button" value="'</span>, costs.level, <span class="hljs-string">'"&gt;Make&lt;/button&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'&lt;/tr&gt;'</span>].join(<span class="hljs-string">''</span>);
+            }
+            frag[frag.length] = <span class="hljs-string">'&lt;/table&gt;'</span>;
+            <span class="hljs-keyword">return</span> frag.join(<span class="hljs-string">''</span>);
+        },
+        makingQueue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(remaining, span)</span> {</span>
+            <span class="hljs-keyword">var</span> time;
+            <span class="hljs-keyword">if</span> (remaining &lt;= <span class="hljs-number">0</span>) {
+                time = <span class="hljs-string">'Overdue '</span> + Lib.formatTime(<span class="hljs-built_in">Math</span>.round(-remaining));
+            } <span class="hljs-keyword">else</span> {
+                time = Lib.formatTime(<span class="hljs-built_in">Math</span>.round(remaining));
+            }
+            span.innerHTML = time;
+        },
+        PlanPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> makePlan = <span class="hljs-keyword">this</span>.result.make_plan;
+            <span class="hljs-keyword">if</span> (makePlan.making) {
+                Dom.setStyle(<span class="hljs-string">"stationLabPlansContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                Dom.setStyle(<span class="hljs-string">"stationLabLevelsContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                Dom.setStyle(<span class="hljs-string">"stationLabMakingContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                Dom.get(<span class="hljs-string">"stationLabMakingName"</span>)
+                    .innerHTML = makePlan.making;
+                <span class="hljs-keyword">this</span>.addQueue(<span class="hljs-keyword">this</span>.result.building.work.seconds_remaining, <span class="hljs-keyword">this</span>.makingQueue, Dom.get(<span class="hljs-string">"stationLabMakingTime"</span>));
+            } <span class="hljs-keyword">else</span> {
+                Dom.setStyle(<span class="hljs-string">"stationLabPlansContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                Dom.setStyle(<span class="hljs-string">"stationLabLevelsContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                Dom.setStyle(<span class="hljs-string">"stationLabMakingContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                Dom.get(<span class="hljs-string">"stationLabPlans"</span>)
+                    .innerHTML = <span class="hljs-keyword">this</span>.buildPlans(makePlan.types);
+                Dom.get(<span class="hljs-string">"stationLabLevelsList"</span>)
+                    .innerHTML = <span class="hljs-keyword">this</span>.buildLevels(makePlan.level_costs);
+                <span class="hljs-comment">//wait for tab to display first</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                        .h - <span class="hljs-number">200</span>;
+                    <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">250</span>) {
+                        Ht = <span class="hljs-number">250</span>;
+                    }
+                    Dom.setStyle(Dom.get(<span class="hljs-string">"stationLabPlans"</span>)
+                        .parentNode, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                    Dom.setStyle(Dom.get(<span class="hljs-string">"stationLabLevels"</span>)
+                        .parentNode, <span class="hljs-string">"height"</span>, (Ht - <span class="hljs-number">50</span>) + <span class="hljs-string">"px"</span>);
+                }, <span class="hljs-number">10</span>);
+            }
+        },
+        PlanMake: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+            <span class="hljs-keyword">var</span> type = <span class="hljs-keyword">this</span>.selectedType,
+                level = matchedEl.value;
+            <span class="hljs-keyword">if</span> (type &amp;&amp; level) {
+                matchedEl.disabled = <span class="hljs-literal">true</span>;
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">this</span>.service.make_plan({
+                    session_id: Game.GetSession(),
+                    building_id: <span class="hljs-keyword">this</span>.building.id,
+                    type: type,
+                    level: level
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">this</span>.result = o.result;
+                        matchedEl.disabled = <span class="hljs-literal">false</span>;
+                        <span class="hljs-keyword">this</span>.PlanPopulate();
+                    },
+                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        matchedEl.disabled = <span class="hljs-literal">false</span>;
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        PlanSubsidize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
+            btn.disabled = <span class="hljs-literal">true</span>;
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.service.subsidize_plan({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.building.id
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    <span class="hljs-keyword">this</span>.result = o.result;
+                    btn.disabled = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">this</span>.PlanPopulate();
+                },
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    btn.disabled = <span class="hljs-literal">false</span>;
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        }
+    });
+    Lacuna.buildings.SpaceStationLab = SpaceStationLab;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - distributionCenter.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/distributionCenter.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/distributionCenter.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Sel = Util.Selector,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> DistributionCenter = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        DistributionCenter.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.DistributionCenter;
+    };
+    Lang.extend(DistributionCenter, Lacuna.buildings.Building, {
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getReserveTab()];
+        },
+        _getReserveTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.tab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Reserve"</span>,
+                content: [<span class="hljs-string">'&lt;div id="distribReserveAnnounce"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div id="distribReserveContainers" style="display:none;"&gt;'</span>, <span class="hljs-string">'    &lt;div class="distribReserve yui-g"&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'            &lt;legend&gt;On Planet&lt;/legend&gt;'</span>, <span class="hljs-string">'            &lt;div class="distribContainers"&gt;&lt;ul id="distribReserveOnPlanet"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'            &lt;legend&gt;Reserve&lt;/legend&gt;'</span>, <span class="hljs-string">'            &lt;div class="distribContainers"&gt;&lt;ul id="distribReserveToStore"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;ul style="margin-top:5px;"&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Total:&lt;/label&gt;&lt;span id="distribTotalSelected"&gt;0&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li id="distribReserveMessage" class="alert"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;&lt;div&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="distribReserveSubmit"&gt;Reserve&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div id="distribStoredContainer" class="distribReserve yui-g" style="display:none;"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'        &lt;legend&gt;In Reserve&lt;/legend&gt;'</span>, <span class="hljs-string">'        &lt;div class="distribContainers"&gt;&lt;ul id="distribReserveInReserve"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;'</span>, <span class="hljs-string">'            &lt;div id="distribReleaseMessage" class="alert"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;button type="button" id="distribReleaseSubmit"&gt;Release&lt;/button&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">this</span>.tab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.CheckReserve, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.on(<span class="hljs-string">"distribReserveSubmit"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.ReserveSubmit, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.on(<span class="hljs-string">"distribReleaseSubmit"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.StoreRelease, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.delegate(<span class="hljs-string">"distribReserveOnPlanet"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.ReserveStoreAdd, <span class="hljs-string">"button"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.delegate(<span class="hljs-string">"distribReserveToStore"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.ReserveStoreRemove, <span class="hljs-string">"button"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tab;
+        },
+        GetStoredResources: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.resources) {
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">this</span>.service.get_stored_resources({
+                    session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                    building_id: <span class="hljs-keyword">this</span>.building.id
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">this</span>.resources = o.result.resources;
+                        <span class="hljs-keyword">this</span>.ReservePopulate();
+                        Lacuna.Pulser.Hide();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">this</span>.ReservePopulate();
+            }
+        },
+        CheckReserve: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">if</span> (e.newValue) {
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.result.reserve.can) {
+                    Dom.setStyle(<span class="hljs-string">"distribReserveContainers"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                    Dom.setStyle(<span class="hljs-string">"distribStoredContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                    <span class="hljs-keyword">this</span>.StorePopulate();
+                } <span class="hljs-keyword">else</span> {
+                    Dom.setStyle(<span class="hljs-string">"distribReserveContainers"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                    Dom.setStyle(<span class="hljs-string">"distribStoredContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                    <span class="hljs-keyword">this</span>.GetStoredResources();
+                }
+            }
+        },
+        ReservePopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> reserve = <span class="hljs-keyword">this</span>.result.reserve || {},
+                onPlanet = Dom.get(<span class="hljs-string">"distribReserveOnPlanet"</span>),
+                announce = Dom.get(<span class="hljs-string">"distribReserveAnnounce"</span>),
+                li = document.createElement(<span class="hljs-string">"li"</span>),
+                nLi, ul, r, x, resource, name;
+            <span class="hljs-keyword">if</span> (announce) {
+                announce.innerHTML = [<span class="hljs-string">'You can reserve at most '</span>, Lib.formatNumber(reserve.max_reserve_size), <span class="hljs-string">' resources for '</span>, Lib.formatTime(reserve.max_reserve_duration), <span class="hljs-string">'.'</span>].join(<span class="hljs-string">''</span>);
+            }
+            <span class="hljs-keyword">if</span> (onPlanet) {
+                onPlanet.innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">for</span> (r <span class="hljs-keyword">in</span> Lib.ResourceTypes) {
+                    <span class="hljs-keyword">if</span> (Lib.ResourceTypes.hasOwnProperty(r)) {
+                        resource = Lib.ResourceTypes[r];
+                        <span class="hljs-keyword">if</span> (Lang.isArray(resource)) {
+                            <span class="hljs-keyword">for</span> (x = <span class="hljs-number">0</span>; x &lt; resource.length; x++) {
+                                name = resource[x];
+                                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.resources[name]) {
+                                    nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                                    nLi.Reserve = {
+                                        type: name,
+                                        quantity: <span class="hljs-keyword">this</span>.resources[name] * <span class="hljs-number">1</span>
+                                    };
+                                    nLi.innerHTML = [<span class="hljs-string">'&lt;span class="reserveName"&gt;'</span>, name.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, <span class="hljs-keyword">this</span>.resources[name], <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" /&gt;&lt;button type="button"&gt;+&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
+                                    onPlanet.appendChild(nLi);
+                                }
+                            }
+                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.resources[r] &amp;&amp; resource) {
+                            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                            nLi.Reserve = {
+                                type: r,
+                                quantity: <span class="hljs-keyword">this</span>.resources[r] * <span class="hljs-number">1</span>
+                            };
+                            nLi.innerHTML = [<span class="hljs-string">'&lt;span class="reserveName"&gt;'</span>, r.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, <span class="hljs-keyword">this</span>.resources[r], <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" /&gt;&lt;button type="button"&gt;+&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
+                            onPlanet.appendChild(nLi);
+                        }
+                    }
+                }
+            }
+            <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                .h - <span class="hljs-number">245</span>;
+            <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">200</span>) {
+                Ht = <span class="hljs-number">200</span>;
+            }
+            Dom.setStyle(Sel.query(<span class="hljs-string">'.distribContainers'</span>, <span class="hljs-string">'distribReserveContainers'</span>), <span class="hljs-string">'height'</span>, Ht + <span class="hljs-string">'px'</span>);
+        },
+        ReserveStoreAdd: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+            <span class="hljs-keyword">var</span> quantity = matchedEl.previousSibling.value * <span class="hljs-number">1</span>,
+                li = matchedEl.parentNode,
+                c = Dom.get(<span class="hljs-string">"distribReserveToStore"</span>);
+            <span class="hljs-keyword">if</span> (quantity &amp;&amp; c) {
+                <span class="hljs-keyword">var</span> id = <span class="hljs-string">"reserveResource-"</span> + li.Reserve.type,
+                    exists = Sel.query(<span class="hljs-string">"#"</span> + id, c);
+                <span class="hljs-keyword">if</span> (exists.length === <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">var</span> item = document.createElement(<span class="hljs-string">"li"</span>),
+                        del = item.appendChild(document.createElement(<span class="hljs-string">"div"</span>)),
+                        content = item.appendChild(document.createElement(<span class="hljs-string">"div"</span>));
+                    item.id = id;
+                    <span class="hljs-keyword">if</span> (quantity &gt; li.Reserve.quantity) {
+                        quantity = li.Reserve.quantity;
+                    }
+                    Dom.addClass(item, <span class="hljs-string">"reserveItem"</span>);
+                    Dom.addClass(del, <span class="hljs-string">"reserveDelete"</span>);
+                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                        <span class="hljs-keyword">var</span> ed = Event.getTarget(e),
+                            ep = ed.parentNode;
+                        <span class="hljs-keyword">this</span>.UpdateReserveStore(ep.Object.quantity * -<span class="hljs-number">1</span>);
+                        Event.purgeElement(ep);
+                        ep.parentNode.removeChild(ep);
+                    }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    item.Object = {
+                        type: li.Reserve.type,
+                        quantity: quantity
+                    };
+                    content.innerHTML = [<span class="hljs-string">'&lt;span class="reserveName"&gt;'</span>, item.Object.type.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" value="'</span>, quantity, <span class="hljs-string">'" /&gt;&lt;button type="button"&gt;-&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
+                    c.appendChild(item);
+                    <span class="hljs-keyword">this</span>.UpdateReserveStore(quantity);
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">var</span> found = exists[<span class="hljs-number">0</span>],
+                        newTotal = found.Object.quantity + quantity,
+                        diff = quantity,
+                        lq = Sel.query(<span class="hljs-string">".quantity"</span>, found, <span class="hljs-literal">true</span>),
+                        inp = Sel.query(<span class="hljs-string">"input"</span>, found, <span class="hljs-literal">true</span>);
+                    <span class="hljs-keyword">if</span> (newTotal &gt; li.Reserve.quantity) {
+                        newTotal = li.Reserve.quantity;
+                        diff = newTotal - found.Object.quantity;
+                    }
+                    <span class="hljs-keyword">if</span> (inp) {
+                        inp.value = diff;
+                    }
+                    lq.innerHTML = newTotal;
+                    found.Object.quantity = newTotal;
+                    <span class="hljs-keyword">this</span>.UpdateReserveStore(diff);
+                    <span class="hljs-keyword">var</span> a = <span class="hljs-keyword">new</span> Util.ColorAnim(lq, {
+                        color: {
+                            from: <span class="hljs-string">'#0f0'</span>,
+                            to: <span class="hljs-string">'#fff'</span>
+                        }
+                    }, <span class="hljs-number">1.5</span>);
+                    a.animate();
+                }
+            }
+        },
+        ReserveStoreRemove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+            <span class="hljs-keyword">var</span> quantity = matchedEl.previousSibling.value * <span class="hljs-number">1</span>,
+                li = matchedEl.parentNode.parentNode;
+            <span class="hljs-keyword">if</span> (quantity) {
+                <span class="hljs-keyword">var</span> newTotal = li.Object.quantity - quantity,
+                    diff = quantity * -<span class="hljs-number">1</span>,
+                    lq = Sel.query(<span class="hljs-string">".quantity"</span>, li, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">if</span> (newTotal &lt; <span class="hljs-number">0</span>) {
+                    newTotal = <span class="hljs-number">0</span>;
+                    diff = li.Object.quantity * -<span class="hljs-number">1</span>;
+                }
+                <span class="hljs-keyword">if</span> (newTotal === <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">this</span>.UpdateReserveStore(li.Object.quantity * -<span class="hljs-number">1</span>);
+                    Event.purgeElement(li);
+                    li.parentNode.removeChild(li);
+                } <span class="hljs-keyword">else</span> {
+                    lq.innerHTML = newTotal;
+                    li.Object.quantity = newTotal;
+                    <span class="hljs-keyword">this</span>.UpdateReserveStore(diff);
+                    <span class="hljs-keyword">var</span> a = <span class="hljs-keyword">new</span> Util.ColorAnim(lq, {
+                        color: {
+                            from: <span class="hljs-string">'#f00'</span>,
+                            to: <span class="hljs-string">'#fff'</span>
+                        }
+                    }, <span class="hljs-number">1.5</span>);
+                    a.animate();
+                }
+            }
+        },
+        UpdateReserveStore: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(byVal)</span> {</span>
+            <span class="hljs-keyword">var</span> c = Dom.get(<span class="hljs-string">"distribTotalSelected"</span>),
+                cv = c.innerHTML * <span class="hljs-number">1</span>;
+            c.innerHTML = cv + byVal;
+        },
+        ReserveSubmit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> data = {
+                session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                building_id: <span class="hljs-keyword">this</span>.building.id
+            },
+                toStoreLis = Sel.query(<span class="hljs-string">"li"</span>, <span class="hljs-string">"distribReserveToStore"</span>),
+                reserveItems = [],
+                reserveTotal = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; toStoreLis.length; n++) {
+                <span class="hljs-keyword">var</span> obj = toStoreLis[n].Object;
+                <span class="hljs-keyword">if</span> (obj) {
+                    reserveItems[reserveItems.length] = obj;
+                    reserveTotal += obj.quantity;
+                }
+            }
+            <span class="hljs-keyword">if</span> (reserveTotal === <span class="hljs-number">0</span>) {
+                Dom.get(<span class="hljs-string">"distribReserveMessage"</span>)
+                    .innerHTML = <span class="hljs-string">"Must add items to Reserve."</span>;
+            } <span class="hljs-keyword">else</span> {
+                data.resources = reserveItems;
+                Dom.get(<span class="hljs-string">"distribReserveMessage"</span>)
+                    .innerHTML = <span class="hljs-string">""</span>;
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">this</span>.service.reserve(data, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; toStoreLis.length; n++) {
+                            <span class="hljs-keyword">if</span> (toStoreLis[n].Object) {
+                                Event.purgeElement(toStoreLis[n]);
+                                toStoreLis[n].parentNode.removeChild(toStoreLis[n]);
+                            }
+                        }
+                        Dom.get(<span class="hljs-string">"distribTotalSelected"</span>)
+                            .innerHTML = <span class="hljs-string">"0"</span>;
+                        <span class="hljs-keyword">delete</span> o.result.status;
+                        <span class="hljs-keyword">this</span>.result = o.result;
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.CheckReserve({
+                            newValue: <span class="hljs-number">1</span>
+                        });
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        StorePopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> reserve = <span class="hljs-keyword">this</span>.result.reserve || {},
+                inReserve = Dom.get(<span class="hljs-string">"distribReserveInReserve"</span>),
+                announce = Dom.get(<span class="hljs-string">"distribReserveAnnounce"</span>),
+                li = document.createElement(<span class="hljs-string">"li"</span>),
+                nLi, ul, r, x, resource, name;
+            <span class="hljs-keyword">if</span> (announce) {
+                announce.innerHTML = <span class="hljs-string">'Time left on current reserve: &lt;span id="distribReserveTime"&gt;&lt;/span&gt;'</span>;
+                <span class="hljs-keyword">this</span>.addQueue(reserve.seconds_remaining, <span class="hljs-keyword">this</span>.StoreTimer, <span class="hljs-string">"distribReserveTime"</span>);
+            }
+            <span class="hljs-keyword">if</span> (inReserve &amp;&amp; reserve.resources &amp;&amp; reserve.resources.length &gt; <span class="hljs-number">0</span>) {
+                inReserve.innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">for</span> (x = <span class="hljs-number">0</span>; x &lt; reserve.resources.length; x++) {
+                    <span class="hljs-keyword">var</span> obj = reserve.resources[x];
+                    nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    nLi.innerHTML = [<span class="hljs-string">'&lt;span class="reserveName"&gt;'</span>, obj.type.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, obj.quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt;'</span>].join(<span class="hljs-string">''</span>);
+                    inReserve.appendChild(nLi);
+                }
+            }
+        },
+        StoreTimer: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(remaining, el)</span> {</span>
+            <span class="hljs-keyword">if</span> (remaining &lt;= <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">var</span> span = Dom.get(el),
+                    p = span.parentNode;
+                p.removeChild(span);
+                p.innerHTML = <span class="hljs-string">"Search Complete"</span>;
+            } <span class="hljs-keyword">else</span> {
+                Dom.get(el)
+                    .innerHTML = Lib.formatTime(<span class="hljs-built_in">Math</span>.round(remaining));
+            }
+        },
+        StoreRelease: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Dom.get(<span class="hljs-string">"distribReleaseMessage"</span>)
+                .innerHTML = <span class="hljs-string">""</span>;
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.service.release_reserve({
+                session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                building_id: <span class="hljs-keyword">this</span>.building.id
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    Dom.get(<span class="hljs-string">"distribReserveInReserve"</span>)
+                        .innerHTML = <span class="hljs-string">""</span>;
+                    <span class="hljs-keyword">delete</span> o.result.status;
+                    <span class="hljs-keyword">this</span>.result = o.result;
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.CheckReserve({
+                        newValue: <span class="hljs-number">1</span>
+                    });
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        }
+    });
+    Lacuna.buildings.DistributionCenter = DistributionCenter;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

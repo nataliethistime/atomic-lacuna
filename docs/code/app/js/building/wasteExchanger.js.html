@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - wasteExchanger.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/wasteExchanger.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/wasteExchanger.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> WasteExchanger = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        WasteExchanger.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.Exchanger;
+    };
+    Lang.extend(WasteExchanger, Lacuna.buildings.Building, {
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.building.level &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">var</span> t = <span class="hljs-keyword">this</span>._getRecycleTab();
+                <span class="hljs-keyword">if</span> (t) {
+                    <span class="hljs-keyword">return</span> [t];
+                }
+            }
+        },
+        _getRecycleTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.result.recycle.can) {
+                <span class="hljs-keyword">this</span>.recycleTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                    label: <span class="hljs-string">"Recycle"</span>,
+                    contentEl: <span class="hljs-keyword">this</span>.RecycleGetDisplay(<span class="hljs-keyword">this</span>.result.recycle)
+                });
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.result.recycle.seconds_remaining) {
+                <span class="hljs-keyword">this</span>.recycleTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                    label: <span class="hljs-string">"Recycle"</span>,
+                    contentEl: <span class="hljs-keyword">this</span>.RecycleGetTimeDisplay(<span class="hljs-keyword">this</span>.result.recycle)
+                });
+                <span class="hljs-keyword">this</span>.addQueue(<span class="hljs-keyword">this</span>.result.recycle.seconds_remaining, <span class="hljs-keyword">this</span>.RecycleQueue, <span class="hljs-string">"recycleTime"</span>, <span class="hljs-keyword">this</span>);
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.recycleTab;
+        },
+        Recycle: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, options)</span> {</span>
+            <span class="hljs-keyword">var</span> planet = Game.GetCurrentPlanet();
+            <span class="hljs-keyword">if</span> (planet) {
+                <span class="hljs-keyword">var</span> ore = <span class="hljs-keyword">this</span>.recycleOreEl.value * <span class="hljs-number">1</span>,
+                    water = <span class="hljs-keyword">this</span>.recycleWaterEl.value * <span class="hljs-number">1</span>,
+                    energy = <span class="hljs-keyword">this</span>.recycleEnergyEl.value * <span class="hljs-number">1</span>,
+                    total = ore + water + energy,
+                    useE = options ? options.instant : <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">if</span> (total &gt; planet.waste_stored) {
+                    <span class="hljs-keyword">this</span>.recycleMessageEl.innerHTML = <span class="hljs-string">"Can only recycle waste you have stored."</span>;
+                } <span class="hljs-keyword">else</span> {
+                    Lacuna.Pulser.Show();
+                    <span class="hljs-keyword">this</span>.service.recycle({
+                        session_id: Game.GetSession(),
+                        building_id: <span class="hljs-keyword">this</span>.building.id,
+                        water: water,
+                        ore: ore,
+                        energy: energy,
+                        use_essentia: useE
+                    }, {
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                            YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"WasteExchanger.Recycle.success"</span>);
+                            Lacuna.Pulser.Hide();
+                            <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                            <span class="hljs-keyword">this</span>.work = o.result.building.work;
+                            <span class="hljs-comment">//this.updateBuildingTile(o.result.building);</span>
+                            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.recycleTab) {
+                                <span class="hljs-keyword">var</span> ce = <span class="hljs-keyword">this</span>.recycleTab.get(<span class="hljs-string">"contentEl"</span>);
+                                Event.purgeElement(ce);
+                                ce.innerHTML = <span class="hljs-string">""</span>;
+                                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.work &amp;&amp; <span class="hljs-keyword">this</span>.work.seconds_remaining &amp;&amp; <span class="hljs-keyword">this</span>.work.seconds_remaining * <span class="hljs-number">1</span> &gt; <span class="hljs-number">0</span>) {
+                                    ce.appendChild(<span class="hljs-keyword">this</span>.RecycleGetTimeDisplay(o.result.recycle, water, ore, energy));
+                                    <span class="hljs-keyword">this</span>.addQueue(<span class="hljs-keyword">this</span>.work.seconds_remaining, <span class="hljs-keyword">this</span>.RecycleQueue, <span class="hljs-string">"recycleTime"</span>, <span class="hljs-keyword">this</span>);
+                                } <span class="hljs-keyword">else</span> {
+                                    ce.appendChild(<span class="hljs-keyword">this</span>.RecycleGetDisplay(o.result.recycle));
+                                    <span class="hljs-keyword">this</span>.recycleMessageEl.innerHTML = <span class="hljs-string">"Successfully recycled "</span> + total + <span class="hljs-string">" waste."</span>;
+                                }
+                            }
+                        },
+                        scope: <span class="hljs-keyword">this</span>
+                    });
+                }
+            }
+        },
+        RecycleGetDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(recycle)</span> {</span>
+            <span class="hljs-keyword">var</span> planet = Game.GetCurrentPlanet(),
+                ul = document.createElement(<span class="hljs-string">"ul"</span>),
+                li = document.createElement(<span class="hljs-string">"li"</span>),
+                nLi = li.cloneNode(<span class="hljs-literal">false</span>),
+                input, btn;
+            <span class="hljs-keyword">if</span> (recycle) {
+                <span class="hljs-keyword">this</span>.recycle = recycle;
+            }
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.recycle) {
+                nLi.innerHTML = [<span class="hljs-string">'Can recycle a maximum of '</span>, Lib.formatNumber(<span class="hljs-keyword">this</span>.recycle.max_recycle), <span class="hljs-string">' waste at '</span>, Lib.formatNumber(<span class="hljs-built_in">Math</span>.floor(<span class="hljs-number">3600</span> / <span class="hljs-keyword">this</span>.recycle.seconds_per_resource)), <span class="hljs-string">'/hour.'</span>].join(<span class="hljs-string">''</span>);
+                ul.appendChild(nLi);
+                nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            }
+            nLi.innerHTML = <span class="hljs-string">'&lt;label&gt;Recycle into:&lt;/label&gt;'</span>;
+            ul.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = <span class="hljs-string">'&lt;span class="smallImg"&gt;&lt;img src="'</span> + Lib.AssetUrl + <span class="hljs-string">'ui/s/ore.png" class="smallOre" /&gt;&lt;/span&gt;'</span>;
+            input = document.createElement(<span class="hljs-string">"input"</span>);
+            input.id = <span class="hljs-string">"recycleOreAmount"</span>;
+            input.type = <span class="hljs-string">"text"</span>;
+            input.value = <span class="hljs-number">0</span>;
+            input = nLi.appendChild(input);
+            Event.on(input, <span class="hljs-string">"change"</span>, <span class="hljs-keyword">this</span>.RecycleValueChange, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.recycleOreEl = input;
+            btn = document.createElement(<span class="hljs-string">"button"</span>);
+            btn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+            btn.innerHTML = <span class="hljs-string">"Max"</span>;
+            btn.resourceType = <span class="hljs-string">"ore"</span>;
+            btn = nLi.appendChild(btn);
+            Event.on(btn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.MaxValue, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            ul.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = <span class="hljs-string">'&lt;span class="smallImg"&gt;&lt;img src="'</span> + Lib.AssetUrl + <span class="hljs-string">'ui/s/water.png" class="smallWater" /&gt;&lt;/span&gt;'</span>;
+            input = document.createElement(<span class="hljs-string">"input"</span>);
+            input.id = <span class="hljs-string">"recycleWaterAmount"</span>;
+            input.type = <span class="hljs-string">"text"</span>;
+            input.value = <span class="hljs-number">0</span>;
+            input = nLi.appendChild(input);
+            Event.on(input, <span class="hljs-string">"change"</span>, <span class="hljs-keyword">this</span>.RecycleValueChange, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.recycleWaterEl = input;
+            btn = document.createElement(<span class="hljs-string">"button"</span>);
+            btn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+            btn.innerHTML = <span class="hljs-string">"Max"</span>;
+            btn.resourceType = <span class="hljs-string">"water"</span>;
+            btn = nLi.appendChild(btn);
+            Event.on(btn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.MaxValue, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            btn = document.createElement(<span class="hljs-string">"button"</span>);
+            btn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+            btn.innerHTML = <span class="hljs-string">"Distribute Evenly"</span>;
+            btn = nLi.appendChild(btn);
+            Event.on(btn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Distribute, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            ul.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = <span class="hljs-string">'&lt;span class="smallImg"&gt;&lt;img src="'</span> + Lib.AssetUrl + <span class="hljs-string">'ui/s/energy.png" class="smallEnergy" /&gt;&lt;/span&gt;'</span>;
+            input = document.createElement(<span class="hljs-string">"input"</span>);
+            input.id = <span class="hljs-string">"recycleEnergyAmount"</span>;
+            input.type = <span class="hljs-string">"text"</span>;
+            input.value = <span class="hljs-number">0</span>;
+            input = nLi.appendChild(input);
+            Event.on(input, <span class="hljs-string">"change"</span>, <span class="hljs-keyword">this</span>.RecycleValueChange, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.recycleEnergyEl = input;
+            btn = document.createElement(<span class="hljs-string">"button"</span>);
+            btn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+            btn.innerHTML = <span class="hljs-string">"Max"</span>;
+            btn.resourceType = <span class="hljs-string">"energy"</span>;
+            btn = nLi.appendChild(btn);
+            Event.on(btn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.MaxValue, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            ul.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = <span class="hljs-string">'&lt;label&gt;Total:&lt;/label&gt;'</span>;
+            <span class="hljs-keyword">var</span> span = nLi.appendChild(document.createElement(<span class="hljs-string">"span"</span>));
+            span.innerHTML = <span class="hljs-number">0</span>;
+            ul.appendChild(nLi);
+            <span class="hljs-keyword">this</span>.totalWasteToRecycle = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">this</span>.totalWasteToRecycleEl = span;
+            <span class="hljs-keyword">var</span> div = document.createElement(<span class="hljs-string">"div"</span>);
+            Dom.addClass(div, <span class="hljs-string">'recycleTab'</span>);
+            div.appendChild(ul);
+            <span class="hljs-keyword">var</span> fieldset;
+            <span class="hljs-keyword">var</span> form = document.createElement(<span class="hljs-string">'form'</span>);
+            fieldset = document.createElement(<span class="hljs-string">'fieldset'</span>);
+            fieldset.innerHTML = <span class="hljs-string">'&lt;legend&gt;Recycle&lt;/legend&gt;'</span>;
+            <span class="hljs-keyword">var</span> label = fieldset.appendChild(document.createElement(<span class="hljs-string">'label'</span>));
+            label.innerHTML = <span class="hljs-string">'Time to Recycle:&lt;span class="smallImg"&gt;&lt;img src="'</span> + Lib.AssetUrl + <span class="hljs-string">'ui/s/time.png" class="smallTime" title="Time" /&gt;&lt;/span&gt;'</span>;
+            span = label.appendChild(document.createElement(<span class="hljs-string">"span"</span>));
+            span.innerHTML = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">this</span>.totalTimeToRecycle = span;
+            btn = document.createElement(<span class="hljs-string">"button"</span>);
+            btn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+            btn.innerHTML = <span class="hljs-string">"Recycle"</span>;
+            btn = fieldset.appendChild(btn);
+            Event.on(btn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Recycle, <span class="hljs-literal">undefined</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            form.appendChild(fieldset);
+            <span class="hljs-keyword">if</span> (Game.EmpireData.essentia * <span class="hljs-number">1</span> &gt;= <span class="hljs-number">2</span>) {
+                fieldset = document.createElement(<span class="hljs-string">'fieldset'</span>);
+                fieldset.innerHTML = <span class="hljs-string">'&lt;legend&gt;Instant Recycle&lt;/legend&gt;&lt;label&gt;Cost to recycle:&lt;span class="smallImg"&gt;&lt;img src="'</span> + Lib.AssetUrl + <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" title="Essentia" /&gt;&lt;/span&gt;2&lt;/label&gt;'</span>;
+                btn = document.createElement(<span class="hljs-string">"button"</span>);
+                btn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+                btn.innerHTML = <span class="hljs-string">"Recycle Instantly"</span>;
+                btn = fieldset.appendChild(btn);
+                Event.on(btn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Recycle, {
+                    instant: <span class="hljs-literal">true</span>
+                }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                form.appendChild(fieldset);
+            }
+            div.appendChild(form);
+            <span class="hljs-keyword">this</span>.recycleMessageEl = div.appendChild(document.createElement(<span class="hljs-string">'div'</span>));
+            <span class="hljs-keyword">return</span> div;
+        },
+        Distribute: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">var</span> btn = Event.getTarget(e),
+                cp = Game.GetCurrentPlanet(),
+                maxVal = cp.waste_stored &lt;= <span class="hljs-keyword">this</span>.recycle.max_recycle ? cp.waste_stored : <span class="hljs-keyword">this</span>.recycle.max_recycle;
+            <span class="hljs-keyword">var</span> third = <span class="hljs-built_in">Math</span>.round(maxVal / <span class="hljs-number">3</span>);
+            <span class="hljs-keyword">this</span>.recycleOreEl.value = third;
+            third = <span class="hljs-built_in">Math</span>.round((maxVal - third) / <span class="hljs-number">2</span>);
+            <span class="hljs-keyword">this</span>.recycleWaterEl.value = third;
+            third = <span class="hljs-built_in">Math</span>.floor(maxVal - third - <span class="hljs-keyword">this</span>.recycleOreEl.value);
+            <span class="hljs-keyword">this</span>.recycleEnergyEl.value = third;
+            <span class="hljs-keyword">this</span>.totalWasteToRecycle = maxVal;
+            <span class="hljs-keyword">this</span>.totalWasteToRecycleEl.innerHTML = Lib.formatNumber(<span class="hljs-keyword">this</span>.totalWasteToRecycle);
+            <span class="hljs-keyword">this</span>.SetTime();
+        },
+        MaxValue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">var</span> btn = Event.getTarget(e),
+                input = btn.input,
+                cp = Game.GetCurrentPlanet(),
+                origVal, newVal;
+            <span class="hljs-keyword">switch</span> (btn.resourceType) {
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"ore"</span>:
+                origVal = <span class="hljs-keyword">this</span>.recycleOreEl.value * <span class="hljs-number">1</span>;
+                newVal = <span class="hljs-built_in">Math</span>.round(cp.waste_stored &gt; <span class="hljs-keyword">this</span>.recycle.max_recycle ? <span class="hljs-keyword">this</span>.recycle.max_recycle : cp.waste_stored);
+                <span class="hljs-keyword">this</span>.recycleOreEl.value = newVal;
+                <span class="hljs-keyword">this</span>.recycleWaterEl.value = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">this</span>.recycleEnergyEl.value = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"water"</span>:
+                origVal = <span class="hljs-keyword">this</span>.recycleWaterEl.value * <span class="hljs-number">1</span>;
+                newVal = <span class="hljs-built_in">Math</span>.round(cp.waste_stored &gt; <span class="hljs-keyword">this</span>.recycle.max_recycle ? <span class="hljs-keyword">this</span>.recycle.max_recycle : cp.waste_stored);
+                <span class="hljs-keyword">this</span>.recycleWaterEl.value = newVal;
+                <span class="hljs-keyword">this</span>.recycleOreEl.value = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">this</span>.recycleEnergyEl.value = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"energy"</span>:
+                origVal = <span class="hljs-keyword">this</span>.recycleEnergyEl.value * <span class="hljs-number">1</span>;
+                newVal = <span class="hljs-built_in">Math</span>.round(cp.waste_stored &gt; <span class="hljs-keyword">this</span>.recycle.max_recycle ? <span class="hljs-keyword">this</span>.recycle.max_recycle : cp.waste_stored);
+                <span class="hljs-keyword">this</span>.recycleEnergyEl.value = newVal;
+                <span class="hljs-keyword">this</span>.recycleOreEl.value = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">this</span>.recycleWaterEl.value = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">break</span>;
+            }
+            <span class="hljs-keyword">this</span>.totalWasteToRecycle = newVal;
+            <span class="hljs-keyword">this</span>.totalWasteToRecycleEl.innerHTML = Lib.formatNumber(<span class="hljs-keyword">this</span>.totalWasteToRecycle);
+            <span class="hljs-keyword">this</span>.SetTime();
+        },
+        SetTime: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> seconds = <span class="hljs-keyword">this</span>.totalWasteToRecycle * <span class="hljs-keyword">this</span>.recycle.seconds_per_resource;
+            <span class="hljs-keyword">this</span>.totalTimeToRecycle.innerHTML = Lib.formatTime(seconds);
+        },
+        RecycleGetTimeDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(recycle, water, ore, energy)</span> {</span>
+            <span class="hljs-keyword">var</span> div = document.createElement(<span class="hljs-string">"div"</span>),
+                btnDiv = div.cloneNode(<span class="hljs-literal">false</span>);
+            div.innerHTML = [<span class="hljs-string">'&lt;p&gt;Current recycling job:&lt;/p&gt;'</span>, <span class="hljs-string">'&lt;ul&gt;&lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/ore.png" class="smallOre" /&gt;&lt;/span&gt;'</span>, recycle.ore || ore || <span class="hljs-string">''</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/water.png" class="smallWater" /&gt;&lt;/span&gt;'</span>, recycle.water || water || <span class="hljs-string">''</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/energy.png" class="smallEnergy" /&gt;&lt;/span&gt;'</span>, recycle.energy || energy || <span class="hljs-string">''</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/time.png" class="smallTime" /&gt;&lt;/span&gt;&lt;span id="recycleTime"&gt;'</span>, Lib.formatTime(recycle.seconds_remaining), <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;'</span>].join(<span class="hljs-string">''</span>);
+            btnDiv.appendChild(document.createTextNode(<span class="hljs-string">"You may subsidize the recycle job for 2 essentia and finish it immediately. "</span>));
+            <span class="hljs-keyword">var</span> bbtn = document.createElement(<span class="hljs-string">"button"</span>);
+            bbtn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+            bbtn.innerHTML = <span class="hljs-string">"Subsidize"</span>;
+            bbtn = btnDiv.appendChild(bbtn);
+            Event.on(bbtn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.RecycleSubsidize, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            div.appendChild(btnDiv);
+            <span class="hljs-keyword">return</span> div;
+        },
+        RecycleQueue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(remaining, el)</span> {</span>
+            el = Dom.get(el);
+            <span class="hljs-keyword">if</span> (!el) {
+                <span class="hljs-keyword">return</span>;
+            }
+            <span class="hljs-keyword">if</span> (remaining &lt; <span class="hljs-number">0</span>) {
+                remaining = <span class="hljs-number">0</span>;
+            }
+            el.innerHTML = Lib.formatTime(<span class="hljs-built_in">Math</span>.round(remaining));
+            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Math</span>.round(remaining) === <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.recycleTab) {
+                    <span class="hljs-keyword">var</span> ce = <span class="hljs-keyword">this</span>.recycleTab.get(<span class="hljs-string">"contentEl"</span>);
+                    Event.purgeElement(ce);
+                    ce.innerHTML = <span class="hljs-string">""</span>;
+                    ce.appendChild(<span class="hljs-keyword">this</span>.RecycleGetDisplay(<span class="hljs-keyword">this</span>.result.recycle));
+                }
+            }
+        },
+        RecycleValueChange: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">this</span>.totalWasteToRecycle = <span class="hljs-keyword">this</span>.recycleOreEl.value * <span class="hljs-number">1</span> + <span class="hljs-keyword">this</span>.recycleWaterEl.value * <span class="hljs-number">1</span> + <span class="hljs-keyword">this</span>.recycleEnergyEl.value * <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">this</span>.totalWasteToRecycleEl.innerHTML = Lib.formatNumber(<span class="hljs-keyword">this</span>.totalWasteToRecycle);
+            <span class="hljs-keyword">this</span>.SetTime();
+        },
+        RecycleSubsidize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.service.subsidize_recycling({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.building.id
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"WasteExchanger.RecycleSubsidize.success"</span>);
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    <span class="hljs-keyword">this</span>.resetQueue();
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.recycleTab) {
+                        <span class="hljs-keyword">var</span> ce = <span class="hljs-keyword">this</span>.recycleTab.get(<span class="hljs-string">"contentEl"</span>);
+                        Event.purgeElement(ce);
+                        ce.innerHTML = <span class="hljs-string">""</span>;
+                        ce.appendChild(<span class="hljs-keyword">this</span>.RecycleGetDisplay(o.result.recycle));
+                    }
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        }
+    });
+    YAHOO.lacuna.buildings.WasteExchanger = WasteExchanger;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

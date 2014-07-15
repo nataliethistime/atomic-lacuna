@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - policeStation.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/module/policeStation.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/module/policeStation.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Pager = YAHOO.widget.Paginator,
+        Sel = Util.Selector,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> PoliceStation = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        PoliceStation.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Modules.PoliceStation;
+        <span class="hljs-keyword">this</span>.foreignSpiesMessage = <span class="hljs-string">"There may be spies on your station that we don't know about."</span>;
+    };
+    Lang.extend(PoliceStation, Lacuna.buildings.Security);
+    YAHOO.lacuna.modules.PoliceStation = PoliceStation;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

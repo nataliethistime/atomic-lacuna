@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - network19.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/network19.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/network19.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Sel = Util.Selector,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> Network19 = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        Network19.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.Network19;
+    };
+    Lang.extend(Network19, Lacuna.buildings.Building, {
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getCoverageTab()];
+        },
+        _getCoverageTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.coverageTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Coverage"</span>,
+                content: [<span class="hljs-string">'&lt;div id="newsCoverageContainer"&gt;'</span>, <span class="hljs-string">'    &lt;span id="newsCoverageText"&gt;'</span>, <span class="hljs-keyword">this</span>.result.restrict_coverage === <span class="hljs-string">"1"</span> ? <span class="hljs-string">'Coverage is current restricted'</span> : <span class="hljs-string">'News is flowing freely'</span>, <span class="hljs-string">'&lt;/span&gt;'</span>, <span class="hljs-string">'    : &lt;button id="newsCoverage" type="button"&gt;'</span>, (<span class="hljs-keyword">this</span>.result.restrict_coverage === <span class="hljs-string">"1"</span> ? <span class="hljs-string">'Open Coverage'</span> : <span class="hljs-string">'Restrict Coverage'</span>), <span class="hljs-string">'&lt;/button&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="newsFeedContainer"&gt;'</span>, <span class="hljs-string">'    &lt;ul id="newsFeed"&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="newsRssLinksContainer"&gt;'</span>, <span class="hljs-string">'    &lt;ul id="newsRssLinks" class="clearafter"&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">this</span>.coverageTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.NewsGet, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.on(<span class="hljs-string">"newsCoverage"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.NewsCoverage, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.coverageTab;
+        },
+        NewsCoverage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">var</span> target = Event.getTarget(e),
+                isRestrict = <span class="hljs-number">1</span>;
+            target.disabled = <span class="hljs-literal">true</span>;
+            <span class="hljs-keyword">if</span> (target.innerHTML === <span class="hljs-string">"Open Coverage"</span>) {
+                isRestrict = <span class="hljs-number">0</span>;
+            }
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.service.restrict_coverage({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.result.building.id,
+                onoff: isRestrict
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Network19.NewsCoverage.restrict_coverage.success"</span>);
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    Dom.get(<span class="hljs-string">"newsCoverageText"</span>)
+                        .innerHTML = isRestrict ? <span class="hljs-string">'Coverage is currently restricted'</span> : <span class="hljs-string">'News is flowing freely'</span>;
+                    target.innerHTML = isRestrict ? <span class="hljs-string">'Open Coverage'</span> : <span class="hljs-string">'Restrict Coverage'</span>;
+                    target.disabled = <span class="hljs-literal">false</span>;
+                },
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    target.disabled = <span class="hljs-literal">false</span>;
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        NewsGet: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.service.view_news({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.building.id
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Network19.NewsGet.success"</span>);
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    <span class="hljs-keyword">var</span> news = o.result.news,
+                        newsFeed = Dom.get(<span class="hljs-string">"newsFeed"</span>);
+                    <span class="hljs-keyword">if</span> (newsFeed) {
+                        <span class="hljs-keyword">var</span> feedFrag = document.createDocumentFragment(),
+                            rss = o.result.feeds,
+                            newsRssLinks = Dom.get(<span class="hljs-string">"newsRssLinks"</span>),
+                            rssFrag = document.createDocumentFragment(),
+                            li = document.createElement(<span class="hljs-string">"li"</span>);
+                        newsFeed.innerHTML = <span class="hljs-string">""</span>;
+                        newsRssLinks.innerHTML = <span class="hljs-string">""</span>;
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; news.length; i++) {
+                            <span class="hljs-keyword">var</span> ni = news[i],
+                                nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                            Dom.addClass(nLi, <span class="hljs-string">"newsHeadline"</span>);
+                            nLi.innerHTML = [Lib.formatServerDateShort(ni.date), <span class="hljs-string">": "</span>, ni.headline].join(<span class="hljs-string">''</span>);
+                            feedFrag.appendChild(nLi);
+                        }
+                        newsFeed.appendChild(feedFrag);
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> rss) {
+                            <span class="hljs-keyword">if</span> (rss.hasOwnProperty(key)) {
+                                <span class="hljs-keyword">var</span> link = rss[key],
+                                    rssLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                                Dom.addClass(rssLi, <span class="hljs-string">"newsRssLink"</span>);
+                                rssLi.innerHTML = [key, <span class="hljs-string">'&lt;a href="'</span>, link, <span class="hljs-string">'" target="_blank"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/rss.png" alt="rss" style="margin-left:1px" /&gt;&lt;/a&gt;'</span>].join(<span class="hljs-string">''</span>);
+                                rssFrag.appendChild(rssLi);
+                            }
+                        }
+                        newsRssLinks.appendChild(rssFrag);
+                    }
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        }
+    });
+    YAHOO.lacuna.buildings.Network19 = Network19;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - capitol.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/capitol.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/capitol.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> Capitol = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        Capitol.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.Capitol;
+    };
+    YAHOO.lang.extend(Capitol, Lacuna.buildings.Building, {
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getRenameTab()];
+        },
+        _getRenameTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> div = document.createElement(<span class="hljs-string">"div"</span>);
+            Dom.addClass(div, <span class="hljs-string">'capitolEmpireRenameTab'</span>);
+            div.innerHTML = [<span class="hljs-string">'&lt;p&gt;'</span>, <span class="hljs-string">'    Current empire name: &lt;span id="capitolCurrentEmpireName"&gt;'</span>, Game.EmpireData.name, <span class="hljs-string">'&lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/p&gt;'</span>, <span class="hljs-string">'&lt;fieldset style="text-align: center"&gt;'</span>, <span class="hljs-string">'    &lt;legend&gt;Change Empire Name&lt;/legend&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;&lt;label&gt;Cost to change:&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" title="Essentia" /&gt;&lt;/span&gt;'</span>, <span class="hljs-keyword">this</span>.result.rename_empire_cost, <span class="hljs-string">'&lt;/label&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;&lt;label&gt;New empire name: &lt;input type="text" id="capitolNewEmpireName"&gt;&lt;/input&gt;&lt;/label&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;&lt;button id="capitolChangeEmpireName"&gt;Change Name&lt;/button&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/fieldset&gt;'</span>].join(<span class="hljs-string">''</span>);
+            Event.on(<span class="hljs-string">'capitolChangeEmpireName'</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.RenameEmpire, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">var</span> tab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Rename Empire"</span>,
+                contentEl: div
+            });
+            <span class="hljs-keyword">return</span> tab;
+        },
+        RenameEmpire: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            Event.stopEvent(e);
+            <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
+            <span class="hljs-keyword">var</span> newName = Dom.get(<span class="hljs-string">'capitolNewEmpireName'</span>)
+                .value;
+            Lacuna.Pulser.Show();
+            btn.disabled = <span class="hljs-literal">true</span>;
+            <span class="hljs-keyword">this</span>.service.rename_empire({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.building.id,
+                name: newName
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Capitol.rename_empire.success"</span>);
+                    btn.disabled = <span class="hljs-literal">false</span>;
+                    Dom.get(<span class="hljs-string">'capitolNewEmpireName'</span>)
+                        .value = <span class="hljs-string">''</span>;
+                    Dom.get(<span class="hljs-string">'capitolCurrentEmpireName'</span>)
+                        .innerHTML = newName;
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    alert(<span class="hljs-string">'Your empire name has been changed!'</span>);
+                },
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    btn.disabled = <span class="hljs-literal">false</span>;
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        }
+    });
+    Lacuna.buildings.Capitol = Capitol;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

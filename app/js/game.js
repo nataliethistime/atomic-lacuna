@@ -18,6 +18,22 @@ if (typeof YAHOO.lacuna.Game == "undefined" || !YAHOO.lacuna.Game) {
             //(60min * 60sec * 1000ms),
             onTick: new Util.CustomEvent("onTick"),
             OverlayManager: new YAHOO.widget.OverlayManager(),
+
+            /**
+             * Output the given `str` to _stdout_
+             * or the stream specified by `options`.
+             *
+             * Options:
+             *
+             *   - `stream` defaulting to _stdout_
+             *
+             * Examples:
+             *
+             *     mymodule.write('foo')
+             *     mymodule.write('foo', { stream: process.stderr })
+             *
+             */
+
             Start: function (query) {
                 var l = window.location;
                 Game.RPCBase = window.lacuna_rpc_base_url || l.protocol + '//' + l.host + '/';

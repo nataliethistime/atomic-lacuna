@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - about.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/about.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/about.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
+<span class="hljs-keyword">var</span> Templates = <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/templates'</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game;
+    <span class="hljs-keyword">var</span> About = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"about"</span>;
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onShow"</span>);
+        <span class="hljs-keyword">var</span> container = $(<span class="hljs-string">'&lt;div&gt;&lt;/div&gt;'</span>)
+            .attr(<span class="hljs-string">'id'</span>, <span class="hljs-keyword">this</span>.id)
+            .addClass(<span class="hljs-string">'nofooter'</span>);
+        $(document.body)
+            .prepend(container);
+        <span class="hljs-keyword">this</span>.panel = <span class="hljs-keyword">new</span> YAHOO.widget.Panel(<span class="hljs-keyword">this</span>.id, {
+            constraintoviewport: <span class="hljs-literal">true</span>,
+            fixedcenter: <span class="hljs-literal">true</span>,
+            visible: <span class="hljs-literal">false</span>,
+            draggable: <span class="hljs-literal">true</span>,
+            effect: Game.GetContainerEffect(),
+            underlay: <span class="hljs-literal">false</span>,
+            modal: <span class="hljs-literal">true</span>,
+            close: <span class="hljs-literal">true</span>,
+            width: <span class="hljs-string">'450px'</span>,
+            zIndex: <span class="hljs-number">9999</span>
+        });
+        <span class="hljs-keyword">this</span>.panel.setHeader(<span class="hljs-string">'About'</span>);
+        <span class="hljs-keyword">this</span>.panel.render();
+        Game.OverlayManager.register(<span class="hljs-keyword">this</span>.panel);
+    };
+    About.prototype = {
+        template: Templates.get(<span class="hljs-string">'menu.about'</span>),
+        show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.hasCredits) {
+                Game.Services.Stats.credits({}, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Stats"</span>);
+                        <span class="hljs-keyword">this</span>.render(o);
+                        <span class="hljs-keyword">this</span>.hasCredits = <span class="hljs-literal">true</span>;
+                        <span class="hljs-keyword">this</span>.open();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">this</span>.open();
+            }
+        },
+        open: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Game.OverlayManager.hideAll();
+            <span class="hljs-keyword">this</span>.panel.show();
+            <span class="hljs-keyword">this</span>.panel.center();
+        },
+        hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.panel.hide();
+        },
+        render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+            <span class="hljs-keyword">this</span>.panel.setBody(<span class="hljs-keyword">this</span>.template(o));
+            $(<span class="hljs-string">'#aboutVersion'</span>)
+                .html(Game.ServerData.version);
+            $(<span class="hljs-string">'#aboutYear'</span>)
+                .html((<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>())
+                    .getFullYear());
+        }
+    };
+    Lang.augmentProto(About, YAHOO.util.EventProvider);
+    Lacuna.About = <span class="hljs-keyword">new</span> About();
+}());</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

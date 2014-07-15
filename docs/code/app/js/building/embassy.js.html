@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - embassy.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/embassy.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/embassy.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Sel = Util.Selector,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library,
+        stashSel = <span class="hljs-string">'&lt;select&gt;&lt;option value="1"&gt;1&lt;/option&gt;&lt;option value="10"&gt;10&lt;/option&gt;&lt;option value="100"&gt;100&lt;/option&gt;&lt;option value="1000" selected="selected"&gt;1000&lt;/option&gt;&lt;option value="10000"&gt;10000&lt;/option&gt;&lt;/select&gt;'</span>;
+    <span class="hljs-keyword">var</span> Embassy = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        Embassy.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.Embassy;
+        <span class="hljs-keyword">this</span>.alliance = result.alliance_status;
+        <span class="hljs-keyword">this</span>.isLeader = (<span class="hljs-keyword">this</span>.alliance &amp;&amp; <span class="hljs-keyword">this</span>.alliance.leader_id === Game.EmpireData.id);
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.building.level &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-keyword">this</span>.MembersPopulate, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+        }
+    };
+    Lang.extend(Embassy, Lacuna.buildings.Building, {
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.alliance) {
+                <span class="hljs-keyword">var</span> tabs = [<span class="hljs-keyword">this</span>._getStashTab(), <span class="hljs-keyword">this</span>._getAllianceTab(), <span class="hljs-keyword">this</span>._getMemberTab(), <span class="hljs-keyword">this</span>._getInvitesTab()];
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.isLeader) {
+                    tabs.push(<span class="hljs-keyword">this</span>._getSendTab());
+                }
+                <span class="hljs-keyword">return</span> tabs;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getCreateTab(), <span class="hljs-keyword">this</span>._getInvitesTab()];
+            }
+        },
+        _getAllianceTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> div = document.createElement(<span class="hljs-string">"div"</span>);
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.isLeader) {
+                div.innerHTML = [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;ul&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Founded: &lt;/label&gt;'</span>, Lib.formatServerDate(<span class="hljs-keyword">this</span>.alliance.date_created), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Description: &lt;/label&gt;&lt;input type="text" id="embassyAllianceDesc" value="'</span>, <span class="hljs-keyword">this</span>.alliance.description, <span class="hljs-string">'" size="50" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Forums: &lt;/label&gt;&lt;input type="text" id="embassyAllianceForums" value="'</span>, <span class="hljs-keyword">this</span>.alliance.forum_uri, <span class="hljs-string">'" size="50" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Announcements: &lt;/label&gt;&lt;textarea id="embassyAllianceAnnoucements" rows="2" cols="80"&gt;'</span>, <span class="hljs-keyword">this</span>.alliance.announcements, <span class="hljs-string">'&lt;/textarea&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li id="embassyAllianceMessage"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;button type="button" id="embassyAllianceUpdate"&gt;Save&lt;/button&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;hr /&gt;&lt;div&gt;&lt;button type="button" id="embassyAllianceDissolve"&gt;Dissolve Alliance&lt;/button&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+                Event.on(<span class="hljs-string">"embassyAllianceUpdate"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.UpdateAlliance, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                Event.on(<span class="hljs-string">"embassyAllianceDissolve"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.DissolveAlliance, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            } <span class="hljs-keyword">else</span> {
+                div.innerHTML = [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;ul&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Founded: &lt;/label&gt;'</span>, Lib.formatServerDate(<span class="hljs-keyword">this</span>.alliance.date_created), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Description: &lt;/label&gt;'</span>, <span class="hljs-keyword">this</span>.alliance.description, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Forums: &lt;/label&gt;'</span>, <span class="hljs-keyword">this</span>.alliance.forum_uri ? [<span class="hljs-string">'&lt;a href="'</span>, <span class="hljs-keyword">this</span>.alliance.forum_uri, <span class="hljs-string">'" target="_blank"&gt;View&lt;/a&gt;'</span>].join(<span class="hljs-string">''</span>) : <span class="hljs-string">''</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Announcements: &lt;/label&gt;'</span>, <span class="hljs-keyword">this</span>.alliance.announcements ? <span class="hljs-keyword">this</span>.alliance.announcements.replace(<span class="hljs-string">'\n'</span>, <span class="hljs-string">'&lt;br /&gt;'</span>) : <span class="hljs-string">""</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;hr /&gt;&lt;div&gt;'</span>, <span class="hljs-string">'        &lt;textarea id="embassyAllianceLeaveReason" rows="3" cols="80"&gt;&lt;/textarea&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="embassyAllianceLeave"&gt;Leave Alliance&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+                Event.on(<span class="hljs-string">"embassyAllianceLeave"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.LeaveAlliance, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            }
+            <span class="hljs-keyword">this</span>.allianceTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-keyword">this</span>.alliance.name,
+                contentEl: div
+            });
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.allianceTab;
+        },
+        _getMemberTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.memberTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Members"</span>,
+                content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;ul class="embassyHeader embassyInfo clearafter"&gt;'</span>, <span class="hljs-string">'        &lt;li class="embassyEmpire"&gt;Empire&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="embassyAction"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="embassyMessage"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;&lt;div id="embassyMemberDetails"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.memberTab;
+        },
+        _getCreateTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.createTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Create Alliance"</span>,
+                content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;label&gt;Alliance Name&lt;/label&gt;&lt;input type="text" id="embassyCreateName" /&gt;'</span>, <span class="hljs-string">'    &lt;div id="embassyCreateMessage" class="alert"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;button type="button" id="embassyCreateSubmit"&gt;Create&lt;/button&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            Event.on(<span class="hljs-string">"embassyCreateSubmit"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.CreateAlliance, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.createTab;
+        },
+        _getInvitesTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.invitesTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"View Invites"</span>,
+                content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;ul class="embassyHeader embassyInfo clearafter"&gt;'</span>, <span class="hljs-string">'        &lt;li class="embassyAlliance"&gt;Alliance&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="embassyAction"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="embassyAction"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="embassyMessage"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;&lt;div id="embassyInvitesDetails"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">this</span>.invitesTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.getInvites, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.invitesTab;
+        },
+        _getSendTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.sendTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Send Invites"</span>,
+                content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;ul&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;Invite: &lt;span style="width:200px;display:inline-block;"&gt;&lt;input id="embassySendTo" type="text" /&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;Message: &lt;textarea id="embassySendMessage" rows="1" cols="80"&gt;&lt;/textarea&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;button type="button" id="embassySendInvite"&gt;Send Invite&lt;/button&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;hr /&gt;'</span>, <span class="hljs-string">'    &lt;h3&gt;Pending Invites&lt;/h3&gt;'</span>, <span class="hljs-string">'    &lt;ul class="embassyHeader embassyInfo clearafter"&gt;'</span>, <span class="hljs-string">'        &lt;li class="embassyEmpire"&gt;Empire&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="embassyAction"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="embassyMessage"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;&lt;div id="embassySendDetails"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">this</span>.sendTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.getPendingInvites, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.on(<span class="hljs-string">"embassySendInvite"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.SendInvite, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.sendTab;
+        },
+        _getStashTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.stashTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Stash"</span>,
+                content: [<span class="hljs-string">'&lt;div id="embassyStashAnnounce"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="embassyStash yui-g"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-g first"&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'            &lt;legend&gt;On Planet&lt;/legend&gt;'</span>, <span class="hljs-string">'            &lt;div class="embassyContainers" id="sopHt"&gt;&lt;ul id="embassyStashOnPlanet"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'            &lt;legend&gt;Donate&lt;/legend&gt;'</span>, <span class="hljs-string">'            &lt;div class="embassyContainers" id="stdHt"&gt;&lt;ul id="embassyStashToDonate"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;Total:&lt;span id="embassyTotalDonate"&gt;0&lt;/span&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-g"&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'            &lt;legend&gt;Exchange&lt;/legend&gt;'</span>, <span class="hljs-string">'            &lt;div class="embassyContainers" id="steHt"&gt;&lt;ul id="embassyStashToExchange"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;Total:&lt;span id="embassyTotalExchange"&gt;0&lt;/span&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'            &lt;legend&gt;In Stash&lt;/legend&gt;'</span>, <span class="hljs-string">'            &lt;div class="embassyContainers" id="sisHt"&gt;&lt;ul id="embassyStashInStash"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div style="text-align: center;"&gt;'</span>, <span class="hljs-string">'    &lt;div id="embassyStashMessage" class="alert"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;button type="button" id="embassyStashSubmit"&gt;Transfer&lt;/button&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">this</span>.stashTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.getStash, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.on(<span class="hljs-string">"embassyStashSubmit"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.StashSubmit, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.delegate(<span class="hljs-string">"embassyStashOnPlanet"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.StashDonateAdd, <span class="hljs-string">"button"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.delegate(<span class="hljs-string">"embassyStashToDonate"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.StashDonateRemove, <span class="hljs-string">"button"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.delegate(<span class="hljs-string">"embassyStashInStash"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.StashExchangeAdd, <span class="hljs-string">"button"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.delegate(<span class="hljs-string">"embassyStashToExchange"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.StashExchangeRemove, <span class="hljs-string">"button"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.stashTab;
+        },
+        _createSendToSelect: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> dataSource = <span class="hljs-keyword">new</span> Util.XHRDataSource(<span class="hljs-string">"/empire"</span>);
+            dataSource.connMethodPost = <span class="hljs-string">"POST"</span>;
+            dataSource.maxCacheEntries = <span class="hljs-number">2</span>;
+            dataSource.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
+            dataSource.responseSchema = {
+                resultsList: <span class="hljs-string">"result.empires"</span>,
+                fields: [<span class="hljs-string">"name"</span>, <span class="hljs-string">"id"</span>]
+            };
+            <span class="hljs-keyword">var</span> oTextboxList = <span class="hljs-keyword">new</span> YAHOO.lacuna.TextboxList(<span class="hljs-string">"embassySendTo"</span>, dataSource, { <span class="hljs-comment">//config options</span>
+                maxResultsDisplayed: <span class="hljs-number">10</span>,
+                minQueryLength: <span class="hljs-number">3</span>,
+                multiSelect: <span class="hljs-literal">false</span>,
+                forceSelection: <span class="hljs-literal">true</span>,
+                formatResultLabelKey: <span class="hljs-string">"name"</span>,
+                formatResultColumnKeys: [<span class="hljs-string">"name"</span>],
+                useIndicator: <span class="hljs-literal">true</span>
+            });
+            oTextboxList.generateRequest = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sQuery)</span> {</span>
+                <span class="hljs-keyword">var</span> s = Lang.JSON.stringify({
+                    <span class="hljs-string">"id"</span>: YAHOO.rpc.Service._requestId++,
+                    <span class="hljs-string">"method"</span>: <span class="hljs-string">"find"</span>,
+                    <span class="hljs-string">"jsonrpc"</span>: <span class="hljs-string">"2.0"</span>,
+                    <span class="hljs-string">"params"</span>: [
+                        Game.GetSession(<span class="hljs-string">""</span>),
+                        <span class="hljs-built_in">decodeURIComponent</span>(sQuery)
+                    ]
+                });
+                <span class="hljs-keyword">return</span> s;
+            };
+            <span class="hljs-keyword">this</span>.embassySendTo = oTextboxList;
+        },
+        <span class="hljs-comment">//Stash</span>
+        getStash: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">if</span> (e.newValue) {
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">this</span>.service.view_stash({
+                    session_id: Game.GetSession(),
+                    building_id: <span class="hljs-keyword">this</span>.building.id
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">delete</span> o.result.status;
+                        <span class="hljs-keyword">this</span>.stash = o.result;
+                        <span class="hljs-keyword">this</span>.StashPopulate();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        StashPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><pre><code>    <span class="hljs-string">"stash"</span> : {<span class="hljs-string">"gold"</span> : <span class="hljs-number">4500</span>},
+    <span class="hljs-string">"stored"</span> : {<span class="hljs-string">"energy"</span> : <span class="hljs-number">40000</span>},
+    <span class="hljs-string">"max_exchange_size"</span> : <span class="hljs-number">30000</span>,
+    <span class="hljs-string">"exchanges_remaining_today"</span> : <span class="hljs-number">1</span>
+</code></pre></div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">            <span class="hljs-keyword">var</span> stash = <span class="hljs-keyword">this</span>.stash || {},
+                onPlanet = Dom.get(<span class="hljs-string">"embassyStashOnPlanet"</span>),
+                inStash = Dom.get(<span class="hljs-string">"embassyStashInStash"</span>),
+                announce = Dom.get(<span class="hljs-string">"embassyStashAnnounce"</span>),
+                li = document.createElement(<span class="hljs-string">"li"</span>),
+                nLi, ul, r, x, resource, name;
+            <span class="hljs-keyword">if</span> (announce) {
+                announce.innerHTML = [<span class="hljs-string">'Donations are unlimited. You can exchange at most '</span>, Lib.formatNumber(stash.max_exchange_size), <span class="hljs-string">' resources and you have '</span>, stash.exchanges_remaining_today, <span class="hljs-string">' exchange(s) remaining today.'</span>].join(<span class="hljs-string">''</span>);
+            }
+            <span class="hljs-keyword">if</span> (onPlanet) {
+                onPlanet.innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">for</span> (r <span class="hljs-keyword">in</span> Lib.ResourceTypes) {
+                    <span class="hljs-keyword">if</span> (Lib.ResourceTypes.hasOwnProperty(r)) {
+                        resource = Lib.ResourceTypes[r];
+                        <span class="hljs-keyword">if</span> (Lang.isArray(resource)) {
+                            <span class="hljs-keyword">for</span> (x = <span class="hljs-number">0</span>; x &lt; resource.length; x++) {
+                                name = resource[x];
+                                <span class="hljs-keyword">if</span> (stash.stored[name]) {
+                                    nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                                    nLi.Stash = {
+                                        type: name,
+                                        quantity: stash.stored[name] * <span class="hljs-number">1</span>
+                                    };
+                                    nLi.innerHTML = [<span class="hljs-string">'&lt;span class="stashName"&gt;'</span>, name.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, stash.stored[name], <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; '</span>, stashSel, <span class="hljs-string">'&lt;button type="button"&gt;+&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
+                                    onPlanet.appendChild(nLi);
+                                }
+                            }
+                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (stash.stored[r] &amp;&amp; resource) {
+                            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                            nLi.Stash = {
+                                type: r,
+                                quantity: stash.stored[r] * <span class="hljs-number">1</span>
+                            };
+                            nLi.innerHTML = [<span class="hljs-string">'&lt;span class="stashName"&gt;'</span>, r.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, stash.stored[r], <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; '</span>, stashSel, <span class="hljs-string">'&lt;button type="button"&gt;+&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
+                            onPlanet.appendChild(nLi);
+                        }
+                    }
+                }
+            }
+            <span class="hljs-keyword">if</span> (inStash &amp;&amp; stash.stash) {
+                inStash.innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">for</span> (r <span class="hljs-keyword">in</span> Lib.ResourceTypes) {
+                    <span class="hljs-keyword">if</span> (Lib.ResourceTypes.hasOwnProperty(r)) {
+                        resource = Lib.ResourceTypes[r];
+                        <span class="hljs-keyword">if</span> (Lang.isArray(resource)) {
+                            <span class="hljs-keyword">for</span> (x = <span class="hljs-number">0</span>; x &lt; resource.length; x++) {
+                                name = resource[x];
+                                <span class="hljs-keyword">if</span> (stash.stash[name]) {
+                                    nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                                    nLi.Stash = {
+                                        type: name,
+                                        quantity: stash.stash[name] * <span class="hljs-number">1</span>
+                                    };
+                                    nLi.innerHTML = [<span class="hljs-string">'&lt;span class="stashName"&gt;'</span>, name.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, stash.stash[name], <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; '</span>, stashSel, <span class="hljs-string">'&lt;button type="button"&gt;+&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
+                                    inStash.appendChild(nLi);
+                                }
+                            }
+                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (stash.stash[r] &amp;&amp; resource) {
+                            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                            nLi.Stash = {
+                                type: r,
+                                quantity: stash.stash[r] * <span class="hljs-number">1</span>
+                            };
+                            nLi.innerHTML = [<span class="hljs-string">'&lt;span class="stashName"&gt;'</span>, r.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, stash.stash[r], <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; '</span>, stashSel, <span class="hljs-string">'&lt;button type="button"&gt;+&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
+                            inStash.appendChild(nLi);
+                        }
+                    }
+                }
+            }
+            <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                .h - <span class="hljs-number">245</span>;
+            <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">200</span>) {
+                Ht = <span class="hljs-number">200</span>;
+            }
+            Dom.setStyle(Dom.get(<span class="hljs-string">'sopHt'</span>), <span class="hljs-string">'height'</span>, Ht + <span class="hljs-string">'px'</span>);
+            Dom.setStyle(Dom.get(<span class="hljs-string">'stdHt'</span>), <span class="hljs-string">'height'</span>, Ht + <span class="hljs-string">'px'</span>);
+            Dom.setStyle(Dom.get(<span class="hljs-string">'steHt'</span>), <span class="hljs-string">'height'</span>, Ht + <span class="hljs-string">'px'</span>);
+            Dom.setStyle(Dom.get(<span class="hljs-string">'sisHt'</span>), <span class="hljs-string">'height'</span>, Ht + <span class="hljs-string">'px'</span>);
+        },
+        StashDonateAdd: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+            <span class="hljs-keyword">var</span> quantity = Lib.getSelectedOptionValue(matchedEl.previousSibling) * <span class="hljs-number">1</span>,
+                li = matchedEl.parentNode,
+                c = Dom.get(<span class="hljs-string">"embassyStashToDonate"</span>);
+            <span class="hljs-keyword">if</span> (quantity &amp;&amp; c) {
+                <span class="hljs-keyword">var</span> id = <span class="hljs-string">"stashResource-"</span> + li.Stash.type,
+                    exists = Sel.query(<span class="hljs-string">"#"</span> + id, c);
+                <span class="hljs-keyword">if</span> (exists.length === <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">var</span> item = document.createElement(<span class="hljs-string">"li"</span>),
+                        del = item.appendChild(document.createElement(<span class="hljs-string">"div"</span>)),
+                        content = item.appendChild(document.createElement(<span class="hljs-string">"div"</span>));
+                    item.id = id;
+                    <span class="hljs-keyword">if</span> (quantity &gt; li.Stash.quantity) {
+                        quantity = li.Stash.quantity;
+                    }
+                    Dom.addClass(item, <span class="hljs-string">"stashItem"</span>);
+                    Dom.addClass(del, <span class="hljs-string">"stashDelete"</span>);
+                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                        <span class="hljs-keyword">var</span> ed = Event.getTarget(e),
+                            ep = ed.parentNode;
+                        <span class="hljs-keyword">this</span>.updateStashDonate(ep.Object.quantity * -<span class="hljs-number">1</span>);
+                        Event.purgeElement(ep);
+                        ep.parentNode.removeChild(ep);
+                    }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    item.Object = {
+                        type: li.Stash.type,
+                        quantity: quantity
+                    };
+                    content.innerHTML = [<span class="hljs-string">'&lt;span class="stashName"&gt;'</span>, item.Object.type.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; '</span>, stashSel, <span class="hljs-string">'&lt;button type="button"&gt;-&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
+                    c.appendChild(item);
+                    <span class="hljs-keyword">this</span>.updateStashDonate(quantity);
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">var</span> found = exists[<span class="hljs-number">0</span>],
+                        newTotal = found.Object.quantity + quantity,
+                        diff = quantity,
+                        lq = Sel.query(<span class="hljs-string">".quantity"</span>, found, <span class="hljs-literal">true</span>);
+                    <span class="hljs-keyword">if</span> (newTotal &gt; li.Stash.quantity) {
+                        newTotal = li.Stash.quantity;
+                        diff = newTotal - found.Object.quantity;
+                    }
+                    lq.innerHTML = newTotal;
+                    found.Object.quantity = newTotal;
+                    <span class="hljs-keyword">this</span>.updateStashDonate(diff);
+                }
+            }
+        },
+        StashDonateRemove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+            <span class="hljs-keyword">var</span> quantity = Lib.getSelectedOptionValue(matchedEl.previousSibling) * <span class="hljs-number">1</span>,
+                li = matchedEl.parentNode.parentNode;
+            <span class="hljs-keyword">if</span> (quantity) {
+                <span class="hljs-keyword">var</span> newTotal = li.Object.quantity - quantity,
+                    diff = quantity * -<span class="hljs-number">1</span>,
+                    lq = Sel.query(<span class="hljs-string">".quantity"</span>, li, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">if</span> (newTotal &lt; <span class="hljs-number">0</span>) {
+                    newTotal = <span class="hljs-number">0</span>;
+                    diff = li.Object.quantity * -<span class="hljs-number">1</span>;
+                }
+                <span class="hljs-keyword">if</span> (newTotal === <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">this</span>.updateStashDonate(li.Object.quantity * -<span class="hljs-number">1</span>);
+                    Event.purgeElement(li);
+                    li.parentNode.removeChild(li);
+                } <span class="hljs-keyword">else</span> {
+                    lq.innerHTML = newTotal;
+                    li.Object.quantity = newTotal;
+                    <span class="hljs-keyword">this</span>.updateStashDonate(diff);
+                }
+            }
+        },
+        StashExchangeAdd: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+            <span class="hljs-keyword">var</span> quantity = Lib.getSelectedOptionValue(matchedEl.previousSibling) * <span class="hljs-number">1</span>,
+                li = matchedEl.parentNode,
+                c = Dom.get(<span class="hljs-string">"embassyStashToExchange"</span>);
+            <span class="hljs-keyword">if</span> (quantity &amp;&amp; c) {
+                <span class="hljs-keyword">var</span> id = <span class="hljs-string">"stashResource-"</span> + li.Stash.type,
+                    exists = Sel.query(<span class="hljs-string">"#"</span> + id, c);
+                <span class="hljs-keyword">if</span> (exists.length === <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">var</span> item = document.createElement(<span class="hljs-string">"li"</span>),
+                        del = item.appendChild(document.createElement(<span class="hljs-string">"div"</span>)),
+                        content = item.appendChild(document.createElement(<span class="hljs-string">"div"</span>));
+                    item.id = id;
+                    <span class="hljs-keyword">if</span> (quantity &gt; li.Stash.quantity) {
+                        quantity = li.Stash.quantity;
+                    }
+                    Dom.addClass(item, <span class="hljs-string">"stashItem"</span>);
+                    Dom.addClass(del, <span class="hljs-string">"stashDelete"</span>);
+                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                        <span class="hljs-keyword">var</span> ed = Event.getTarget(e),
+                            ep = ed.parentNode;
+                        <span class="hljs-keyword">this</span>.updateStashExchange(ep.Object.quantity * -<span class="hljs-number">1</span>);
+                        Event.purgeElement(ep);
+                        ep.parentNode.removeChild(ep);
+                    }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    item.Object = {
+                        type: li.Stash.type,
+                        quantity: quantity
+                    };
+                    content.innerHTML = [<span class="hljs-string">'&lt;span class="stashName"&gt;'</span>, item.Object.type.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; '</span>, stashSel, <span class="hljs-string">'&lt;button type="button"&gt;-&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
+                    c.appendChild(item);
+                    <span class="hljs-keyword">this</span>.updateStashExchange(quantity);
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">var</span> found = exists[<span class="hljs-number">0</span>],
+                        newTotal = found.Object.quantity + quantity,
+                        diff = quantity,
+                        lq = Sel.query(<span class="hljs-string">".quantity"</span>, found, <span class="hljs-literal">true</span>);
+                    <span class="hljs-keyword">if</span> (newTotal &gt; li.Stash.quantity) {
+                        newTotal = li.Stash.quantity;
+                        diff = newTotal - found.Object.quantity;
+                    }
+                    lq.innerHTML = newTotal;
+                    found.Object.quantity = newTotal;
+                    <span class="hljs-keyword">this</span>.updateStashExchange(diff);
+                }
+            }
+        },
+        StashExchangeRemove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+            <span class="hljs-keyword">var</span> quantity = Lib.getSelectedOptionValue(matchedEl.previousSibling) * <span class="hljs-number">1</span>,
+                li = matchedEl.parentNode.parentNode;
+            <span class="hljs-keyword">if</span> (quantity) {
+                <span class="hljs-keyword">var</span> newTotal = li.Object.quantity - quantity,
+                    diff = quantity * -<span class="hljs-number">1</span>,
+                    lq = Sel.query(<span class="hljs-string">".quantity"</span>, li, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">if</span> (newTotal &lt; <span class="hljs-number">0</span>) {
+                    newTotal = <span class="hljs-number">0</span>;
+                    diff = li.Object.quantity;
+                }
+                <span class="hljs-keyword">if</span> (newTotal === <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">this</span>.updateStashExchange(li.Object.quantity * -<span class="hljs-number">1</span>);
+                    Event.purgeElement(li);
+                    li.parentNode.removeChild(li);
+                } <span class="hljs-keyword">else</span> {
+                    lq.innerHTML = newTotal;
+                    li.Object.quantity = newTotal;
+                    <span class="hljs-keyword">this</span>.updateStashExchange(diff);
+                }
+            }
+        },
+        updateStashDonate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(byVal)</span> {</span>
+            <span class="hljs-keyword">var</span> c = Dom.get(<span class="hljs-string">"embassyTotalDonate"</span>),
+                cv = c.innerHTML * <span class="hljs-number">1</span>;
+            c.innerHTML = cv + byVal;
+        },
+        updateStashExchange: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(byVal)</span> {</span>
+            <span class="hljs-keyword">var</span> c = Dom.get(<span class="hljs-string">"embassyTotalExchange"</span>),
+                cv = c.innerHTML * <span class="hljs-number">1</span>;
+            c.innerHTML = cv + byVal;
+        },
+        StashSubmit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> data = {
+                session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                building_id: <span class="hljs-keyword">this</span>.building.id
+            },
+                toDonateLis = Sel.query(<span class="hljs-string">"li"</span>, <span class="hljs-string">"embassyStashToDonate"</span>),
+                toExchangeLis = Sel.query(<span class="hljs-string">"li"</span>, <span class="hljs-string">"embassyStashToExchange"</span>),
+                donateItems = {},
+                donateTotal = <span class="hljs-number">0</span>,
+                exchangeItems = {},
+                exchangeTotal = <span class="hljs-number">0</span>,
+                n, obj, serviceFunc;
+            <span class="hljs-keyword">for</span> (n = <span class="hljs-number">0</span>; n &lt; toDonateLis.length; n++) {
+                obj = toDonateLis[n].Object;
+                <span class="hljs-keyword">if</span> (obj) {
+                    donateItems[obj.type] = obj.quantity;
+                    donateTotal += obj.quantity;
+                }
+            }
+            <span class="hljs-keyword">for</span> (n = <span class="hljs-number">0</span>; n &lt; toExchangeLis.length; n++) {
+                obj = toExchangeLis[n].Object;
+                <span class="hljs-keyword">if</span> (obj) {
+                    exchangeItems[obj.type] = obj.quantity;
+                    exchangeTotal += obj.quantity;
+                }
+            }
+            data.donation = donateItems;
+            <span class="hljs-keyword">if</span> (donateTotal === <span class="hljs-number">0</span>) {
+                Dom.get(<span class="hljs-string">"embassyStashMessage"</span>)
+                    .innerHTML = <span class="hljs-string">"Must add items to donate to Stash."</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (exchangeTotal &gt; <span class="hljs-number">0</span> &amp;&amp; <span class="hljs-keyword">this</span>.stash.exchanges_remaining_today &lt;= <span class="hljs-number">0</span>) {
+                Dom.get(<span class="hljs-string">"embassyStashMessage"</span>)
+                    .innerHTML = <span class="hljs-string">'You have already used up the amount of stash exchanges you can perform in a single day.'</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (exchangeTotal &gt; <span class="hljs-number">0</span> &amp;&amp; donateTotal &gt; <span class="hljs-keyword">this</span>.stash.max_exchange_size) {
+                Dom.get(<span class="hljs-string">"embassyStashMessage"</span>)
+                    .innerHTML = [<span class="hljs-string">'You are only able to transfer '</span>, <span class="hljs-keyword">this</span>.stash.max_exchange_size, <span class="hljs-string">' resources from the stash.'</span>].join(<span class="hljs-string">''</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (exchangeTotal &gt; <span class="hljs-number">0</span> &amp;&amp; donateTotal !== exchangeTotal) {
+                Dom.get(<span class="hljs-string">"embassyStashMessage"</span>)
+                    .innerHTML = <span class="hljs-string">'Total amount of resources transfered from stash must be equal to the amount donating.'</span>;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">if</span> (exchangeTotal &gt; <span class="hljs-number">0</span>) {
+                    data.request = exchangeItems;
+                    serviceFunc = <span class="hljs-keyword">this</span>.service.exchange_with_stash;
+                } <span class="hljs-keyword">else</span> {
+                    serviceFunc = <span class="hljs-keyword">this</span>.service.donate_to_stash;
+                }
+                Dom.get(<span class="hljs-string">"embassyStashMessage"</span>)
+                    .innerHTML = <span class="hljs-string">""</span>;
+                Lacuna.Pulser.Show();
+                serviceFunc(data, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">var</span> n;
+                        <span class="hljs-keyword">for</span> (n = <span class="hljs-number">0</span>; n &lt; toDonateLis.length; n++) {
+                            <span class="hljs-keyword">if</span> (toDonateLis[n].Object) {
+                                Event.purgeElement(toDonateLis[n]);
+                                toDonateLis[n].parentNode.removeChild(toDonateLis[n]);
+                            }
+                        }
+                        <span class="hljs-keyword">for</span> (n = <span class="hljs-number">0</span>; n &lt; toExchangeLis.length; n++) {
+                            <span class="hljs-keyword">if</span> (toExchangeLis[n].Object) {
+                                Event.purgeElement(toExchangeLis[n]);
+                                toExchangeLis[n].parentNode.removeChild(toExchangeLis[n]);
+                            }
+                        }
+                        Dom.get(<span class="hljs-string">"embassyTotalDonate"</span>)
+                            .innerHTML = <span class="hljs-string">"0"</span>;
+                        Dom.get(<span class="hljs-string">"embassyTotalExchange"</span>)
+                            .innerHTML = <span class="hljs-string">"0"</span>;
+                        Dom.get(<span class="hljs-string">"embassyStashMessage"</span>)
+                            .innerHTML = <span class="hljs-string">"Successfully donated. "</span>;
+                        Lib.fadeOutElm(<span class="hljs-string">"embassyStashMessage"</span>);
+                        <span class="hljs-keyword">delete</span> o.result.status;
+                        <span class="hljs-keyword">this</span>.stash = o.result;
+                        <span class="hljs-keyword">this</span>.StashPopulate();
+                        Lacuna.Pulser.Hide();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        <span class="hljs-comment">//Create</span>
+        CreateAlliance: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> data = {
+                session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                building_id: <span class="hljs-keyword">this</span>.building.id,
+                name: Dom.get(<span class="hljs-string">"embassyCreateName"</span>)
+                    .value
+            };
+            <span class="hljs-keyword">if</span> (!data.name || data.name.length === <span class="hljs-number">0</span>) {
+                Dom.get(<span class="hljs-string">"embassyCreateMessage"</span>)
+                    .innerHTML = <span class="hljs-string">"Must enter a name."</span>;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">this</span>.service.create_alliance(data, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Embassy.CreateAlliance.success"</span>);
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">this</span>.alliance = o.result.alliance;
+                        <span class="hljs-keyword">this</span>.isLeader = (<span class="hljs-keyword">this</span>.alliance &amp;&amp; <span class="hljs-keyword">this</span>.alliance.leader_id === Game.EmpireData.id);
+                        Dom.get(<span class="hljs-string">"embassyCreateMessage"</span>)
+                            .innerHTML = <span class="hljs-string">""</span>;
+                        Dom.get(<span class="hljs-string">"embassyCreateName"</span>)
+                            .value = <span class="hljs-string">""</span>;
+                        <span class="hljs-keyword">this</span>.addTab(<span class="hljs-keyword">this</span>._getAllianceTab());
+                        <span class="hljs-keyword">this</span>.addTab(<span class="hljs-keyword">this</span>._getMemberTab());
+                        <span class="hljs-keyword">this</span>.addTab(<span class="hljs-keyword">this</span>._getSendTab());
+                        <span class="hljs-keyword">this</span>.removeTab(<span class="hljs-keyword">this</span>.createTab);
+                        <span class="hljs-keyword">this</span>.MembersPopulate();
+                        Lacuna.Pulser.Hide();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        <span class="hljs-comment">//View Invites</span>
+        getInvites: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">if</span> (e.newValue) {
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">this</span>.service.get_my_invites({
+                    session_id: Game.GetSession(),
+                    building_id: <span class="hljs-keyword">this</span>.building.id
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Embassy.get_my_invites.success"</span>);
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">this</span>.invites = o.result.invites;
+                        <span class="hljs-keyword">this</span>.InvitesPopulate();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        InvitesPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"embassyInvitesDetails"</span>);
+            <span class="hljs-keyword">if</span> (details) {
+                <span class="hljs-keyword">var</span> invites = <span class="hljs-keyword">this</span>.invites,
+                    ul = document.createElement(<span class="hljs-string">"ul"</span>),
+                    li = document.createElement(<span class="hljs-string">"li"</span>);
+                Event.purgeElement(details);
+                details.innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; invites.length; i++) {
+                    <span class="hljs-keyword">var</span> obj = invites[i],
+                        nUl = ul.cloneNode(<span class="hljs-literal">false</span>),
+                        nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    nUl.Invite = obj;
+                    Dom.addClass(nUl, <span class="hljs-string">"embassyInfo"</span>);
+                    Dom.addClass(nUl, <span class="hljs-string">"clearafter"</span>);
+                    nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    Dom.addClass(nLi, <span class="hljs-string">"embassyAlliance"</span>);
+                    nLi.innerHTML = obj.name;
+                    nUl.appendChild(nLi);
+                    nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    Dom.addClass(nLi, <span class="hljs-string">"embassyAction"</span>);
+                    <span class="hljs-keyword">var</span> bbtn = document.createElement(<span class="hljs-string">"button"</span>);
+                    bbtn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+                    bbtn.innerHTML = <span class="hljs-string">"Accept"</span>;
+                    bbtn = nLi.appendChild(bbtn);
+                    Event.on(bbtn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.InvitesAccept, {
+                        Self: <span class="hljs-keyword">this</span>,
+                        Invite: obj,
+                        Line: nUl
+                    }, <span class="hljs-literal">true</span>);
+                    nUl.appendChild(nLi);
+                    nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    Dom.addClass(nLi, <span class="hljs-string">"embassyAction"</span>);
+                    bbtn = document.createElement(<span class="hljs-string">"button"</span>);
+                    bbtn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+                    bbtn.innerHTML = <span class="hljs-string">"Reject"</span>;
+                    bbtn = nLi.appendChild(bbtn);
+                    Event.on(bbtn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.InvitesReject, {
+                        Self: <span class="hljs-keyword">this</span>,
+                        Invite: obj,
+                        Line: nUl
+                    }, <span class="hljs-literal">true</span>);
+                    nUl.appendChild(nLi);
+                    nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    Dom.addClass(nLi, <span class="hljs-string">"embassyMessage"</span>);
+                    nLi.innerHTML = <span class="hljs-string">'Reason:&lt;input type="text" class="embassyActionMessage" /&gt;'</span>;
+                    nUl.appendChild(nLi);
+                    details.appendChild(nUl);
+                }
+                <span class="hljs-comment">//wait for tab to display first</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                        .h - <span class="hljs-number">170</span>;
+                    <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
+                        Ht = <span class="hljs-number">300</span>;
+                    }
+                    Dom.setStyle(details.parentNode, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                    Dom.setStyle(details.parentNode, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+                }, <span class="hljs-number">10</span>);
+            }
+        },
+        InvitesAccept: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">'Are you sure you want to accept the alliance invite from '</span>, <span class="hljs-keyword">this</span>.Invite.name, <span class="hljs-string">'?'</span>].join(<span class="hljs-string">''</span>))) {
+                <span class="hljs-keyword">this</span>.Self.service.accept_invite({
+                    session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                    building_id: <span class="hljs-keyword">this</span>.Self.building.id,
+                    invite_id: <span class="hljs-keyword">this</span>.Invite.id,
+                    message: (Sel.query(<span class="hljs-string">'.embassyActionMessage'</span>, <span class="hljs-keyword">this</span>.Line, <span class="hljs-literal">true</span>)
+                        .value || <span class="hljs-string">""</span>)
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Embassy.accept_invite.success"</span>);
+                        <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                        <span class="hljs-keyword">var</span> arr = <span class="hljs-keyword">this</span>.Self.invites;
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; arr.length; i++) {
+                            <span class="hljs-keyword">if</span> (arr[i].id === <span class="hljs-keyword">this</span>.Invite.id) {
+                                arr.splice(i, <span class="hljs-number">1</span>);
+                                <span class="hljs-keyword">break</span>;
+                            }
+                        }
+                        <span class="hljs-keyword">this</span>.Line.parentNode.removeChild(<span class="hljs-keyword">this</span>.Line);
+                        <span class="hljs-keyword">this</span>.Self.alliance = o.result.alliance;
+                        <span class="hljs-keyword">this</span>.Self.isLeader = (<span class="hljs-keyword">this</span>.Self.alliance &amp;&amp; <span class="hljs-keyword">this</span>.Self.alliance.leader_id === Game.EmpireData.id);
+                        <span class="hljs-keyword">this</span>.Self.addTab(<span class="hljs-keyword">this</span>.Self._getAllianceTab());
+                        <span class="hljs-keyword">this</span>.Self.addTab(<span class="hljs-keyword">this</span>.Self._getMemberTab());
+                        <span class="hljs-keyword">this</span>.Self.removeTab(<span class="hljs-keyword">this</span>.Self.createTab);
+                        <span class="hljs-keyword">this</span>.Self.MembersPopulate();
+                        Lacuna.Pulser.Hide();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        InvitesReject: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">'Are you sure you want to reject the alliance invite from '</span>, <span class="hljs-keyword">this</span>.Invite.name, <span class="hljs-string">'?'</span>].join(<span class="hljs-string">''</span>))) {
+                <span class="hljs-keyword">this</span>.Self.service.reject_invite({
+                    session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                    building_id: <span class="hljs-keyword">this</span>.Self.building.id,
+                    invite_id: <span class="hljs-keyword">this</span>.Invite.id,
+                    message: (Sel.query(<span class="hljs-string">'.embassyActionMessage'</span>, <span class="hljs-keyword">this</span>.Line, <span class="hljs-literal">true</span>)
+                        .value || <span class="hljs-string">""</span>)
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Embassy.reject_invite.success"</span>);
+                        <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                        <span class="hljs-keyword">var</span> arr = <span class="hljs-keyword">this</span>.Self.invites;
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; arr.length; i++) {
+                            <span class="hljs-keyword">if</span> (arr[i].id === <span class="hljs-keyword">this</span>.Invite.id) {
+                                arr.splice(i, <span class="hljs-number">1</span>);
+                                <span class="hljs-keyword">break</span>;
+                            }
+                        }
+                        <span class="hljs-keyword">this</span>.Line.parentNode.removeChild(<span class="hljs-keyword">this</span>.Line);
+                        Lacuna.Pulser.Hide();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        <span class="hljs-comment">//Alliance Admin</span>
+        UpdateAlliance: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.service.update_alliance({
+                session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                building_id: <span class="hljs-keyword">this</span>.building.id,
+                params: {
+                    description: Dom.get(<span class="hljs-string">"embassyAllianceDesc"</span>)
+                        .value,
+                    forum_uri: Dom.get(<span class="hljs-string">"embassyAllianceForums"</span>)
+                        .value,
+                    announcements: Dom.get(<span class="hljs-string">"embassyAllianceAnnoucements"</span>)
+                        .value
+                }
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Embassy.update_alliance.success"</span>);
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    Dom.get(<span class="hljs-string">"embassyAllianceMessage"</span>)
+                        .innerHTML = <span class="hljs-string">"Updated alliance info."</span>;
+                    <span class="hljs-keyword">var</span> a = <span class="hljs-keyword">new</span> Util.Anim(Dom.get(<span class="hljs-string">"embassyAllianceMessage"</span>), {
+                        opacity: {
+                            from: <span class="hljs-number">1</span>,
+                            to: <span class="hljs-number">0</span>
+                        }
+                    }, <span class="hljs-number">3</span>);
+                    a.onComplete.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                        Dom.get(<span class="hljs-string">"embassyAllianceMessage"</span>)
+                            .innerHTML = <span class="hljs-string">""</span>;
+                        Dom.setStyle(<span class="hljs-string">"embassyAllianceMessage"</span>, <span class="hljs-string">"opacity"</span>, <span class="hljs-number">1</span>);
+                    });
+                    a.animate();
+                    Lacuna.Pulser.Hide();
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        LeaveAlliance: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">'Are you sure you want to leave '</span>, <span class="hljs-keyword">this</span>.alliance.name, <span class="hljs-string">'?'</span>].join(<span class="hljs-string">''</span>))) {
+                <span class="hljs-keyword">this</span>.service.leave_alliance({
+                    session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                    building_id: <span class="hljs-keyword">this</span>.building.id,
+                    message: Dom.get(<span class="hljs-string">"embassyAllianceLeaveReason"</span>)
+                        .value
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Embassy.leave_alliance.success"</span>);
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.alliance;
+                        <span class="hljs-keyword">this</span>.removeTab(<span class="hljs-keyword">this</span>.allianceTab);
+                        <span class="hljs-keyword">this</span>.removeTab(<span class="hljs-keyword">this</span>.memberTab);
+                        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.sendTab) {
+                            <span class="hljs-keyword">this</span>.removeTab(<span class="hljs-keyword">this</span>.sendTab);
+                        }
+                        <span class="hljs-keyword">this</span>.addTab(<span class="hljs-keyword">this</span>._getCreateTab());
+                        Lacuna.Pulser.Hide();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        DissolveAlliance: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">'All Space Stations will be abandoned. Are you sure you want to dissolve '</span>, <span class="hljs-keyword">this</span>.alliance.name, <span class="hljs-string">'?'</span>].join(<span class="hljs-string">''</span>))) {
+                <span class="hljs-keyword">this</span>.service.dissolve_alliance({
+                    session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                    building_id: <span class="hljs-keyword">this</span>.building.id
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Embassy.dissolve_alliance.success"</span>);
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.alliance;
+                        <span class="hljs-keyword">this</span>.removeTab(<span class="hljs-keyword">this</span>.allianceTab);
+                        <span class="hljs-keyword">this</span>.removeTab(<span class="hljs-keyword">this</span>.memberTab);
+                        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.sendTab) {
+                            <span class="hljs-keyword">this</span>.removeTab(<span class="hljs-keyword">this</span>.sendTab);
+                        }
+                        <span class="hljs-keyword">this</span>.addTab(<span class="hljs-keyword">this</span>._getCreateTab());
+                        Lacuna.Pulser.Hide();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        <span class="hljs-comment">//Alliance Inviting</span>
+        getPendingInvites: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">if</span> (e.newValue) {
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.embassySendTo) {
+                    <span class="hljs-keyword">this</span>._createSendToSelect();
+                }
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">this</span>.service.get_pending_invites({
+                    session_id: Game.GetSession(),
+                    building_id: <span class="hljs-keyword">this</span>.building.id
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Embassy.get_pending_invites.success"</span>);
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">this</span>.pendingInvites = o.result.invites;
+                        <span class="hljs-keyword">this</span>.PendingPopulate();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        PendingPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"embassySendDetails"</span>);
+            <span class="hljs-keyword">if</span> (details) {
+                <span class="hljs-keyword">var</span> pendingInvites = <span class="hljs-keyword">this</span>.pendingInvites,
+                    ul = document.createElement(<span class="hljs-string">"ul"</span>),
+                    li = document.createElement(<span class="hljs-string">"li"</span>);
+                Event.purgeElement(details);
+                details.innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; pendingInvites.length; i++) {
+                    <span class="hljs-keyword">var</span> obj = pendingInvites[i],
+                        nUl = ul.cloneNode(<span class="hljs-literal">false</span>),
+                        nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    nUl.Invite = obj;
+                    Dom.addClass(nUl, <span class="hljs-string">"embassyInfo"</span>);
+                    Dom.addClass(nUl, <span class="hljs-string">"clearafter"</span>);
+                    nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    Dom.addClass(nLi, <span class="hljs-string">"embassyEmpire"</span>);
+                    nLi.innerHTML = obj.name;
+                    nUl.appendChild(nLi);
+                    nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    Dom.addClass(nLi, <span class="hljs-string">"embassyAction"</span>);
+                    <span class="hljs-keyword">var</span> bbtn = document.createElement(<span class="hljs-string">"button"</span>);
+                    bbtn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+                    bbtn.innerHTML = <span class="hljs-string">"Withdraw"</span>;
+                    bbtn = nLi.appendChild(bbtn);
+                    Event.on(bbtn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.PendingWithdraw, {
+                        Self: <span class="hljs-keyword">this</span>,
+                        Invite: obj,
+                        Line: nUl
+                    }, <span class="hljs-literal">true</span>);
+                    nUl.appendChild(nLi);
+                    nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    Dom.addClass(nLi, <span class="hljs-string">"embassyMessage"</span>);
+                    nLi.innerHTML = <span class="hljs-string">'&lt;label&gt;Reason:&lt;/label&gt;&lt;input type="text" class="embassyPendingActionMessage" /&gt;'</span>;
+                    nUl.appendChild(nLi);
+                    details.appendChild(nUl);
+                }
+                <span class="hljs-comment">//wait for tab to display first</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                        .h - <span class="hljs-number">290</span>;
+                    <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
+                        Ht = <span class="hljs-number">300</span>;
+                    }
+                    Dom.setStyle(details.parentNode, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                    Dom.setStyle(details.parentNode, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+                }, <span class="hljs-number">10</span>);
+            }
+        },
+        PendingWithdraw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">'Are you sure you want to withdraw the invite from '</span>, <span class="hljs-keyword">this</span>.Invite.name].join(<span class="hljs-string">''</span>))) {
+                <span class="hljs-keyword">this</span>.Self.service.withdraw_invite({
+                    session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                    building_id: <span class="hljs-keyword">this</span>.Self.building.id,
+                    invite_id: <span class="hljs-keyword">this</span>.Invite.id,
+                    message: (Sel.query(<span class="hljs-string">'.embassyPendingActionMessage'</span>, <span class="hljs-keyword">this</span>.Line, <span class="hljs-literal">true</span>)
+                        .value || <span class="hljs-string">""</span>)
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Embassy.withdraw_invite.success"</span>);
+                        <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                        <span class="hljs-keyword">var</span> arr = <span class="hljs-keyword">this</span>.Self.pendingInvites;
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; arr.length; i++) {
+                            <span class="hljs-keyword">if</span> (arr[i].id === <span class="hljs-keyword">this</span>.Invite.id) {
+                                arr.splice(i, <span class="hljs-number">1</span>);
+                                <span class="hljs-keyword">break</span>;
+                            }
+                        }
+                        <span class="hljs-keyword">this</span>.Line.parentNode.removeChild(<span class="hljs-keyword">this</span>.Line);
+                        Lacuna.Pulser.Hide();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        SendInvite: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> inviteeId = <span class="hljs-keyword">this</span>.embassySendTo._oTblSingleSelection &amp;&amp; <span class="hljs-keyword">this</span>.embassySendTo._oTblSingleSelection.Object.id || <span class="hljs-literal">null</span>;
+            <span class="hljs-keyword">if</span> (inviteeId) {
+                <span class="hljs-keyword">this</span>.service.send_invite({
+                    session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                    building_id: <span class="hljs-keyword">this</span>.building.id,
+                    invitee_id: inviteeId,
+                    message: Dom.get(<span class="hljs-string">"embassySendMessage"</span>)
+                        .value
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Embassy.send_invite.success"</span>);
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">this</span>.embassySendTo.ResetSelections();
+                        Dom.get(<span class="hljs-string">"embassySendMessage"</span>)
+                            .value = <span class="hljs-string">""</span>;
+                        <span class="hljs-keyword">this</span>.getPendingInvites({
+                            newValue: <span class="hljs-number">1</span>
+                        });
+                        Lacuna.Pulser.Hide();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        <span class="hljs-comment">//Members</span>
+        MembersPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"embassyMemberDetails"</span>);
+            <span class="hljs-keyword">if</span> (details &amp;&amp; <span class="hljs-keyword">this</span>.alliance) {
+                <span class="hljs-keyword">var</span> members = <span class="hljs-keyword">this</span>.alliance.members,
+                    ul = document.createElement(<span class="hljs-string">"ul"</span>),
+                    li = document.createElement(<span class="hljs-string">"li"</span>);
+                Event.purgeElement(details);
+                details.innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; members.length; i++) {
+                    <span class="hljs-keyword">var</span> obj = members[i],
+                        nUl = ul.cloneNode(<span class="hljs-literal">false</span>),
+                        nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    nUl.Member = obj;
+                    Dom.addClass(nUl, <span class="hljs-string">"embassyInfo"</span>);
+                    Dom.addClass(nUl, <span class="hljs-string">"clearafter"</span>);
+                    nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    Dom.addClass(nLi, <span class="hljs-string">"embassyEmpire"</span>);
+                    nLi.innerHTML = obj.name;
+                    Event.on(nLi, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.EmpireInfo, obj.empire_id);
+                    nUl.appendChild(nLi);
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.isLeader &amp;&amp; <span class="hljs-keyword">this</span>.alliance.leader_id !== obj.empire_id) {
+                        nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                        Dom.addClass(nLi, <span class="hljs-string">"embassyAction"</span>);
+                        <span class="hljs-keyword">var</span> lbtn = document.createElement(<span class="hljs-string">"button"</span>);
+                        lbtn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+                        lbtn.innerHTML = <span class="hljs-string">"Make Leader"</span>;
+                        lbtn = nLi.appendChild(lbtn);
+                        Event.on(lbtn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.MembersPromote, {
+                            Self: <span class="hljs-keyword">this</span>,
+                            Member: obj,
+                            Line: nUl
+                        }, <span class="hljs-literal">true</span>);
+                        <span class="hljs-keyword">var</span> bbtn = document.createElement(<span class="hljs-string">"button"</span>);
+                        bbtn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+                        bbtn.innerHTML = <span class="hljs-string">"Expel"</span>;
+                        bbtn = nLi.appendChild(bbtn);
+                        Event.on(bbtn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.MembersExpel, {
+                            Self: <span class="hljs-keyword">this</span>,
+                            Member: obj,
+                            Line: nUl
+                        }, <span class="hljs-literal">true</span>);
+                        nUl.appendChild(nLi);
+                        nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                        Dom.addClass(nLi, <span class="hljs-string">"embassyMessage"</span>);
+                        nLi.innerHTML = <span class="hljs-string">'&lt;label&gt;Reason:&lt;/label&gt;&lt;input type="text" class="embassyMembersMessage" /&gt;'</span>;
+                        nUl.appendChild(nLi);
+                    }
+                    details.appendChild(nUl);
+                }
+                <span class="hljs-comment">//wait for tab to display first</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                        .h - <span class="hljs-number">170</span>;
+                    <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
+                        Ht = <span class="hljs-number">300</span>;
+                    }
+                    Dom.setStyle(details.parentNode, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                    Dom.setStyle(details.parentNode, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+                }, <span class="hljs-number">10</span>);
+            }
+        },
+        EmpireInfo: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, id)</span> {</span>
+            Lacuna.Info.Empire.Load(id);
+        },
+        MembersExpel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">'Are you sure you want to expel '</span>, <span class="hljs-keyword">this</span>.Member.name, <span class="hljs-string">' from the alliance?'</span>].join(<span class="hljs-string">''</span>))) {
+                <span class="hljs-keyword">this</span>.Self.service.expel_member({
+                    session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                    building_id: <span class="hljs-keyword">this</span>.Self.building.id,
+                    empire_id: <span class="hljs-keyword">this</span>.Member.empire_id,
+                    message: (Sel.query(<span class="hljs-string">'.embassyMembersMessage'</span>, <span class="hljs-keyword">this</span>.Line, <span class="hljs-literal">true</span>)
+                        .value || <span class="hljs-string">""</span>)
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Embassy.expel_member.success"</span>);
+                        <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                        <span class="hljs-keyword">this</span>.Self.alliance = o.result.alliance;
+                        <span class="hljs-keyword">this</span>.Self.MembersPopulate();
+                        Lacuna.Pulser.Hide();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        MembersPromote: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">'Are you sure you want to transfer alliance control to '</span>, <span class="hljs-keyword">this</span>.Member.name, <span class="hljs-string">'?'</span>].join(<span class="hljs-string">''</span>))) {
+                <span class="hljs-keyword">this</span>.Self.service.assign_alliance_leader({
+                    session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                    building_id: <span class="hljs-keyword">this</span>.Self.building.id,
+                    new_leader_id: <span class="hljs-keyword">this</span>.Member.empire_id
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Embassy.assign_alliance_leader.success"</span>);
+                        <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                        <span class="hljs-keyword">this</span>.Self.alliance = o.result.alliance;
+                        <span class="hljs-keyword">this</span>.Self.isLeader = (<span class="hljs-keyword">this</span>.Self.alliance &amp;&amp; <span class="hljs-keyword">this</span>.Self.alliance.leader_id === Game.EmpireData.id);
+                        <span class="hljs-keyword">this</span>.Self.removeTab(<span class="hljs-keyword">this</span>.Self.allianceTab);
+                        <span class="hljs-keyword">this</span>.Self.addTab(<span class="hljs-keyword">this</span>.Self._getAllianceTab());
+                        <span class="hljs-keyword">this</span>.Self.removeTab(<span class="hljs-keyword">this</span>.Self.memberTab);
+                        <span class="hljs-keyword">this</span>.Self.addTab(<span class="hljs-keyword">this</span>.Self._getMemberTab());
+                        <span class="hljs-keyword">this</span>.Self.MembersPopulate();
+                        <span class="hljs-keyword">this</span>.Self.removeTab(<span class="hljs-keyword">this</span>.Self.invitesTab);
+                        <span class="hljs-keyword">this</span>.Self.addTab(<span class="hljs-keyword">this</span>.Self._getInvitesTab());
+                        <span class="hljs-keyword">this</span>.Self.removeTab(<span class="hljs-keyword">this</span>.Self.sendTab);
+                        Lacuna.Pulser.Hide();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        }
+    });
+    Lacuna.buildings.Embassy = Embassy;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

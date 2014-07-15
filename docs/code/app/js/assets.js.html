@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - assets.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/assets.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/assets.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-comment">/*global YAHOO */</span></pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>This is a data structure of all the assets used by the game. This should make
+adding/changing assets in the templates easier.
+The starting url all the assets are based off.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-keyword">var</span> s = YAHOO.lacuna.Library.AssetUrl,
+    join = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>)
+        .join;
+module.exports = {
+    ui: {
+        small: {
+            food: join(s, <span class="hljs-string">'ui'</span>, <span class="hljs-string">'s'</span>, <span class="hljs-string">'food.png'</span>),
+            ore: join(s, <span class="hljs-string">'ui'</span>, <span class="hljs-string">'s'</span>, <span class="hljs-string">'ore.png'</span>),
+            water: join(s, <span class="hljs-string">'ui'</span>, <span class="hljs-string">'s'</span>, <span class="hljs-string">'water.png'</span>),
+            energy: join(s, <span class="hljs-string">'ui'</span>, <span class="hljs-string">'s'</span>, <span class="hljs-string">'energy.png'</span>),
+            waste: join(s, <span class="hljs-string">'ui'</span>, <span class="hljs-string">'s'</span>, <span class="hljs-string">'waste.png'</span>),
+            happiness: join(s, <span class="hljs-string">'ui'</span>, <span class="hljs-string">'s'</span>, <span class="hljs-string">'happiness.png'</span>),
+            time: join(s, <span class="hljs-string">'ui'</span>, <span class="hljs-string">'s'</span>, <span class="hljs-string">'time.png'</span>),
+            refresh: join(s, <span class="hljs-string">'ui'</span>, <span class="hljs-string">'s'</span>, <span class="hljs-string">'refresh.png'</span>)
+        },
+        large: {}
+    }
+};</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

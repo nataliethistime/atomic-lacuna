@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - missionCommand.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/missionCommand.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/missionCommand.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Sel = Util.Selector,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> MissionCommand = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        MissionCommand.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.MissionCommand;
+    };
+    Lang.extend(MissionCommand, Lacuna.buildings.Building, {
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getMissionTab()];
+        },
+        _getMissionTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.missionTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Missions"</span>,
+                content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;div class="missionsHeader"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div id="missionsHt" style="overflow:auto;"&gt;'</span>, <span class="hljs-string">'        &lt;ul id="missionsAvailable"&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">this</span>.missionTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                <span class="hljs-keyword">if</span> (e.newValue) {
+                    <span class="hljs-keyword">this</span>.getMissions();
+                    <span class="hljs-keyword">var</span> mHt = Game.GetSize()
+                        .h - <span class="hljs-number">150</span>;
+                    <span class="hljs-keyword">if</span> (mHt &gt; <span class="hljs-number">300</span>) {
+                        mHt = <span class="hljs-number">300</span>;
+                    }
+                    Dom.setStyle(Dom.get(<span class="hljs-string">'missionsHt'</span>), <span class="hljs-string">'height'</span>, mHt + <span class="hljs-string">'px'</span>);
+                }
+            }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.missionTab;
+        },
+        getMissions: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.missions) {
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">this</span>.service.get_missions({
+                    session_id: Game.GetSession(),
+                    building_id: <span class="hljs-keyword">this</span>.building.id
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">this</span>.missions = o.result.missions;
+                        <span class="hljs-keyword">this</span>.displayMissions();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">this</span>.displayMissions();
+            }
+        },
+        displayMissions: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> missions = <span class="hljs-keyword">this</span>.missions,
+                ul = Dom.get(<span class="hljs-string">"missionsAvailable"</span>);
+            <span class="hljs-keyword">if</span> (ul) {
+                <span class="hljs-keyword">var</span> ulParent = ul.parentNode,
+                    li = document.createElement(<span class="hljs-string">"li"</span>);
+                ul = ulParent.removeChild(ul);
+                ul.innerHTML = <span class="hljs-string">""</span>;</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><pre><code>        {
+</code></pre><p>&quot;id&quot; : &quot;id-goes-here&quot;,
+&quot;max_university_level&quot; : 12,
+&quot;date_posted&quot; : &quot;01 31 2010 13:09:05 +0600&quot;,
+&quot;name&quot; : &quot;The Big Mission&quot;,
+&quot;description&quot; : &quot;Do the big thing and make it go.&quot;,
+&quot;objectives&quot; : [
+  &quot;1500 apple&quot;,
+  &quot;Kill a spy&quot;,
+  &quot;Destroy a ship&quot;
+],
+&quot;rewards&quot; : [
+    &quot;1 essentia&quot;
+]
+            }</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">                <span class="hljs-keyword">if</span> (missions &amp;&amp; missions.length &gt; <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; missions.length; i++) {
+                        <span class="hljs-keyword">var</span> ms = missions[i],
+                            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                        Dom.addClass(nLi, <span class="hljs-string">"mission"</span>);
+                        nLi.innerHTML = [<span class="hljs-string">'&lt;div class="yui-ge"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'        &lt;div class="missionName"&gt;'</span>, ms.name, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div class="missionPosted"&gt;Posted: '</span>, Lib.formatServerDate(ms.date_posted), <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div class="missionUniversity"&gt;Max University: '</span>, ms.max_university_level, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="complete'</span>, ms.id, <span class="hljs-string">'" class="missionComplete"&gt;Complete&lt;/button&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="skip'</span>, ms.id, <span class="hljs-string">'" class="missionSkip"&gt;Skip&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="missionDesc"&gt;'</span>, ms.description, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="yui-g"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;label style="font-weight:bold;"&gt;Objectives:&lt;/label&gt;&lt;/div&gt;'</span>,
+                            <span class="hljs-keyword">this</span>.parseObjectives(ms.objectives), <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;label style="font-weight:bold;"&gt;Rewards:&lt;/label&gt;&lt;/div&gt;'</span>,
+                            <span class="hljs-keyword">this</span>.parseRewards(ms.rewards), <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>
+                        ].join(<span class="hljs-string">''</span>);
+                        Event.on(Sel.query(<span class="hljs-string">"button.missionComplete"</span>, nLi, <span class="hljs-literal">true</span>), <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.completeMission, {
+                            Self: <span class="hljs-keyword">this</span>,
+                            Mission: ms,
+                            Line: nLi
+                        }, <span class="hljs-literal">true</span>);
+                        Event.on(Sel.query(<span class="hljs-string">"button.missionSkip"</span>, nLi, <span class="hljs-literal">true</span>), <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.skipMission, {
+                            Self: <span class="hljs-keyword">this</span>,
+                            Mission: ms,
+                            Line: nLi
+                        }, <span class="hljs-literal">true</span>);
+                        ul.appendChild(nLi);
+                    }
+                }
+                <span class="hljs-comment">//add child back in</span>
+                ulParent.appendChild(ul);
+            }
+        },
+        parseObjectives: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arr)</span> {</span>
+            <span class="hljs-keyword">var</span> lst = [<span class="hljs-string">'&lt;ol class="missionList"&gt;'</span>];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; arr.length; n++) {
+                lst[lst.length] = <span class="hljs-string">'&lt;li&gt;'</span>;
+                lst[lst.length] = arr[n];
+                lst[lst.length] = <span class="hljs-string">'&lt;/li&gt;'</span>;
+            }
+            lst[lst.length] = <span class="hljs-string">'&lt;/ol&gt;'</span>;
+            <span class="hljs-keyword">return</span> lst.join(<span class="hljs-string">''</span>);
+        },
+        parseRewards: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arr)</span> {</span>
+            <span class="hljs-keyword">var</span> lst = [<span class="hljs-string">'&lt;ol class="missionList"&gt;'</span>];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; arr.length; n++) {
+                lst[lst.length] = <span class="hljs-string">'&lt;li&gt;'</span>;
+                lst[lst.length] = arr[n];
+                lst[lst.length] = <span class="hljs-string">'&lt;/li&gt;'</span>;
+            }
+            lst[lst.length] = <span class="hljs-string">'&lt;/ol&gt;'</span>;
+            <span class="hljs-keyword">return</span> lst.join(<span class="hljs-string">''</span>);
+        },
+        completeMission: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> btn = Dom.get(<span class="hljs-string">'complete'</span> + <span class="hljs-keyword">this</span>.Mission.id);
+            btn.disabled = <span class="hljs-literal">true</span>;
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.Self.service.complete_mission({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.Self.building.id,
+                mission_id: <span class="hljs-keyword">this</span>.Mission.id
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                    <span class="hljs-keyword">this</span>.Self.missions = <span class="hljs-literal">undefined</span>;
+                    <span class="hljs-keyword">this</span>.Self.getMissions();
+                },
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    btn.disabled = <span class="hljs-literal">false</span>;
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        skipMission: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> btn = Dom.get(<span class="hljs-string">'skip'</span> + <span class="hljs-keyword">this</span>.Mission.id);
+            btn.disabled = <span class="hljs-literal">true</span>;
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.Self.service.skip_mission({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.Self.building.id,
+                mission_id: <span class="hljs-keyword">this</span>.Mission.id
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                    <span class="hljs-keyword">this</span>.Self.missions = <span class="hljs-literal">undefined</span>;
+                    <span class="hljs-keyword">this</span>.Self.getMissions();
+                },
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    btn.disabled = <span class="hljs-literal">false</span>;
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        }
+    });
+    YAHOO.lacuna.buildings.MissionCommand = MissionCommand;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

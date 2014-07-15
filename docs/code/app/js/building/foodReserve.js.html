@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - foodReserve.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/foodReserve.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/foodReserve.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper">YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> YAHOO.lacuna.buildings.FoodReserve == <span class="hljs-string">"undefined"</span> || !YAHOO.lacuna.buildings.FoodReserve) {
+    (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> Util = YAHOO.util,
+            Dom = Util.Dom,
+            Event = Util.Event,
+            Sel = Util.Selector,
+            Lacuna = YAHOO.lacuna,
+            Game = Lacuna.Game,
+            Lib = Lacuna.Library;
+        <span class="hljs-keyword">var</span> FoodReserve = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+            FoodReserve.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+            <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.FoodReserve;
+        };
+        YAHOO.lang.extend(FoodReserve, YAHOO.lacuna.buildings.Building, {
+            getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getFoodTab(), <span class="hljs-keyword">this</span>._getDumpTab()];
+            },
+            _getFoodTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> stored = <span class="hljs-keyword">this</span>.result.food_stored;
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                    label: <span class="hljs-string">"Food"</span>,
+                    content: [<span class="hljs-string">'&lt;div class="yui-g buildingDetailsExtra"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'        &lt;ul&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Algae&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.algae, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Apple&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.apple, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Bean&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.bean, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Beetle&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.beetle, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Bread&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.bread, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Burger&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.burger, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Cheese&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.cheese, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Chip&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.chip, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Cider&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.cider, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Corn&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.corn, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Fungus&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.fungus, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'        &lt;ul&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Lapis&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.lapis, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Meal&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.meal, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Milk&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.milk, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Pancake&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.pancake, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Pie&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.pie, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Potato&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.potato, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Root&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.root, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Shake&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.shake, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Soup&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.soup, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Syrup&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.syrup, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Wheat&lt;/label&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, stored.wheat, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+                });
+            },
+            _getDumpTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.resources = <span class="hljs-keyword">this</span>.result.food_stored;
+                <span class="hljs-keyword">this</span>.dumpTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                    label: <span class="hljs-string">"Dump"</span>,
+                    contentEl: <span class="hljs-keyword">this</span>.DumpGetDisplay(<span class="hljs-keyword">this</span>.result.dump)
+                });
+                <span class="hljs-keyword">this</span>.dumpTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.DumpGetDisplay, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.dumpTab;
+            },
+            DumpGetDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> div = document.createElement(<span class="hljs-string">"div"</span>),
+                    resources = [],
+                    rKey;
+                <span class="hljs-keyword">for</span> (rKey <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>.resources) {
+                    resources.push(rKey);
+                }
+                resources = resources.sort();
+                <span class="hljs-keyword">if</span> (resources.length &gt; <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">var</span> ul = document.createElement(<span class="hljs-string">'ul'</span>),
+                        li = document.createElement(<span class="hljs-string">'li'</span>),
+                        nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    nLi.innerHTML = <span class="hljs-string">'Convert food into waste.'</span>;
+                    ul.appendChild(nLi);
+                    nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    nLi.innerHTML = <span class="hljs-string">'&lt;span class="smallImg"&gt;&lt;img src="'</span> + Lib.AssetUrl + <span class="hljs-string">'ui/s/food.png" class="smallFood" /&gt;&lt;/span&gt;'</span>;
+                    <span class="hljs-keyword">var</span> sel = document.createElement(<span class="hljs-string">"select"</span>),
+                        opt = document.createElement(<span class="hljs-string">"option"</span>);
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; resources.length; i++) {
+                        rKey = resources[i];
+                        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.resources.hasOwnProperty(rKey) &amp;&amp; <span class="hljs-keyword">this</span>.resources[rKey] &gt; <span class="hljs-number">0</span>) {
+                            <span class="hljs-keyword">var</span> nOpt = opt.cloneNode(<span class="hljs-literal">false</span>);
+                            nOpt.value = rKey;
+                            nOpt.innerHTML = [rKey, <span class="hljs-string">' ('</span>, <span class="hljs-keyword">this</span>.resources[rKey], <span class="hljs-string">')'</span>].join(<span class="hljs-string">''</span>);
+                            sel.appendChild(nOpt);
+                        }
+                    }
+                    <span class="hljs-keyword">if</span> (sel.options.length == <span class="hljs-number">0</span>) {
+                        div.innerHTML = <span class="hljs-string">"No food to dump."</span>;
+                        <span class="hljs-keyword">return</span> div;
+                    }
+                    sel.id = <span class="hljs-string">"type"</span>;
+                    nLi.appendChild(sel);
+                    input = document.createElement(<span class="hljs-string">"input"</span>);
+                    input.id = <span class="hljs-string">'dumpAmount'</span>;
+                    input.type = <span class="hljs-string">"text"</span>;
+                    input.value = <span class="hljs-number">0</span>;
+                    input = nLi.appendChild(input);
+                    ul.appendChild(nLi);
+                    Dom.addClass(div, <span class="hljs-string">'dumpTab'</span>);
+                    div.appendChild(ul);
+                    <span class="hljs-keyword">var</span> form = document.createElement(<span class="hljs-string">'form'</span>);
+                    btn = document.createElement(<span class="hljs-string">"button"</span>);
+                    btn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+                    btn.innerHTML = <span class="hljs-string">"Dump"</span>;
+                    btn = form.appendChild(btn);
+                    Event.on(btn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Dump, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    div.appendChild(form);
+                    <span class="hljs-keyword">var</span> msg = document.createElement(<span class="hljs-string">'div'</span>);
+                    msg.id = <span class="hljs-string">"dumpMessage"</span>;
+                    div.appendChild(msg);
+                } <span class="hljs-keyword">else</span> {
+                    div.innerHTML = <span class="hljs-string">"No food to dump."</span>;
+                }
+                <span class="hljs-keyword">return</span> div;
+            },
+            Dump: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                <span class="hljs-keyword">var</span> building = <span class="hljs-keyword">this</span>.building;
+                <span class="hljs-keyword">if</span> (building) {
+                    <span class="hljs-keyword">var</span> sel = Dom.get(<span class="hljs-string">"type"</span>);
+                    <span class="hljs-keyword">var</span> type = sel[sel.selectedIndex].value;
+                    <span class="hljs-keyword">var</span> amount = Dom.get(<span class="hljs-string">"dumpAmount"</span>)
+                        .value * <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">if</span> (amount &gt; <span class="hljs-keyword">this</span>.resources[type]) {
+                        Dom.get(<span class="hljs-string">"dumpMessage"</span>)
+                            .innerHTML = <span class="hljs-string">"Can only convert "</span> + type + <span class="hljs-string">" you have stored."</span>;
+                        Lib.fadeOutElm(<span class="hljs-string">"dumpMessage"</span>);
+                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (amount &lt;= <span class="hljs-number">0</span>) {
+                        Dom.get(<span class="hljs-string">"dumpMessage"</span>)
+                            .innerHTML = <span class="hljs-string">"You must specify an amount greater than zero."</span>;
+                        Lib.fadeOutElm(<span class="hljs-string">"dumpMessage"</span>);
+                    } <span class="hljs-keyword">else</span> {
+                        Lacuna.Pulser.Show();
+                        <span class="hljs-keyword">this</span>.service.dump({
+                            session_id: Game.GetSession(),
+                            building_id: <span class="hljs-keyword">this</span>.building.id,
+                            type: type,
+                            amount: amount
+                        }, {
+                            success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                                YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"FoodReserve.Dump.success"</span>);
+                                <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.dumpTab) {
+                                    <span class="hljs-keyword">var</span> ce = <span class="hljs-keyword">this</span>.dumpTab.get(<span class="hljs-string">"contentEl"</span>);
+                                    Event.purgeElement(ce);
+                                    ce.innerHTML = <span class="hljs-string">""</span>;
+                                    <span class="hljs-keyword">this</span>.resources[type] -= amount;
+                                    ce.appendChild(<span class="hljs-keyword">this</span>.DumpGetDisplay(o.result.dump));
+                                    Dom.get(<span class="hljs-string">"dumpMessage"</span>)
+                                        .innerHTML = <span class="hljs-string">"Successfully converted "</span> + amount + <span class="hljs-string">" "</span> + type + <span class="hljs-string">" to waste."</span>;
+                                    Lib.fadeOutElm(<span class="hljs-string">"dumpMessage"</span>);
+                                }
+                                Lacuna.Pulser.Hide();
+                            },
+                            scope: <span class="hljs-keyword">this</span>
+                        });
+                    }
+                }
+            }
+        });
+        YAHOO.lacuna.buildings.FoodReserve = FoodReserve;
+    })();
+    YAHOO.register(<span class="hljs-string">"foodreserve"</span>, YAHOO.lacuna.buildings.FoodReserve, {
+        version: <span class="hljs-string">"1"</span>,
+        build: <span class="hljs-string">"0"</span>
+    });
+}</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>vim: noet:ts=4:sw=4</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

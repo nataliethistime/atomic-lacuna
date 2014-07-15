@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - notify.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/notify.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/notify.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper">YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> YAHOO.lacuna.Notify == <span class="hljs-string">"undefined"</span> || !YAHOO.lacuna.Notify) {
+    (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+            Util = YAHOO.util,
+            Dom = Util.Dom,
+            Event = Util.Event,
+            Lacuna = YAHOO.lacuna,
+            Game = Lacuna.Game,
+            Lib = Lacuna.Library;
+        <span class="hljs-keyword">var</span> Notify = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.skip_incoming_ships = {};
+            <span class="hljs-keyword">this</span>.incoming_own = {};
+            <span class="hljs-keyword">this</span>.num_incoming_own = {};
+            <span class="hljs-keyword">this</span>.incoming_ally = {};
+            <span class="hljs-keyword">this</span>.num_incoming_ally = {};
+            <span class="hljs-keyword">this</span>.incoming_enemy = {};
+            <span class="hljs-keyword">this</span>.num_incoming_enemy = {};
+        };
+        Notify.prototype = {
+            _createDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.Display) {
+                    <span class="hljs-keyword">var</span> container = document.createElement(<span class="hljs-string">"div"</span>);
+                    container.id = <span class="hljs-string">"notify"</span>;
+                    Dom.addClass(container, Lib.Styles.HIDDEN);
+                    Dom.addClass(container, <span class="hljs-string">"nofooter"</span>);
+                    container.innerHTML = <span class="hljs-keyword">this</span>._getHtml();
+                    document.body.insertBefore(container, document.body.firstChild);
+                    <span class="hljs-keyword">this</span>.Display = <span class="hljs-keyword">new</span> YAHOO.widget.Panel(<span class="hljs-string">"notify"</span>, {
+                        constraintoviewport: <span class="hljs-literal">true</span>,
+                        visible: <span class="hljs-literal">false</span>,
+                        draggable: <span class="hljs-literal">true</span>,
+                        effect: Game.GetContainerEffect(),
+                        close: <span class="hljs-literal">false</span>,
+                        underlay: <span class="hljs-literal">false</span>,
+                        modal: <span class="hljs-literal">false</span>,
+                        width: <span class="hljs-string">"180px"</span>,
+                        context: [<span class="hljs-string">"header"</span>, <span class="hljs-string">"tr"</span>, <span class="hljs-string">"br"</span>, [<span class="hljs-string">"beforeShow"</span>, <span class="hljs-string">"windowResize"</span>],
+                            [<span class="hljs-number">0</span>, <span class="hljs-number">40</span>]
+                        ]
+                    });
+                    <span class="hljs-keyword">this</span>.Display.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                        <span class="hljs-keyword">this</span>.notifyList = Dom.get(<span class="hljs-string">'notifyList'</span>);
+                        <span class="hljs-keyword">this</span>.notify = Dom.get(<span class="hljs-string">"notify"</span>);
+                        Dom.removeClass(<span class="hljs-keyword">this</span>.notify, Lib.Styles.HIDDEN);
+                    });
+                    <span class="hljs-keyword">this</span>.Display.showEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                        Dom.setStyle(<span class="hljs-keyword">this</span>.notifyList.parentNode, <span class="hljs-string">"max-height"</span>, (Game.GetSize()
+                            .h - <span class="hljs-number">125</span>) + <span class="hljs-string">"px"</span>);
+                    });
+                    <span class="hljs-keyword">this</span>.Display.render();
+                }
+            },
+            _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">return</span> [<span class="hljs-string">'    &lt;div class="hd" style="background:transparent;"&gt;Incoming Ships.&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="bd" style="background: url('</span>, Lib.AssetUrl, <span class="hljs-string">'ui/transparent_black.png) repeat scroll 0pt 0pt transparent;"&gt;'</span>, <span class="hljs-string">'        &lt;div style="overflow:auto;"&gt;'</span>, <span class="hljs-string">'            &lt;ul id="notifyList"&gt;&lt;/ul&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+            },
+            _updating: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> list = <span class="hljs-keyword">this</span>.Display.notifyList;
+                <span class="hljs-keyword">var</span> incoming_own = <span class="hljs-keyword">this</span>.incoming_own[<span class="hljs-keyword">this</span>.planetId] || [],
+                    incoming_ally = <span class="hljs-keyword">this</span>.incoming_ally[<span class="hljs-keyword">this</span>.planetId] || [],
+                    incoming_enemy = <span class="hljs-keyword">this</span>.incoming_enemy[<span class="hljs-keyword">this</span>.planetId] || [],
+                    skip_incoming_ships = <span class="hljs-keyword">this</span>.skip_incoming_ships[<span class="hljs-keyword">this</span>.planetId] || <span class="hljs-number">0</span>,
+                    num_incoming_own = <span class="hljs-keyword">this</span>.num_incoming_own[<span class="hljs-keyword">this</span>.planetId] || <span class="hljs-number">0</span>,
+                    num_incoming_ally = <span class="hljs-keyword">this</span>.num_incoming_ally[<span class="hljs-keyword">this</span>.planetId] || <span class="hljs-number">0</span>,
+                    num_incoming_enemy = <span class="hljs-keyword">this</span>.num_incoming_enemy[<span class="hljs-keyword">this</span>.planetId] || <span class="hljs-number">0</span>;
+                arr = [];
+                <span class="hljs-keyword">if</span> (skip_incoming_ships == <span class="hljs-number">1</span>) {
+                    arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#f00"&gt;DISABLED (see profile)&lt;/span&gt;&lt;/li&gt;'</span>]);
+                }
+                <span class="hljs-keyword">if</span> (num_incoming_enemy &gt; <span class="hljs-number">0</span>) {
+                    arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#fff"&gt;'</span>, num_incoming_enemy, <span class="hljs-string">' foreign&lt;/span&gt;&lt;/li&gt;'</span>]);
+                    <span class="hljs-keyword">var</span> serverTime = Lib.getTime(Game.ServerData.time),
+                        len = incoming_enemy.length;
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> s = <span class="hljs-number">0</span>; s &lt; len; s++) {
+                        <span class="hljs-keyword">var</span> ship = incoming_enemy[s],
+                            ms = Lib.getTime(ship.date_arrives) - serverTime,
+                            arrTime;
+                        <span class="hljs-keyword">if</span> (ms &gt; <span class="hljs-number">0</span>) {
+                            arrTime = Lib.formatMillisecondTime(ms);
+                        } <span class="hljs-keyword">else</span> {
+                            arrTime = <span class="hljs-string">'Overdue '</span> + Lib.formatMillisecondTime(-ms);
+                        }
+                        arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#fff;"&gt;'</span>, arrTime, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>]);
+                    }
+                }
+                <span class="hljs-keyword">if</span> (num_incoming_ally &gt; <span class="hljs-number">0</span>) {
+                    arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#b0b"&gt;'</span>, num_incoming_ally, <span class="hljs-string">' allied&lt;/span&gt;&lt;/li&gt;'</span>]);
+                    <span class="hljs-keyword">var</span> serverTime = Lib.getTime(Game.ServerData.time),
+                        len = incoming_ally.length;
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> s = <span class="hljs-number">0</span>; s &lt; len; s++) {
+                        <span class="hljs-keyword">var</span> ship = incoming_ally[s],
+                            ms = Lib.getTime(ship.date_arrives) - serverTime,
+                            arrTime;
+                        <span class="hljs-keyword">if</span> (ms &gt; <span class="hljs-number">0</span>) {
+                            arrTime = Lib.formatMillisecondTime(ms);
+                        } <span class="hljs-keyword">else</span> {
+                            arrTime = <span class="hljs-string">'Overdue '</span> + Lib.formatMillisecondTime(-ms);
+                        }
+                        arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#b0b;"&gt;'</span>, arrTime, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>]);
+                    }
+                }
+                <span class="hljs-keyword">if</span> (num_incoming_own &gt; <span class="hljs-number">0</span>) {
+                    arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#0f0"&gt;'</span>, num_incoming_own, <span class="hljs-string">' own&lt;/span&gt;&lt;/li&gt;'</span>]);
+                    <span class="hljs-keyword">var</span> serverTime = Lib.getTime(Game.ServerData.time),
+                        len = incoming_own.length;
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> s = <span class="hljs-number">0</span>; s &lt; len; s++) {
+                        <span class="hljs-keyword">var</span> ship = incoming_own[s],
+                            ms = Lib.getTime(ship.date_arrives) - serverTime,
+                            arrTime;
+                        <span class="hljs-keyword">if</span> (ms &gt; <span class="hljs-number">0</span>) {
+                            arrTime = Lib.formatMillisecondTime(ms);
+                        } <span class="hljs-keyword">else</span> {
+                            arrTime = <span class="hljs-string">'Overdue '</span> + Lib.formatMillisecondTime(-ms);
+                        }
+                        arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#0f0;"&gt;'</span>, arrTime, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>]);
+                    }
+                }
+                <span class="hljs-keyword">if</span> (num_incoming_own + num_incoming_ally + num_incoming_enemy + skip_incoming_ships == <span class="hljs-number">0</span>) {
+                    arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#0f0"&gt;none&lt;/span&gt;&lt;/li&gt;'</span>]);
+                }
+                list.innerHTML = arr.join(<span class="hljs-string">''</span>);
+                <span class="hljs-keyword">this</span>.Display.show();
+            },
+            Load: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(planet)</span> {</span>
+                <span class="hljs-keyword">var</span> incoming_own = planet.incoming_own_ships || [],
+                    incoming_ally = planet.incoming_ally_ships || [],
+                    incoming_enemy = planet.incoming_enemy_ships || [],
+                    skip_incoming_ships = planet.skip_incoming_ships || <span class="hljs-number">0</span>,
+                    num_incoming_own = planet.num_incoming_own || <span class="hljs-number">0</span>,
+                    num_incoming_ally = planet.num_incoming_ally || <span class="hljs-number">0</span>,
+                    num_incoming_enemy = planet.num_incoming_enemy || <span class="hljs-number">0</span>;
+                planet_skip_incoming_ships = <span class="hljs-keyword">this</span>.skip_incoming_ships[planet.id] || <span class="hljs-number">0</span>;
+                planet_num_own = <span class="hljs-keyword">this</span>.num_incoming_own[planet.id] || <span class="hljs-number">0</span>;
+                planet_num_ally = <span class="hljs-keyword">this</span>.num_incoming_ally[planet.id] || <span class="hljs-number">0</span>;
+                planet_num_enemy = <span class="hljs-keyword">this</span>.num_incoming_enemy[planet.id] || <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">this</span>._createDisplay();
+                <span class="hljs-keyword">this</span>.skip_incoming_ships[planet.id] = skip_incoming_ships;
+                <span class="hljs-keyword">this</span>.incoming_own[planet.id] = incoming_own;
+                <span class="hljs-keyword">this</span>.num_incoming_own[planet.id] = num_incoming_own;
+                <span class="hljs-keyword">this</span>.incoming_ally[planet.id] = incoming_ally;
+                <span class="hljs-keyword">this</span>.num_incoming_ally[planet.id] = num_incoming_ally;
+                <span class="hljs-keyword">this</span>.incoming_enemy[planet.id] = incoming_enemy;
+                <span class="hljs-keyword">this</span>.num_incoming_enemy[planet.id] = num_incoming_enemy;
+                <span class="hljs-keyword">this</span>.planetId = planet.id;
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.subscribed) {
+                    Game.onTick.subscribe(<span class="hljs-keyword">this</span>._updating, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    <span class="hljs-keyword">this</span>.subscribed = <span class="hljs-number">1</span>;
+                }
+                <span class="hljs-keyword">this</span>.Display.show();
+                <span class="hljs-keyword">this</span>.Display.bringToTop();
+            },
+            Show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(planetId)</span> {</span>
+                <span class="hljs-keyword">this</span>.planetId = planetId;
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.Display) {
+                    <span class="hljs-keyword">this</span>.Display.show();
+                    <span class="hljs-keyword">this</span>.Display.bringToTop();
+                }
+            },
+            Hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.Display) {
+                    <span class="hljs-keyword">this</span>.Display.hide();
+                }
+                <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.planetId;
+            }
+        };
+        Lacuna.Notify = <span class="hljs-keyword">new</span> Notify();
+    })();
+    YAHOO.register(<span class="hljs-string">"notify"</span>, YAHOO.lacuna.Notify, {
+        version: <span class="hljs-string">"1"</span>,
+        build: <span class="hljs-string">"0"</span>
+    });
+}</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>vim: noet:ts=4:sw=4</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

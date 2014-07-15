@@ -1,0 +1,8 @@
+grock --out "docs/code" --style thin      \
+    --glob "src/*.js"                     \
+    --glob "app/js/*.js" --glob "app/js/**/*.js" \
+    --glob "README.md"                    \
+    --glob "app/templates/**/*.html"      \
+    --glob "app/css/*.css"
+
+# TODO: replace all the emoji's with <img> things.

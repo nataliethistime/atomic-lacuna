@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - info.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/info.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/info.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper">YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> YAHOO.lacuna.Info == <span class="hljs-string">"undefined"</span> || !YAHOO.lacuna.Info) {
+    (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+            Util = YAHOO.util,
+            Dom = Util.Dom,
+            Event = Util.Event,
+            Lacuna = YAHOO.lacuna,
+            Game = Lacuna.Game,
+            Lib = Lacuna.Library;
+        <span class="hljs-keyword">var</span> Alliance = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"infoAlliance"</span>;
+        };
+        Alliance.prototype = {
+            _createPanel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.Panel) {
+                    <span class="hljs-keyword">var</span> container = document.createElement(<span class="hljs-string">"div"</span>);
+                    container.id = <span class="hljs-keyword">this</span>.id;
+                    Dom.addClass(container, Lib.Styles.HIDDEN);
+                    container.innerHTML = <span class="hljs-keyword">this</span>._getHtml();
+                    document.body.insertBefore(container, document.body.firstChild);
+                    <span class="hljs-keyword">this</span>.Panel = <span class="hljs-keyword">new</span> YAHOO.widget.Panel(<span class="hljs-keyword">this</span>.id, {
+                        constraintoviewport: <span class="hljs-literal">true</span>,
+                        visible: <span class="hljs-literal">false</span>,
+                        draggable: <span class="hljs-literal">true</span>,
+                        effect: Game.GetContainerEffect(),
+                        underlay: <span class="hljs-literal">false</span>,
+                        modal: <span class="hljs-literal">false</span>,
+                        fixedcenter: <span class="hljs-literal">true</span>,
+                        close: <span class="hljs-literal">true</span>,
+                        width: <span class="hljs-string">"450px"</span>,
+                        zIndex: <span class="hljs-number">9999</span>
+                    });
+                    <span class="hljs-keyword">this</span>.Panel.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                        <span class="hljs-keyword">this</span>.name = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">'Name'</span>);
+                        <span class="hljs-keyword">this</span>.desc = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">'Desc'</span>);
+                        <span class="hljs-keyword">this</span>.founded = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">'Founded'</span>);
+                        <span class="hljs-keyword">this</span>.leader = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">'Leader'</span>);
+                        <span class="hljs-keyword">this</span>.memberList = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">'Members'</span>);
+                        <span class="hljs-keyword">this</span>.memberCount = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">'MemberCount'</span>);
+                        Event.delegate(<span class="hljs-keyword">this</span>.memberList, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.EmpireInfo, <span class="hljs-string">"a.profile_link"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                        Dom.removeClass(<span class="hljs-keyword">this</span>.id, Lib.Styles.HIDDEN);
+                    }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    <span class="hljs-keyword">this</span>.Panel.render();
+                    Game.OverlayManager.register(<span class="hljs-keyword">this</span>.Panel);
+                }
+            },
+            _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">return</span> [<span class="hljs-string">'    &lt;div class="hd"&gt;Alliance&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="bd"&gt;'</span>, <span class="hljs-string">'        &lt;ul&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Name:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'Name"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Description:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'Desc"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Founded:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'Founded"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Leader:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'Leader"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'        &lt;div style="height:200px;overflow:auto;"&gt;'</span>, <span class="hljs-string">'            &lt;p style="border-bottom:1px solid #52ACFF;"&gt;&lt;label&gt;Members:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'MemberCount"&gt;&lt;/span&gt;&lt;/p&gt;'</span>, <span class="hljs-string">'            &lt;ul id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'Members"&gt;'</span>, <span class="hljs-string">'            &lt;/ul&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="ft"&gt;&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+            },
+            Load: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(allianceId)</span> {</span>
+                <span class="hljs-keyword">this</span>._createPanel();
+                Lacuna.Pulser.Show();
+                Game.Services.Alliance.view_profile({
+                    session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                    alliance_id: allianceId
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-comment">//show now so there is a bit quicker response</span>
+                        <span class="hljs-keyword">this</span>.Panel.show();
+                        <span class="hljs-keyword">this</span>.Panel.bringToTop();
+                        <span class="hljs-keyword">var</span> profile = o.result.profile;
+                        <span class="hljs-keyword">this</span>.name.innerHTML = profile.name;
+                        <span class="hljs-keyword">this</span>.desc.innerHTML = profile.description;
+                        <span class="hljs-keyword">this</span>.founded.innerHTML = Lib.formatServerDate(profile.date_created);
+                        <span class="hljs-keyword">this</span>.memberCount.innerHTML = profile.members.length;
+                        <span class="hljs-keyword">var</span> memberArray = [<span class="hljs-string">'&lt;li style="border-bottom:1px solid #52ACFF;"&gt;&lt;label&gt;Num&lt;/label&gt;&lt;label&gt;Name&lt;/label&gt;&lt;/li&gt;'</span>];
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> m = <span class="hljs-number">0</span>; m &lt; profile.members.length; m++) {
+                            <span class="hljs-keyword">var</span> member = profile.members[m];
+                            <span class="hljs-keyword">if</span> (member.id == profile.leader_id) {
+                                <span class="hljs-keyword">this</span>.leader.innerHTML = member.name;
+                            }
+                            memberArray = memberArray.concat([<span class="hljs-string">'&lt;li&gt;&lt;label&gt;'</span>, m + <span class="hljs-number">1</span>, <span class="hljs-string">'&lt;/label&gt;&lt;a class="profile_link" style="text-decoration:underline;cursor:pointer;" href="#'</span>, member.id, <span class="hljs-string">'"&gt;'</span>, member.name, <span class="hljs-string">'&lt;/a&gt;&lt;/li&gt;'</span>]);
+                        }
+                        <span class="hljs-keyword">this</span>.memberList.innerHTML = memberArray.join(<span class="hljs-string">''</span>);
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            },
+            EmpireInfo: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, el)</span> {</span>
+                Event.stopEvent(e);
+                <span class="hljs-keyword">var</span> res = el.href.match(<span class="hljs-regexp">/\#(\d+)$/</span>);
+                Lacuna.Info.Empire.Load(res[<span class="hljs-number">1</span>]);
+            }
+        };
+        <span class="hljs-keyword">var</span> Empire = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"infoEmpire"</span>;
+        };
+        Empire.prototype = {
+            _createPanel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.Panel) {
+                    <span class="hljs-keyword">var</span> container = document.createElement(<span class="hljs-string">"div"</span>);
+                    container.id = <span class="hljs-keyword">this</span>.id;
+                    Dom.addClass(container, Lib.Styles.HIDDEN);
+                    container.innerHTML = <span class="hljs-keyword">this</span>._getHtml();
+                    document.body.insertBefore(container, document.body.firstChild);
+                    <span class="hljs-keyword">this</span>.Panel = <span class="hljs-keyword">new</span> YAHOO.widget.Dialog(<span class="hljs-keyword">this</span>.id, {
+                        constraintoviewport: <span class="hljs-literal">true</span>,
+                        visible: <span class="hljs-literal">false</span>,
+                        draggable: <span class="hljs-literal">true</span>,
+                        postmethod: <span class="hljs-string">"none"</span>,
+                        buttons: [{
+                            text: <span class="hljs-string">"Send Message"</span>,
+                            handler: {
+                                fn: <span class="hljs-keyword">this</span>.sendMessage,
+                                scope: <span class="hljs-keyword">this</span>
+                            },
+                            isDefault: <span class="hljs-literal">true</span>
+                        }],
+                        effect: Game.GetContainerEffect(),
+                        underlay: <span class="hljs-literal">false</span>,
+                        modal: <span class="hljs-literal">false</span>,
+                        fixedcenter: <span class="hljs-literal">true</span>,
+                        close: <span class="hljs-literal">true</span>,
+                        width: <span class="hljs-string">"450px"</span>,
+                        zIndex: <span class="hljs-number">9999</span>
+                    });
+                    <span class="hljs-keyword">this</span>.Panel.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                        <span class="hljs-keyword">this</span>.empire = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">"Empire"</span>);
+                        <span class="hljs-keyword">this</span>.status = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">"Status"</span>);
+                        <span class="hljs-keyword">this</span>.desc = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">"Desc"</span>);
+                        <span class="hljs-keyword">this</span>.species = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">"Species"</span>);
+                        <span class="hljs-keyword">this</span>.alliance = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">"Alliance"</span>);
+                        <span class="hljs-keyword">this</span>.colonyCount = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">"ColonyCount"</span>);
+                        <span class="hljs-keyword">this</span>.founded = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">"Founded"</span>);
+                        <span class="hljs-keyword">this</span>.login = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">"Login"</span>);
+                        <span class="hljs-keyword">this</span>.coloniesList = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">"ColoniesList"</span>);
+                        <span class="hljs-keyword">this</span>.medalsList = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">"MedalsList"</span>);
+                        <span class="hljs-keyword">this</span>.playerName = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">"PlayerName"</span>);
+                        <span class="hljs-keyword">this</span>.city = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">"City"</span>);
+                        <span class="hljs-keyword">this</span>.country = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">"Country"</span>);
+                        <span class="hljs-keyword">this</span>.skype = Dom.get(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">"Skype"</span>);
+                        <span class="hljs-keyword">this</span>.tabView = <span class="hljs-keyword">new</span> YAHOO.widget.TabView(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">"Tabs"</span>);
+                        <span class="hljs-keyword">this</span>.tabView.set(<span class="hljs-string">'activeIndex'</span>, <span class="hljs-number">0</span>);
+                        Dom.removeClass(<span class="hljs-keyword">this</span>.id, Lib.Styles.HIDDEN);
+                    }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    <span class="hljs-keyword">this</span>.Panel.hideEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                        <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.currentEmpire;
+                    }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    <span class="hljs-keyword">this</span>.Panel.render();
+                    Game.OverlayManager.register(<span class="hljs-keyword">this</span>.Panel);
+                }
+            },
+            _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                    .h - <span class="hljs-number">140</span>;
+                <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
+                    Ht = <span class="hljs-number">300</span>;
+                }
+                <span class="hljs-keyword">return</span> [<span class="hljs-string">'    &lt;div class="hd"&gt;Empire&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="bd"&gt;'</span>, <span class="hljs-string">'        &lt;div id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'Tabs" class="yui-navset"&gt;'</span>, <span class="hljs-string">'            &lt;ul class="yui-nav"&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;a href="#"&gt;&lt;em&gt;Empire&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;a href="#"&gt;&lt;em&gt;Known Colonies&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;a href="#"&gt;&lt;em&gt;Medals&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;a href="#"&gt;&lt;em&gt;Player&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;/ul&gt;'</span>, <span class="hljs-string">'            &lt;div class="yui-content" style="padding:0;"&gt;'</span>, <span class="hljs-string">'                &lt;div&gt;'</span>, <span class="hljs-string">'                    &lt;ul&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label&gt;Empire:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'Empire"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label&gt;Status:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'Status"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label&gt;Description:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'Desc"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label&gt;Species:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'Species"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label&gt;Alliance:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'Alliance" style="text-decoration:underline;cursor:pointer;"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label&gt;Colonies:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'ColonyCount"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label&gt;Founded:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'Founded"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label&gt;Last Login:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'Login"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;div&gt;'</span>, <span class="hljs-string">'                    &lt;ul id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'ColoniesList" style="height:'</span>, Ht, <span class="hljs-string">'px;width:425px;overflow:auto;"&gt;'</span>, <span class="hljs-string">'                    &lt;/ul&gt;'</span>, <span class="hljs-string">'                &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;div&gt;'</span>, <span class="hljs-string">'                    &lt;ul id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'MedalsList" style="height:'</span>, Ht, <span class="hljs-string">'px;width:425px;overflow:auto;"&gt;'</span>, <span class="hljs-string">'                    &lt;/ul&gt;'</span>, <span class="hljs-string">'                &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;div&gt;'</span>, <span class="hljs-string">'                    &lt;ul&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label&gt;Name:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'PlayerName"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label&gt;City:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'City"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label&gt;Country:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'Country"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label&gt;Skype:&lt;/label&gt;&lt;span id="'</span>, <span class="hljs-keyword">this</span>.id, <span class="hljs-string">'Skype"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;/ul&gt;'</span>, <span class="hljs-string">'                &lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="ft"&gt;&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+            },
+            Load: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(empireId)</span> {</span>
+                <span class="hljs-keyword">this</span>._createPanel();
+                Lacuna.Pulser.Show();
+                Game.Services.Empire.view_public_profile({
+                    session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                    empire_id: empireId
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">var</span> profile = o.result.profile;
+                        <span class="hljs-keyword">this</span>.currentEmpire = profile;
+                        <span class="hljs-keyword">this</span>.empire.innerHTML = profile.name;
+                        <span class="hljs-keyword">this</span>.status.innerHTML = profile.status_message;
+                        <span class="hljs-keyword">this</span>.desc.innerHTML = profile.description;
+                        <span class="hljs-keyword">this</span>.species.innerHTML = profile.species;
+                        <span class="hljs-keyword">this</span>.alliance.innerHTML = profile.alliance ? profile.alliance.name : <span class="hljs-string">''</span>;
+                        <span class="hljs-keyword">this</span>.colonyCount.innerHTML = profile.colony_count;
+                        <span class="hljs-keyword">this</span>.founded.innerHTML = Lib.formatServerDate(profile.date_founded);
+                        <span class="hljs-keyword">this</span>.login.innerHTML = Lib.formatServerDate(profile.last_login);
+                        <span class="hljs-comment">//show now so there is a bit quicker response</span>
+                        <span class="hljs-keyword">this</span>.Panel.show();
+                        <span class="hljs-keyword">this</span>.Panel.bringToTop();
+                        <span class="hljs-keyword">this</span>.playerName.innerHTML = profile.player_name;
+                        <span class="hljs-keyword">this</span>.city.innerHTML = profile.city;
+                        <span class="hljs-keyword">this</span>.country.innerHTML = profile.country;
+                        <span class="hljs-keyword">this</span>.skype.innerHTML = profile.skype ? [<span class="hljs-string">'&lt;a href="callto:'</span>, profile.skype, <span class="hljs-string">'"&gt;'</span>, profile.skype, <span class="hljs-string">'&lt;/a&gt;'</span>].join(<span class="hljs-string">''</span>) : <span class="hljs-string">''</span>;
+                        <span class="hljs-keyword">var</span> medalArray = [];
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> medalId <span class="hljs-keyword">in</span> profile.medals) {
+                            <span class="hljs-keyword">var</span> medal = profile.medals[medalId];
+                            medalArray = medalArray.concat([<span class="hljs-string">'&lt;li class="medal"&gt;'</span>, <span class="hljs-string">'    &lt;div class="medalContainer"&gt;'</span>, <span class="hljs-string">'        &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'medal/'</span>, medal.image, <span class="hljs-string">'.png" alt="'</span>, medal.name, <span class="hljs-string">'" title="'</span>, medal.name, <span class="hljs-string">' on '</span>, Lib.formatServerDate(medal.date), <span class="hljs-string">'" /&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>]);
+                        }
+                        <span class="hljs-keyword">this</span>.medalsList.innerHTML = medalArray.join(<span class="hljs-string">''</span>);
+                        <span class="hljs-keyword">var</span> colonyArray = [];
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> colonyId <span class="hljs-keyword">in</span> profile.known_colonies) {
+                            <span class="hljs-keyword">var</span> colony = profile.known_colonies[colonyId];
+                            colonyArray = colonyArray.concat([<span class="hljs-string">'&lt;li&gt;'</span>, <span class="hljs-string">'    &lt;div class="planetContainer yui-gf"&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u first planetImage" style="background-color:black;"&gt;'</span>, <span class="hljs-string">'            &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'star_system/'</span>, colony.image, <span class="hljs-string">'.png" alt="'</span>, colony.name, <span class="hljs-string">'" style="width:50px;height:50px;" /&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;'</span>, colony.name, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;'</span>, colony.x, <span class="hljs-string">' : '</span>, colony.y, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>]);
+                        }
+                        <span class="hljs-keyword">this</span>.coloniesList.innerHTML = colonyArray.join(<span class="hljs-string">''</span>);
+                        <span class="hljs-keyword">if</span> (profile.alliance) {
+                            Event.on(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">'Alliance'</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, id)</span> {</span>
+                                Lacuna.Info.Alliance.Load(id);
+                            }, profile.alliance.id);
+                        } <span class="hljs-keyword">else</span> {
+                            Event.removeListener(<span class="hljs-keyword">this</span>.id + <span class="hljs-string">'Alliance'</span>, <span class="hljs-string">"click"</span>);
+                        }
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            },
+            sendMessage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                Event.stopEvent(e);
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.currentEmpire) {
+                    Lacuna.Messaging.sendTo(<span class="hljs-keyword">this</span>.currentEmpire.name);
+                }
+            }
+        };
+        <span class="hljs-keyword">var</span> Clock = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"infoClock"</span>;
+        };
+        Clock.prototype = {
+            _createDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> container = document.createElement(<span class="hljs-string">"div"</span>);
+                container.id = <span class="hljs-string">"clock"</span>;
+                Dom.addClass(container, Lib.Styles.HIDDEN);
+                Dom.addClass(container, <span class="hljs-string">"nofooter"</span>);
+                container.innerHTML = <span class="hljs-keyword">this</span>._getHtml();
+                document.body.insertBefore(container, document.body.firstChild);
+                <span class="hljs-keyword">this</span>.Display = <span class="hljs-keyword">new</span> YAHOO.widget.Panel(<span class="hljs-string">"clock"</span>, {
+                    constraintoviewport: <span class="hljs-literal">true</span>,
+                    visible: <span class="hljs-literal">false</span>,
+                    draggable: <span class="hljs-literal">true</span>,
+                    effect: Game.GetContainerEffect(),
+                    close: <span class="hljs-literal">true</span>,
+                    underlay: <span class="hljs-literal">false</span>,
+                    modal: <span class="hljs-literal">false</span>,
+                    width: <span class="hljs-string">"300px"</span>,
+                    context: [<span class="hljs-string">"footer"</span>, <span class="hljs-string">"bl"</span>, <span class="hljs-string">"tl"</span>, [<span class="hljs-string">"beforeShow"</span>],
+                        [<span class="hljs-number">0</span>, -<span class="hljs-number">40</span>]
+                    ]
+                });
+                <span class="hljs-keyword">this</span>.Display.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    Dom.removeClass(<span class="hljs-string">"clock"</span>, Lib.Styles.HIDDEN);
+                    <span class="hljs-keyword">this</span>.clock = Dom.get(<span class="hljs-string">"clockDisplay"</span>);
+                });
+                <span class="hljs-keyword">this</span>.Display.showEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.Display.bringToTop();
+                    Game.onTick.subscribe(<span class="hljs-keyword">this</span>._updating, <span class="hljs-keyword">this</span>.Display, <span class="hljs-literal">true</span>);
+                }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">this</span>.Display.hideEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    Game.onTick.unsubscribe(<span class="hljs-keyword">this</span>._updating);
+                }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">this</span>.Display.render();
+            },
+            _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">return</span> [<span class="hljs-string">'    &lt;div class="hd"&gt;Server Time&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="bd"&gt;'</span>, <span class="hljs-string">'        &lt;div id="clockDisplay"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+            },
+            _updating: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.clock.innerHTML = Lacuna.Game.ServerData.time.toUTCString(); <span class="hljs-comment">//Lib.formatUTC(Lacuna.Game.ServerData.time);</span>
+            },
+            Show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.Display) {
+                    <span class="hljs-keyword">this</span>._createDisplay();
+                }
+                <span class="hljs-keyword">this</span>.Display.show();
+            },
+            Hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.Display) {
+                    <span class="hljs-keyword">this</span>.Display.hide();
+                }
+            }
+        };
+        YAHOO.lacuna.Info = {
+            Alliance: <span class="hljs-keyword">new</span> Alliance(),
+            Empire: <span class="hljs-keyword">new</span> Empire(),
+            Clock: <span class="hljs-keyword">new</span> Clock()
+        };
+    })();
+    YAHOO.register(<span class="hljs-string">"info"</span>, YAHOO.lacuna.Info, {
+        version: <span class="hljs-string">"1"</span>,
+        build: <span class="hljs-string">"0"</span>
+    });
+}</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>vim: noet:ts=4:sw=4</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

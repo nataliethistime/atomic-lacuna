@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - templeOfTheDrajilites.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/templeOfTheDrajilites.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/templeOfTheDrajilites.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Pager = YAHOO.widget.Paginator,
+        Sel = Util.Selector,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> TempleOfTheDrajilites = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        TempleOfTheDrajilites.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.TempleOfTheDrajilites;
+        <span class="hljs-keyword">this</span>.maps = {};
+        <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.CreateFind();
+            Event.on(<span class="hljs-string">"planetsDetailsCurrentStar"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.GoToCurrentStar, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+        }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+    };
+    Lang.extend(TempleOfTheDrajilites, Lacuna.buildings.Building, {
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getPlanetsTab()];
+        },
+        _getPlanetsTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.planetsTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Planets"</span>,
+                content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;&lt;label for="planetsDetailsStarFind"&gt;Lookup Star Name:&lt;/label&gt;&lt;div style="display:inline-block;width:300px;"&gt;&lt;input type="text" id="planetsDetailsStarFind" /&gt;&lt;/div&gt; or &lt;button type="button" id="planetsDetailsCurrentStar"&gt;Go To Current Star&lt;/button&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div id="planetsDetailsMessage"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="clearafter"&gt;'</span>, <span class="hljs-string">'        &lt;ul id="planetsDetails" class="planetsInfo"&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-comment">//this.planetsTab.subscribe("activeChange", this.GetPlanets, this, true);</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.planetsTab;
+        },
+        CreateFind: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.findStar) {
+                <span class="hljs-keyword">var</span> dataSource = <span class="hljs-keyword">new</span> Util.XHRDataSource(<span class="hljs-string">"/map"</span>);
+                dataSource.connMethodPost = <span class="hljs-string">"POST"</span>;
+                dataSource.maxCacheEntries = <span class="hljs-number">2</span>;
+                dataSource.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
+                dataSource.responseSchema = {
+                    resultsList: <span class="hljs-string">"result.stars"</span>,
+                    fields: [<span class="hljs-string">"name"</span>, <span class="hljs-string">"color"</span>, <span class="hljs-string">"x"</span>, <span class="hljs-string">"y"</span>, <span class="hljs-string">"id"</span>]
+                };
+                <span class="hljs-keyword">var</span> oTextboxList = <span class="hljs-keyword">new</span> YAHOO.lacuna.TextboxList(<span class="hljs-string">"planetsDetailsStarFind"</span>, dataSource, { <span class="hljs-comment">//config options</span>
+                    maxResultsDisplayed: <span class="hljs-number">25</span>,
+                    minQueryLength: <span class="hljs-number">3</span>,
+                    multiSelect: <span class="hljs-literal">false</span>,
+                    forceSelection: <span class="hljs-literal">false</span>,
+                    useIndicator: <span class="hljs-literal">true</span>
+                });
+                oTextboxList.formatResult = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oResultData, sQuery, sResultMatch)</span> {</span>
+                    <span class="hljs-keyword">return</span> [<span class="hljs-string">'&lt;div class="yui-gf"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first" style="background-color:black;"&gt;'</span>, <span class="hljs-string">'        &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'star_map/'</span>, oResultData.color, <span class="hljs-string">'.png" alt="'</span>, oResultData, name, <span class="hljs-string">'" style="width:50px;height:50px;" /&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;'</span>, oResultData.name, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;'</span>, oResultData.x, <span class="hljs-string">' : '</span>, oResultData.y, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">""</span>);
+                };
+                oTextboxList.generateRequest = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sQuery)</span> {</span>
+                    <span class="hljs-keyword">var</span> s = Lang.JSON.stringify({
+                        <span class="hljs-string">"id"</span>: YAHOO.rpc.Service._requestId++,
+                        <span class="hljs-string">"method"</span>: <span class="hljs-string">"search_stars"</span>,
+                        <span class="hljs-string">"jsonrpc"</span>: <span class="hljs-string">"2.0"</span>,
+                        <span class="hljs-string">"params"</span>: [
+                            Game.GetSession(<span class="hljs-string">""</span>),
+                            <span class="hljs-built_in">decodeURIComponent</span>(sQuery)
+                        ]
+                    });
+                    <span class="hljs-keyword">return</span> s;
+                };
+                oTextboxList.dirtyEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event, isDirty, oSelf)</span> {</span>
+                    <span class="hljs-keyword">var</span> star = <span class="hljs-keyword">this</span>._oTblSingleSelection.Object;
+                    oSelf.GetPlanets(star.id);
+                }, <span class="hljs-keyword">this</span>);
+                <span class="hljs-keyword">this</span>.findStar = oTextboxList;
+            }
+        },
+        GoToCurrentStar: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.GetPlanets(Game.GetCurrentPlanet()
+                .star_id);
+        },
+        GetPlanets: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(starId)</span> {</span>
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.service.list_planets({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.building.id,
+                star_id: starId
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    <span class="hljs-keyword">this</span>.planets = o.result.planets;
+                    <span class="hljs-keyword">this</span>.PlanetsDisplay();
+                },
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    <span class="hljs-keyword">var</span> msg = Dom.get(<span class="hljs-string">"planetsDetailsMessage"</span>),
+                        planetsDetails = Dom.get(<span class="hljs-string">"planetsDetails"</span>);
+                    msg.innerHTML = o.error.message;
+                    Event.purgeElement(planetsDetails);
+                    planetsDetails.innerHTML = <span class="hljs-string">""</span>;
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        PlanetsDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> planets = <span class="hljs-keyword">this</span>.planets,
+                planetsDetails = Dom.get(<span class="hljs-string">"planetsDetails"</span>);
+            <span class="hljs-keyword">if</span> (planetsDetails) {
+                Event.purgeElement(planetsDetails);
+                planetsDetails.innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">var</span> li = document.createElement(<span class="hljs-string">"li"</span>);
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; planets.length; i++) {
+                    <span class="hljs-keyword">var</span> pt = planets[i],
+                        nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    nLi.Planet = pt;
+                    Dom.addClass(nLi, <span class="hljs-string">"planetDisplay"</span>);
+                    nLi.innerHTML = pt.name;
+                    nLi = planetsDetails.appendChild(nLi);
+                    Event.on(nLi, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.PlanetView, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                }
+            }
+        },
+        PlanetView: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">var</span> nLi = Event.getTarget(e);
+            <span class="hljs-keyword">if</span> (nLi.Planet) {
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.maps[nLi.Planet.id]) {
+                    Lacuna.Pulser.Show();
+                    <span class="hljs-keyword">this</span>.service.view_planet({
+                        session_id: Game.GetSession(),
+                        building_id: <span class="hljs-keyword">this</span>.building.id,
+                        planet_id: nLi.Planet.id
+                    }, {
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                            Lacuna.Pulser.Hide();
+                            <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                            <span class="hljs-keyword">this</span>.maps[nLi.Planet.id] = o.result.map;
+                            Lacuna.Messaging.attachmentPanel.load(o.result.map);
+                        },
+                        scope: <span class="hljs-keyword">this</span>
+                    });
+                } <span class="hljs-keyword">else</span> {
+                    Lacuna.Messaging.attachmentPanel.load(<span class="hljs-keyword">this</span>.maps[nLi.Planet.id]);
+                }
+            }
+        }
+    });
+    YAHOO.lacuna.buildings.TempleOfTheDrajilites = TempleOfTheDrajilites;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

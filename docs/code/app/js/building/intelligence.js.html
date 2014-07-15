@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - intelligence.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/intelligence.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/intelligence.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Pager = YAHOO.widget.Paginator,
+        Sel = Util.Selector,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> Intelligence = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        Intelligence.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.Intelligence;
+    };
+    Lang.extend(Intelligence, Lacuna.buildings.Building, {
+        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.pager) {
+                <span class="hljs-keyword">this</span>.pager.destroy();
+            }
+            Intelligence.superclass.destroy.call(<span class="hljs-keyword">this</span>);
+        },
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getTrainTab(), <span class="hljs-keyword">this</span>._getSpiesTab()];
+        },
+        _getTrainTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> spies = <span class="hljs-keyword">this</span>.result.spies;
+            <span class="hljs-keyword">this</span>.trainTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Train Spies"</span>,
+                content: [<span class="hljs-string">'&lt;div class="yui-g"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'        &lt;ul&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span style="font-weight:bold;"&gt;Spies:&lt;/span&gt; &lt;span id="spiesCurrent"&gt;'</span>, spies.current, <span class="hljs-string">'&lt;/span&gt; of '</span>, spies.maximum, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li id="spiesTrainOptions"&gt;&lt;span style="font-weight:bold;"&gt;Train:&lt;/span&gt; &lt;select id="spiesTrainNumber"&gt;&lt;/select&gt; new spies. &lt;button type="button" id="spiesTrain"&gt;Train&lt;/button&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'        &lt;ul&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;Training Costs&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/food.png" title="Food" class="smallFood" /&gt;&lt;/span&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, spies.training_costs.food, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/ore.png" title="Ore" class="smallOre" /&gt;&lt;/span&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, spies.training_costs.ore, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/water.png" title="Water" class="smallWater" /&gt;&lt;/span&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, spies.training_costs.water, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/energy.png" title="Energy" class="smallEnergy" /&gt;&lt;/span&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, spies.training_costs.energy, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/waste.png" title="Waste" class="smallWaste" /&gt;&lt;/span&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, spies.training_costs.waste, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/time.png" title="Time" class="smallTime" /&gt;&lt;/span&gt;&lt;span class="buildingDetailsNum"&gt;'</span>, Lib.formatTime(spies.training_costs.time), <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">this</span>.trainTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.trainView, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">var</span> btn = Sel.query(<span class="hljs-string">"button"</span>, <span class="hljs-keyword">this</span>.trainTab.get(<span class="hljs-string">"contentEl"</span>), <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">if</span> (btn) {
+                Event.on(btn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.SpyTrain, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.trainTab;
+        },
+        _getSpiesTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.spiesTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Spies"</span>,
+                content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;p id="spiesSubsidizeOffer" style="display:none;"&gt;You may subsidize training for 1 &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" /&gt; per spy. &lt;button type="button" id="spiesSubsidize"&gt;Subsidize&lt;/button&gt;&lt;/p&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;'</span>, <span class="hljs-string">'        &lt;div id="spiesDetails"&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div id="spyPaginator"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">this</span>.spiesTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.spiesView, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.on(<span class="hljs-string">"spiesSubsidize"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Subsidize, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.spiesTab;
+        },
+        trainView: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">var</span> spies = <span class="hljs-keyword">this</span>.result.spies;
+            <span class="hljs-keyword">var</span> canTrain = spies.maximum - spies.current;
+            Dom.get(<span class="hljs-string">"spiesCurrent"</span>)
+                .innerHTML = spies.current;
+            <span class="hljs-keyword">if</span> (canTrain &gt; <span class="hljs-number">0</span>) {
+                Dom.setStyle(<span class="hljs-string">'spiesTrainOptions'</span>, <span class="hljs-string">'display'</span>, <span class="hljs-string">''</span>);
+                <span class="hljs-keyword">var</span> elNumSelect = Dom.get(<span class="hljs-string">'spiesTrainNumber'</span>);
+                <span class="hljs-keyword">if</span> (canTrain &gt; <span class="hljs-number">5</span>) {
+                    canTrain = <span class="hljs-number">5</span>;
+                }
+                <span class="hljs-keyword">var</span> currentNum = elNumSelect.children.length;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = canTrain; i &lt; currentNum; i++) {
+                    elNumSelect.removeChild(elNumSelect.lastChild);
+                }
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = currentNum + <span class="hljs-number">1</span>; n &lt;= canTrain; n++) {
+                    <span class="hljs-keyword">var</span> elOption = document.createElement(<span class="hljs-string">'option'</span>);
+                    elOption.value = n;
+                    elOption.innerHTML = n;
+                    elNumSelect.appendChild(elOption);
+                }
+            } <span class="hljs-keyword">else</span> {
+                Dom.setStyle(<span class="hljs-string">'spiesTrainOptions'</span>, <span class="hljs-string">'display'</span>, <span class="hljs-string">'none'</span>);
+            }
+        },
+        spiesView: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">if</span> (e.newValue) {
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.spies) {
+                    Lacuna.Pulser.Show();
+                    <span class="hljs-keyword">this</span>.service.view_spies({
+                        session_id: Game.GetSession(),
+                        building_id: <span class="hljs-keyword">this</span>.building.id
+                    }, {
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                            YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Intelligence.Intelligence.view_spies.success"</span>);
+                            Lacuna.Pulser.Hide();
+                            <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                            <span class="hljs-keyword">this</span>.spies = o.result;
+                            <span class="hljs-keyword">this</span>.pager = <span class="hljs-keyword">new</span> Pager({
+                                rowsPerPage: <span class="hljs-number">30</span>,
+                                totalRecords: o.result.spy_count,
+                                containers: <span class="hljs-string">'spyPaginator'</span>,
+                                template: <span class="hljs-string">"{PreviousPageLink} {PageLinks} {NextPageLink}"</span>,
+                                alwaysVisible: <span class="hljs-literal">false</span>
+                            });
+                            <span class="hljs-keyword">this</span>.pager.subscribe(<span class="hljs-string">'changeRequest'</span>, <span class="hljs-keyword">this</span>.SpyHandlePagination, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                            <span class="hljs-keyword">this</span>.pager.render();
+                            <span class="hljs-keyword">this</span>.SpyPopulate();
+                        },
+                        scope: <span class="hljs-keyword">this</span>
+                    });
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">this</span>.SpyPopulate();
+                }
+            }
+        },
+        SpyInfo: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(spy)</span> {</span>
+            <span class="hljs-keyword">var</span> assign = spy.possible_assignments,
+                div = document.createElement(<span class="hljs-string">"div"</span>),
+                ul = document.createElement(<span class="hljs-string">"ul"</span>),
+                li = document.createElement(<span class="hljs-string">"li"</span>),
+                isTraining;
+            <span class="hljs-keyword">var</span> nDiv = div.cloneNode(<span class="hljs-literal">false</span>),
+                nUl = ul.cloneNode(<span class="hljs-literal">false</span>),
+                nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nDiv, <span class="hljs-string">"spyInfo"</span>);
+            nDiv.id = <span class="hljs-string">'spy'</span> + spy.id;
+            Dom.addClass(nUl, <span class="hljs-string">"clearafter"</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyName"</span>);
+            nLi.innerHTML = spy.name;
+            nUl.appendChild(nLi);
+            Event.on(nLi, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.SpyName, {
+                Self: <span class="hljs-keyword">this</span>,
+                Spy: spy,
+                el: nLi
+            }, <span class="hljs-literal">true</span>);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyAssignedTo"</span>);
+            nLi.innerHTML = <span class="hljs-string">'&lt;label&gt;Assigned To:&lt;/label&gt; &lt;a class="starmap_link" href="#'</span> + spy.assigned_to.x + <span class="hljs-string">'x'</span> + spy.assigned_to.y + <span class="hljs-string">'"&gt;'</span> + spy.assigned_to.name + <span class="hljs-string">'&lt;/a&gt;'</span>;
+            Event.delegate(nLi, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.handleStarmapLink, <span class="hljs-string">"a.starmap_link"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            nUl.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyAssignment"</span>);
+            <span class="hljs-keyword">var</span> sel;
+            <span class="hljs-keyword">if</span> (spy.is_available &amp;&amp; spy.assignment !== <span class="hljs-string">'Mercenary Transport'</span>) {
+                sel = document.createElement(<span class="hljs-string">"select"</span>);
+                <span class="hljs-keyword">var</span> opt = document.createElement(<span class="hljs-string">"option"</span>),
+                    btn = document.createElement(<span class="hljs-string">"button"</span>);
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> a = <span class="hljs-number">0</span>; a &lt; assign.length; a++) {
+                    <span class="hljs-keyword">var</span> job = assign[a];
+                    <span class="hljs-keyword">var</span> nOpt = opt.cloneNode(<span class="hljs-literal">false</span>);
+                    nOpt.value = job.task;
+                    nOpt.innerHTML = [job.task, <span class="hljs-string">' - Skill: '</span>, job.skill.titleCaps(<span class="hljs-string">'_'</span>, <span class="hljs-string">''</span>), <span class="hljs-string">' - Recovery: '</span>, Lib.formatTime(job.recovery)].join(<span class="hljs-string">''</span>);
+                    <span class="hljs-keyword">if</span> (spy.assignment === job.task) {
+                        nOpt.selected = <span class="hljs-literal">true</span>;
+                        sel.currentAssign = job.task;
+                    }
+                    sel.appendChild(nOpt);
+                }
+                Event.on(sel, <span class="hljs-string">"change"</span>, <span class="hljs-keyword">this</span>.SpyAssignChange);
+                nLi.appendChild(sel);
+                btn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+                btn.innerHTML = <span class="hljs-string">"Assign"</span>;
+                Dom.setStyle(btn, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                Event.on(btn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.SpyAssign, {
+                    Self: <span class="hljs-keyword">this</span>,
+                    Assign: sel,
+                    Id: spy.id,
+                    Line: nDiv
+                }, <span class="hljs-literal">true</span>);
+                sel.Button = nLi.appendChild(btn);
+            } <span class="hljs-keyword">else</span> {
+                nLi.innerHTML = spy.assignment;
+                <span class="hljs-keyword">if</span> (!isTraining) {
+                    isTraining = (spy.assignment === <span class="hljs-string">"Training"</span>);
+                }
+            }</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Add mission results if they exist</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">            <span class="hljs-keyword">if</span> (spy.mission) {
+                <span class="hljs-keyword">var</span> elem = sel ? sel : nLi;
+                <span class="hljs-keyword">var</span> result = document.createElement(<span class="hljs-string">"div"</span>);
+                Dom.setStyle(result, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                Dom.addClass(result, <span class="hljs-string">'spyAssignResult'</span>);
+                <span class="hljs-keyword">var</span> result_text = document.createElement(<span class="hljs-string">"span"</span>);
+                <span class="hljs-keyword">var</span> result_link = document.createElement(<span class="hljs-string">"a"</span>);
+                result_link.href = <span class="hljs-string">"#"</span>;
+                result_link.innerHTML = <span class="hljs-string">"View Report"</span>;
+                Event.on(result_link, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.SpyShowMessage, {
+                    Self: <span class="hljs-keyword">this</span>,
+                    ResultLink: result_link,
+                    Id: spy.id,
+                    Line: nDiv
+                }, <span class="hljs-literal">true</span>);
+                Dom.setStyle(result_link, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                elem.ResultText = result.appendChild(result_text);
+                elem.ResultLink = result.appendChild(result_link);
+                elem.Results = nLi.appendChild(result);
+                <span class="hljs-keyword">var</span> mission = spy.mission;
+                elem.ResultText.innerHTML = <span class="hljs-string">"Mission "</span> + mission.result + (mission.reason ? <span class="hljs-string">": "</span> + mission.reason : <span class="hljs-string">"."</span>);
+                Dom.setStyle(elem.Results, <span class="hljs-string">"display"</span>, <span class="hljs-string">"block"</span>);
+                <span class="hljs-keyword">if</span> (mission.message_id) {
+                    elem.ResultLink.MessageId = mission.message_id;
+                    Dom.setStyle(elem.ResultLink, <span class="hljs-string">"display"</span>, <span class="hljs-string">"inline"</span>);
+                } <span class="hljs-keyword">else</span> {
+                    Dom.setStyle(elem.ResultLink, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                }
+            }
+            nUl.appendChild(nLi);
+            nDiv.appendChild(nUl);
+            nUl = ul.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nUl, <span class="hljs-string">"clearafter"</span>);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyLevel"</span>);
+            nLi.innerHTML = <span class="hljs-string">"&lt;label&gt;Level:&lt;/label&gt;"</span> + spy.level;
+            nUl.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyOffense"</span>);
+            nLi.innerHTML = <span class="hljs-string">"&lt;label&gt;Offense:&lt;/label&gt;"</span> + spy.offense_rating;
+            nUl.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyDefense"</span>);
+            nLi.innerHTML = <span class="hljs-string">"&lt;label&gt;Defense:&lt;/label&gt;"</span> + spy.defense_rating;
+            nUl.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyAvailableWhen"</span>);
+            nLi.innerHTML = <span class="hljs-string">"&lt;label&gt;Available:&lt;/label&gt;"</span> + (spy.is_available ? <span class="hljs-string">'Now'</span> : Lib.formatServerDate(spy.available_on));
+            nUl.appendChild(nLi);
+            nDiv.appendChild(nUl);
+            nUl = ul.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nUl, <span class="hljs-string">"clearafter"</span>);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyIntel"</span>);
+            nLi.innerHTML = <span class="hljs-string">"&lt;label&gt;Intel:&lt;/label&gt;"</span> + spy.intel;
+            nUl.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyMayhem"</span>);
+            nLi.innerHTML = <span class="hljs-string">"&lt;label&gt;Mayhem:&lt;/label&gt;"</span> + spy.mayhem;
+            nUl.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyPolitics"</span>);
+            nLi.innerHTML = <span class="hljs-string">"&lt;label&gt;Politics:&lt;/label&gt;"</span> + spy.politics;
+            nUl.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyTheft"</span>);
+            nLi.innerHTML = <span class="hljs-string">"&lt;label&gt;Theft:&lt;/label&gt;"</span> + spy.theft;
+            nUl.appendChild(nLi);
+            <span class="hljs-keyword">var</span> mission_count = spy.mission_count;
+            nDiv.appendChild(nUl);
+            nUl = ul.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nUl, <span class="hljs-string">"clearafter"</span>);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyMissionCounts"</span>);
+            nLi.innerHTML = <span class="hljs-string">"&lt;label&gt;Mission Count&lt;/label&gt;"</span>;
+            nUl.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyOffensiveMissions"</span>);
+            nLi.innerHTML = <span class="hljs-string">"&lt;label&gt;Offensive:&lt;/label&gt;"</span> + mission_count.offensive;
+            nUl.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyDefensiveMissions"</span>);
+            nLi.innerHTML = <span class="hljs-string">"&lt;label&gt;Defensive:&lt;/label&gt;"</span> + mission_count.defensive;
+            nUl.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyTotalMissions"</span>);
+            nLi.innerHTML = <span class="hljs-string">"&lt;label&gt;Total:&lt;/label&gt;"</span> + (<span class="hljs-built_in">parseInt</span>(mission_count.defensive, <span class="hljs-number">10</span>) + <span class="hljs-built_in">parseInt</span>(mission_count.offensive, <span class="hljs-number">10</span>));
+            nUl.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(nLi, <span class="hljs-string">"spyBurn"</span>);
+            <span class="hljs-keyword">var</span> bbtn = document.createElement(<span class="hljs-string">"button"</span>);
+            bbtn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+            bbtn.innerHTML = <span class="hljs-string">"Burn"</span>;
+            bbtn = nLi.appendChild(bbtn);
+            nUl.appendChild(nLi);
+            nDiv.appendChild(nUl);
+            Event.on(bbtn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.SpyBurn, {
+                Self: <span class="hljs-keyword">this</span>,
+                Spy: spy,
+                Line: nDiv
+            }, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> [nDiv, isTraining];
+        },
+        SpyPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"spiesDetails"</span>);
+            <span class="hljs-keyword">if</span> (details) {
+                <span class="hljs-keyword">var</span> spies = <span class="hljs-keyword">this</span>.spies.spies,
+                    nDiv, isTraining;
+                Event.purgeElement(details);
+                details.innerHTML = <span class="hljs-string">""</span>;
+                Dom.setStyle(details.parentNode, <span class="hljs-string">"height"</span>, <span class="hljs-string">""</span>);
+                Dom.setStyle(details.parentNode, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">""</span>);
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; spies.length; i++) {
+                    <span class="hljs-keyword">var</span> ret = <span class="hljs-keyword">this</span>.SpyInfo(spies[i]);
+                    nDiv = ret[<span class="hljs-number">0</span>];
+                    <span class="hljs-keyword">if</span> (ret[<span class="hljs-number">1</span>]) {
+                        isTraining = <span class="hljs-literal">true</span>;
+                    }
+                    details.appendChild(nDiv);
+                }
+                <span class="hljs-keyword">if</span> (isTraining) {
+                    Dom.get(<span class="hljs-string">"spiesSubsidize"</span>)
+                        .disabled = <span class="hljs-literal">false</span>;
+                    Dom.setStyle(<span class="hljs-string">"spiesSubsidizeOffer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                } <span class="hljs-keyword">else</span> {
+                    Dom.get(<span class="hljs-string">"spiesSubsidize"</span>)
+                        .disabled = <span class="hljs-literal">true</span>;
+                    Dom.setStyle(<span class="hljs-string">"spiesSubsidizeOffer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                }
+                <span class="hljs-comment">//wait for tab to display first</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                        .h - <span class="hljs-number">150</span>;
+                    <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
+                        Ht = <span class="hljs-number">300</span>;
+                    }
+                    Dom.setStyle(details.parentNode, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                    Dom.setStyle(details.parentNode, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+                }, <span class="hljs-number">10</span>);
+            }
+        },
+        handleStarmapLink: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, el)</span> {</span>
+            Event.stopEvent(e);
+            <span class="hljs-keyword">var</span> res = el.href.match(<span class="hljs-regexp">/\#(-?\d+)x(-?\d+)$/</span>);
+            Game.StarJump({
+                x: res[<span class="hljs-number">1</span>],
+                y: res[<span class="hljs-number">2</span>]
+            });
+        },
+        SpyShowMessage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> message_id = <span class="hljs-keyword">this</span>.ResultLink.MessageId;
+            <span class="hljs-keyword">if</span> (message_id) {
+                Lacuna.Messaging.showMessage(message_id);
+            }
+        },
+        SpyHandlePagination: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newState)</span> {</span>
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.service.view_spies({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.building.id,
+                page_number: newState.page
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Intelligence.SpyHandlePagination.view_spies.success"</span>);
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    <span class="hljs-keyword">this</span>.spies = o.result;
+                    <span class="hljs-keyword">this</span>.SpyPopulate();
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Update the Paginator&#39;s state</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">            <span class="hljs-keyword">this</span>.pager.setState(newState);
+        },
+        SpyAssignChange: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> btn = <span class="hljs-keyword">this</span>.Button,
+                defVal = <span class="hljs-keyword">this</span>.currentAssign,
+                selVal = <span class="hljs-keyword">this</span>[<span class="hljs-keyword">this</span>.selectedIndex].value;
+            <span class="hljs-keyword">if</span> (btn) {
+                Dom.setStyle(btn, <span class="hljs-string">"display"</span>, defVal !== selVal ? <span class="hljs-string">""</span> : <span class="hljs-string">"none"</span>);
+            }
+        },
+        SpyAssign: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">var</span> assign = <span class="hljs-keyword">this</span>.Assign[<span class="hljs-keyword">this</span>.Assign.selectedIndex].value;
+            <span class="hljs-keyword">this</span>.Self.service.assign_spy({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.Self.building.id,
+                spy_id: <span class="hljs-keyword">this</span>.Id,
+                assignment: assign
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Intelligence.SpyAssign.success"</span>);
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                    <span class="hljs-comment">//delete this.Self.spies; /* Can't delete it, we need it later */</span>
+                    <span class="hljs-keyword">var</span> spy = o.result.spy;
+                    spy.assignment = assign;
+                    spy.mission = o.result.mission;
+                    <span class="hljs-keyword">var</span> spies = <span class="hljs-keyword">this</span>.Self.spies.spies;
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; spies.length; i++) {
+                        <span class="hljs-keyword">if</span> (spy.id === spies[i].id) {
+                            spies[i] = spy;
+                            <span class="hljs-keyword">break</span>;
+                        }
+                    }
+                    <span class="hljs-keyword">this</span>.Self.spies.spies = spies;
+                    <span class="hljs-keyword">var</span> ret = <span class="hljs-keyword">this</span>.Self.SpyInfo(spy);
+                    <span class="hljs-comment">//Dom.get('spiesDetails').replaceChild(ret[0], Dom.get('spy' + spy.id));</span>
+                    <span class="hljs-keyword">this</span>.Line.parentNode.insertBefore(ret[<span class="hljs-number">0</span>], <span class="hljs-keyword">this</span>.Line);
+                    <span class="hljs-keyword">var</span> ol = <span class="hljs-keyword">this</span>.Line.parentNode.removeChild(<span class="hljs-keyword">this</span>.Line);
+                    Event.purgeElement(ol);
+                },
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    <span class="hljs-keyword">this</span>.Assign.selectedIndex = <span class="hljs-keyword">this</span>.Assign.defaultIndex;
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        SpyBurn: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">"Are you sure you want to Burn "</span>, <span class="hljs-keyword">this</span>.Spy.name, <span class="hljs-string">"?"</span>].join(<span class="hljs-string">''</span>))) {
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">this</span>.Self.service.burn_spy({
+                    session_id: Game.GetSession(),
+                    building_id: <span class="hljs-keyword">this</span>.Self.building.id,
+                    spy_id: <span class="hljs-keyword">this</span>.Spy.id
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Intelligence.SpyBurn.success"</span>);
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                        <span class="hljs-keyword">var</span> spies = <span class="hljs-keyword">this</span>.Self.spies.spies;
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; spies.length; i++) {
+                            <span class="hljs-keyword">if</span> (spies[i].id === <span class="hljs-keyword">this</span>.Spy.id) {
+                                spies.splice(i, <span class="hljs-number">1</span>);
+                                <span class="hljs-keyword">break</span>;
+                            }
+                        }
+                        <span class="hljs-keyword">this</span>.Line.parentNode.removeChild(<span class="hljs-keyword">this</span>.Line);
+                        <span class="hljs-keyword">this</span>.Self.result.spies.current = (<span class="hljs-keyword">this</span>.Self.result.spies.current * <span class="hljs-number">1</span>) - <span class="hljs-number">1</span>;
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        SpyName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.el.innerHTML = <span class="hljs-string">""</span>;
+            <span class="hljs-keyword">var</span> inp = document.createElement(<span class="hljs-string">"input"</span>),
+                bSave = document.createElement(<span class="hljs-string">"button"</span>),
+                bCancel = bSave.cloneNode(<span class="hljs-literal">false</span>);
+            inp.type = <span class="hljs-string">"text"</span>;
+            inp.value = <span class="hljs-keyword">this</span>.Spy.name;
+            <span class="hljs-keyword">this</span>.Input = inp;
+            bSave.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+            bSave.innerHTML = <span class="hljs-string">"Save"</span>;
+            Event.on(bSave, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Self.SpyNameSave, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            bCancel.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+            bCancel.innerHTML = <span class="hljs-string">"Cancel"</span>;
+            Event.on(bCancel, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Self.SpyNameClear, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.removeListener(<span class="hljs-keyword">this</span>.el, <span class="hljs-string">"click"</span>);
+            <span class="hljs-keyword">this</span>.el.appendChild(inp);
+            <span class="hljs-keyword">this</span>.el.appendChild(document.createElement(<span class="hljs-string">"br"</span>));
+            <span class="hljs-keyword">this</span>.el.appendChild(bSave);
+            <span class="hljs-keyword">this</span>.el.appendChild(bCancel);
+        },
+        SpyNameSave: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            Event.stopEvent(e);
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">var</span> newName = <span class="hljs-keyword">this</span>.Input.value;
+            <span class="hljs-keyword">this</span>.Self.service.name_spy({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.Self.building.id,
+                spy_id: <span class="hljs-keyword">this</span>.Spy.id,
+                name: newName
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Intelligence.SpyNameSave.success"</span>);
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                    <span class="hljs-comment">//this.Self.spies = undefined; /* Can't delete it, we need it later */</span>
+                    <span class="hljs-keyword">this</span>.Spy.name = newName;
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.Input) {
+                        <span class="hljs-keyword">this</span>.Input.value = newName;
+                    }
+                    <span class="hljs-keyword">this</span>.Self.SpyNameClear.call(<span class="hljs-keyword">this</span>);
+                },
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.Input) {
+                        <span class="hljs-keyword">this</span>.Input.value = <span class="hljs-keyword">this</span>.Spy.name;
+                    }
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        SpyNameClear: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">if</span> (e) {
+                Event.stopEvent(e);
+            }
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.Input) {
+                <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.Input;
+            }
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.el) {
+                Event.purgeElement(<span class="hljs-keyword">this</span>.el);
+                <span class="hljs-keyword">this</span>.el.innerHTML = <span class="hljs-keyword">this</span>.Spy.name;
+                Event.on(<span class="hljs-keyword">this</span>.el, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Self.SpyName, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            }
+        },
+        SpyTrain: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> select = Dom.get(<span class="hljs-string">"spiesTrainNumber"</span>),
+                num = select[select.selectedIndex].value * <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> (Lang.isNumber(num) &amp;&amp; num &lt;= <span class="hljs-keyword">this</span>.result.spies.maximum - <span class="hljs-keyword">this</span>.result.spies.current) {
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">this</span>.service.train_spy({
+                    session_id: Game.GetSession(),
+                    building_id: <span class="hljs-keyword">this</span>.building.id,
+                    quantity: num
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Intelligence.SpyTrain.success"</span>);
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">var</span> trained = o.result.trained * <span class="hljs-number">1</span>;
+                        <span class="hljs-keyword">if</span> (trained &gt; <span class="hljs-number">0</span>) {
+                            <span class="hljs-keyword">this</span>.spies = <span class="hljs-literal">undefined</span>;
+                            <span class="hljs-keyword">this</span>.result.spies.current = (<span class="hljs-keyword">this</span>.result.spies.current * <span class="hljs-number">1</span>) + (o.result.trained * <span class="hljs-number">1</span>);
+                            <span class="hljs-keyword">this</span>.trainView();</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Dom.get(&quot;spiesCurrent&quot;).innerHTML = this.result.spies.current;</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">                            <span class="hljs-comment">//this.UpdateCost(this.spies.training_costs, trained);</span>
+                        }
+                        <span class="hljs-keyword">var</span> not_trained = o.result.not_trained * <span class="hljs-number">1</span>;
+                        <span class="hljs-keyword">if</span> (not_trained &gt; <span class="hljs-number">0</span> &amp;&amp; o.result.reason_not_trained &amp;&amp; o.result.reason_not_trained.message) {
+                            alert(o.result.reason_not_trained.message);
+                        }
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        Subsidize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            Lacuna.Pulser.Show();
+            Dom.get(<span class="hljs-string">"spiesSubsidize"</span>)
+                .disabled = <span class="hljs-literal">true</span>;
+            <span class="hljs-keyword">this</span>.service.subsidize_training({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.building.id
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.spies;
+                    <span class="hljs-keyword">this</span>.spiesView({
+                        newValue: <span class="hljs-number">1</span>
+                    });
+                },
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    Dom.get(<span class="hljs-string">"spiesSubsidize"</span>)
+                        .disabled = <span class="hljs-literal">false</span>;
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        }
+    });
+    YAHOO.lacuna.buildings.Intelligence = Intelligence;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

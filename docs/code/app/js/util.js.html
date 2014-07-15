@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - util.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/util.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/util.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+<span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+module.exports = {
+    _cwd: process.cwd(),
+    root: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Get a full path to the app/ directory</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-keyword">var</span> cwd = <span class="hljs-keyword">this</span>._cwd || process.cwd();</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>When in development mode, the cwd is:
+/home/vasari/atomic-lacuna
+In a build, it&#39;s:
+/home/vasari/atomic-lacuna/build/linux_binary</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-keyword">if</span> (_.last(cwd.split(path.sep)) === <span class="hljs-string">'atomic-lacuna'</span>) {
+            <span class="hljs-keyword">return</span> path.join(process.cwd(), <span class="hljs-string">'app'</span>);
+        }
+        <span class="hljs-keyword">return</span> path.join(process.cwd(), <span class="hljs-string">'resources'</span>, <span class="hljs-string">'app'</span>);
+    }
+};</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

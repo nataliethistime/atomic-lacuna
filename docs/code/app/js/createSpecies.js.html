@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - createSpecies.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/createSpecies.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/createSpecies.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper">YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> YAHOO.lacuna.CreateSpecies == <span class="hljs-string">"undefined"</span> || !YAHOO.lacuna.CreateSpecies) {
+    (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> Util = YAHOO.util,
+            Dom = Util.Dom,
+            Event = Util.Event,
+            Sel = Util.Selector,
+            Lacuna = YAHOO.lacuna,
+            Game = Lacuna.Game,
+            Lib = Lacuna.Library;
+        <span class="hljs-keyword">var</span> CreateSpecies = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Empire)</span> {</span>
+            <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"createSpecies"</span>;
+            <span class="hljs-keyword">this</span>._empire = Empire;
+            <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onCreateSuccessful"</span>);
+            <span class="hljs-keyword">var</span> container = document.createElement(<span class="hljs-string">"div"</span>);
+            container.id = <span class="hljs-keyword">this</span>.id;
+            Dom.addClass(container, Lib.Styles.HIDDEN);
+            container.innerHTML = <span class="hljs-keyword">this</span>._getHtml();
+            document.body.insertBefore(container, document.body.firstChild);
+            <span class="hljs-keyword">this</span>.Dialog = <span class="hljs-keyword">new</span> YAHOO.widget.Dialog(<span class="hljs-keyword">this</span>.id, {
+                constraintoviewport: <span class="hljs-literal">false</span>,
+                <span class="hljs-comment">//fixedcenter:true,</span>
+                postmethod: <span class="hljs-string">"none"</span>,
+                visible: <span class="hljs-literal">false</span>,
+                buttons: [{
+                    text: <span class="hljs-string">"Found Empire"</span>,
+                    handler: {
+                        fn: <span class="hljs-keyword">this</span>.handleCreate,
+                        scope: <span class="hljs-keyword">this</span>
+                    },
+                    isDefault: <span class="hljs-literal">true</span>
+                }, {
+                    text: <span class="hljs-string">"Cancel"</span>,
+                    handler: {
+                        fn: <span class="hljs-keyword">this</span>.handleCancel,
+                        scope: <span class="hljs-keyword">this</span>
+                    }
+                }],
+                draggable: <span class="hljs-literal">true</span>,
+                effect: Game.GetContainerEffect(),
+                modal: <span class="hljs-literal">false</span>,
+                close: <span class="hljs-literal">false</span>,
+                width: <span class="hljs-string">"735px"</span>,
+                underlay: <span class="hljs-literal">false</span>,
+                zIndex: <span class="hljs-number">9999</span>
+            });
+            <span class="hljs-keyword">this</span>.Dialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.elMessage = Dom.get(<span class="hljs-string">'speciesMessage'</span>);
+                <span class="hljs-keyword">this</span>.designer = <span class="hljs-keyword">new</span> Lacuna.SpeciesDesigner();
+                <span class="hljs-keyword">this</span>.designer.render(<span class="hljs-string">"speciesCreateDesign"</span>);
+                Dom.removeClass(<span class="hljs-keyword">this</span>.id, Lib.Styles.HIDDEN);
+            }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.Dialog.render();
+            Game.OverlayManager.register(<span class="hljs-keyword">this</span>.Dialog);
+        };
+        CreateSpecies.prototype = {
+            handleCreate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.setMessage(<span class="hljs-string">""</span>);
+                <span class="hljs-keyword">var</span> EmpireServ = Game.Services.Empire,
+                    data = <span class="hljs-keyword">this</span>.designer.getSpeciesData();
+                <span class="hljs-keyword">try</span> {
+                    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.designer.validateSpecies(data)) {
+                        <span class="hljs-keyword">return</span>;
+                    }
+                } <span class="hljs-keyword">catch</span> (e) {
+                    <span class="hljs-keyword">this</span>.setMessage(e);
+                    <span class="hljs-keyword">return</span>;
+                }
+                <span class="hljs-keyword">delete</span> data.affinity_total;
+                EmpireServ.update_species({
+                    empire_id: <span class="hljs-keyword">this</span>.empireId,
+                    params: data
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"CreateSpecies"</span>);
+                        <span class="hljs-keyword">this</span>._found();
+                    },
+                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        <span class="hljs-keyword">this</span>.setMessage(o.error.message);
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            },
+            handleCancel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.hide();
+                <span class="hljs-keyword">this</span>._empire.handleCancel();
+            },
+            _found: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">var</span> EmpireServ = Game.Services.Empire;
+                EmpireServ.found({
+                    empire_id: <span class="hljs-keyword">this</span>.empireId,
+                    api_key: Lib.ApiKey
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"CreateSpecies._found.success"</span>);
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.hide(); <span class="hljs-comment">//hide species</span>
+                        <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onCreateSuccessful"</span>, o);
+                    },
+                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        <span class="hljs-keyword">this</span>.setMessage(o.error.message);
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            },
+            _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">return</span> [<span class="hljs-string">'    &lt;div class="hd"&gt;Create Species&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="bd"&gt;'</span>, <span class="hljs-string">'        &lt;form name="speciesForm"&gt;'</span>, <span class="hljs-string">'            &lt;div id="speciesCreateDesign"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div id="speciesMessage" class="hidden"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/form&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="ft"&gt;&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+            },
+            setMessage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> {</span>
+                Dom.replaceClass(<span class="hljs-keyword">this</span>.elMessage, Lib.Styles.HIDDEN, Lib.Styles.ALERT);
+                <span class="hljs-keyword">this</span>.elMessage.innerHTML = str;
+            },
+            show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(empire)</span> {</span>
+                <span class="hljs-keyword">this</span>.empireId = empire;
+                Game.OverlayManager.hideAll();
+                <span class="hljs-keyword">this</span>.Dialog.show();
+                <span class="hljs-keyword">this</span>.Dialog.center();
+            },
+            hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                Dom.replaceClass(<span class="hljs-keyword">this</span>.elMessage, Lib.Styles.ALERT, Lib.Styles.HIDDEN);
+                <span class="hljs-keyword">this</span>.Dialog.hide();
+            }
+        };
+        YAHOO.lang.augmentProto(CreateSpecies, Util.EventProvider);
+        Lacuna.CreateSpecies = CreateSpecies;
+    })();
+    YAHOO.register(<span class="hljs-string">"createSpecies"</span>, YAHOO.lacuna.CreateSpecies, {
+        version: <span class="hljs-string">"1"</span>,
+        build: <span class="hljs-string">"0"</span>
+    });
+}</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>vim: noet:ts=4:sw=4</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

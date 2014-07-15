@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - main.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/main.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/main.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Load jQuery, and Lodash before anything else just to make sure.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    window.$ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'jquery'</span>);
+    window._ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'lodash'</span>);</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Initialize the menu, this should be the last part of GUI initialization
+before the JS code starts to load.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-keyword">if</span> (window.ATOM_SHELL) {
+        <span class="hljs-keyword">var</span> remote = <span class="hljs-built_in">require</span>(<span class="hljs-string">'remote'</span>);
+        <span class="hljs-keyword">var</span> Menu = remote.require(<span class="hljs-string">'menu'</span>);
+        <span class="hljs-keyword">var</span> MenuItem = remote.require(<span class="hljs-string">'menu-item'</span>);
+        <span class="hljs-keyword">var</span> menu = <span class="hljs-keyword">new</span> Menu();
+        menu.append(<span class="hljs-keyword">new</span> MenuItem({
+            label: <span class="hljs-string">'Debug Mode'</span>,
+            click: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                console.log(<span class="hljs-string">'Toggling dev tools.'</span>);
+                remote.getCurrentWindow()
+                    .toggleDevTools();
+            }
+        }));
+        menu.append(<span class="hljs-keyword">new</span> MenuItem({
+            type: <span class="hljs-string">'separator'</span>
+        }));
+        menu.append(<span class="hljs-keyword">new</span> MenuItem({
+            label: <span class="hljs-string">'Copy'</span>,
+            click: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                console.error(<span class="hljs-string">'TODO: implement copy!'</span>);
+            }
+        }));
+        menu.append(<span class="hljs-keyword">new</span> MenuItem({
+            label: <span class="hljs-string">'Paste'</span>,
+            click: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                console.error(<span class="hljs-string">'TODO: implement paste!'</span>);
+            }
+        }));
+        window.addEventListener(<span class="hljs-string">'contextmenu'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            e.preventDefault();
+            menu.popup(remote.getCurrentWindow());
+        }, <span class="hljs-literal">false</span>);
+    }</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>This converts url parameters into a usable object. I think it&#39;s only used
+in the registration process when someone clicks a referral link (which
+has a code in the url as a parameter.)</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-keyword">var</span> l = window.location;
+    <span class="hljs-keyword">var</span> query = {};
+    <span class="hljs-keyword">var</span> vars = l.hash.substring(<span class="hljs-number">1</span>)
+        .split(<span class="hljs-string">'&amp;'</span>);
+    <span class="hljs-keyword">if</span> (vars.length &gt; <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; vars.length; i++) {
+            <span class="hljs-keyword">var</span> pair = vars[i].split(<span class="hljs-string">"="</span>);
+            query[pair[<span class="hljs-number">0</span>]] = <span class="hljs-built_in">decodeURIComponent</span>(pair[<span class="hljs-number">1</span>]);
+        }
+    }
+    <span class="hljs-keyword">if</span> (window.history.replaceState) {
+        window.history.replaceState({}, document.title, l.protocol + <span class="hljs-string">'//'</span> + l.host + l.pathname + l.search);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (l.hash !== <span class="hljs-string">''</span>) {
+        l.hash = <span class="hljs-string">''</span>;
+    }</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Make sure the pulser is hidden.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-keyword">var</span> p = document.getElementById(<span class="hljs-string">"pulsing"</span>);
+    <span class="hljs-keyword">if</span> (p.className.indexOf(<span class="hljs-string">'hidden'</span>) &lt; <span class="hljs-number">0</span>) {
+        p.className += <span class="hljs-string">' hidden'</span>;
+    }
+    <span class="hljs-keyword">var</span> basePath = <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">if</span> (window.DOWNLOAD_YUI) {
+        basePath = <span class="hljs-string">'http://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/'</span>;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+        <span class="hljs-keyword">var</span> Util = <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/util'</span>);
+        basePath = path.join(Util.root(), <span class="hljs-string">'lib'</span>, <span class="hljs-string">'yui2'</span>) + <span class="hljs-string">'/'</span>;
+    }
+    <span class="hljs-keyword">var</span> loader = <span class="hljs-keyword">new</span> YAHOO.util.YUILoader({
+        base: basePath,
+        filter: <span class="hljs-string">"RAW"</span>,
+        allowRollup: <span class="hljs-literal">false</span>,
+        combine: <span class="hljs-literal">false</span>
+    });</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>List of YUI2 components that need to be loaded.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    loader.require([<span class="hljs-string">"autocomplete"</span>, <span class="hljs-string">"logger"</span>, <span class="hljs-string">"yahoo"</span>, <span class="hljs-string">"dom"</span>, <span class="hljs-string">"connection"</span>, <span class="hljs-string">"get"</span>, <span class="hljs-string">"json"</span>, <span class="hljs-string">"event"</span>, <span class="hljs-string">"container"</span>, <span class="hljs-string">"dragdrop"</span>, <span class="hljs-string">"slider"</span>, <span class="hljs-string">"animation"</span>, <span class="hljs-string">"selector"</span>, <span class="hljs-string">"event-delegate"</span>, <span class="hljs-string">"event-mouseenter"</span>, <span class="hljs-string">"paginator"</span>, <span class="hljs-string">"tabview"</span>, <span class="hljs-string">"menu"</span>, <span class="hljs-string">"datatable"</span>]);
+    loader.onSuccess = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span></pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>RPC and core stuff</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/smd'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/rpc'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/library'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/game'</span>);</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Misc?</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/about'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/announce'</span>);</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Empire management and star map</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/speciesDesigner'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/createSpecies'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/createEmpire'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/login'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/mapper'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/mapStar'</span>);</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Buildings</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/archaeology'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/blackHoleGenerator'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/capitol'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/development'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/distributionCenter'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/embassy'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/energyReserve'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/entertainment'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/foodReserve'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/geneticsLab'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/intelligence'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/intelTraining'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/libraryOfJith'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/mayhemTraining'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/mercenariesGuild'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/miningMinistry'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/missionCommand'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/network19'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/observatory'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/oracleOfAnid'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/oreStorage'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/park'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/planetaryCommand'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/politicsTraining'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/security'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/shipyard'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/spacePort'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/spaceStationLab'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/subspaceSupplyDepot'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/templeOfTheDrajilites'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/theftTraining'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/themePark'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/theDillonForge'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/tradeMinistry'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/transporter'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/wasteExchanger'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/wasteRecycling'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/building/waterStorage'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/module/parliament'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/module/policeStation'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/module/stationCommand'</span>);</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Planet map</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/mapPlanet'</span>);</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Menu stuff</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/textboxList'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/messaging'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/essentia'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/invite'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/profile'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/stats'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/pulse'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/info'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/notify'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/captcha'</span>);
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/menu'</span>);</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Start everything!</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        YAHOO.widget.Logger.enableBrowserConsole();
+        YAHOO.lacuna.Game.Start(query);
+    };</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Start the loading process.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    loader.insert();
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

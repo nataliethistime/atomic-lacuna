@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - planetaryCommand.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/planetaryCommand.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/planetaryCommand.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Sel = Util.Selector,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> PlanetaryCommand = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        PlanetaryCommand.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.PlanetaryCommand;
+    };
+    Lang.extend(PlanetaryCommand, Lacuna.buildings.Building, {
+        getTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> tabs = PlanetaryCommand.superclass.getTabs.call(<span class="hljs-keyword">this</span>);
+            tabs.splice(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">this</span>._getPlanetTab(), <span class="hljs-keyword">this</span>._getAbandonTab(), <span class="hljs-keyword">this</span>._getRenameTab());
+            <span class="hljs-keyword">return</span> tabs;
+        },
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getPlanTab(), <span class="hljs-keyword">this</span>._getResourcesTab()];
+        },
+        _getPlanetTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> planet = <span class="hljs-keyword">this</span>.result.planet,
+                tab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                    label: <span class="hljs-string">"Planet"</span>,
+                    content: [<span class="hljs-string">'&lt;div class="yui-g buildingDetailsExtra"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'        &lt;ul&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/food.png" title="Food" class="smallFood" /&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                &lt;span class="pcStored"&gt;'</span>, planet.food_stored, <span class="hljs-string">'&lt;/span&gt;&lt;span class="pcSlash"&gt;/&lt;/span&gt;&lt;span class="pcCapacity"&gt;'</span>, planet.food_capacity, <span class="hljs-string">'&lt;/span&gt; @ &lt;span class="pcPerHour"&gt;'</span>, Lib.convertNumDisplay(planet.food_hour), <span class="hljs-string">'&lt;/span&gt;/hr&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/ore.png" title="Ore" class="smallOre" /&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                &lt;span class="pcStored"&gt;'</span>, planet.ore_stored, <span class="hljs-string">'&lt;/span&gt;&lt;span class="pcSlash"&gt;/&lt;/span&gt;&lt;span class="pcCapacity"&gt;'</span>, planet.ore_capacity, <span class="hljs-string">'&lt;/span&gt; @ &lt;span class="pcPerHour"&gt;'</span>, Lib.convertNumDisplay(planet.ore_hour), <span class="hljs-string">'&lt;/span&gt;/hr&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/water.png" title="Water" class="smallWater" /&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                &lt;span class="pcStored"&gt;'</span>, planet.water_stored, <span class="hljs-string">'&lt;/span&gt;&lt;span class="pcSlash"&gt;/&lt;/span&gt;&lt;span class="pcCapacity"&gt;'</span>, planet.water_capacity, <span class="hljs-string">'&lt;/span&gt; @ &lt;span class="pcPerHour"&gt;'</span>, Lib.convertNumDisplay(planet.water_hour), <span class="hljs-string">'&lt;/span&gt;/hr&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/energy.png" title="Energy" class="smallEnergy" /&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                &lt;span class="pcStored"&gt;'</span>, planet.energy_stored, <span class="hljs-string">'&lt;/span&gt;&lt;span class="pcSlash"&gt;/&lt;/span&gt;&lt;span class="pcCapacity"&gt;'</span>, planet.energy_capacity, <span class="hljs-string">'&lt;/span&gt; @ &lt;span class="pcPerHour"&gt;'</span>, Lib.convertNumDisplay(planet.energy_hour), <span class="hljs-string">'&lt;/span&gt;/hr&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/waste.png" title="Waste" class="smallWaste" /&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                &lt;span class="pcStored"&gt;'</span>, planet.waste_stored, <span class="hljs-string">'&lt;/span&gt;&lt;span class="pcSlash"&gt;/&lt;/span&gt;&lt;span class="pcCapacity"&gt;'</span>, planet.waste_capacity, <span class="hljs-string">'&lt;/span&gt; @ &lt;span class="pcPerHour"&gt;'</span>, Lib.convertNumDisplay(planet.waste_hour), <span class="hljs-string">'&lt;/span&gt;/hr&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/happiness.png" title="Happiness" class="smallHappy" /&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'                &lt;span class="pcStored"&gt;'</span>, planet.happiness, <span class="hljs-string">'&lt;/span&gt;&lt;span class="pcSlash"&gt;&amp;nbsp;&lt;/span&gt;&lt;span class="pcCapacity"&gt;&amp;nbsp;&lt;/span&gt; @ &lt;span class="pcPerHour"&gt;'</span>, Lib.convertNumDisplay(planet.happiness_hour), <span class="hljs-string">'&lt;/span&gt;/hr&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'        &lt;ul class="buildingDetailsPC"&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Buildings:&lt;/label&gt;'</span>, planet.building_count, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Planet Size:&lt;/label&gt;'</span>, planet.size, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Plots Available:&lt;/label&gt;'</span>, (planet.plots_available || <span class="hljs-number">0</span>) * <span class="hljs-number">1</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Population:&lt;/label&gt;'</span>, Lib.formatNumber(planet.population), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Next Colony Cost:&lt;/label&gt;'</span>, Lib.formatNumber(<span class="hljs-keyword">this</span>.result.next_colony_cost), <span class="hljs-string">'&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/happiness.png" /&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Location:&lt;/label&gt;'</span>, planet.x, <span class="hljs-string">'x : '</span>, planet.y, <span class="hljs-string">'y&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Zone:&lt;/label&gt;'</span>, planet.zone, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Star:&lt;/label&gt;'</span>, planet.star_name, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;label&gt;Orbit:&lt;/label&gt;'</span>, planet.orbit, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+                });
+            <span class="hljs-keyword">this</span>.planetTab = tab;
+            <span class="hljs-keyword">return</span> tab;
+        },
+        _getAbandonTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.abandonTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Abandon"</span>,
+                content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;div id="commandMessage" class="alert"&gt;This colony and everything on it will disappear if you abandon it.&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;button type="button" id="commandAbandon"&gt;Abandon Colony&lt;/button&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            Event.on(<span class="hljs-string">"commandAbandon"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Abandon, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.abandonTab;
+        },
+        _getRenameTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.renameTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Rename"</span>,
+                content: [<span class="hljs-string">'&lt;div&gt;&lt;ul&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Current Planet Name: &lt;/label&gt;&lt;span id="commandPlanetCurrentName"&gt;'</span>, Game.GetCurrentPlanet()
+                    .name, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;New Planet Name: &lt;/label&gt;&lt;input type="text" id="commandPlanetNewName" maxlength="100" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li class="alert" id="commandPlanetRenameMessage"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;button type="button" id="commandRename"&gt;Rename&lt;/button&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;/ul&gt;&lt;/div&gt;'</span>
+                ].join(<span class="hljs-string">''</span>)
+            });
+            Event.on(<span class="hljs-string">"commandRename"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Rename, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.renameTab;
+        },
+        _getPlanTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.planTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Plans"</span>,
+                content: [<span class="hljs-string">'&lt;ul class="plan planHeader clearafter"&gt;&lt;li class="planQuan"&gt;Quantity&lt;/li&gt;&lt;li class="planName"&gt;Name&lt;/li&gt;&lt;li class="planLevel"&gt;Level&lt;/li&gt;&lt;li class="planExtra"&gt;Extra Level&lt;/li&gt;&lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;div id="planDetails"&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">this</span>.planTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                <span class="hljs-keyword">if</span> (e.newValue) {
+                    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.plans) {
+                        Lacuna.Pulser.Show();
+                        <span class="hljs-keyword">this</span>.service.view_plans({
+                            session_id: Game.GetSession(),
+                            building_id: <span class="hljs-keyword">this</span>.building.id
+                        }, {
+                            success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                                Lacuna.Pulser.Hide();
+                                <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                                <span class="hljs-keyword">this</span>.plans = o.result.plans;
+                                <span class="hljs-keyword">this</span>.PlanPopulate();
+                            },
+                            scope: <span class="hljs-keyword">this</span>
+                        });
+                    } <span class="hljs-keyword">else</span> {
+                        <span class="hljs-keyword">this</span>.PlanPopulate();
+                    }
+                }
+            }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.planTab;
+        },
+        _getResourcesTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> food_items = <span class="hljs-string">''</span>,
+                foods = Lib.ResourceTypes.food;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> x = <span class="hljs-number">0</span>; x &lt; foods.length; x++) {
+                <span class="hljs-keyword">var</span> food = foods[x];
+                food_items += [<span class="hljs-string">'&lt;li&gt;&lt;label&gt;'</span>,
+                    food.titleCaps(), <span class="hljs-string">'&lt;/label&gt;&lt;span class="pcStored"&gt;'</span>,
+                    <span class="hljs-keyword">this</span>.result.food[food + <span class="hljs-string">"_stored"</span>], <span class="hljs-string">'&lt;/span&gt; @ &lt;span class="pcPerHour"&gt;'</span>,
+                    Lib.convertNumDisplay(<span class="hljs-keyword">this</span>.result.food[food + <span class="hljs-string">"_hour"</span>]), <span class="hljs-string">'&lt;/span&gt;/hr&lt;/li&gt;'</span>,
+                ].join(<span class="hljs-string">''</span>);
+            }
+            <span class="hljs-keyword">var</span> ore_items = <span class="hljs-string">''</span>,
+                ores = Lib.ResourceTypes.ore;
+            _.each(Lib.ResourceTypes.ore, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ore)</span> {</span>
+                ore_items += [<span class="hljs-string">'&lt;li&gt;&lt;label&gt;'</span>,
+                    ore.titleCaps(), <span class="hljs-string">'&lt;/label&gt;&lt;span class="pcStored"&gt;'</span>,
+                    <span class="hljs-keyword">this</span>.result.ore[ore + <span class="hljs-string">"_stored"</span>], <span class="hljs-string">'&lt;/span&gt; @ &lt;span class="pcPerHour"&gt;'</span>,
+                    Lib.convertNumDisplay(<span class="hljs-keyword">this</span>.result.ore[ore + <span class="hljs-string">"_hour"</span>]), <span class="hljs-string">'&lt;/span&gt;/hr&lt;/li&gt;'</span>,
+                ].join(<span class="hljs-string">''</span>);
+            }, <span class="hljs-keyword">this</span>);
+            ore_items += [<span class="hljs-string">'&lt;li&gt;&lt;label&gt;Water&lt;/label&gt;&lt;span class="pcStored"&gt;'</span>,
+                <span class="hljs-keyword">this</span>.result.planet.water_stored, <span class="hljs-string">'&lt;/span&gt; @ &lt;span class="pcPerHour"&gt;'</span>,
+                Lib.convertNumDisplay(<span class="hljs-keyword">this</span>.result.planet.water_hour), <span class="hljs-string">'&lt;/span&gt;/hr&lt;/li&gt;'</span>,
+            ].join(<span class="hljs-string">''</span>);
+            ore_items += [<span class="hljs-string">'&lt;li&gt;&lt;label&gt;Energy&lt;/label&gt;&lt;span class="pcStored"&gt;'</span>,
+                <span class="hljs-keyword">this</span>.result.planet.energy_stored, <span class="hljs-string">'&lt;/span&gt; @ &lt;span class="pcPerHour"&gt;'</span>,
+                Lib.convertNumDisplay(<span class="hljs-keyword">this</span>.result.planet.energy_hour), <span class="hljs-string">'&lt;/span&gt;/hr&lt;/li&gt;'</span>,
+            ].join(<span class="hljs-string">''</span>);
+            <span class="hljs-keyword">this</span>.resourcesTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Resources"</span>,
+                content: [<span class="hljs-string">'&lt;div class="yui-g buildingDetailsExtra"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'        &lt;ul class="buildingDetailsPC"&gt;'</span>,
+                    food_items, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'        &lt;ul class="buildingDetailsPC"&gt;'</span>,
+                    ore_items, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>
+                ].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.resourcesTab;
+        },
+        Abandon: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> cp = Game.GetCurrentPlanet();
+            <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">'Are you sure you want to abandon '</span>, cp.name, <span class="hljs-string">'?'</span>].join(<span class="hljs-string">''</span>))) {
+                Lacuna.Pulser.Show();
+                Game.Services.Body.abandon({
+                    session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                    body_id: cp.id
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"PlanetaryCommand.abandon.success"</span>);
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">delete</span> Game.EmpireData.planets[cp.id]; <span class="hljs-comment">// Remove the abandoned planet</span></pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Clean up the star map</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">                        <span class="hljs-keyword">if</span> (Lacuna.MapStar._map) {
+                            <span class="hljs-keyword">if</span> (cp.x &amp;&amp; cp.y) {
+                                <span class="hljs-keyword">if</span> (Lacuna.MapStar._map.tileCache[cp.x] &amp;&amp; Lacuna.MapStar._map.tileCache[cp.x][cp.y]) {
+                                    <span class="hljs-keyword">delete</span> Lacuna.MapStar._map.tileCache[cp.x][cp.y]; <span class="hljs-comment">// Remove the planet from the cache</span>
+                                }
+                                <span class="hljs-keyword">var</span> tileId = [<span class="hljs-string">'tile'</span>, cp.x, cp.y, Lacuna.MapStar._map.zoom].join(<span class="hljs-string">'_'</span>);
+                                <span class="hljs-keyword">var</span> tile = Lacuna.MapStar._map.tileLayer.tileCache[tileId];
+                                <span class="hljs-keyword">if</span> (tile) {
+                                    <span class="hljs-keyword">if</span> (tile.domElement) {
+                                        <span class="hljs-keyword">var</span> domEl = tile.domElement; <span class="hljs-comment">// get the element</span>
+                                        <span class="hljs-keyword">var</span> childEl = domEl.childNodes[<span class="hljs-number">1</span>]; <span class="hljs-comment">// find the alignment child</span>
+                                        <span class="hljs-keyword">if</span> (childEl) {
+                                            domEl.removeChild(childEl); <span class="hljs-comment">// remove it</span>
+                                        }
+                                    }
+                                    <span class="hljs-keyword">delete</span> tile.data; <span class="hljs-comment">// Remove the data</span>
+                                    <span class="hljs-keyword">delete</span> tile.alignHolder; <span class="hljs-comment">// Remove the alignment display</span>
+                                    tile.blank = <span class="hljs-literal">true</span>; <span class="hljs-comment">// Force the planet to redraw</span>
+                                }
+                            }
+                        }
+                        <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onHide"</span>);
+                        Game.PlanetJump(); <span class="hljs-comment">//jumps to home planet if nothing passed in</span>
+                        Lacuna.Pulser.Hide();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        Rename: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> newName = Dom.get(<span class="hljs-string">"commandPlanetNewName"</span>)
+                .value,
+                cp = Game.GetCurrentPlanet(),
+                planetId = cp.id;
+            Game.Services.Body.rename({
+                session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                body_id: planetId,
+                name: newName
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"PlanetaryCommand.Rename.success"</span>);
+                    <span class="hljs-keyword">if</span> (o.result &amp;&amp; planetId) {
+                        Dom.get(<span class="hljs-string">"commandPlanetRenameMessage"</span>)
+                            .innerHTML = [<span class="hljs-string">"Successfully renamed your planet from "</span>, Game.EmpireData.planets[planetId].name, <span class="hljs-string">" to "</span>, newName, <span class="hljs-string">'.'</span>].join(<span class="hljs-string">''</span>);
+                        Lib.fadeOutElm(<span class="hljs-string">"commandPlanetRenameMessage"</span>);
+                        Dom.get(<span class="hljs-string">"commandPlanetNewName"</span>)
+                            .value = <span class="hljs-string">""</span>;
+                        Dom.get(<span class="hljs-string">"commandPlanetCurrentName"</span>)
+                            .innerHTML = newName;
+                        Game.EmpireData.planets[planetId].name = newName;
+                        Lacuna.Menu.update();
+                        <span class="hljs-keyword">if</span> (Lacuna.MapStar._map) {
+                            Lacuna.MapStar._map.tileCache[cp.x][cp.y].name = newName; <span class="hljs-comment">// Change the name in the cache</span>
+                            <span class="hljs-keyword">var</span> tileId = [<span class="hljs-string">'tile'</span>, cp.x, cp.y, Lacuna.MapStar._map.zoom].join(<span class="hljs-string">'_'</span>);
+                            <span class="hljs-keyword">var</span> tile = Lacuna.MapStar._map.tileLayer.tileCache[tileId];
+                            <span class="hljs-keyword">if</span> (tile) {
+                                tile.blank = <span class="hljs-literal">true</span>; <span class="hljs-comment">// Force the planet to redraw</span>
+                            }
+                        }
+                    }
+                },
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    Dom.get(<span class="hljs-string">"commandPlanetRenameMessage"</span>)
+                        .innerHTML = o.error.message;
+                    Lib.fadeOutElm(<span class="hljs-string">"commandPlanetRenameMessage"</span>);
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        PlanPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> div = Dom.get(<span class="hljs-string">"planDetails"</span>);
+            <span class="hljs-keyword">if</span> (div) {
+                <span class="hljs-keyword">var</span> divParent = div.parentNode,
+                    ul = document.createElement(<span class="hljs-string">"ul"</span>),
+                    li = document.createElement(<span class="hljs-string">"li"</span>);
+                div = divParent.removeChild(div);
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.plans.length &gt; <span class="hljs-number">0</span>) {
+                    div.innerHTML = <span class="hljs-string">""</span>;
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">this</span>.plans.length; i++) {
+                        <span class="hljs-keyword">var</span> plan = <span class="hljs-keyword">this</span>.plans[i],
+                            nUl = ul.cloneNode(<span class="hljs-literal">false</span>),
+                            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                        Dom.addClass(nUl, <span class="hljs-string">"plan"</span>);
+                        Dom.addClass(nUl, <span class="hljs-string">"clearafter"</span>);
+                        Dom.addClass(nLi, <span class="hljs-string">"planQuan"</span>);
+                        nLi.innerHTML = plan.quantity;
+                        nUl.appendChild(nLi);
+                        nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                        Dom.addClass(nLi, <span class="hljs-string">"planName"</span>);
+                        nLi.innerHTML = plan.name;
+                        nUl.appendChild(nLi);
+                        nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                        Dom.addClass(nLi, <span class="hljs-string">"planLevel"</span>);
+                        nLi.innerHTML = plan.level;
+                        nUl.appendChild(nLi);
+                        nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                        Dom.addClass(nLi, <span class="hljs-string">"planExtra"</span>);
+                        nLi.innerHTML = plan.extra_build_level;
+                        nUl.appendChild(nLi);
+                        div.appendChild(nUl);
+                    }
+                } <span class="hljs-keyword">else</span> {
+                    div.innerHTML = <span class="hljs-string">"No Plans currently available on this planet."</span>;
+                }
+                <span class="hljs-comment">//add child back in</span>
+                divParent.appendChild(div);
+                <span class="hljs-comment">//wait for tab to display first</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                        .h - <span class="hljs-number">170</span>;
+                    <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
+                        Ht = <span class="hljs-number">300</span>;
+                    }
+                    Dom.setStyle(divParent, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                    Dom.setStyle(divParent, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+                }, <span class="hljs-number">10</span>);
+            }
+        }
+    });
+    Lacuna.buildings.PlanetaryCommand = PlanetaryCommand;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

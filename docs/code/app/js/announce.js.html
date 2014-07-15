@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - announce.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/announce.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/announce.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-comment">/*global YAHOO, $ */</span>
+<span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
+<span class="hljs-keyword">var</span> Templates = <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/templates'</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game;
+    <span class="hljs-keyword">var</span> Announce = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"announce"</span>;
+        <span class="hljs-keyword">var</span> container = $(<span class="hljs-string">'&lt;div&gt;&lt;/div&gt;'</span>)
+            .attr(<span class="hljs-string">'id'</span>, <span class="hljs-keyword">this</span>.id)
+            .addClass(<span class="hljs-string">'nofooter'</span>);
+        $(document.body)
+            .prepend(container);
+        <span class="hljs-keyword">this</span>.Panel = <span class="hljs-keyword">new</span> YAHOO.widget.Panel(<span class="hljs-keyword">this</span>.id, {
+            constraintoviewport: <span class="hljs-literal">true</span>,
+            fixedcenter: <span class="hljs-literal">false</span>,
+            visible: <span class="hljs-literal">false</span>,
+            draggable: <span class="hljs-literal">true</span>,
+            effect: Game.GetContainerEffect(),
+            underlay: <span class="hljs-literal">false</span>,
+            modal: <span class="hljs-literal">false</span>,
+            close: <span class="hljs-literal">true</span>,
+            width: <span class="hljs-string">"350px"</span>,
+            zIndex: <span class="hljs-number">19999</span>,
+            context: [<span class="hljs-string">"header"</span>, <span class="hljs-string">"tr"</span>, <span class="hljs-string">"br"</span>, [<span class="hljs-string">"beforeShow"</span>, <span class="hljs-string">"windowResize"</span>],
+                [<span class="hljs-number">0</span>, <span class="hljs-number">20</span>]
+            ]
+        });
+        <span class="hljs-keyword">this</span>.Panel.setHeader(<span class="hljs-string">'Announcements'</span>);
+        <span class="hljs-keyword">this</span>.Panel.render();</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Note: we don&#39;t add this to the window manager because other windows
+might close all windows (such as this one) through it.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    };
+    Announce.prototype = {
+        template: Templates.get(<span class="hljs-string">'menu.announcement'</span>),
+        show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.render();
+            <span class="hljs-keyword">this</span>.Panel.show();
+        },
+        render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> uri = <span class="hljs-string">"/announcement?session_id="</span> + Game.GetSession();
+            <span class="hljs-keyword">this</span>.Panel.setBody(<span class="hljs-keyword">this</span>.template({
+                uri: uri
+            }));
+        },
+        hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.Panel.hide();
+        }
+    };
+    Lang.augmentProto(Announce, YAHOO.util.EventProvider);
+    Lacuna.Announce = <span class="hljs-keyword">new</span> Announce();
+}());</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

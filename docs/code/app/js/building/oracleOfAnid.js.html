@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - oracleOfAnid.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/oracleOfAnid.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/oracleOfAnid.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Pager = YAHOO.widget.Paginator,
+        Sel = Util.Selector,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> OracleOfAnid = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        OracleOfAnid.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.OracleOfAnid;
+        <span class="hljs-keyword">this</span>.maps = {};
+        <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.CreateFind();
+            Event.on(<span class="hljs-string">"oracleCurrentStar"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.GoToCurrentStar, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.oracleStar = Dom.get(<span class="hljs-string">"oracleStar"</span>);
+            <span class="hljs-keyword">this</span>.oraclePlanets = {
+                <span class="hljs-number">1</span>: Dom.get(<span class="hljs-string">"oraclePlanetOne"</span>),
+                <span class="hljs-number">2</span>: Dom.get(<span class="hljs-string">"oraclePlanetTwo"</span>),
+                <span class="hljs-number">3</span>: Dom.get(<span class="hljs-string">"oraclePlanetThree"</span>),
+                <span class="hljs-number">4</span>: Dom.get(<span class="hljs-string">"oraclePlanetFour"</span>),
+                <span class="hljs-number">5</span>: Dom.get(<span class="hljs-string">"oraclePlanetFive"</span>),
+                <span class="hljs-number">6</span>: Dom.get(<span class="hljs-string">"oraclePlanetSix"</span>),
+                <span class="hljs-number">7</span>: Dom.get(<span class="hljs-string">"oraclePlanetSeven"</span>),
+                <span class="hljs-number">8</span>: Dom.get(<span class="hljs-string">"oraclePlanetEight"</span>)
+            };
+            Event.delegate(<span class="hljs-string">"oracleDisplay"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.DisplayClick, <span class="hljs-string">"div.tile"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+        }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+    };
+    Lang.extend(OracleOfAnid, Lacuna.buildings.Building, {
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getTab()];
+        },
+        _getTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.tab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Oracle"</span>,
+                content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;&lt;label for="oracleStarFind"&gt;Lookup Star Name:&lt;/label&gt;&lt;div style="display:inline-block;width:300px;"&gt;&lt;input type="text" id="oracleStarFind" /&gt;&lt;/div&gt; or &lt;button type="button" id="oracleCurrentStar"&gt;Go To Current Star&lt;/button&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div id="oracleMessage" style="font-weight: bold; margin: 5px;"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div id="oracleDisplay" style="position:relative;height:150px;width:700px;background:black url('</span>, Lib.AssetUrl, <span class="hljs-string">'star_system/field.png);"&gt;'</span>, <span class="hljs-string">'        &lt;div id="oracleStar" class="tile" style="position:absolute;height:150px;width:150px;left:0px;top:0px;"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div id="oraclePlanetOne" class="tile" style="position:absolute;height:50px;width:50px;left:150px;top:50px;"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div id="oraclePlanetTwo" class="tile" style="position:absolute;height:50px;width:50px;left:210px;top:50px;"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div id="oraclePlanetThree" class="tile" style="position:absolute;height:50px;width:50px;left:270px;top:50px;"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div id="oraclePlanetFour" class="tile" style="position:absolute;height:50px;width:50px;left:330px;top:50px;"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div id="oraclePlanetFive" class="tile" style="position:absolute;height:50px;width:50px;left:390px;top:50px;"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div id="oraclePlanetSix" class="tile" style="position:absolute;height:50px;width:50px;left:450px;top:50px;"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div id="oraclePlanetSeven" class="tile" style="position:absolute;height:50px;width:50px;left:510px;top:50px;"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div id="oraclePlanetEight" class="tile" style="position:absolute;height:50px;width:50px;left:570px;top:50px;"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tab;
+        },
+        CreateFind: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.findStar) {
+                <span class="hljs-keyword">var</span> dataSource = <span class="hljs-keyword">new</span> Util.XHRDataSource(<span class="hljs-string">"/map"</span>);
+                dataSource.connMethodPost = <span class="hljs-string">"POST"</span>;
+                dataSource.maxCacheEntries = <span class="hljs-number">2</span>;
+                dataSource.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
+                dataSource.responseSchema = {
+                    resultsList: <span class="hljs-string">"result.stars"</span>,
+                    fields: [<span class="hljs-string">"name"</span>, <span class="hljs-string">"color"</span>, <span class="hljs-string">"x"</span>, <span class="hljs-string">"y"</span>, <span class="hljs-string">"id"</span>]
+                };
+                <span class="hljs-keyword">var</span> oTextboxList = <span class="hljs-keyword">new</span> YAHOO.lacuna.TextboxList(<span class="hljs-string">"oracleStarFind"</span>, dataSource, { <span class="hljs-comment">//config options</span>
+                    maxResultsDisplayed: <span class="hljs-number">25</span>,
+                    minQueryLength: <span class="hljs-number">3</span>,
+                    multiSelect: <span class="hljs-literal">false</span>,
+                    forceSelection: <span class="hljs-literal">false</span>,
+                    useIndicator: <span class="hljs-literal">true</span>
+                });
+                oTextboxList.formatResult = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oResultData, sQuery, sResultMatch)</span> {</span>
+                    <span class="hljs-keyword">return</span> [<span class="hljs-string">'&lt;div class="yui-gf"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first" style="background-color:black;"&gt;'</span>, <span class="hljs-string">'        &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'star_map/'</span>, oResultData.color, <span class="hljs-string">'.png" alt="'</span>, oResultData, name, <span class="hljs-string">'" style="width:50px;height:50px;" /&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;'</span>, oResultData.name, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;'</span>, oResultData.x, <span class="hljs-string">' : '</span>, oResultData.y, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">""</span>);
+                };
+                oTextboxList.generateRequest = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sQuery)</span> {</span>
+                    <span class="hljs-keyword">var</span> s = Lang.JSON.stringify({
+                        <span class="hljs-string">"id"</span>: YAHOO.rpc.Service._requestId++,
+                        <span class="hljs-string">"method"</span>: <span class="hljs-string">"search_stars"</span>,
+                        <span class="hljs-string">"jsonrpc"</span>: <span class="hljs-string">"2.0"</span>,
+                        <span class="hljs-string">"params"</span>: [
+                            Game.GetSession(<span class="hljs-string">""</span>),
+                            <span class="hljs-built_in">decodeURIComponent</span>(sQuery)
+                        ]
+                    });
+                    <span class="hljs-keyword">return</span> s;
+                };
+                oTextboxList.dirtyEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event, isDirty, oSelf)</span> {</span>
+                    <span class="hljs-keyword">var</span> star = <span class="hljs-keyword">this</span>._oTblSingleSelection.Object;
+                    oSelf.GetStar(star.id);
+                }, <span class="hljs-keyword">this</span>);
+                <span class="hljs-keyword">this</span>.findStar = oTextboxList;
+            }
+        },
+        GoToCurrentStar: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.GetStar(Game.GetCurrentPlanet()
+                .star_id);
+        },
+        GetStar: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(starId)</span> {</span>
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.service.get_star({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.building.id,
+                star_id: starId
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    <span class="hljs-keyword">this</span>.star = o.result.star;
+                    Dom.get(<span class="hljs-string">"oracleMessage"</span>)
+                        .innerHTML = <span class="hljs-keyword">this</span>.star.name;
+                    <span class="hljs-keyword">this</span>.Display();
+                },
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    Dom.get(<span class="hljs-string">"oracleMessage"</span>)
+                        .innerHTML = o.error.message;
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        Display: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.oraclePlanetsData = {};
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.oracleStar) {
+                <span class="hljs-keyword">var</span> planets = <span class="hljs-keyword">this</span>.star.bodies,
+                    tileSize = <span class="hljs-number">50</span>;
+                <span class="hljs-keyword">this</span>.oracleStar.innerHTML = [<span class="hljs-string">'&lt;img title="'</span>, <span class="hljs-keyword">this</span>.star.name, <span class="hljs-string">'" src="'</span>, Lib.AssetUrl, <span class="hljs-string">'star_map/'</span>, <span class="hljs-keyword">this</span>.star.color, <span class="hljs-string">'.png'</span>, <span class="hljs-string">'" class="star" style="width:'</span>, (tileSize * <span class="hljs-number">3</span>), <span class="hljs-string">'px;height:'</span>, (tileSize * <span class="hljs-number">3</span>), <span class="hljs-string">'px;" /&gt;'</span>].join(<span class="hljs-string">''</span>);
+                <span class="hljs-keyword">this</span>.oraclePlanets[<span class="hljs-number">1</span>].innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">this</span>.oraclePlanets[<span class="hljs-number">2</span>].innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">this</span>.oraclePlanets[<span class="hljs-number">3</span>].innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">this</span>.oraclePlanets[<span class="hljs-number">4</span>].innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">this</span>.oraclePlanets[<span class="hljs-number">5</span>].innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">this</span>.oraclePlanets[<span class="hljs-number">6</span>].innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">this</span>.oraclePlanets[<span class="hljs-number">7</span>].innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">this</span>.oraclePlanets[<span class="hljs-number">8</span>].innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; planets.length; n++) {
+                    <span class="hljs-keyword">var</span> data = planets[n],
+                        div = <span class="hljs-keyword">this</span>.oraclePlanets[data.orbit],
+                        pSize = ((<span class="hljs-number">100</span> - <span class="hljs-built_in">Math</span>.abs(data.size - <span class="hljs-number">100</span>)) / (<span class="hljs-number">100</span> / tileSize)) + <span class="hljs-number">15</span>,
+                        style = [<span class="hljs-string">'width:'</span>, pSize, <span class="hljs-string">'px;height:'</span>, pSize, <span class="hljs-string">'px;margin-top:'</span>, <span class="hljs-built_in">Math</span>.floor(((tileSize - pSize) / <span class="hljs-number">2</span>)), <span class="hljs-string">'px;position:absolute;top:0;left:0;'</span>].join(<span class="hljs-string">''</span>),
+                        pImg = data.image.substr(<span class="hljs-number">0</span>, data.image.length - <span class="hljs-number">1</span>) + <span class="hljs-string">'2'</span>;
+                    <span class="hljs-keyword">this</span>.oraclePlanetsData[data.orbit] = data;
+                    <span class="hljs-keyword">var</span> html = [<span class="hljs-string">'&lt;img title="'</span>, data.name, <span class="hljs-string">' ('</span>, data.x, <span class="hljs-string">','</span>, data.y, <span class="hljs-string">')" src="'</span>, Lib.AssetUrl, <span class="hljs-string">'star_system/'</span>, pImg, <span class="hljs-string">'.png'</span>, <span class="hljs-string">'" class="planet planet'</span>, data.orbit, <span class="hljs-string">'" style="'</span>, style, <span class="hljs-string">'" /&gt;'</span>];
+                    <span class="hljs-keyword">if</span> (data.empire) {
+                        html = html.concat([<span class="hljs-string">'&lt;img title="'</span>, data.name, <span class="hljs-string">' ('</span>, data.x, <span class="hljs-string">','</span>, data.y, <span class="hljs-string">')" src="'</span>, Lib.AssetUrl, <span class="hljs-string">'star_map/'</span>, data.empire.alignment, <span class="hljs-string">'.png" class="planet" style="'</span>, style, <span class="hljs-string">'z-index:2;" /&gt;'</span>]);
+                    }
+                    div.innerHTML = html.join(<span class="hljs-string">''</span>);
+                }
+            }
+        },
+        DisplayClick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+            <span class="hljs-keyword">if</span> (matchedEl.id === <span class="hljs-string">"oracleStar"</span>) {
+                YAHOO.lacuna.MapStar.ShowStar({
+                    data: <span class="hljs-keyword">this</span>.star
+                }, <span class="hljs-literal">true</span>);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">var</span> planet;
+                <span class="hljs-keyword">switch</span> (matchedEl.id) {
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"oraclePlanetOne"</span>:
+                    planet = <span class="hljs-keyword">this</span>.oraclePlanetsData[<span class="hljs-number">1</span>];
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"oraclePlanetTwo"</span>:
+                    planet = <span class="hljs-keyword">this</span>.oraclePlanetsData[<span class="hljs-number">2</span>];
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"oraclePlanetThree"</span>:
+                    planet = <span class="hljs-keyword">this</span>.oraclePlanetsData[<span class="hljs-number">3</span>];
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"oraclePlanetFour"</span>:
+                    planet = <span class="hljs-keyword">this</span>.oraclePlanetsData[<span class="hljs-number">4</span>];
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"oraclePlanetFive"</span>:
+                    planet = <span class="hljs-keyword">this</span>.oraclePlanetsData[<span class="hljs-number">5</span>];
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"oraclePlanetSix"</span>:
+                    planet = <span class="hljs-keyword">this</span>.oraclePlanetsData[<span class="hljs-number">6</span>];
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"oraclePlanetSeven"</span>:
+                    planet = <span class="hljs-keyword">this</span>.oraclePlanetsData[<span class="hljs-number">7</span>];
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"oraclePlanetEight"</span>:
+                    planet = <span class="hljs-keyword">this</span>.oraclePlanetsData[<span class="hljs-number">8</span>];
+                    <span class="hljs-keyword">break</span>;
+                }
+                YAHOO.lacuna.MapStar.ShowPlanet({
+                    data: planet
+                }, <span class="hljs-literal">true</span>);
+            }
+        }
+    });
+    YAHOO.lacuna.buildings.OracleOfAnid = OracleOfAnid;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

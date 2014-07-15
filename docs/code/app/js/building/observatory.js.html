@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - observatory.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/observatory.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/observatory.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Pager = YAHOO.widget.Paginator,
+        Sel = Util.Selector,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> Observatory = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        Observatory.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.Observatory;
+    };
+    Lang.extend(Observatory, Lacuna.buildings.Building, {
+        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.pager) {
+                <span class="hljs-keyword">this</span>.pager.destroy();
+            }
+            Observatory.superclass.destroy.call(<span class="hljs-keyword">this</span>);
+        },
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getProbesTab(), <span class="hljs-keyword">this</span>._getAbandonAllProbesTab()];
+        },
+        _getProbesTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.probesTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Probes"</span>,
+                content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;div id="observatoryInfo"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="probeContainer clearafter"&gt;'</span>, <span class="hljs-string">'        &lt;ul id="probeDetails" class="probeInfo"&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div id="probePaginator"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">this</span>.probesTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.GetProbes, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.probesTab;
+        },
+        _getAbandonAllProbesTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.probesTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Abandon All Probes"</span>,
+                content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;button type="button" id="observatoryBigRedButton"&gt;Abandon All Probes!&lt;/button&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            Event.on(<span class="hljs-string">"observatoryBigRedButton"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.AbandonAllProbes, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.probesTab;
+        },
+        GetProbes: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">if</span> (e.newValue) {
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.probes) {
+                    Lacuna.Pulser.Show();
+                    <span class="hljs-keyword">this</span>.service.get_probed_stars({
+                        session_id: Game.GetSession(),
+                        building_id: <span class="hljs-keyword">this</span>.building.id,
+                        page_number: <span class="hljs-number">1</span>
+                    }, {
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                            YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Observatory.get_probed_stars.success"</span>);
+                            Lacuna.Pulser.Hide();
+                            <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                            <span class="hljs-keyword">this</span>.ProbeInfoDisplay(o.result);
+                            <span class="hljs-keyword">this</span>.probes = o.result.stars;
+                            <span class="hljs-keyword">this</span>.pager = <span class="hljs-keyword">new</span> Pager({
+                                rowsPerPage: <span class="hljs-number">30</span>,
+                                totalRecords: o.result.star_count * <span class="hljs-number">1</span>,
+                                containers: <span class="hljs-string">'probePaginator'</span>,
+                                template: <span class="hljs-string">"{PreviousPageLink} {PageLinks} {NextPageLink}"</span>,
+                                alwaysVisible: <span class="hljs-literal">false</span>
+                            });
+                            <span class="hljs-keyword">this</span>.pager.subscribe(<span class="hljs-string">'changeRequest'</span>, <span class="hljs-keyword">this</span>.ProbesHandlePagination, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                            <span class="hljs-keyword">this</span>.pager.render();
+                            <span class="hljs-keyword">this</span>.ProbesDisplay();
+                        },
+                        scope: <span class="hljs-keyword">this</span>
+                    });
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">this</span>.ProbesDisplay();
+                }
+            }
+        },
+        ProbeInfoDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+            <span class="hljs-keyword">var</span> info = Dom.get(<span class="hljs-string">"observatoryInfo"</span>);
+            <span class="hljs-keyword">if</span> (info) {
+                info.innerHTML = [<span class="hljs-string">'Total of '</span>, data.star_count, <span class="hljs-string">' probes in use.  '</span>, (<span class="hljs-string">"travelling"</span> <span class="hljs-keyword">in</span> data ? data.travelling + <span class="hljs-string">' en route.  '</span> : <span class="hljs-string">''</span>), <span class="hljs-string">'This observatory can control a maximum of '</span>, data.max_probes, <span class="hljs-string">' probes.'</span>].join(<span class="hljs-string">''</span>);
+            }
+        },
+        ProbesDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> stars = <span class="hljs-keyword">this</span>.probes,
+                probeDetails = Dom.get(<span class="hljs-string">"probeDetails"</span>);
+            <span class="hljs-keyword">if</span> (probeDetails) {
+                Event.purgeElement(probeDetails);
+                probeDetails.innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">var</span> li = document.createElement(<span class="hljs-string">"li"</span>);
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; stars.length; i++) {
+                    <span class="hljs-keyword">var</span> st = stars[i],
+                        nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    nLi.Star = st;
+                    Dom.addClass(nLi, <span class="hljs-string">"probeStar"</span>);
+                    nLi.innerHTML = [<span class="hljs-string">'&lt;div class="probeStarContainer yui-gf"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first probeAction" style="background-color:black;"&gt;'</span>, <span class="hljs-string">'        &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'star_map/'</span>, st.color, <span class="hljs-string">'.png" alt="'</span>, st.name, <span class="hljs-string">'" style="width:50px;height:50px;" /&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'        &lt;div class="probeDelete"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;'</span>, st.name, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;'</span>, st.x, <span class="hljs-string">' : '</span>, st.y, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+                    nLi = probeDetails.appendChild(nLi);
+                    Event.delegate(nLi, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.ProbeJump, <span class="hljs-string">"div.probeAction"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    Event.delegate(nLi, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.ProbeAbandon, <span class="hljs-string">"div.probeDelete"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                }
+                <span class="hljs-comment">//wait for tab to display first</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                        .h - <span class="hljs-number">175</span>;
+                    <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">290</span>) {
+                        Ht = <span class="hljs-number">290</span>;
+                    }
+                    Dom.setStyle(probeDetails.parentNode, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                    Dom.setStyle(probeDetails.parentNode, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+                }, <span class="hljs-number">10</span>);
+            }
+        },
+        ProbesHandlePagination: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newState)</span> {</span>
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.service.get_probed_stars({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.building.id,
+                page_number: newState.page
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Observatory.ProbesHandlePagination.get_probed_stars.success"</span>);
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    <span class="hljs-keyword">this</span>.probes = o.result.stars;</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Update the Paginator&#39;s state</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">                    <span class="hljs-keyword">this</span>.pager.setState(newState);
+                    <span class="hljs-keyword">this</span>.ProbesDisplay();
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        ProbeAbandon: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+            <span class="hljs-keyword">if</span> (container.Star) {
+                <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">"Are you sure you want to abandon the probe at "</span>, container.Star.name, <span class="hljs-string">"?"</span>].join(<span class="hljs-string">''</span>))) {
+                    Lacuna.Pulser.Show();
+                    <span class="hljs-keyword">this</span>.service.abandon_probe({
+                        session_id: Game.GetSession(),
+                        building_id: <span class="hljs-keyword">this</span>.building.id,
+                        star_id: container.Star.id
+                    }, {
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                            YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Observatory.ProbeAction.abandon_probe.success"</span>);
+                            Lacuna.Pulser.Hide();
+                            <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                            Event.purgeElement(container);
+                            container.parentNode.removeChild(container);
+                            <span class="hljs-keyword">this</span>.probes = <span class="hljs-literal">null</span>;
+                        },
+                        scope: <span class="hljs-keyword">this</span>
+                    });
+                }
+            }
+        },
+        ProbeJump: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+            <span class="hljs-keyword">if</span> (container.Star) {
+                Game.StarJump(container.Star);
+            }
+        },
+        AbandonAllProbes: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">if</span> (confirm(<span class="hljs-string">"Are you sure you want to abandon all probes controlled by this Observatory?"</span>)) {
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">this</span>.service.abandon_all_probes({
+                    session_id: Game.GetSession(),
+                    building_id: <span class="hljs-keyword">this</span>.building.id
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Observatory.AbandonAllProbes.abandon_all_probes.success"</span>);
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">this</span>.probes = <span class="hljs-literal">null</span>;
+                        <span class="hljs-comment">//close buildingDetails</span>
+                        <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onHide"</span>);
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        }
+    });
+    YAHOO.lacuna.buildings.Observatory = Observatory;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

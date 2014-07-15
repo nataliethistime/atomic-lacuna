@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - geneticsLab.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/geneticsLab.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/geneticsLab.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Sel = Util.Selector,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> GeneticsLab = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        GeneticsLab.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.GeneticsLab;
+    };
+    Lang.extend(GeneticsLab, Lacuna.buildings.Building, {
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getLabTab(), <span class="hljs-keyword">this</span>._getRenameTab()];
+        },
+        _getLabTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.tab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Lab"</span>,
+                content: [<span class="hljs-string">'&lt;table class="tleTable"&gt;'</span>, <span class="hljs-string">'    &lt;tr&gt;'</span>, <span class="hljs-string">'        &lt;th&gt;Survival Chance&lt;/th&gt;&lt;th&gt;Graft Success&lt;/th&gt;&lt;th&gt;Essentia Cost&lt;/th&gt;'</span>, <span class="hljs-string">'    &lt;/tr&gt;'</span>, <span class="hljs-string">'    &lt;tr&gt;'</span>, <span class="hljs-string">'        &lt;td&gt;&lt;span id="geneticsLabSurvival"&gt;&lt;/span&gt;%&lt;/td&gt;&lt;td&gt;&lt;span id="geneticsLabGraft"&gt;&lt;/span&gt;%&lt;/td&gt;&lt;td id="geneticsLabCost"&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'    &lt;/tr&gt;'</span>, <span class="hljs-string">'&lt;/table&gt;'</span>, <span class="hljs-string">'&lt;div id="geneticsLabMessage" style="border-top:1px solid #52acff;margin-top:5px;"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div id="geneticsLabDisplay" class="yui-g" style="display:none;margin:5px 0;"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first" style="width:39.1%"&gt;'</span>, <span class="hljs-string">'        &lt;div style="border-bottom:1px solid #52acff;margin-bottom:5px;font-weight:bold;"&gt;&lt;label&gt;Available Spies&lt;/label&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div style="overflow:auto;height:150px;"&gt;'</span>, <span class="hljs-string">'            &lt;ul id="geneticsLabSpies"&gt;'</span>, <span class="hljs-string">'            &lt;/ul&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u" style="width:59.1%;"&gt;'</span>, <span class="hljs-string">'        &lt;div id="geneticsLabExperimentMessage" style="display:none;"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div id="geneticsLabDetailsContainer" style="display:none;"&gt;'</span>, <span class="hljs-string">'            &lt;div style="border-bottom:1px solid #52acff;margin-bottom:5px;font-weight:bold;"&gt;&lt;label&gt;&lt;span id="geneticsLabSpyName"&gt;&lt;/span&gt; Details&lt;/label&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;label for="geneticsLabAffinities" style="font-weight:bold;"&gt;Graft:&lt;/label&gt;&lt;select id="geneticsLabAffinities"&gt;&lt;/select&gt;'</span>, <span class="hljs-string">'            &lt;button type="button" id="geneticsLabRunExperiement"&gt;Run Experiment&lt;/button&gt;'</span>, <span class="hljs-string">'            &lt;div style="overflow:auto;height:120px;border:1px solid #52acff;"&gt;'</span>, <span class="hljs-string">'                &lt;ul id="geneticsLabDetails"&gt;'</span>, <span class="hljs-string">'                &lt;/ul&gt;'</span>, <span class="hljs-string">'            &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">this</span>.tab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.prepareExperiment, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.delegate(<span class="hljs-string">"geneticsLabSpies"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.selectSpyForExperiment, <span class="hljs-string">"li"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.on(<span class="hljs-string">"geneticsLabRunExperiement"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.runExperiment, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tab;
+        },
+        _getRenameTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> div = document.createElement(<span class="hljs-string">"div"</span>);
+            Dom.addClass(div, <span class="hljs-string">'speciesRenameTab'</span>);
+            div.innerHTML = [<span class="hljs-string">'&lt;p&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;Current species name: &lt;span id="currentSpeciesName"&gt;&lt;/span&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;Current species desc: &lt;span id="currentSpeciesDesc"&gt;&lt;/span&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/p&gt;'</span>, <span class="hljs-string">'&lt;hr /&gt;'</span>, <span class="hljs-string">'&lt;fieldset&gt;'</span>, <span class="hljs-string">'   &lt;legend&gt;Change Species Name&lt;/legend&gt;'</span>, <span class="hljs-string">'   &lt;table&gt;'</span>, <span class="hljs-string">'     &lt;tr valign="bottom"&gt;&lt;td&gt;&lt;label for="newSpeciesName"&gt;New species name:&lt;/label&gt;&lt;/td&gt;&lt;td align="left"&gt;&lt;input type="text" id="newSpeciesName"&gt;&lt;/input&gt;&lt;/td&gt;&lt;/tr&gt;'</span>, <span class="hljs-string">'     &lt;tr valign="top"&gt;&lt;td&gt;&lt;label for="newSpeciesDesc"&gt;New species description:&lt;/label&gt;&lt;/td&gt;&lt;td align="left"&gt;&lt;textarea id="newSpeciesDesc" cols="47"&gt;&lt;/textarea&gt;&lt;/td&gt;&lt;/tr&gt;'</span>, <span class="hljs-string">'   &lt;/table&gt;'</span>, <span class="hljs-string">'   &lt;div&gt;&lt;button id="changeSpeciesName"&gt;Change Name&lt;/button&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/fieldset&gt;'</span>].join(<span class="hljs-string">''</span>);
+            <span class="hljs-keyword">this</span>.tab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Rename Species"</span>,
+                contentEl: div
+            });
+            <span class="hljs-keyword">this</span>.tab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.ShowSpecies, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.on(<span class="hljs-string">'changeSpeciesName'</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.RenameSpecies, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tab;
+        },
+        ShowSpecies: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            Game.Services.Empire.view_public_profile({
+                session_id: Game.GetSession(),
+                empire_id: Game.EmpireData.id
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">var</span> profile = o.result.profile;
+                    Dom.get(<span class="hljs-string">'currentSpeciesDesc'</span>)
+                        .innerHTML = profile.description;
+                    Dom.get(<span class="hljs-string">'currentSpeciesName'</span>)
+                        .innerHTML = profile.species;
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        RenameSpecies: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            Event.stopEvent(e);
+            <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
+            <span class="hljs-keyword">var</span> newName = Dom.get(<span class="hljs-string">'newSpeciesName'</span>)
+                .value;
+            <span class="hljs-keyword">var</span> newDesc = Dom.get(<span class="hljs-string">'newSpeciesDesc'</span>)
+                .value.substr(<span class="hljs-number">0</span>, <span class="hljs-number">1024</span>);
+            Lacuna.Pulser.Show();
+            btn.disabled = <span class="hljs-literal">true</span>;
+            <span class="hljs-keyword">this</span>.service.rename_species({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.building.id,
+                params: {
+                    name: newName,
+                    description: newDesc
+                }
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"GeneticsLab.rename_species.success"</span>);
+                    btn.disabled = <span class="hljs-literal">false</span>;
+                    Dom.get(<span class="hljs-string">'newSpeciesName'</span>)
+                        .value = <span class="hljs-string">''</span>;
+                    Dom.get(<span class="hljs-string">'newSpeciesDesc'</span>)
+                        .value = <span class="hljs-string">''</span>;
+                    Dom.get(<span class="hljs-string">'currentSpeciesName'</span>)
+                        .innerHTML = newName;
+                    Dom.get(<span class="hljs-string">'currentSpeciesDesc'</span>)
+                        .innerHTML = newDesc;
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    alert(<span class="hljs-string">'Your species name has been changed!'</span>);
+                },
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    btn.disabled = <span class="hljs-literal">false</span>;
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        getSpeciesStatList: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(stat)</span> {</span>
+            <span class="hljs-keyword">var</span> frag = document.createDocumentFragment(),
+                li = document.createElement(<span class="hljs-string">'li'</span>);
+            <span class="hljs-keyword">var</span> nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = [<span class="hljs-string">'&lt;label&gt;Name&lt;/label&gt;'</span>, <span class="hljs-string">'&lt;span&gt;'</span>, stat.name, <span class="hljs-string">'&lt;/span&gt;'</span>].join(<span class="hljs-string">''</span>);
+            frag.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = [<span class="hljs-string">'&lt;label&gt;Description&lt;/label&gt;'</span>, <span class="hljs-string">'&lt;span&gt;'</span>, stat.description, <span class="hljs-string">'&lt;/span&gt;'</span>].join(<span class="hljs-string">''</span>);
+            frag.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = [<span class="hljs-string">'&lt;label&gt;Habitable Orbits&lt;/label&gt;'</span>, <span class="hljs-string">'&lt;span&gt;'</span>, stat.min_orbit,
+                stat.max_orbit &gt; stat.min_orbit ? <span class="hljs-string">' to '</span> + stat.max_orbit : <span class="hljs-string">''</span>, <span class="hljs-string">'&lt;/span&gt;'</span>
+            ].join(<span class="hljs-string">''</span>);
+            frag.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = [<span class="hljs-string">'&lt;label&gt;Manufacturing&lt;/label&gt;'</span>, <span class="hljs-string">'&lt;span&gt;'</span>, stat.manufacturing_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>].join(<span class="hljs-string">''</span>);
+            frag.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = [<span class="hljs-string">'&lt;label&gt;Deception&lt;/label&gt;'</span>, <span class="hljs-string">'&lt;span&gt;'</span>, stat.deception_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>].join(<span class="hljs-string">''</span>);
+            frag.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = [<span class="hljs-string">'&lt;label&gt;Research&lt;/label&gt;'</span>, <span class="hljs-string">'&lt;span&gt;'</span>, stat.research_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>].join(<span class="hljs-string">''</span>);
+            frag.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = [<span class="hljs-string">'&lt;label&gt;Management&lt;/label&gt;'</span>, <span class="hljs-string">'&lt;span&gt;'</span>, stat.management_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>].join(<span class="hljs-string">''</span>);
+            frag.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = [<span class="hljs-string">'&lt;label&gt;Farming&lt;/label&gt;'</span>, <span class="hljs-string">'&lt;span&gt;'</span>, stat.farming_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>].join(<span class="hljs-string">''</span>);
+            frag.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = [<span class="hljs-string">'&lt;label&gt;Mining&lt;/label&gt;'</span>, <span class="hljs-string">'&lt;span&gt;'</span>, stat.mining_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>].join(<span class="hljs-string">''</span>);
+            frag.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = [<span class="hljs-string">'&lt;label&gt;Science&lt;/label&gt;'</span>, <span class="hljs-string">'&lt;span&gt;'</span>, stat.science_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>].join(<span class="hljs-string">''</span>);
+            frag.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = [<span class="hljs-string">'&lt;label&gt;Environmental&lt;/label&gt;'</span>, <span class="hljs-string">'&lt;span&gt;'</span>, stat.environmental_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>].join(<span class="hljs-string">''</span>);
+            frag.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = [<span class="hljs-string">'&lt;label&gt;Political&lt;/label&gt;'</span>, <span class="hljs-string">'&lt;span&gt;'</span>, stat.political_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>].join(<span class="hljs-string">''</span>);
+            frag.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = [<span class="hljs-string">'&lt;label&gt;Trade&lt;/label&gt;'</span>, <span class="hljs-string">'&lt;span&gt;'</span>, stat.trade_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>].join(<span class="hljs-string">''</span>);
+            frag.appendChild(nLi);
+            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+            nLi.innerHTML = [<span class="hljs-string">'&lt;label&gt;Growth&lt;/label&gt;'</span>, <span class="hljs-string">'&lt;span&gt;'</span>, stat.growth_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>].join(<span class="hljs-string">''</span>);
+            frag.appendChild(nLi);
+            <span class="hljs-keyword">return</span> frag;
+        },
+        prepareExperiment: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">if</span> (e.newValue) {
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.currentSpy;
+                <span class="hljs-keyword">this</span>.service.prepare_experiment({
+                    session_id: Game.GetSession(),
+                    building_id: <span class="hljs-keyword">this</span>.building.id
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">if</span> (o.result.can_experiment === <span class="hljs-number">1</span>) {
+                            <span class="hljs-keyword">if</span> (o.result.grafts.length &gt; <span class="hljs-number">0</span>) {
+                                Dom.get(<span class="hljs-string">"geneticsLabMessage"</span>)
+                                    .innerHTML = <span class="hljs-string">""</span>;
+                                Dom.setStyle(<span class="hljs-string">"geneticsLabDisplay"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                            }
+                            <span class="hljs-keyword">this</span>.updateDisplay(o.result);
+                        } <span class="hljs-keyword">else</span> {
+                            Dom.get(<span class="hljs-string">"geneticsLabMessage"</span>)
+                                .innerHTML = <span class="hljs-string">"Unable to currently run experiments.  You can only have 1 graft per level of the Genetics Lab."</span>;
+                        }
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        runExperiment: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.currentSpy) {
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">this</span>.service.run_experiment({
+                    session_id: Game.GetSession(),
+                    building_id: <span class="hljs-keyword">this</span>.building.id,
+                    spy_id: <span class="hljs-keyword">this</span>.currentSpy,
+                    affinity: Lib.getSelectedOptionValue(<span class="hljs-string">"geneticsLabAffinities"</span>)
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        Dom.get(<span class="hljs-string">"geneticsLabExperimentMessage"</span>)
+                            .innerHTML = o.result.experiment.message;
+                        Dom.setStyle(<span class="hljs-string">"geneticsLabExperimentMessage"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                        Dom.setStyle(<span class="hljs-string">"geneticsLabDetailsContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                        <span class="hljs-keyword">this</span>.updateDisplay(o.result);
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        },
+        selectSpyForExperiment: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+            <span class="hljs-keyword">var</span> obj = matchedEl.Object,
+                sel = Dom.get(<span class="hljs-string">"geneticsLabAffinities"</span>),
+                details = Dom.get(<span class="hljs-string">"geneticsLabDetails"</span>),
+                option = document.createElement(<span class="hljs-string">"option"</span>);
+            Dom.removeClass(Sel.query(<span class="hljs-string">"li.selected"</span>, <span class="hljs-string">"geneticsLabSpies"</span>), <span class="hljs-string">"selected"</span>);
+            Dom.addClass(matchedEl, <span class="hljs-string">"selected"</span>);
+            Dom.get(<span class="hljs-string">"geneticsLabSpyName"</span>)
+                .innerHTML = [<span class="hljs-string">'['</span>, obj.species.name, <span class="hljs-string">'] '</span>, obj.spy.name].join(<span class="hljs-string">''</span>);
+            Dom.setStyle(<span class="hljs-string">"geneticsLabExperimentMessage"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+            Dom.setStyle(<span class="hljs-string">"geneticsLabDetailsContainer"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+            <span class="hljs-keyword">this</span>.currentSpy = obj.spy.id;
+            sel.options.length = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> a = <span class="hljs-number">0</span>; a &lt; obj.graftable_affinities.length; a++) {
+                <span class="hljs-keyword">var</span> nOpt = option.cloneNode(<span class="hljs-literal">false</span>);
+                nOpt.value = obj.graftable_affinities[a];
+                nOpt.innerHTML = obj.graftable_affinities[a].titleCaps(<span class="hljs-string">"_"</span>, <span class="hljs-string">" "</span>);
+                sel.appendChild(nOpt);
+            }
+            details.innerHTML = <span class="hljs-string">""</span>;
+            details.appendChild(<span class="hljs-keyword">this</span>.getSpeciesStatList(obj.species));
+        },
+        updateDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(exp)</span> {</span>
+            Dom.get(<span class="hljs-string">"geneticsLabSurvival"</span>)
+                .innerHTML = exp.survival_odds;
+            Dom.get(<span class="hljs-string">"geneticsLabGraft"</span>)
+                .innerHTML = exp.graft_odds;
+            Dom.get(<span class="hljs-string">"geneticsLabCost"</span>)
+                .innerHTML = exp.essentia_cost;
+            Dom.removeClass(Sel.query(<span class="hljs-string">"li.selected"</span>, <span class="hljs-string">"geneticsLabSpies"</span>), <span class="hljs-string">"selected"</span>);
+            <span class="hljs-keyword">if</span> (exp.grafts.length) {
+                <span class="hljs-keyword">var</span> grafts = exp.grafts;
+                <span class="hljs-comment">//sort by species name then spy name</span>
+                grafts.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span>
+                    <span class="hljs-keyword">if</span> (a.species.name &gt; b.species.name) {
+                        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.species.name &lt; b.species.name) {
+                        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.spy.name &gt; b.spy.name) {
+                        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.spy.name &lt; b.spy.name) {
+                        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+                    } <span class="hljs-keyword">else</span> {
+                        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+                    }
+                });
+                <span class="hljs-keyword">var</span> li = document.createElement(<span class="hljs-string">"li"</span>),
+                    ul = Dom.get(<span class="hljs-string">"geneticsLabSpies"</span>);
+                ul.innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> s = <span class="hljs-number">0</span>; s &lt; grafts.length; s++) {
+                    <span class="hljs-keyword">var</span> obj = grafts[s],
+                        nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    nLi.Object = obj;
+                    Dom.setStyle(nLi, <span class="hljs-string">"prisoner"</span>);
+                    nLi.innerHTML = [<span class="hljs-string">'['</span>, obj.species.name, <span class="hljs-string">'] '</span>, obj.spy.name].join(<span class="hljs-string">''</span>);
+                    ul.appendChild(nLi);
+                }
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">var</span> expMsg = Dom.get(<span class="hljs-string">"geneticsLabExperimentMessage"</span>)
+                    .innerHTML;
+                <span class="hljs-keyword">if</span> (expMsg) {
+                    Dom.get(<span class="hljs-string">"geneticsLabMessage"</span>)
+                        .innerHTML = expMsg + <span class="hljs-string">"  No spies available to run experiments on."</span>;
+                } <span class="hljs-keyword">else</span> {
+                    Dom.get(<span class="hljs-string">"geneticsLabMessage"</span>)
+                        .innerHTML = <span class="hljs-string">"No spies available to run experiments on."</span>;
+                }
+                Dom.setStyle(<span class="hljs-string">"geneticsLabDisplay"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+            }
+        }
+    });
+    YAHOO.lacuna.buildings.GeneticsLab = GeneticsLab;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

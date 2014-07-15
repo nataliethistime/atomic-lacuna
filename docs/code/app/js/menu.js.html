@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - menu.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/menu.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/menu.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> UserMenu = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"userMenu"</span>;
+        <span class="hljs-keyword">this</span>.container = Dom.get(<span class="hljs-string">"header"</span>);
+        <span class="hljs-keyword">this</span>.clickId = <span class="hljs-string">"userClick"</span>;
+        <span class="hljs-keyword">this</span>.elClick = Dom.get(<span class="hljs-keyword">this</span>.clickId);
+        <span class="hljs-keyword">this</span>.elText = Dom.get(<span class="hljs-string">"users"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onChangeClick"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onInboxClick"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onDestructClick"</span>);
+    };
+    UserMenu.prototype = {
+        create: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> userMenu = <span class="hljs-keyword">new</span> YAHOO.widget.Menu(<span class="hljs-keyword">this</span>.id, {
+                zindex: <span class="hljs-number">1006</span>,
+                shadow: <span class="hljs-literal">false</span>,
+                context: [<span class="hljs-keyword">this</span>.clickId, <span class="hljs-string">"tl"</span>, <span class="hljs-string">"bl"</span>, [<span class="hljs-number">11</span>, -<span class="hljs-number">14</span>]]
+            });
+            userMenu.addItems([{
+                text: <span class="hljs-string">"Alliance Map"</span>,
+                url: <span class="hljs-string">"/starmap/"</span>,
+                target: <span class="hljs-string">"_blank"</span>
+            }, {
+                text: <span class="hljs-string">"Changes Log"</span>,
+                url: <span class="hljs-string">"/changes.txt"</span>,
+                target: <span class="hljs-string">"_blank"</span>
+            }, {
+                text: <span class="hljs-string">"Forums"</span>,
+                url: <span class="hljs-string">"http://community.lacunaexpanse.com/forums"</span>,
+                target: <span class="hljs-string">"_blank"</span>
+            }, {
+                text: <span class="hljs-string">"Help"</span>,
+                url: <span class="hljs-string">"http://www.lacunaexpanse.com/help/"</span>,
+                target: <span class="hljs-string">"_blank"</span>
+            }, {
+                text: <span class="hljs-string">"Ideas"</span>,
+                url: <span class="hljs-string">"http://community.lacunaexpanse.com/forums/general"</span>,
+                target: <span class="hljs-string">"_blank"</span>
+            }, {
+                text: <span class="hljs-string">"Server Clock"</span>,
+                onclick: {
+                    fn: Lacuna.Info.Clock.Show,
+                    scope: Lacuna.Info.Clock
+                }
+            }, {
+                text: <span class="hljs-string">"Terms of Service"</span>,
+                url: <span class="hljs-string">"http://www.lacunaexpanse.com/terms/"</span>,
+                target: <span class="hljs-string">"_blank"</span>
+            }, {
+                text: <span class="hljs-string">"Wiki"</span>,
+                url: <span class="hljs-string">"http://community.lacunaexpanse.com/wiki/"</span>,
+                target: <span class="hljs-string">"_blank"</span>
+            }]);
+            userMenu.subscribe(<span class="hljs-string">"beforeShow"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.getRoot() === <span class="hljs-keyword">this</span>) {
+                    <span class="hljs-keyword">this</span>.align(<span class="hljs-string">"tl"</span>, <span class="hljs-string">"bl"</span>, [<span class="hljs-number">11</span>, -<span class="hljs-number">14</span>]);
+                    <span class="hljs-comment">//this.bringToTop();</span>
+                }
+            });
+            userMenu.render();
+            Dom.removeClass(<span class="hljs-keyword">this</span>.container, Lib.Styles.HIDDEN);
+            Event.addListener(<span class="hljs-keyword">this</span>.elClick, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> {</span>
+                <span class="hljs-comment">//this.align("tl","bl");</span>
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.cfg.getProperty(<span class="hljs-string">"visible"</span>)) {
+                    <span class="hljs-keyword">this</span>.show();
+                }
+                Event.stopEvent(ev);
+            }, userMenu, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.Menu = userMenu;
+            Dom.removeClass(<span class="hljs-keyword">this</span>.container, Lib.Styles.HIDDEN);
+            <span class="hljs-keyword">this</span>.createLeft();
+            <span class="hljs-keyword">this</span>.createRight();
+            <span class="hljs-keyword">var</span> userMenuTT = <span class="hljs-keyword">new</span> YAHOO.widget.Tooltip(<span class="hljs-string">"userMenuTT"</span>, {
+                zIndex: <span class="hljs-number">41010</span>,
+                xyoffset: [<span class="hljs-number">0</span>, <span class="hljs-number">10</span>],
+                context: [<span class="hljs-keyword">this</span>.elChangeClick, <span class="hljs-string">"userMenuProfile"</span>, <span class="hljs-keyword">this</span>.elInboxClick, <span class="hljs-keyword">this</span>.elEssentiaClick, <span class="hljs-keyword">this</span>.elDestructClick, <span class="hljs-string">"userMenuInvite"</span>, <span class="hljs-string">"userMenuTutorial"</span>, <span class="hljs-string">"userMenuSupport"</span>, <span class="hljs-string">"userMenuStats"</span>, <span class="hljs-string">"userMenuAbout"</span>, <span class="hljs-string">"userMenuLogout"</span>]
+            });</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Set the text for the tooltip just before we display it.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">            userMenuTT.contextTriggerEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type, args)</span> {</span>
+                <span class="hljs-keyword">var</span> context = args[<span class="hljs-number">0</span>];
+                <span class="hljs-keyword">this</span>.cfg.setProperty(<span class="hljs-string">"text"</span>, Lacuna.Menu.UserMenu.getTextFor(context.id));
+            });
+            <span class="hljs-keyword">this</span>.userMenuTT = userMenuTT;
+            <span class="hljs-keyword">this</span>.update();
+        },
+        createLeft: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> change = document.createElement(<span class="hljs-string">"div"</span>),
+                changeClick = change.cloneNode(<span class="hljs-literal">false</span>),
+                changeImg = change.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                inbox = document.createElement(<span class="hljs-string">"div"</span>),
+                inboxClick = inbox.cloneNode(<span class="hljs-literal">false</span>),
+                inboxImg = inbox.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                inboxTxt = inbox.appendChild(document.createElement(<span class="hljs-string">"span"</span>)),
+                profile = <span class="hljs-keyword">this</span>.container.appendChild(document.createElement(<span class="hljs-string">"div"</span>)),
+                profileClick = <span class="hljs-keyword">this</span>.container.appendChild(profile.cloneNode(<span class="hljs-literal">false</span>)),
+                profileImg = profile.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                essentia = document.createElement(<span class="hljs-string">"div"</span>),
+                essentiaClick = essentia.cloneNode(<span class="hljs-literal">false</span>),
+                essentiaImg = essentia.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                essentiaTxt = essentia.appendChild(document.createElement(<span class="hljs-string">"span"</span>)),
+                destruct = document.createElement(<span class="hljs-string">"div"</span>),
+                destructClick = destruct.cloneNode(<span class="hljs-literal">false</span>),
+                destructImg = destruct.appendChild(document.createElement(<span class="hljs-string">"img"</span>));
+            <span class="hljs-comment">//bookmark = document.createElement("div"),</span>
+            <span class="hljs-comment">//bookmarkClick = bookmark.cloneNode(false),</span>
+            <span class="hljs-comment">//bookmarkImg = bookmark.appendChild(document.createElement("img"));</span>
+            changeImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/star_map.png'</span>;
+            changeImg.alt = <span class="hljs-string">"Change"</span>;
+            changeClick.id = <span class="hljs-string">"userMenuChange"</span>;
+            Event.on(changeClick, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onChangeClick"</span>);
+            }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Dom.addClass([change, changeClick], <span class="hljs-string">"change"</span>);
+            Dom.addClass([change, changeClick], <span class="hljs-string">"menuItem"</span>);
+            Dom.addClass(changeClick, <span class="hljs-string">"click"</span>);
+            inboxImg.src = Lib.AssetUrl + (Game.EmpireData.has_new_messages ? <span class="hljs-string">'ui/l/inbox_new.png'</span> : <span class="hljs-string">'ui/l/inbox.png'</span>);
+            inboxImg.alt = inboxImg.title = <span class="hljs-string">"Inbox"</span>;
+            inboxClick.id = <span class="hljs-string">"userMenuInbox"</span>;
+            <span class="hljs-keyword">if</span> (Game.EmpireData.has_new_messages) {
+                inboxImg.title += <span class="hljs-string">" ("</span> + Game.EmpireData.has_new_messages + <span class="hljs-string">" new)"</span>;
+                inboxTxt.innerHTML = Game.EmpireData.has_new_messages;
+            }
+            Event.on(inboxClick, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onInboxClick"</span>);
+            }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Dom.addClass([inbox, inboxClick], <span class="hljs-string">"inbox"</span>);
+            Dom.addClass([inbox, inboxClick], <span class="hljs-string">"menuItem"</span>);
+            Dom.addClass(inboxClick, <span class="hljs-string">"click"</span>);
+            profileImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/profile.png'</span>;
+            profileImg.alt = <span class="hljs-string">"profile"</span>;
+            profileClick.id = <span class="hljs-string">"userMenuProfile"</span>;
+            Event.on(profileClick, <span class="hljs-string">"click"</span>, Lacuna.Profile.show, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Dom.addClass([profile, profileClick], <span class="hljs-string">"profile"</span>);
+            Dom.addClass([profile, profileClick], <span class="hljs-string">"menuItem"</span>);
+            Dom.addClass(profileClick, <span class="hljs-string">"click"</span>);
+            essentiaImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/essentia.png'</span>;
+            essentiaImg.alt = essentiaImg.title = <span class="hljs-string">"Essentia"</span>;
+            essentiaClick.id = <span class="hljs-string">"userMenuEssentia"</span>;
+            Event.on(essentiaClick, <span class="hljs-string">"click"</span>, Lacuna.Essentia.show);
+            Dom.addClass([essentia, essentiaClick], <span class="hljs-string">"essentia"</span>);
+            Dom.addClass([essentia, essentiaClick], <span class="hljs-string">"menuItem"</span>);
+            Dom.addClass(essentiaClick, <span class="hljs-string">"click"</span>);
+            <span class="hljs-comment">/*bookmarkImg.src = Lib.AssetUrl + 'ui/l/bookmarks.png';
+        bookmarkImg.alt = "Bookmark";
+        Event.on(bookmarkClick, "click", function() {
+            this.fireEvent("onBookmarkClick");
+        }, this, true);
+        Dom.addClass([bookmark,bookmarkClick], "bookmark");
+        Dom.addClass([bookmark,bookmarkClick], "menuItem");
+        Dom.addClass(bookmarkClick, "click");*/</span>
+            destructImg.src = Lib.AssetUrl + (Game.EmpireData.self_destruct_active * <span class="hljs-number">1</span> === <span class="hljs-number">1</span> ? <span class="hljs-string">'ui/l/disable_self_destruct.png'</span> : <span class="hljs-string">'ui/l/enable_self_destruct.png'</span>);
+            destructImg.alt = destructImg.title = <span class="hljs-string">"Destruct"</span>;
+            destructClick.id = <span class="hljs-string">"userMenuDestruct"</span>;
+            Event.on(destructClick, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onDestructClick"</span>);
+            }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Dom.addClass([destruct, destructClick], <span class="hljs-string">"destruct menuItem"</span>);
+            Dom.addClass(destructClick, <span class="hljs-string">"click"</span>);
+            <span class="hljs-keyword">this</span>.elChange = <span class="hljs-keyword">this</span>.container.appendChild(change);
+            <span class="hljs-keyword">this</span>.elChangeClick = <span class="hljs-keyword">this</span>.container.appendChild(changeClick);
+            <span class="hljs-keyword">this</span>.elChangeImg = changeImg;
+            <span class="hljs-keyword">this</span>.elInbox = <span class="hljs-keyword">this</span>.container.appendChild(inbox);
+            <span class="hljs-keyword">this</span>.elInboxClick = <span class="hljs-keyword">this</span>.container.appendChild(inboxClick);
+            <span class="hljs-keyword">this</span>.elInboxImg = inboxImg;
+            <span class="hljs-keyword">this</span>.elInboxText = inboxTxt;
+            <span class="hljs-comment">//profile appended at the top since we don't have to change it ever</span>
+            <span class="hljs-keyword">this</span>.elEssentia = <span class="hljs-keyword">this</span>.container.appendChild(essentia);
+            <span class="hljs-keyword">this</span>.elEssentiaClick = <span class="hljs-keyword">this</span>.container.appendChild(essentiaClick);
+            <span class="hljs-keyword">this</span>.elEssentiaText = essentiaTxt;
+            <span class="hljs-comment">//this.elBookmark = this.container.appendChild(bookmark);</span>
+            <span class="hljs-comment">//this.elBookmarkClick = this.container.appendChild(bookmarkClick);</span>
+            <span class="hljs-keyword">this</span>.elDestruct = <span class="hljs-keyword">this</span>.container.appendChild(destruct);
+            <span class="hljs-keyword">this</span>.elDestructClick = <span class="hljs-keyword">this</span>.container.appendChild(destructClick);
+            <span class="hljs-keyword">this</span>.elDestructImg = destructImg;
+        },
+        createRight: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> invite = <span class="hljs-keyword">this</span>.container.appendChild(document.createElement(<span class="hljs-string">"div"</span>)),
+                inviteClick = <span class="hljs-keyword">this</span>.container.appendChild(document.createElement(<span class="hljs-string">"a"</span>)),
+                inviteImg = invite.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                tutorial = <span class="hljs-keyword">this</span>.container.appendChild(document.createElement(<span class="hljs-string">"div"</span>)),
+                tutorialClick = <span class="hljs-keyword">this</span>.container.appendChild(document.createElement(<span class="hljs-string">"a"</span>)),
+                tutorialImg = tutorial.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                support = <span class="hljs-keyword">this</span>.container.appendChild(document.createElement(<span class="hljs-string">"div"</span>)),
+                supportClick = <span class="hljs-keyword">this</span>.container.appendChild(document.createElement(<span class="hljs-string">"a"</span>)),
+                supportImg = support.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                stats = <span class="hljs-keyword">this</span>.container.appendChild(document.createElement(<span class="hljs-string">"div"</span>)),
+                statsClick = <span class="hljs-keyword">this</span>.container.appendChild(stats.cloneNode(<span class="hljs-literal">false</span>)),
+                statsImg = stats.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                about = <span class="hljs-keyword">this</span>.container.appendChild(document.createElement(<span class="hljs-string">"div"</span>)),
+                aboutClick = <span class="hljs-keyword">this</span>.container.appendChild(about.cloneNode(<span class="hljs-literal">false</span>)),
+                aboutImg = about.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                logout = <span class="hljs-keyword">this</span>.container.appendChild(document.createElement(<span class="hljs-string">"div"</span>)),
+                logoutClick = <span class="hljs-keyword">this</span>.container.appendChild(logout.cloneNode(<span class="hljs-literal">false</span>)),
+                logoutImg = logout.appendChild(document.createElement(<span class="hljs-string">"img"</span>));
+            inviteImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/invite_friend.png'</span>;
+            inviteImg.alt = inviteImg.title = <span class="hljs-string">"Invite Friend"</span>;
+            inviteClick.id = <span class="hljs-string">"userMenuInvite"</span>;
+            Event.on(inviteClick, <span class="hljs-string">"click"</span>, Lacuna.Invite.show, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Dom.addClass([invite, inviteClick], <span class="hljs-string">"invite menuItem"</span>);
+            Dom.addClass(inviteClick, <span class="hljs-string">"click"</span>);
+            tutorialImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/tutorial.png'</span>;
+            tutorialImg.alt = tutorialImg.title = <span class="hljs-string">"Tutorial"</span>;
+            tutorialClick.id = <span class="hljs-string">"userMenuTutorial"</span>;
+            tutorialClick.href = <span class="hljs-string">"http://www.lacunaexpanse.com/tutorial"</span>;
+            tutorialClick.target = <span class="hljs-string">"_blank"</span>;
+            Dom.addClass([tutorial, tutorialClick], <span class="hljs-string">"tutorial menuItem"</span>);
+            Dom.addClass(tutorialClick, <span class="hljs-string">"click"</span>);
+            supportImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/support.png'</span>;
+            supportImg.alt = supportImg.title = <span class="hljs-string">"Support"</span>;
+            supportClick.id = <span class="hljs-string">"userMenuSupport"</span>;
+            supportClick.href = <span class="hljs-string">"http://community.lacunaexpanse.com/forums"</span>;
+            supportClick.target = <span class="hljs-string">"_blank"</span>;
+            Dom.addClass([support, supportClick], <span class="hljs-string">"support menuItem"</span>);
+            Dom.addClass(supportClick, <span class="hljs-string">"click"</span>);
+            statsImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/stats.png'</span>;
+            statsImg.alt = statsImg.title = <span class="hljs-string">"Stats"</span>;
+            statsClick.id = <span class="hljs-string">"userMenuStats"</span>;
+            Event.on(statsClick, <span class="hljs-string">"click"</span>, Lacuna.Stats.show, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Dom.addClass([stats, statsClick], <span class="hljs-string">"stats menuItem"</span>);
+            Dom.addClass(statsClick, <span class="hljs-string">"click"</span>);
+            aboutImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/about.png'</span>;
+            aboutImg.alt = aboutImg.title = <span class="hljs-string">"About"</span>;
+            aboutClick.id = <span class="hljs-string">"userMenuAbout"</span>;
+            Event.on(aboutClick, <span class="hljs-string">"click"</span>, Lacuna.Menu.UserMenu.showAbout, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Dom.addClass([about, aboutClick], <span class="hljs-string">"about menuItem"</span>);
+            Dom.addClass(aboutClick, <span class="hljs-string">"click"</span>);
+            logoutImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/logout.png'</span>;
+            logoutImg.alt = logoutImg.title = <span class="hljs-string">"Logout"</span>;
+            logoutClick.id = <span class="hljs-string">"userMenuLogout"</span>;
+            Event.on(logoutClick, <span class="hljs-string">"click"</span>, Game.Logout, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Dom.addClass([logout, logoutClick], <span class="hljs-string">"logout menuItem"</span>);
+            Dom.addClass(logoutClick, <span class="hljs-string">"click"</span>);
+        },
+        update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.elText.innerHTML = Game.EmpireData.name || <span class="hljs-string">"Empire"</span>;
+            <span class="hljs-keyword">this</span>.updateTick();
+        },
+        updateTick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> new_inbox_image;
+            <span class="hljs-keyword">if</span> (Game.EmpireData.has_new_messages) {
+                new_inbox_image = Lib.AssetUrl + <span class="hljs-string">'ui/l/inbox_new.png'</span>;
+                <span class="hljs-keyword">this</span>.elInboxImg.title = <span class="hljs-string">"Inbox ("</span> + Game.EmpireData.has_new_messages + <span class="hljs-string">" new)"</span>;
+                <span class="hljs-keyword">this</span>.elInboxText.innerHTML = Game.EmpireData.has_new_messages;
+            } <span class="hljs-keyword">else</span> {
+                new_inbox_image = Lib.AssetUrl + <span class="hljs-string">'ui/l/inbox.png'</span>;
+                <span class="hljs-keyword">this</span>.elInboxImg.title = <span class="hljs-string">"Inbox"</span>;
+                <span class="hljs-keyword">this</span>.elInboxText.innerHTML = <span class="hljs-string">""</span>;
+            }
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.elInboxImg.src !== new_inbox_image) {
+                <span class="hljs-keyword">this</span>.elInboxImg.src = new_inbox_image;
+            }
+            <span class="hljs-keyword">var</span> new_destruct_image = Lib.AssetUrl + (Game.EmpireData.self_destruct_active * <span class="hljs-number">1</span> === <span class="hljs-number">1</span> ? <span class="hljs-string">'ui/l/disable_self_destruct.png'</span> : <span class="hljs-string">'ui/l/enable_self_destruct.png'</span>);
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.elDestructImg.src !== new_destruct_image) {
+                <span class="hljs-keyword">this</span>.elDestructImg.src = new_destruct_image;
+            }
+            <span class="hljs-keyword">this</span>.elEssentiaText.innerHTML = Lib.convertNumDisplay(Game.EmpireData.essentia, <span class="hljs-literal">true</span>);
+        },
+        show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Dom.removeClass(<span class="hljs-keyword">this</span>.container, Lib.Styles.HIDDEN);
+        },
+        hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Dom.addClass(<span class="hljs-keyword">this</span>.container, Lib.Styles.HIDDEN);
+        },
+        starVisible: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(vis)</span> {</span>
+            <span class="hljs-keyword">this</span>.elChangeClick.title = <span class="hljs-string">"To your Planet"</span>;
+            <span class="hljs-keyword">this</span>.elChangeImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/planet_side.png'</span>;
+            <span class="hljs-keyword">this</span>._planetVisible = <span class="hljs-literal">false</span>;
+            <span class="hljs-keyword">this</span>._starVisible = <span class="hljs-literal">true</span>;
+        },
+        planetVisible: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(vis)</span> {</span>
+            <span class="hljs-keyword">this</span>.elChangeClick.title = <span class="hljs-string">"To the Starmap"</span>;
+            <span class="hljs-keyword">this</span>.elChangeImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/star_map.png'</span>;
+            <span class="hljs-keyword">this</span>._planetVisible = <span class="hljs-literal">true</span>;
+            <span class="hljs-keyword">this</span>._starVisible = <span class="hljs-literal">false</span>;
+        },
+        showAbout: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Game.OverlayManager.hideAll();
+            Lacuna.About.show();
+        },
+        getTextFor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> {</span>
+            <span class="hljs-keyword">var</span> ED = Game.EmpireData,
+                output;
+            <span class="hljs-keyword">switch</span> (id) {
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"userMenuChange"</span>:
+                output = [<span class="hljs-keyword">this</span>._planetVisible ? <span class="hljs-string">"To the Starmap"</span> : <span class="hljs-string">"To your Planet"</span>];
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"userMenuProfile"</span>:
+                output = [<span class="hljs-string">'Profile'</span>];
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"userMenuInbox"</span>:
+                <span class="hljs-keyword">if</span> (Game.EmpireData.has_new_messages) {
+                    output = [<span class="hljs-string">"Inbox ("</span> + Game.EmpireData.has_new_messages + <span class="hljs-string">" new)"</span>];
+                } <span class="hljs-keyword">else</span> {
+                    output = [<span class="hljs-string">"Inbox"</span>];
+                }
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"userMenuEssentia"</span>:
+                output = [<span class="hljs-string">'Essentia'</span>];
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"userMenuInvite"</span>:
+                output = [<span class="hljs-string">'Invite a Friend'</span>];
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"userMenuTutorial"</span>:
+                output = [<span class="hljs-string">'Tutorial'</span>];
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"userMenuSupport"</span>:
+                output = [<span class="hljs-string">'Support'</span>];
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"userMenuDestruct"</span>:
+                <span class="hljs-keyword">if</span> (ED.self_destruct_active * <span class="hljs-number">1</span> === <span class="hljs-number">1</span>) {
+                    output = [<span class="hljs-string">'Disable Destruction Date of : '</span>, Lib.formatServerDate(ED.self_destruct_date)];
+                } <span class="hljs-keyword">else</span> {
+                    output = [<span class="hljs-string">'Enable Self Destruct'</span>];
+                }
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"userMenuStats"</span>:
+                output = [<span class="hljs-string">'Stats'</span>];
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"userMenuAbout"</span>:
+                output = [<span class="hljs-string">'About'</span>];
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"userMenuLogout"</span>:
+                output = [<span class="hljs-string">'Logout'</span>];
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">default</span>:
+                output = [];
+                <span class="hljs-keyword">break</span>;
+            }
+            <span class="hljs-keyword">return</span> output.join(<span class="hljs-string">''</span>);
+        }
+    };
+    Lang.augmentProto(UserMenu, Util.EventProvider);
+    <span class="hljs-keyword">var</span> PlanetMenu = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"planetMenu"</span>;
+        <span class="hljs-keyword">this</span>.container = Dom.get(<span class="hljs-string">"footer"</span>);
+        <span class="hljs-keyword">this</span>.clickId = <span class="hljs-string">"planetsClick"</span>;
+        <span class="hljs-keyword">this</span>.elClick = Dom.get(<span class="hljs-keyword">this</span>.clickId);
+        <span class="hljs-keyword">this</span>.elText = Dom.get(<span class="hljs-string">"planets"</span>);
+    };
+    PlanetMenu.prototype = {
+        create: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> planetMenu = <span class="hljs-keyword">new</span> YAHOO.widget.Menu(<span class="hljs-keyword">this</span>.id, {
+                zindex: <span class="hljs-number">1006</span>,
+                shadow: <span class="hljs-literal">false</span>,
+                <span class="hljs-comment">//effect:{effect:YAHOO.widget.ContainerEffect.SLIDE,duration:0.5},</span>
+                context: [<span class="hljs-keyword">this</span>.clickId, <span class="hljs-string">"bl"</span>, <span class="hljs-string">"tl"</span>, [<span class="hljs-number">9</span>, <span class="hljs-number">10</span>]]
+            });
+            planetMenu.subscribe(<span class="hljs-string">"beforeShow"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.getRoot() === <span class="hljs-keyword">this</span>) {
+                    <span class="hljs-keyword">this</span>.align(<span class="hljs-string">"bl"</span>, <span class="hljs-string">"tl"</span>, [<span class="hljs-number">9</span>, <span class="hljs-number">10</span>]);
+                    <span class="hljs-comment">//this.bringToTop();</span>
+                }
+            });
+            planetMenu.render();
+            Dom.removeClass(<span class="hljs-keyword">this</span>.container, Lib.Styles.HIDDEN);
+            Event.addListener(<span class="hljs-keyword">this</span>.elClick, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> {</span>
+                <span class="hljs-comment">//this.align("bl","tl");</span>
+                <span class="hljs-keyword">this</span>.show();
+                Event.stopEvent(ev);
+            }, planetMenu, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>.Menu = planetMenu;
+            <span class="hljs-comment">/*var arrow = document.createElement("div");
+        arrow.id = "planetsArrow";
+        var pc = Dom.get("planetsCenter");
+        pc.insertBefore(arrow, pc.firstChild);*/</span>
+            <span class="hljs-keyword">this</span>.createLeft();
+            <span class="hljs-keyword">this</span>.createRight();
+            <span class="hljs-keyword">var</span> planetMenuTT = <span class="hljs-keyword">new</span> YAHOO.widget.Tooltip(<span class="hljs-string">"planetMenuTT"</span>, {
+                zIndex: <span class="hljs-number">41011</span>,
+                xyoffset: [<span class="hljs-number">0</span>, -<span class="hljs-number">10</span>],
+                context: [<span class="hljs-keyword">this</span>.elFoodOver, <span class="hljs-keyword">this</span>.elOreOver, <span class="hljs-keyword">this</span>.elWaterOver, <span class="hljs-keyword">this</span>.elEnergyOver, <span class="hljs-keyword">this</span>.elWasteOver, <span class="hljs-keyword">this</span>.elHappyOver, <span class="hljs-keyword">this</span>.elPlotsOver]
+            });</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Set the text for the tooltip just before we display it.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">            planetMenuTT.contextTriggerEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type, args)</span> {</span>
+                <span class="hljs-keyword">var</span> context = args[<span class="hljs-number">0</span>];
+                <span class="hljs-keyword">this</span>.cfg.setProperty(<span class="hljs-string">"text"</span>, Lacuna.Menu.PlanetMenu.getTextFor(context.id));
+            });
+            <span class="hljs-keyword">this</span>.planetMenuTT = planetMenuTT;
+            <span class="hljs-keyword">this</span>.update();
+        },
+        createLeft: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> food = document.createElement(<span class="hljs-string">"div"</span>),
+                foodOver = food.cloneNode(<span class="hljs-literal">false</span>),
+                foodImg = food.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                foodTxt = food.appendChild(document.createElement(<span class="hljs-string">"span"</span>)),
+                foodPercent = food.appendChild(document.createElement(<span class="hljs-string">"div"</span>)),
+                foodHr = food.appendChild(document.createElement(<span class="hljs-string">"span"</span>)),
+                ore = document.createElement(<span class="hljs-string">"div"</span>),
+                oreOver = ore.cloneNode(<span class="hljs-literal">false</span>),
+                oreImg = ore.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                oreTxt = ore.appendChild(document.createElement(<span class="hljs-string">"span"</span>)),
+                orePercent = ore.appendChild(document.createElement(<span class="hljs-string">"div"</span>)),
+                oreHr = ore.appendChild(document.createElement(<span class="hljs-string">"span"</span>)),
+                water = document.createElement(<span class="hljs-string">"div"</span>),
+                waterOver = water.cloneNode(<span class="hljs-literal">false</span>),
+                waterImg = water.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                waterTxt = water.appendChild(document.createElement(<span class="hljs-string">"span"</span>)),
+                waterPercent = water.appendChild(document.createElement(<span class="hljs-string">"div"</span>)),
+                waterHr = water.appendChild(document.createElement(<span class="hljs-string">"span"</span>)),
+                energy = document.createElement(<span class="hljs-string">"div"</span>),
+                energyOver = energy.cloneNode(<span class="hljs-literal">false</span>),
+                energyImg = energy.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                energyTxt = energy.appendChild(document.createElement(<span class="hljs-string">"span"</span>)),
+                energyPercent = energy.appendChild(document.createElement(<span class="hljs-string">"div"</span>)),
+                energyHr = energy.appendChild(document.createElement(<span class="hljs-string">"span"</span>));
+            foodImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/food.png'</span>;
+            foodImg.alt = foodImg.title = <span class="hljs-string">"Food"</span>;
+            foodOver.id = <span class="hljs-string">"planetMenuFood"</span>;
+            Dom.addClass([food, foodOver], <span class="hljs-string">"food"</span>);
+            Dom.addClass([food, foodOver], <span class="hljs-string">"menuItem"</span>);
+            Dom.addClass(foodOver, <span class="hljs-string">"click"</span>);
+            Dom.addClass(foodTxt, <span class="hljs-string">"stored"</span>);
+            Dom.addClass(foodHr, <span class="hljs-string">"perHr"</span>);
+            oreImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/ore.png'</span>;
+            oreImg.alt = oreImg.title = <span class="hljs-string">"Ore"</span>;
+            oreOver.id = <span class="hljs-string">"planetMenuOre"</span>;
+            Dom.addClass([ore, oreOver], <span class="hljs-string">"ore"</span>);
+            Dom.addClass([ore, oreOver], <span class="hljs-string">"menuItem"</span>);
+            Dom.addClass(oreOver, <span class="hljs-string">"click"</span>);
+            Dom.addClass(oreTxt, <span class="hljs-string">"stored"</span>);
+            Dom.addClass(oreHr, <span class="hljs-string">"perHr"</span>);
+            waterImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/water.png'</span>;
+            waterImg.alt = waterImg.title = <span class="hljs-string">"Water"</span>;
+            waterOver.id = <span class="hljs-string">"planetMenuWater"</span>;
+            Dom.addClass([water, waterOver], <span class="hljs-string">"water"</span>);
+            Dom.addClass([water, waterOver], <span class="hljs-string">"menuItem"</span>);
+            Dom.addClass(waterOver, <span class="hljs-string">"click"</span>);
+            Dom.addClass(waterTxt, <span class="hljs-string">"stored"</span>);
+            Dom.addClass(waterHr, <span class="hljs-string">"perHr"</span>);
+            energyImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/energy.png'</span>;
+            energyImg.alt = energyImg.title = <span class="hljs-string">"Energy"</span>;
+            energyOver.id = <span class="hljs-string">"planetMenuEnergy"</span>;
+            Dom.addClass([energy, energyOver], <span class="hljs-string">"energy"</span>);
+            Dom.addClass([energy, energyOver], <span class="hljs-string">"menuItem"</span>);
+            Dom.addClass(energyOver, <span class="hljs-string">"click"</span>);
+            Dom.addClass(energyTxt, <span class="hljs-string">"stored"</span>);
+            Dom.addClass(energyHr, <span class="hljs-string">"perHr"</span>);
+            Dom.addClass([foodPercent, orePercent, waterPercent, energyPercent], <span class="hljs-string">'menuPercent'</span>);
+            foodPercent = foodPercent.appendChild(document.createElement(<span class="hljs-string">'div'</span>));
+            orePercent = orePercent.appendChild(document.createElement(<span class="hljs-string">'div'</span>));
+            waterPercent = waterPercent.appendChild(document.createElement(<span class="hljs-string">'div'</span>));
+            energyPercent = energyPercent.appendChild(document.createElement(<span class="hljs-string">'div'</span>));
+            Dom.addClass([foodPercent, orePercent, waterPercent, energyPercent], <span class="hljs-string">'menuPercentInner'</span>);
+            foodPercent.innerHTML = <span class="hljs-string">'&amp;nbsp;'</span>;
+            orePercent.innerHTML = <span class="hljs-string">'&amp;nbsp;'</span>;
+            waterPercent.innerHTML = <span class="hljs-string">'&amp;nbsp;'</span>;
+            energyPercent.innerHTML = <span class="hljs-string">'&amp;nbsp;'</span>;
+            <span class="hljs-keyword">this</span>.elFood = <span class="hljs-keyword">this</span>.container.appendChild(food);
+            <span class="hljs-keyword">this</span>.elFoodOver = <span class="hljs-keyword">this</span>.container.appendChild(foodOver);
+            <span class="hljs-keyword">this</span>.elFoodText = foodTxt;
+            <span class="hljs-keyword">this</span>.elFoodPercent = foodPercent;
+            <span class="hljs-keyword">this</span>.elFoodHour = foodHr;
+            <span class="hljs-keyword">this</span>.elOre = <span class="hljs-keyword">this</span>.container.appendChild(ore);
+            <span class="hljs-keyword">this</span>.elOreOver = <span class="hljs-keyword">this</span>.container.appendChild(oreOver);
+            <span class="hljs-keyword">this</span>.elOreText = oreTxt;
+            <span class="hljs-keyword">this</span>.elOrePercent = orePercent;
+            <span class="hljs-keyword">this</span>.elOreHour = oreHr;
+            <span class="hljs-keyword">this</span>.elWater = <span class="hljs-keyword">this</span>.container.appendChild(water);
+            <span class="hljs-keyword">this</span>.elWaterOver = <span class="hljs-keyword">this</span>.container.appendChild(waterOver);
+            <span class="hljs-keyword">this</span>.elWaterText = waterTxt;
+            <span class="hljs-keyword">this</span>.elWaterPercent = waterPercent;
+            <span class="hljs-keyword">this</span>.elWaterHour = waterHr;
+            <span class="hljs-keyword">this</span>.elEnergy = <span class="hljs-keyword">this</span>.container.appendChild(energy);
+            <span class="hljs-keyword">this</span>.elEnergyOver = <span class="hljs-keyword">this</span>.container.appendChild(energyOver);
+            <span class="hljs-keyword">this</span>.elEnergyText = energyTxt;
+            <span class="hljs-keyword">this</span>.elEnergyPercent = energyPercent;
+            <span class="hljs-keyword">this</span>.elEnergyHour = energyHr;
+        },
+        createRight: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> waste = document.createElement(<span class="hljs-string">"div"</span>),
+                wasteOver = waste.cloneNode(<span class="hljs-literal">false</span>),
+                wasteImg = waste.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                wasteTxt = waste.appendChild(document.createElement(<span class="hljs-string">"span"</span>)),
+                wastePercent = waste.appendChild(document.createElement(<span class="hljs-string">"div"</span>)),
+                wasteHr = waste.appendChild(document.createElement(<span class="hljs-string">"span"</span>)),
+                happy = document.createElement(<span class="hljs-string">"div"</span>),
+                happyOver = happy.cloneNode(<span class="hljs-literal">false</span>),
+                happyImg = happy.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                happyTxt = happy.appendChild(document.createElement(<span class="hljs-string">"span"</span>)),
+                happyHr = happy.appendChild(document.createElement(<span class="hljs-string">"span"</span>)),
+                plots = document.createElement(<span class="hljs-string">"div"</span>),
+                plotsOver = plots.cloneNode(<span class="hljs-literal">false</span>),
+                plotsImg = plots.appendChild(document.createElement(<span class="hljs-string">"img"</span>)),
+                plotsTxt = plots.appendChild(document.createElement(<span class="hljs-string">"span"</span>));
+            wasteImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/waste.png'</span>;
+            wasteImg.alt = wasteImg.title = <span class="hljs-string">"Waste"</span>;
+            wasteOver.id = <span class="hljs-string">"planetMenuWaste"</span>;
+            Dom.addClass([waste, wasteOver], <span class="hljs-string">"waste"</span>);
+            Dom.addClass([waste, wasteOver], <span class="hljs-string">"menuItem"</span>);
+            Dom.addClass(wasteOver, <span class="hljs-string">"click"</span>);
+            Dom.addClass(wasteTxt, <span class="hljs-string">"stored"</span>);
+            Dom.addClass(wasteHr, <span class="hljs-string">"perHr"</span>);
+            Dom.addClass(wastePercent, <span class="hljs-string">'menuPercent'</span>);
+            wastePercent = wastePercent.appendChild(document.createElement(<span class="hljs-string">'div'</span>));
+            Dom.addClass(wastePercent, <span class="hljs-string">'menuPercentInner'</span>);
+            wastePercent.innerHTML = <span class="hljs-string">'&amp;nbsp;'</span>;
+            happyImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/happiness.png'</span>;
+            happyImg.alt = happyImg.title = <span class="hljs-string">"Happiness"</span>;
+            happyOver.id = <span class="hljs-string">"planetMenuHappiness"</span>;
+            Dom.addClass([happy, happyOver], <span class="hljs-string">"happiness"</span>);
+            Dom.addClass([happy, happyOver], <span class="hljs-string">"menuItem"</span>);
+            Dom.addClass(happyOver, <span class="hljs-string">"click"</span>);
+            Dom.addClass(happyTxt, <span class="hljs-string">"stored"</span>);
+            Dom.addClass(happyHr, <span class="hljs-string">"perHr"</span>);
+            plotsImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/plots.png'</span>;
+            plotsImg.alt = plotsImg.title = <span class="hljs-string">"plots"</span>;
+            plotsOver.id = <span class="hljs-string">"planetMenuPlots"</span>;
+            Dom.addClass([plots, plotsOver], <span class="hljs-string">"plots"</span>);
+            Dom.addClass([plots, plotsOver], <span class="hljs-string">"menuItem"</span>);
+            Dom.addClass(plotsOver, <span class="hljs-string">"click"</span>);
+            Dom.addClass(plotsTxt, <span class="hljs-string">"stored"</span>);
+            <span class="hljs-keyword">this</span>.elWaste = <span class="hljs-keyword">this</span>.container.appendChild(waste);
+            <span class="hljs-keyword">this</span>.elWasteOver = <span class="hljs-keyword">this</span>.container.appendChild(wasteOver);
+            <span class="hljs-keyword">this</span>.elWasteText = wasteTxt;
+            <span class="hljs-keyword">this</span>.elWastePercent = wastePercent;
+            <span class="hljs-keyword">this</span>.elWasteHour = wasteHr;
+            <span class="hljs-keyword">this</span>.elHappy = <span class="hljs-keyword">this</span>.container.appendChild(happy);
+            <span class="hljs-keyword">this</span>.elHappyOver = <span class="hljs-keyword">this</span>.container.appendChild(happyOver);
+            <span class="hljs-keyword">this</span>.elHappyText = happyTxt;
+            <span class="hljs-keyword">this</span>.elHappyHour = happyHr;
+            <span class="hljs-keyword">this</span>.elPlots = <span class="hljs-keyword">this</span>.container.appendChild(plots);
+            <span class="hljs-keyword">this</span>.elPlotsOver = <span class="hljs-keyword">this</span>.container.appendChild(plotsOver);
+            <span class="hljs-keyword">this</span>.elPlotsText = plotsTxt;
+        },
+        update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> ED = Game.EmpireData,
+                planets = ED.planets || {},
+                cpi = ED.current_planet_id || ED.home_planet_id,
+                cp = planets[cpi],
+                count = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">this</span>.Menu.clearContent();
+            <span class="hljs-keyword">var</span> items = [];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> pKey <span class="hljs-keyword">in</span> planets) {
+                <span class="hljs-keyword">if</span> (planets.hasOwnProperty(pKey)) {
+                    <span class="hljs-keyword">var</span> p = planets[pKey],
+                        pObj = {
+                            text: p.name,
+                            id: <span class="hljs-string">"planetMenuItem"</span> + (count++),
+                            onclick: {
+                                fn: <span class="hljs-keyword">this</span>.menuClick,
+                                obj: p
+                            }
+                        },
+                        submenuItems = [{
+                            text: <span class="hljs-string">"Go To Surface"</span>,
+                            onclick: {
+                                fn: <span class="hljs-keyword">this</span>.menuPlanetClick,
+                                obj: p
+                            }
+                        }];
+                    <span class="hljs-keyword">if</span> (p.star_name) {
+                        submenuItems.push({
+                            text: <span class="hljs-string">"Go To Star ("</span> + p.star_name + <span class="hljs-string">")"</span>,
+                            onclick: {
+                                fn: <span class="hljs-keyword">this</span>.menuStarClick,
+                                obj: p
+                            }
+                        });
+                    }
+                    pObj.submenu = {
+                        id: <span class="hljs-string">"planetMenuItem"</span> + count + <span class="hljs-string">"-Sub"</span>,
+                        itemData: submenuItems
+                    };
+                    items.push(pObj);
+                }
+            }
+            items.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span>
+                <span class="hljs-keyword">var</span> nameA = a.text.toLowerCase();
+                <span class="hljs-keyword">var</span> nameB = b.text.toLowerCase();
+                <span class="hljs-keyword">if</span> (nameA &lt; nameB) {
+                    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+                }
+                <span class="hljs-keyword">if</span> (nameA &gt; nameB) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+                }
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+            });
+            <span class="hljs-keyword">this</span>.Menu.addItems(items);
+            <span class="hljs-keyword">this</span>.Menu.render();
+            <span class="hljs-keyword">this</span>.elText.innerHTML = [cp.image ? <span class="hljs-string">'&lt;img src="'</span> + Lib.AssetUrl + <span class="hljs-string">'star_system/'</span> + cp.image + <span class="hljs-string">'.png" class="menuPlanetThumb" /&gt;'</span> : <span class="hljs-string">''</span>, cp.name].join(<span class="hljs-string">''</span>);
+            <span class="hljs-keyword">this</span>.updateTick();
+        },
+        updateElm: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, newVal, extra)</span> {</span>
+            <span class="hljs-keyword">var</span> formatedVal = Lib.convertNumDisplay(newVal) + (extra || <span class="hljs-string">''</span>);
+            <span class="hljs-keyword">if</span> (el.innerHTML !== formatedVal) {
+                <span class="hljs-keyword">var</span> fromColor = el.currentValue &amp;&amp; el.currentValue &gt; newVal ? <span class="hljs-string">'#f00'</span> : <span class="hljs-string">'#0f0'</span>;
+                el.currentValue = newVal;
+                el.innerHTML = formatedVal;
+                <span class="hljs-keyword">var</span> a = <span class="hljs-keyword">new</span> Util.ColorAnim(el, {
+                    color: {
+                        from: fromColor,
+                        to: <span class="hljs-string">'#fff'</span>
+                    }
+                }, <span class="hljs-number">1.5</span>);
+                a.animate();
+            }
+        },
+        updateTick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> ED = Game.EmpireData,
+                planets = ED.planets || {},
+                cpi = ED.current_planet_id || ED.home_planet_id,
+                cp = planets[cpi],
+                count = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">if</span> (cp) {
+                <span class="hljs-comment">//this.elText.innerHTML = ['&lt;img src="', Lib.AssetUrl, 'star_system/', cp.image, '.png" class="menuPlanetThumb" /&gt;', cp.name].join('');</span>
+                <span class="hljs-keyword">this</span>.updateElm(<span class="hljs-keyword">this</span>.elFoodText, cp.food_stored);
+                <span class="hljs-keyword">this</span>.updateElm(<span class="hljs-keyword">this</span>.elFoodHour, cp.food_hour, <span class="hljs-string">'/hr'</span>);
+                <span class="hljs-keyword">this</span>.updatePercent(<span class="hljs-keyword">this</span>.elFoodPercent, cp.food_stored / cp.food_capacity || <span class="hljs-number">0</span>);
+                <span class="hljs-keyword">this</span>.updateElm(<span class="hljs-keyword">this</span>.elOreText, cp.ore_stored);
+                <span class="hljs-keyword">this</span>.updateElm(<span class="hljs-keyword">this</span>.elOreHour, cp.ore_hour, <span class="hljs-string">'/hr'</span>);
+                <span class="hljs-keyword">this</span>.updatePercent(<span class="hljs-keyword">this</span>.elOrePercent, cp.ore_stored / cp.ore_capacity || <span class="hljs-number">0</span>);
+                <span class="hljs-keyword">this</span>.updateElm(<span class="hljs-keyword">this</span>.elWaterText, cp.water_stored);
+                <span class="hljs-keyword">this</span>.updateElm(<span class="hljs-keyword">this</span>.elWaterHour, cp.water_hour, <span class="hljs-string">'/hr'</span>);
+                <span class="hljs-keyword">this</span>.updatePercent(<span class="hljs-keyword">this</span>.elWaterPercent, cp.water_stored / cp.water_capacity || <span class="hljs-number">0</span>);
+                <span class="hljs-keyword">this</span>.updateElm(<span class="hljs-keyword">this</span>.elEnergyText, cp.energy_stored);
+                <span class="hljs-keyword">this</span>.updateElm(<span class="hljs-keyword">this</span>.elEnergyHour, cp.energy_hour, <span class="hljs-string">'/hr'</span>);
+                <span class="hljs-keyword">this</span>.updatePercent(<span class="hljs-keyword">this</span>.elEnergyPercent, cp.energy_stored / cp.energy_capacity || <span class="hljs-number">0</span>);
+                <span class="hljs-keyword">this</span>.updateElm(<span class="hljs-keyword">this</span>.elWasteText, cp.waste_stored);
+                <span class="hljs-keyword">this</span>.updateElm(<span class="hljs-keyword">this</span>.elWasteHour, cp.waste_hour, <span class="hljs-string">'/hr'</span>);
+                <span class="hljs-keyword">this</span>.updatePercent(<span class="hljs-keyword">this</span>.elWastePercent, cp.waste_stored / cp.waste_capacity || <span class="hljs-number">0</span>);
+                <span class="hljs-keyword">this</span>.updateElm(<span class="hljs-keyword">this</span>.elHappyText, cp.happiness);
+                <span class="hljs-keyword">this</span>.updateElm(<span class="hljs-keyword">this</span>.elHappyHour, cp.happiness_hour, <span class="hljs-string">'/hr'</span>);
+                <span class="hljs-keyword">this</span>.updateElm(<span class="hljs-keyword">this</span>.elPlotsText, cp.plots_available * <span class="hljs-number">1</span>);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">this</span>.elText.innerHTML = <span class="hljs-string">"Planet"</span>;
+                <span class="hljs-keyword">this</span>.elFoodText.innerHTML = <span class="hljs-string">"0"</span>;
+                <span class="hljs-keyword">this</span>.elFoodHour.innerHTML = <span class="hljs-string">"0"</span>;
+                Dom.setStyle(<span class="hljs-keyword">this</span>.elFoodPercent, <span class="hljs-string">'width'</span>, <span class="hljs-number">0</span>);
+                <span class="hljs-keyword">this</span>.elOreText.innerHTML = <span class="hljs-string">"0"</span>;
+                <span class="hljs-keyword">this</span>.elOreHour.innerHTML = <span class="hljs-string">"0"</span>;
+                Dom.setStyle(<span class="hljs-keyword">this</span>.elOrePercent, <span class="hljs-string">'width'</span>, <span class="hljs-number">0</span>);
+                <span class="hljs-keyword">this</span>.elWaterText.innerHTML = <span class="hljs-string">"0"</span>;
+                <span class="hljs-keyword">this</span>.elWaterHour.innerHTML = <span class="hljs-string">"0"</span>;
+                Dom.setStyle(<span class="hljs-keyword">this</span>.elWaterPercent, <span class="hljs-string">'width'</span>, <span class="hljs-number">0</span>);
+                <span class="hljs-keyword">this</span>.elEnergyText.innerHTML = <span class="hljs-string">"0"</span>;
+                <span class="hljs-keyword">this</span>.elEnergyHour.innerHTML = <span class="hljs-string">"0"</span>;
+                Dom.setStyle(<span class="hljs-keyword">this</span>.elEnergyPercent, <span class="hljs-string">'width'</span>, <span class="hljs-number">0</span>);
+                <span class="hljs-keyword">this</span>.elWasteText.innerHTML = <span class="hljs-string">"0"</span>;
+                <span class="hljs-keyword">this</span>.elWasteHour.innerHTML = <span class="hljs-string">"0"</span>;
+                Dom.setStyle(<span class="hljs-keyword">this</span>.elWastePercent, <span class="hljs-string">'width'</span>, <span class="hljs-number">0</span>);
+                <span class="hljs-keyword">this</span>.elHappyText.innerHTML = <span class="hljs-string">"0"</span>;
+                <span class="hljs-keyword">this</span>.elHappyHour.innerHTML = <span class="hljs-string">"0"</span>;
+                <span class="hljs-keyword">this</span>.elPlotsText.innerHTML = <span class="hljs-string">"0"</span>;
+            }
+        },
+        updatePercent: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, perc)</span> {</span>
+            <span class="hljs-keyword">if</span> (perc &gt; <span class="hljs-number">1</span>) {
+                perc = <span class="hljs-number">1</span>;
+            }
+            Dom.setStyle(el, <span class="hljs-string">'width'</span>, (<span class="hljs-built_in">Math</span>.round(perc * <span class="hljs-number">10000</span>) / <span class="hljs-number">100</span>) + <span class="hljs-string">'%'</span>);
+            <span class="hljs-keyword">var</span> colorPercent;
+            <span class="hljs-keyword">if</span> (perc &lt; <span class="hljs-number">0.8</span>) {
+                colorPercent = <span class="hljs-number">0</span>;
+            } <span class="hljs-keyword">else</span> {
+                colorPercent = <span class="hljs-number">5</span> * perc - <span class="hljs-number">4</span>;
+            }
+            <span class="hljs-keyword">var</span> color = <span class="hljs-string">'rgb(255,'</span> + <span class="hljs-built_in">Math</span>.round(<span class="hljs-number">255</span> - <span class="hljs-number">127</span> * colorPercent) + <span class="hljs-string">','</span> + <span class="hljs-built_in">Math</span>.round(<span class="hljs-number">255</span> - <span class="hljs-number">255</span> * colorPercent) + <span class="hljs-string">')'</span>;
+            Dom.setStyle(el, <span class="hljs-string">'background-color'</span>, color);
+            Dom.setStyle(el.parentNode, <span class="hljs-string">'border-color'</span>, color);
+        },
+        menuClick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(p_sType, p_aArgs, planet)</span> {</span>
+            Lacuna.Menu.PlanetMenu.Menu.hide();
+            YAHOO.log(planet, <span class="hljs-string">"info"</span>, <span class="hljs-string">"PlanetMenu.menuClick.click"</span>);
+            <span class="hljs-keyword">if</span> (Lacuna.MapStar.IsVisible()) {
+                Game.PlanetChange(planet);
+            } <span class="hljs-keyword">else</span> {
+                Game.PlanetJump(planet);
+            }
+        },
+        menuStarClick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(p_sType, p_aArgs, planet)</span> {</span>
+            Lacuna.Menu.PlanetMenu.Menu.hide();
+            YAHOO.log(planet, <span class="hljs-string">"info"</span>, <span class="hljs-string">"PlanetMenu.menuStarClick.click"</span>);
+            Game.StarJump({
+                id: planet.star_id,
+                name: planet.star_name,
+                x: planet.x,
+                y: planet.y
+            });
+        },
+        menuPlanetClick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(p_sType, p_aArgs, planet)</span> {</span>
+            Lacuna.Menu.PlanetMenu.Menu.hide();
+            Game.PlanetJump(planet);
+        },
+        show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Dom.removeClass(<span class="hljs-keyword">this</span>.container, Lib.Styles.HIDDEN);
+        },
+        hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Dom.addClass(<span class="hljs-keyword">this</span>.container, Lib.Styles.HIDDEN);
+        },
+        resourceTTText: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, icon, iconClass, hour, store, cap)</span> {</span>
+            <span class="hljs-keyword">var</span> wantCap = <span class="hljs-keyword">typeof</span> cap !== <span class="hljs-string">'undefined'</span>;
+            <span class="hljs-keyword">return</span> [<span class="hljs-string">'&lt;div&gt;&lt;strong&gt;'</span>, name, <span class="hljs-string">'&lt;/strong&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div&gt;&lt;img alt="" class="'</span>, iconClass, <span class="hljs-string">'" src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/'</span>, icon, <span class="hljs-string">'.png" /&gt; '</span>, Lib.formatNumber(hour), <span class="hljs-string">'/hr&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div&gt;&lt;img alt="" class="smallStorage" src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/storage.png" /&gt;'</span>, Lib.formatNumber(<span class="hljs-built_in">Math</span>.round(store)), (wantCap ? <span class="hljs-string">'/'</span> + Lib.formatNumber(cap) : <span class="hljs-string">''</span>), <span class="hljs-string">'&lt;/div&gt;'</span>, (wantCap ? <span class="hljs-string">'&lt;div&gt;&lt;img alt="" class="smallTime" src="'</span> + Lib.AssetUrl + <span class="hljs-string">'ui/s/time.png" /&gt;'</span> + (hour &lt; <span class="hljs-number">0</span> &amp;&amp; store &gt; <span class="hljs-number">0</span> ? <span class="hljs-string">'Empty In '</span> + Lib.formatTime(-<span class="hljs-number">3600</span> * store / hour) : hour &gt;= <span class="hljs-number">0</span> &amp;&amp; cap === store ? <span class="hljs-string">'Full'</span> : hour &gt; <span class="hljs-number">0</span> ? <span class="hljs-string">'Full In '</span> + Lib.formatTime(<span class="hljs-number">3600</span> * (cap - store) / hour) : <span class="hljs-string">'Will Never Fill'</span>) + <span class="hljs-string">'&lt;/div&gt;'</span> : <span class="hljs-string">''</span>)];
+        },
+        getTextFor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> {</span>
+            <span class="hljs-keyword">var</span> ED = Game.EmpireData,
+                planet = ED.planets[ED.current_planet_id || ED.home_planet_id],
+                output;
+            <span class="hljs-keyword">switch</span> (id) {
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"planetMenuFood"</span>:
+                output = <span class="hljs-keyword">this</span>.resourceTTText(<span class="hljs-string">'Food'</span>, <span class="hljs-string">'food'</span>, <span class="hljs-string">'smallFood'</span>, planet.food_hour, planet.food_stored, planet.food_capacity);
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"planetMenuOre"</span>:
+                output = <span class="hljs-keyword">this</span>.resourceTTText(<span class="hljs-string">'Ore'</span>, <span class="hljs-string">'ore'</span>, <span class="hljs-string">'smallOre'</span>, planet.ore_hour, planet.ore_stored, planet.ore_capacity);
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"planetMenuWater"</span>:
+                output = <span class="hljs-keyword">this</span>.resourceTTText(<span class="hljs-string">'Water'</span>, <span class="hljs-string">'water'</span>, <span class="hljs-string">'smallWater'</span>, planet.water_hour, planet.water_stored, planet.water_capacity);
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"planetMenuEnergy"</span>:
+                output = <span class="hljs-keyword">this</span>.resourceTTText(<span class="hljs-string">'Energy'</span>, <span class="hljs-string">'energy'</span>, <span class="hljs-string">'smallEnergy'</span>, planet.energy_hour, planet.energy_stored, planet.energy_capacity);
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"planetMenuWaste"</span>:
+                output = <span class="hljs-keyword">this</span>.resourceTTText(<span class="hljs-string">'Waste'</span>, <span class="hljs-string">'waste'</span>, <span class="hljs-string">'smallWaste'</span>, planet.waste_hour, planet.waste_stored, planet.waste_capacity);
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"planetMenuHappiness"</span>:
+                output = <span class="hljs-keyword">this</span>.resourceTTText(<span class="hljs-string">'Happiness'</span>, <span class="hljs-string">'happiness'</span>, <span class="hljs-string">'smallHappy'</span>, planet.happiness_hour, planet.happiness);
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> <span class="hljs-string">"planetMenuPlots"</span>:
+                output = [planet.plots_available * <span class="hljs-number">1</span>, <span class="hljs-string">' Plots Available'</span>];
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">default</span>:
+                output = [];
+                <span class="hljs-keyword">break</span>;
+            }
+            <span class="hljs-keyword">return</span> output.join(<span class="hljs-string">''</span>);
+        }
+    };
+    <span class="hljs-keyword">var</span> Menu = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.UserMenu = <span class="hljs-keyword">new</span> UserMenu();
+        <span class="hljs-keyword">this</span>.PlanetMenu = <span class="hljs-keyword">new</span> PlanetMenu();
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onChangeClick"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onInboxClick"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onDestructClick"</span>);
+        <span class="hljs-keyword">this</span>.UserMenu.subscribe(<span class="hljs-string">"onChangeClick"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onChangeClick"</span>);
+        }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">this</span>.UserMenu.subscribe(<span class="hljs-string">"onInboxClick"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onInboxClick"</span>);
+        }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">this</span>.UserMenu.subscribe(<span class="hljs-string">"onDestructClick"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onDestructClick"</span>);
+        }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+    };
+    Menu.prototype = {
+        create: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.created) {
+                <span class="hljs-keyword">this</span>.created = <span class="hljs-literal">true</span>;
+                <span class="hljs-keyword">this</span>.UserMenu.create();
+                <span class="hljs-keyword">this</span>.PlanetMenu.create();
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">this</span>.UserMenu.update();
+                <span class="hljs-keyword">this</span>.PlanetMenu.update();
+                <span class="hljs-keyword">this</span>.show();
+            }
+        },
+        update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.created) {
+                <span class="hljs-keyword">this</span>.UserMenu.update();
+                <span class="hljs-keyword">this</span>.PlanetMenu.update();
+            }
+        },
+        updateTick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.created) {
+                <span class="hljs-keyword">this</span>.UserMenu.updateTick();
+                <span class="hljs-keyword">this</span>.PlanetMenu.updateTick();
+            }
+        },
+        hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.UserMenu.hide();
+            <span class="hljs-keyword">this</span>.PlanetMenu.hide();
+            <span class="hljs-keyword">this</span>._starVisible = <span class="hljs-literal">false</span>;
+            <span class="hljs-keyword">this</span>._planetVisible = <span class="hljs-literal">false</span>;
+        },
+        show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.UserMenu.show();
+            <span class="hljs-keyword">this</span>.PlanetMenu.show();
+        },
+        StarVisible: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>._starVisible = <span class="hljs-literal">true</span>;
+            <span class="hljs-keyword">this</span>._planetVisible = <span class="hljs-literal">false</span>;
+            <span class="hljs-keyword">this</span>.UserMenu.starVisible();
+        },
+        PlanetVisible: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>._starVisible = <span class="hljs-literal">false</span>;
+            <span class="hljs-keyword">this</span>._planetVisible = <span class="hljs-literal">true</span>;
+            <span class="hljs-keyword">this</span>.UserMenu.planetVisible();
+        },
+        IsStarVisible: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._starVisible;
+        },
+        IsPlanetVisible: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._planetVisible;
+        }
+    };
+    Lang.augmentProto(Menu, Util.EventProvider);
+    Lacuna.Menu = <span class="hljs-keyword">new</span> Menu();
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - library.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/library.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/library.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Public Key:
+53137d8f-3544-4118-9001-b0acbec70b3d
+Private Key:
+d07c9bd4-fcb7-427f-9064-218064677fef</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
+<span class="hljs-keyword">if</span> (!<span class="hljs-built_in">String</span>.prototype.titleCaps) {
+    <span class="hljs-built_in">String</span>.small = <span class="hljs-string">"(a|an|and|as|at|but|by|en|for|if|in|of|on|or|the|to|v[.]?|via|vs[.]?)"</span>;
+    <span class="hljs-built_in">String</span>.punct = <span class="hljs-string">"([!\"#$%&amp;'()*+,./:;&lt;=&gt;?@[\\\\\\]^_`{|}~-]*)"</span>;
+    <span class="hljs-built_in">String</span>.prototype.titleCaps = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(replaceVal, withVal)</span> {</span>
+        <span class="hljs-keyword">var</span> parts = [],
+            split = <span class="hljs-regexp">/[:.;?!] |(?: |^)["�]/g</span>,
+            index = <span class="hljs-number">0</span>,
+            processVal = <span class="hljs-keyword">this</span>;
+        <span class="hljs-keyword">var</span> fnUpper = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(all)</span> {</span>
+            <span class="hljs-keyword">return</span> (<span class="hljs-regexp">/[A-Za-z]\.[A-Za-z]/</span>)
+                .test(all) ? all : <span class="hljs-built_in">String</span>.upper(all);
+        },
+            fnPuntUpper = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(all, punct, word)</span> {</span>
+                <span class="hljs-keyword">return</span> punct + <span class="hljs-built_in">String</span>.upper(word);
+            };
+        <span class="hljs-keyword">if</span> (replaceVal) {
+            <span class="hljs-keyword">var</span> rg = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(replaceVal, <span class="hljs-string">'g'</span>);
+            processVal = processVal.replace(rg, withVal || <span class="hljs-string">''</span>);
+        }
+        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+            <span class="hljs-keyword">var</span> m = split.exec(processVal);
+            parts.push(processVal.substring(index, m ? m.index : processVal.length)
+                .replace(<span class="hljs-regexp">/\b([A-Za-z][a-z.'�]*)\b/g</span>, fnUpper)
+                .replace(<span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"\\b"</span> + <span class="hljs-built_in">String</span>.small + <span class="hljs-string">"\\b"</span>, <span class="hljs-string">"ig"</span>), <span class="hljs-built_in">String</span>.lower)
+                .replace(<span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"^"</span> + <span class="hljs-built_in">String</span>.punct + <span class="hljs-built_in">String</span>.small + <span class="hljs-string">"\\b"</span>, <span class="hljs-string">"ig"</span>), fnPuntUpper)
+                .replace(<span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"\\b"</span> + <span class="hljs-built_in">String</span>.small + <span class="hljs-built_in">String</span>.punct + <span class="hljs-string">"$"</span>, <span class="hljs-string">"ig"</span>), <span class="hljs-built_in">String</span>.upper));
+            index = split.lastIndex;
+            <span class="hljs-keyword">if</span> (m) {
+                parts.push(m[<span class="hljs-number">0</span>]);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> parts.join(<span class="hljs-string">""</span>)
+            .replace(<span class="hljs-regexp">/ V(s?)\. /ig</span>, <span class="hljs-string">" v$1. "</span>)
+            .replace(<span class="hljs-regexp">/(['�])S\b/ig</span>, <span class="hljs-string">"$1s"</span>)
+            .replace(<span class="hljs-regexp">/\b(AT&amp;T|Q&amp;A)\b/ig</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(all)</span> {</span>
+                <span class="hljs-keyword">return</span> all.toUpperCase();
+            });
+    };
+    <span class="hljs-built_in">String</span>.lower = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(word)</span> {</span>
+        <span class="hljs-keyword">return</span> word.toLowerCase();
+    };
+    <span class="hljs-built_in">String</span>.upper = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(word)</span> {</span>
+        <span class="hljs-keyword">return</span> word.substr(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)
+            .toUpperCase() + word.substr(<span class="hljs-number">1</span>);
+    };
+}
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Util = YAHOO.util,
+        Lang = YAHOO.lang,
+        Dom = Util.Dom,
+        assetUrl = window.lacuna_s3_base_url + <span class="hljs-string">'assets/'</span>;
+    <span class="hljs-keyword">var</span> xPad = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, pad, r)</span> {</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> r === <span class="hljs-string">'undefined'</span>) {
+            r = <span class="hljs-number">10</span>;
+        }
+        <span class="hljs-keyword">for</span> (; <span class="hljs-built_in">parseInt</span>(x, <span class="hljs-number">10</span>) &lt; r &amp;&amp; r &gt; <span class="hljs-number">1</span>; r /= <span class="hljs-number">10</span>) {
+            x = pad.toString() + x;
+        }
+        <span class="hljs-keyword">return</span> x.toString();
+    };</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>in-file, doesn&#39;t call String(val) on values (default)</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-keyword">var</span> db, settings;
+    <span class="hljs-keyword">if</span> (window.ATOM_SHELL) {
+        <span class="hljs-keyword">var</span> Storage = <span class="hljs-built_in">require</span>(<span class="hljs-string">'dom-storage'</span>);
+        <span class="hljs-keyword">var</span> root = <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/util'</span>)
+            .root();
+        <span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+        <span class="hljs-keyword">var</span> args = {
+            strict: <span class="hljs-literal">false</span>
+        };
+        db = <span class="hljs-keyword">new</span> Storage(path.join(root, <span class="hljs-string">'data'</span>, <span class="hljs-string">'db.json'</span>), args);
+        settings = <span class="hljs-keyword">new</span> Storage(path.join(root, <span class="hljs-string">'data'</span>, <span class="hljs-string">'settings.json'</span>), args);
+    } <span class="hljs-keyword">else</span> {
+        db = settings = window.localStorage;
+    }
+    <span class="hljs-keyword">var</span> Library = {
+        db: db,
+        settings: settings,
+        ApiKey: <span class="hljs-string">"53137d8f-3544-4118-9001-b0acbec70b3d"</span>,
+        AssetUrl: settings.getItem(<span class="hljs-string">'assetsPath'</span>) || assetUrl,
+        Styles: {
+            HIDDEN: <span class="hljs-string">"hidden"</span>,
+            ALERT: <span class="hljs-string">"alert"</span>
+        },
+        ErrorCodes: {
+            <span class="hljs-number">1000</span>: <span class="hljs-string">"Name not available"</span>,
+            <span class="hljs-number">1001</span>: <span class="hljs-string">"Invalid password"</span>,
+            <span class="hljs-number">1002</span>: <span class="hljs-string">"Object does not exist"</span>,
+            <span class="hljs-number">1003</span>: <span class="hljs-string">"Too much information"</span>,
+            <span class="hljs-number">1004</span>: <span class="hljs-string">"Password incorrect"</span>,
+            <span class="hljs-number">1005</span>: <span class="hljs-string">"Contains invalid characters"</span>,
+            <span class="hljs-number">1006</span>: <span class="hljs-string">"Session expired"</span>,
+            <span class="hljs-number">1007</span>: <span class="hljs-string">"Overspend"</span>,
+            <span class="hljs-number">1008</span>: <span class="hljs-string">"Underspend"</span>,
+            <span class="hljs-number">1009</span>: <span class="hljs-string">"Invalid range"</span>,
+            <span class="hljs-number">1010</span>: <span class="hljs-string">"Insufficient privileges"</span>,
+            <span class="hljs-number">1011</span>: <span class="hljs-string">"Not enough resources in storage"</span>,
+            <span class="hljs-number">1012</span>: <span class="hljs-string">"Not enough resources in production"</span>,
+            <span class="hljs-number">1013</span>: <span class="hljs-string">"Missing prerequisites"</span>,
+            <span class="hljs-number">1014</span>: <span class="hljs-string">"Captcha not valid"</span>,
+            <span class="hljs-number">1015</span>: <span class="hljs-string">"Restricted for sitter logins"</span>,
+            <span class="hljs-number">1100</span>: <span class="hljs-string">"Empire not founded"</span>,
+            <span class="hljs-number">1101</span>: <span class="hljs-string">"Empire not founded, and you tried to create it, but had the wrong password"</span>,
+            <span class="hljs-number">1200</span>: <span class="hljs-string">"Game Over"</span>
+        },
+        View: {
+            STAR: <span class="hljs-string">"star"</span>,
+            SYSTEM: <span class="hljs-string">"system"</span>,
+            PLANET: <span class="hljs-string">"planet"</span>
+        },
+        QueueTypes: {
+            PLANET: <span class="hljs-string">"1"</span>,
+            STAR: <span class="hljs-string">"2"</span>,
+            SYSTEM: <span class="hljs-string">"3"</span>
+        },
+        formatInlineList: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(stringArray, start, end)</span> {</span>
+            <span class="hljs-keyword">if</span> (Lang.isArray(stringArray)) {
+                <span class="hljs-keyword">var</span> offering = [<span class="hljs-string">'&lt;ul class="inlineList"&gt;'</span>];
+                <span class="hljs-keyword">var</span> len = stringArray.length,
+                    begin = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">if</span> (start) {
+                    begin = start;
+                    <span class="hljs-keyword">if</span> (end) {
+                        end += <span class="hljs-number">1</span>; <span class="hljs-comment">//add one so we include the end index</span>
+                        len = end &gt; len ? len : end;
+                    }
+                }
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = begin; n &lt; len; n++) {
+                    offering[offering.length] = <span class="hljs-string">'&lt;li&gt;'</span>;
+                    offering[offering.length] = stringArray[n];
+                    offering[offering.length] = <span class="hljs-string">'&lt;/li&gt;'</span>;
+                }
+                offering[offering.length] = <span class="hljs-string">'&lt;/ul&gt;'</span>;
+                <span class="hljs-keyword">return</span> offering.join(<span class="hljs-string">''</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (Lang.isString(stringArray)) {
+                <span class="hljs-keyword">return</span> stringArray;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">return</span> <span class="hljs-string">'Unrecognized stringArray in formatInlineList'</span>;
+            }
+        },
+        formatMillisecondTime: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(totalMs)</span> {</span>
+            <span class="hljs-keyword">return</span> Library.formatTime(totalMs / <span class="hljs-number">1000</span>);
+        },
+        formatTime: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(totalSeconds)</span> {</span>
+            <span class="hljs-keyword">if</span> (totalSeconds &lt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;
+            }
+            <span class="hljs-keyword">var</span> secondsInDay = <span class="hljs-number">60</span> * <span class="hljs-number">60</span> * <span class="hljs-number">24</span>,
+                secondsInHour = <span class="hljs-number">60</span> * <span class="hljs-number">60</span>,
+                day = <span class="hljs-built_in">Math</span>.floor(totalSeconds / secondsInDay),
+                hleft = totalSeconds % secondsInDay,
+                hour = <span class="hljs-built_in">Math</span>.floor(hleft / secondsInHour),
+                sleft = hleft % secondsInHour,
+                min = <span class="hljs-built_in">Math</span>.floor(sleft / <span class="hljs-number">60</span>),
+                seconds = <span class="hljs-built_in">Math</span>.floor(sleft % <span class="hljs-number">60</span>);
+            <span class="hljs-keyword">if</span> (day &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">return</span> [day, xPad(hour, <span class="hljs-string">'0'</span>), xPad(min, <span class="hljs-string">'0'</span>), xPad(seconds, <span class="hljs-string">'0'</span>)].join(<span class="hljs-string">':'</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (hour &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">return</span> [hour, xPad(min, <span class="hljs-string">'0'</span>), xPad(seconds, <span class="hljs-string">'0'</span>)].join(<span class="hljs-string">':'</span>);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">return</span> [min, xPad(seconds, <span class="hljs-string">'0'</span>)].join(<span class="hljs-string">':'</span>);
+            }
+        },
+        formatNumber: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(num)</span> {</span>
+            <span class="hljs-keyword">return</span> Util.Number.format(num, {
+                thousandsSeparator: <span class="hljs-string">","</span>
+            });
+        },
+        getTime: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dt)</span> {</span>
+            <span class="hljs-keyword">if</span> (dt <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Date</span>) {
+                <span class="hljs-keyword">return</span> dt.getTime();
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">return</span> Library.parseServerDate(dt)
+                    .getTime();
+            }
+        },
+        parseServerDate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(strDate)</span> {</span>
+            <span class="hljs-keyword">if</span> (strDate <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Date</span>) {
+                <span class="hljs-keyword">return</span> strDate;
+            }
+            <span class="hljs-comment">//"23 03 2010 01:20:11 +0000"</span>
+            <span class="hljs-keyword">var</span> pieces = strDate.split(<span class="hljs-string">' '</span>),
+                <span class="hljs-comment">//[day month year hr:min:sec timez]</span>
+                time = pieces[<span class="hljs-number">3</span>].split(<span class="hljs-string">':'</span>);
+            <span class="hljs-keyword">var</span> dt = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();
+            dt.setUTCFullYear(pieces[<span class="hljs-number">2</span>] * <span class="hljs-number">1</span>);
+            dt.setUTCMonth((pieces[<span class="hljs-number">1</span>] * <span class="hljs-number">1</span> - <span class="hljs-number">1</span>), pieces[<span class="hljs-number">0</span>] * <span class="hljs-number">1</span>);
+            dt.setUTCHours(time[<span class="hljs-number">0</span>] * <span class="hljs-number">1</span>);
+            dt.setUTCMinutes(time[<span class="hljs-number">1</span>] * <span class="hljs-number">1</span>);
+            dt.setUTCSeconds(time[<span class="hljs-number">2</span>] * <span class="hljs-number">1</span>);
+            <span class="hljs-keyword">return</span> dt;
+        },
+        parseReason: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(reason, defReason)</span> {</span>
+            <span class="hljs-keyword">var</span> output = <span class="hljs-string">""</span>;
+            <span class="hljs-keyword">if</span> (reason) {
+                <span class="hljs-keyword">if</span> (Lang.isArray(reason)) {
+                    <span class="hljs-keyword">switch</span> (reason[<span class="hljs-number">0</span>]) {
+                    <span class="hljs-keyword">case</span> <span class="hljs-number">1011</span>:
+                        output = [reason[<span class="hljs-number">1</span>], <span class="hljs-string">' Requires more '</span>, (Lang.isArray(reason[<span class="hljs-number">2</span>]) ? reason[<span class="hljs-number">2</span>].join(<span class="hljs-string">', '</span>) : reason[<span class="hljs-number">2</span>])].join(<span class="hljs-string">''</span>);
+                        <span class="hljs-keyword">break</span>;
+                    <span class="hljs-keyword">case</span> <span class="hljs-number">1012</span>:
+                        <span class="hljs-keyword">if</span> (reason[<span class="hljs-number">2</span>]) {
+                            output = [reason[<span class="hljs-number">1</span>], <span class="hljs-string">' Requires higher production of '</span>, (Lang.isArray(reason[<span class="hljs-number">2</span>]) ? reason[<span class="hljs-number">2</span>].join(<span class="hljs-string">', '</span>) : reason[<span class="hljs-number">2</span>])].join(<span class="hljs-string">''</span>);
+                        } <span class="hljs-keyword">else</span> {
+                            output = reason[<span class="hljs-number">1</span>];
+                        }
+                        <span class="hljs-keyword">break</span>;
+                    <span class="hljs-keyword">case</span> <span class="hljs-number">1013</span>:
+                        output = reason[<span class="hljs-number">1</span>];
+                        <span class="hljs-keyword">break</span>;
+                    <span class="hljs-keyword">default</span>:
+                        output = defReason || reason[<span class="hljs-number">1</span>];
+                        <span class="hljs-keyword">break</span>;
+                    }
+                } <span class="hljs-keyword">else</span> {
+                    output = defReason || reason;
+                }
+            }
+            <span class="hljs-keyword">return</span> output;
+        },
+        formatServerDate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oDate)</span> {</span>
+            <span class="hljs-keyword">var</span> dt = oDate <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Date</span> ? oDate : Library.parseServerDate(oDate);
+            <span class="hljs-keyword">return</span> Util.Date.format(dt, {
+                format: <span class="hljs-string">"%m/%d/%Y %r"</span>
+            }, <span class="hljs-string">"en"</span>);
+        },
+        formatServerDateShort: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oDate)</span> {</span>
+            <span class="hljs-keyword">var</span> dt = oDate <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Date</span> ? oDate : Library.parseServerDate(oDate);
+            <span class="hljs-keyword">return</span> Util.Date.format(dt, {
+                format: <span class="hljs-string">"%m/%d %r"</span>
+            }, <span class="hljs-string">"en"</span>);
+        },
+        formatServerDateTimeShort: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oDate)</span> {</span>
+            <span class="hljs-keyword">var</span> dt = oDate <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Date</span> ? oDate : Library.parseServerDate(oDate);
+            <span class="hljs-keyword">return</span> Util.Date.format(dt, {
+                format: <span class="hljs-string">"%m/%d %I:%M%p"</span>
+            }, <span class="hljs-string">"en"</span>);
+        },
+        formatUTC: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oDate)</span> {</span>
+            <span class="hljs-keyword">var</span> dt = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(oDate.getUTCFullYear(), oDate.getUTCMonth(), oDate.getUTCDate(), oDate.getUTCHours(), oDate.getUTCMinutes(), oDate.getUTCSeconds(), <span class="hljs-number">0</span>);
+            <span class="hljs-keyword">return</span> Util.Date.format(dt, {
+                format: <span class="hljs-string">"%m/%d/%Y %r"</span>
+            }, <span class="hljs-string">"en"</span>);
+        },
+        convertNumDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(number, always)</span> {</span>
+            <span class="hljs-keyword">if</span> (number &gt;= <span class="hljs-number">100000000000000000</span> || number &lt;= -<span class="hljs-number">100000000000000000</span>) {
+                <span class="hljs-comment">//101Q</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.floor(number / <span class="hljs-number">1000000000000000</span>) + <span class="hljs-string">'Q'</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (number &gt;= <span class="hljs-number">1000000000000000</span> || number &lt;= -<span class="hljs-number">1000000000000000</span>) {
+                <span class="hljs-comment">//75.3Q</span>
+                <span class="hljs-keyword">return</span> (<span class="hljs-built_in">Math</span>.floor(number / <span class="hljs-number">100000000000000</span>) / <span class="hljs-number">10</span>) + <span class="hljs-string">'Q'</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (number &gt;= <span class="hljs-number">100000000000000</span> || number &lt;= -<span class="hljs-number">100000000000000</span>) {
+                <span class="hljs-comment">//101T</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.floor(number / <span class="hljs-number">1000000000000</span>) + <span class="hljs-string">'T'</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (number &gt;= <span class="hljs-number">1000000000000</span> || number &lt;= -<span class="hljs-number">1000000000000</span>) {
+                <span class="hljs-comment">//75.3T</span>
+                <span class="hljs-keyword">return</span> (<span class="hljs-built_in">Math</span>.floor(number / <span class="hljs-number">100000000000</span>) / <span class="hljs-number">10</span>) + <span class="hljs-string">'T'</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (number &gt;= <span class="hljs-number">100000000000</span> || number &lt;= -<span class="hljs-number">100000000000</span>) {
+                <span class="hljs-comment">//101B</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.floor(number / <span class="hljs-number">1000000000</span>) + <span class="hljs-string">'B'</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (number &gt;= <span class="hljs-number">1000000000</span> || number &lt;= -<span class="hljs-number">1000000000</span>) {
+                <span class="hljs-comment">//75.3B</span>
+                <span class="hljs-keyword">return</span> (<span class="hljs-built_in">Math</span>.floor(number / <span class="hljs-number">100000000</span>) / <span class="hljs-number">10</span>) + <span class="hljs-string">'B'</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (number &gt;= <span class="hljs-number">100000000</span> || number &lt;= -<span class="hljs-number">100000000</span>) {
+                <span class="hljs-comment">//101M</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.floor(number / <span class="hljs-number">1000000</span>) + <span class="hljs-string">'M'</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (number &gt;= <span class="hljs-number">1000000</span> || number &lt;= -<span class="hljs-number">1000000</span>) {
+                <span class="hljs-comment">//75.3M</span>
+                <span class="hljs-keyword">return</span> (<span class="hljs-built_in">Math</span>.floor(number / <span class="hljs-number">100000</span>) / <span class="hljs-number">10</span>) + <span class="hljs-string">'M'</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (number &gt;= <span class="hljs-number">10000</span> || number &lt;= -<span class="hljs-number">10000</span>) {
+                <span class="hljs-comment">//123k</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.floor(number / <span class="hljs-number">1000</span>) + <span class="hljs-string">'k'</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (always) {
+                <span class="hljs-comment">//8765</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.floor(number);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">//8765</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.floor(number) || <span class="hljs-string">"0"</span>;
+            }
+        },
+        getSelectedOption: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(select)</span> {</span>
+            <span class="hljs-comment">//just making sure</span>
+            select = Dom.get(select);
+            <span class="hljs-keyword">return</span> Library.getSelectedOptionFromSelectElement(select);
+        },
+        getSelectedOptionFromSelectElement: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(select)</span> {</span>
+            <span class="hljs-keyword">var</span> opts = select.options,
+                ind = select.selectedIndex;
+            <span class="hljs-keyword">return</span> ind &gt;= <span class="hljs-number">0</span> &amp;&amp; opts.length &gt; ind ? opts[ind] : <span class="hljs-literal">null</span>;
+        },
+        getSelectedOptionValue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(select)</span> {</span>
+            <span class="hljs-keyword">var</span> opt = Library.getSelectedOption(select);
+            <span class="hljs-keyword">return</span> opt ? opt.value : <span class="hljs-literal">null</span>;
+        },
+        getSelectedOptionValueFromSelectElement: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(select)</span> {</span>
+            <span class="hljs-keyword">var</span> opt = Library.getSelectedOptionFromSelectElement(select);
+            <span class="hljs-keyword">return</span> opt ? opt.value : <span class="hljs-literal">null</span>;
+        },
+        fadeOutElm: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> {</span>
+            <span class="hljs-keyword">var</span> a = <span class="hljs-keyword">new</span> Util.Anim(id, {
+                opacity: {
+                    from: <span class="hljs-number">1</span>,
+                    to: <span class="hljs-number">0</span>
+                }
+            }, <span class="hljs-number">4</span>);
+            a.onComplete.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, dur, arg)</span> {</span>
+                Dom.get(arg)
+                    .innerHTML = <span class="hljs-string">""</span>;
+                Dom.setStyle(arg, <span class="hljs-string">"opacity"</span>, <span class="hljs-number">1</span>);
+            }, id);
+            a.animate();
+        },
+        ResourceTypes: {
+            <span class="hljs-string">"energy"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"essentia"</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-string">"food"</span>: [<span class="hljs-string">"algae"</span>, <span class="hljs-string">"apple"</span>, <span class="hljs-string">"bean"</span>, <span class="hljs-string">"beetle"</span>, <span class="hljs-string">"burger"</span>, <span class="hljs-string">"bread"</span>, <span class="hljs-string">"cheese"</span>, <span class="hljs-string">"chip"</span>, <span class="hljs-string">"cider"</span>, <span class="hljs-string">"corn"</span>, <span class="hljs-string">"fungus"</span>, <span class="hljs-string">"lapis"</span>, <span class="hljs-string">"meal"</span>, <span class="hljs-string">"milk"</span>, <span class="hljs-string">"pancake"</span>, <span class="hljs-string">"pie"</span>, <span class="hljs-string">"potato"</span>, <span class="hljs-string">"root"</span>, <span class="hljs-string">"shake"</span>, <span class="hljs-string">"soup"</span>, <span class="hljs-string">"syrup"</span>, <span class="hljs-string">"wheat"</span>],
+            <span class="hljs-string">"ore"</span>: [<span class="hljs-string">"anthracite"</span>, <span class="hljs-string">"bauxite"</span>, <span class="hljs-string">"beryl"</span>, <span class="hljs-string">"chromite"</span>, <span class="hljs-string">"chalcopyrite"</span>, <span class="hljs-string">"fluorite"</span>, <span class="hljs-string">"galena"</span>, <span class="hljs-string">"goethite"</span>, <span class="hljs-string">"gold"</span>, <span class="hljs-string">"gypsum"</span>, <span class="hljs-string">"halite"</span>, <span class="hljs-string">"kerogen"</span>, <span class="hljs-string">"magnetite"</span>, <span class="hljs-string">"methane"</span>, <span class="hljs-string">"monazite"</span>, <span class="hljs-string">"rutile"</span>, <span class="hljs-string">"sulfur"</span>, <span class="hljs-string">"trona"</span>, <span class="hljs-string">"uraninite"</span>, <span class="hljs-string">"zircon"</span>],
+            <span class="hljs-string">"waste"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"water"</span>: <span class="hljs-number">1</span>
+        },
+        UIImages: [<span class="hljs-string">'ui/bkg.png'</span>, <span class="hljs-string">'ui/button_bkg_200.png'</span>, <span class="hljs-string">'ui/close.png'</span>, <span class="hljs-string">'ui/down.png'</span>, <span class="hljs-string">'ui/l/about.png'</span>, <span class="hljs-string">'ui/l/bookmarks.png'</span>, <span class="hljs-string">'ui/l/build-no.png'</span>, <span class="hljs-string">'ui/l/build.png'</span>, <span class="hljs-string">'ui/l/disable_self_destruct.png'</span>, <span class="hljs-string">'ui/l/enable_self_destruct.png'</span>, <span class="hljs-string">'ui/l/energy.png'</span>, <span class="hljs-string">'ui/l/essentia.png'</span>, <span class="hljs-string">'ui/l/food.png'</span>, <span class="hljs-string">'ui/l/happiness.png'</span>, <span class="hljs-string">'ui/l/inbox.png'</span>, <span class="hljs-string">'ui/l/inbox_new.png'</span>, <span class="hljs-string">'ui/l/invite_friend.png'</span>, <span class="hljs-string">'ui/l/logout.png'</span>, <span class="hljs-string">'ui/l/ore.png'</span>, <span class="hljs-string">'ui/l/planet_side.png'</span>, <span class="hljs-string">'ui/l/plots.png'</span>, <span class="hljs-string">'ui/l/profile.png'</span>, <span class="hljs-string">'ui/l/star_map.png'</span>, <span class="hljs-string">'ui/l/stats.png'</span>, <span class="hljs-string">'ui/l/support.png'</span>, <span class="hljs-string">'ui/l/tutorial.png'</span>, <span class="hljs-string">'ui/l/waste.png'</span>, <span class="hljs-string">'ui/l/water.png'</span>, <span class="hljs-string">'ui/mail-read.png'</span>, <span class="hljs-string">'ui/rss.png'</span>, <span class="hljs-string">'ui/s/build-no.png'</span>, <span class="hljs-string">'ui/s/build.png'</span>, <span class="hljs-string">'ui/s/energy.png'</span>, <span class="hljs-string">'ui/s/essentia.png'</span>, <span class="hljs-string">'ui/s/food.png'</span>, <span class="hljs-string">'ui/s/happiness.png'</span>, <span class="hljs-string">'ui/s/inbox.png'</span>, <span class="hljs-string">'ui/s/ore.png'</span>, <span class="hljs-string">'ui/s/refresh.png'</span>, <span class="hljs-string">'ui/s/star_map.png'</span>, <span class="hljs-string">'ui/s/storage.png'</span>, <span class="hljs-string">'ui/s/time.png'</span>, <span class="hljs-string">'ui/s/tutorial.png'</span>, <span class="hljs-string">'ui/s/waste.png'</span>, <span class="hljs-string">'ui/s/water.png'</span>, <span class="hljs-string">'ui/tab.png'</span>, <span class="hljs-string">'ui/tickbar.png'</span>, <span class="hljs-string">'ui/transparent_black.png'</span>, <span class="hljs-string">'ui/up.png'</span>, <span class="hljs-string">'ui/web/bar_bottom_back.png'</span>, <span class="hljs-string">'ui/web/bar_top_back.png'</span>, <span class="hljs-string">'ui/web/facebook-login-button.png'</span>, <span class="hljs-string">'ui/web/selector_bottom.png'</span>, <span class="hljs-string">'ui/web/selector_bottom_shine.png'</span>, <span class="hljs-string">'ui/web/selector_top.png'</span>, <span class="hljs-string">'ui/web/selector_top_shine.png'</span>, <span class="hljs-string">'ui/web/slider-thumb-half-left.png'</span>, <span class="hljs-string">'ui/web/slider-thumb-half-right.png'</span>, <span class="hljs-string">'ui/web/slider-thumb.png'</span>, <span class="hljs-string">'ui/web/t.png'</span>, <span class="hljs-string">'ui/zoom.png'</span>, <span class="hljs-string">'ui/zoom_slider.png'</span>],</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>planetarySort - Input: Game.EmpireData.planets, Output: A sorted array of planetary objects</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        planetarySort: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(planets)</span> {</span>
+            <span class="hljs-keyword">var</span> newplanets = [];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> pId <span class="hljs-keyword">in</span> planets) {
+                <span class="hljs-keyword">if</span> (planets.hasOwnProperty(pId)) {
+                    newplanets.push(planets[pId]);
+                }
+            }
+            newplanets.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span>
+                <span class="hljs-keyword">if</span> (a.name &gt; b.name) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.name &lt; b.name) {
+                    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+                }
+            });
+            <span class="hljs-keyword">return</span> newplanets;
+        }
+    };
+    YAHOO.lacuna.Library = Library;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

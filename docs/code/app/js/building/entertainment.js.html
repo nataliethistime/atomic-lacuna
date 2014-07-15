@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - entertainment.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/entertainment.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/entertainment.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper">YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> YAHOO.lacuna.buildings.Entertainment == <span class="hljs-string">"undefined"</span> || !YAHOO.lacuna.buildings.Entertainment) {
+    (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> Util = YAHOO.util,
+            Dom = Util.Dom,
+            Event = Util.Event,
+            Lacuna = YAHOO.lacuna,
+            Game = Lacuna.Game,
+            Lib = Lacuna.Library;
+        <span class="hljs-keyword">var</span> Entertainment = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+            Entertainment.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+            <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.Entertainment;
+            <span class="hljs-keyword">this</span>.lotteryAllVotedMessage = <span class="hljs-string">"You have voted as many times as you could today.  Please check back tomorrow for your next chance!"</span>;
+        };
+        YAHOO.lang.extend(Entertainment, Lacuna.buildings.Building, {
+            getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getLotteryTab(), <span class="hljs-keyword">this</span>._getDuckTab()];
+            },
+            _getLotteryTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> tab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                    label: <span class="hljs-string">"Lottery"</span>,
+                    content: [<span class="hljs-string">'&lt;p id="entertainmentLotteryMessage"&gt;Welcome to the Lacuna Lottery! Get entered in the Expanse\'s daily lottery for a chance to win 10 &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" /&gt;! Each link clicked below gives you one extra chance to win. Links will be removed after voting and return tomorrow.&lt;/p&gt;&lt;div&gt;&lt;ul id="entertainmentLotteryList"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+                });
+                tab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.LotteryView, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">return</span> tab;
+            },
+            _getDuckTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> tab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                    label: <span class="hljs-string">"Duck"</span>,
+                    content: [<span class="hljs-string">'&lt;div id="entertainmentTotalQuacks"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div&gt;&lt;button type="button" id="entertainmentQuack"&gt;Quack&lt;/button&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;hr /&gt;'</span>, <span class="hljs-string">'&lt;div&gt;&lt;pre id="entertainmentDuckMessage"&gt;&lt;/pre&gt;&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+                });
+                Event.on(<span class="hljs-string">"entertainmentQuack"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Quack, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-keyword">this</span>.SetQuacks, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">return</span> tab;
+            },
+            LotteryView: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                <span class="hljs-keyword">if</span> (e.newValue) {
+                    Lacuna.Pulser.Show();
+                    <span class="hljs-keyword">this</span>.service.get_lottery_voting_options({
+                        session_id: Game.GetSession(),
+                        building_id: <span class="hljs-keyword">this</span>.building.id
+                    }, {
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                            Lacuna.Pulser.Hide();
+                            <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                            <span class="hljs-keyword">this</span>.LotteryPopulate(o.result.options);
+                        },
+                        scope: <span class="hljs-keyword">this</span>
+                    });
+                }
+            },
+            LotteryPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> {</span>
+                <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"entertainmentLotteryList"</span>);
+                <span class="hljs-keyword">if</span> (details) {
+                    <span class="hljs-keyword">var</span> li = document.createElement(<span class="hljs-string">"li"</span>);
+                    Event.purgeElement(details);
+                    details.innerHTML = <span class="hljs-string">""</span>;
+                    Dom.setStyle(details.parentNode, <span class="hljs-string">"height"</span>, <span class="hljs-string">""</span>);
+                    Dom.setStyle(details.parentNode, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">""</span>);
+                    <span class="hljs-keyword">if</span> (options.length == <span class="hljs-number">0</span>) {
+                        li.innerHTML = <span class="hljs-keyword">this</span>.lotteryAllVotedMessage;
+                        details.appendChild(li);
+                    } <span class="hljs-keyword">else</span> {
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; options.length; i++) {
+                            <span class="hljs-keyword">var</span> vote = options[i],
+                                nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                            nLi.innerHTML = [<span class="hljs-string">'&lt;a href="'</span>, vote.url, <span class="hljs-string">'" target="_blank"&gt;'</span>, vote.name, <span class="hljs-string">'&lt;/a&gt;'</span>].join(<span class="hljs-string">''</span>);
+                            Event.on(nLi, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.LotteryVoted, <span class="hljs-keyword">this</span>);
+                            details.appendChild(nLi);
+                        }
+                        <span class="hljs-comment">//wait for tab to display first</span>
+                        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                            <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                                .h - <span class="hljs-number">200</span>;
+                            <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
+                                Ht = <span class="hljs-number">300</span>;
+                            }
+                            Dom.setStyle(details.parentNode, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                            Dom.setStyle(details.parentNode, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+                        }, <span class="hljs-number">10</span>);
+                    }
+                }
+            },
+            LotteryVoted: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, oSelf)</span> {</span>
+                <span class="hljs-keyword">var</span> li = Event.getTarget(e);
+                <span class="hljs-keyword">if</span> (li) {
+                    Event.removeListener(li, <span class="hljs-string">"click"</span>);
+                    <span class="hljs-keyword">var</span> ul = li.parentNode;
+                    ul.removeChild(li);
+                    <span class="hljs-keyword">if</span> (ul.children &amp;&amp; ul.children.length == <span class="hljs-number">0</span>) {
+                        ul.innerHTML = [<span class="hljs-string">'&lt;li&gt;'</span>, <span class="hljs-keyword">this</span>.lotteryAllVotedMessage, <span class="hljs-string">'&lt;/li&gt;'</span>].join(<span class="hljs-string">''</span>);
+                    }
+                }
+            },
+            SetQuacks: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                Dom.get(<span class="hljs-string">"entertainmentTotalQuacks"</span>)
+                    .innerHTML = [<span class="hljs-string">'There have been a total of '</span>, <span class="hljs-keyword">this</span>.result.ducks_quacked || <span class="hljs-number">0</span>, <span class="hljs-string">' ducks quacked.'</span>].join(<span class="hljs-string">''</span>);
+            },
+            Quack: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">this</span>.service.duck_quack({
+                    session_id: Game.GetSession(),
+                    building_id: <span class="hljs-keyword">this</span>.building.id
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">this</span>.result.ducks_quacked++;
+                        <span class="hljs-keyword">this</span>.SetQuacks();
+                        Dom.get(<span class="hljs-string">"entertainmentDuckMessage"</span>)
+                            .innerHTML = o.result;
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        });
+        Lacuna.buildings.Entertainment = Entertainment;
+    })();
+    YAHOO.register(<span class="hljs-string">"Entertainment"</span>, YAHOO.lacuna.buildings.Entertainment, {
+        version: <span class="hljs-string">"1"</span>,
+        build: <span class="hljs-string">"0"</span>
+    });
+}</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>vim: noet:ts=4:sw=4</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

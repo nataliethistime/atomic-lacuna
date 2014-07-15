@@ -1,0 +1,1353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - mapStar.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/mapStar.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/mapStar.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper">YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> YAHOO.lacuna.MapStar == <span class="hljs-string">"undefined"</span> || !YAHOO.lacuna.MapStar) {
+    (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+            Util = YAHOO.util,
+            Dom = Util.Dom,
+            Event = Util.Event,
+            Sel = Util.Selector,
+            Lacuna = YAHOO.lacuna,
+            Game = Lacuna.Game,
+            Lib = Lacuna.Library;
+        <span class="hljs-keyword">var</span> MapStar = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onMapRpc"</span>);
+            <span class="hljs-comment">//this.createEvent("onChangeToSystemView");</span>
+            <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onChangeToPlanetView"</span>);
+            <span class="hljs-keyword">this</span>._renameLabel = <span class="hljs-string">"Rename"</span>;
+            <span class="hljs-keyword">this</span>._sendSpiesLabel = <span class="hljs-string">"Send Spy"</span>;
+            <span class="hljs-keyword">this</span>._fetchSpiesLabel = <span class="hljs-string">"Fetch Spy"</span>;
+            <span class="hljs-keyword">this</span>._miningLabel = <span class="hljs-string">"Mining"</span>;
+            <span class="hljs-keyword">this</span>._excavLabel = <span class="hljs-string">"Excavators"</span>;
+            <span class="hljs-keyword">this</span>._buildDetailsPanel();
+            <span class="hljs-keyword">this</span>._buildPlanetDetailsPanel();
+            <span class="hljs-keyword">this</span>._buildFindPanel();
+        };
+        MapStar.prototype = {
+            _buildDetailsPanel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> panelId = <span class="hljs-string">"starDetails"</span>;
+                <span class="hljs-keyword">var</span> panel = document.createElement(<span class="hljs-string">"div"</span>);
+                panel.id = panelId;
+                panel.innerHTML = [<span class="hljs-string">'&lt;div class="hd"&gt;Details&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="bd"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-g"&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u first" id="starDetailsImg" class="background:black:width:100px;"&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u" id="starDetailsInfo"&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div id="starDetailTabs" class="yui-navset"&gt;'</span>, <span class="hljs-string">'        &lt;ul class="yui-nav"&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;a href="#"&gt;&lt;em&gt;Send&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;a href="#"&gt;&lt;em&gt;Fleet&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;a href="#"&gt;&lt;em&gt;Unavailable&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;a href="#"&gt;&lt;em&gt;Incoming&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-content"&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div&gt;&lt;ul id="starDetailSendShips"&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div style="border-bottom:1px solid #52acff;text-align:right;"&gt;Set speed:&lt;input type="text" id="starDetailSetSpeed" value="0" size="6"&gt;&lt;button type="button" id="starDetailSendFleetSubmit"&gt;Send Fleet&lt;/button&gt;&lt;/div&gt;&lt;div&gt;&lt;ul id="starDetailSendFleet"&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div&gt;&lt;ul id="starDetailUnavailShips"&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div&gt;&lt;ul id="starDetailIncomingShips"&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+                document.body.insertBefore(panel, document.body.firstChild);
+                Dom.addClass(panel, <span class="hljs-string">"nofooter"</span>);
+                <span class="hljs-keyword">this</span>.starDetails = <span class="hljs-keyword">new</span> YAHOO.widget.Panel(panelId, {
+                    constraintoviewport: <span class="hljs-literal">true</span>,
+                    visible: <span class="hljs-literal">false</span>,
+                    draggable: <span class="hljs-literal">true</span>,
+                    effect: Game.GetContainerEffect(),
+                    fixedcenter: <span class="hljs-literal">false</span>,
+                    close: <span class="hljs-literal">true</span>,
+                    underlay: <span class="hljs-literal">false</span>,
+                    width: <span class="hljs-string">"500px"</span>,
+                    zIndex: <span class="hljs-number">9997</span>,
+                    context: [<span class="hljs-string">"header"</span>, <span class="hljs-string">"tl"</span>, <span class="hljs-string">"bl"</span>]
+                });
+                <span class="hljs-keyword">this</span>.starDetails.addQueue = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(seconds, queueFn, elm, sc)</span> {</span>
+                    <span class="hljs-keyword">this</span>.queue = <span class="hljs-keyword">this</span>.queue || [];
+                    <span class="hljs-comment">//check if the queue is empty and store</span>
+                    <span class="hljs-keyword">var</span> notStarted = <span class="hljs-keyword">this</span>.queue.length == <span class="hljs-number">0</span>;
+                    <span class="hljs-comment">//push new queue item so it's immediately available for the tick</span>
+                    <span class="hljs-keyword">this</span>.queue.push({
+                        secondsRemaining: seconds * <span class="hljs-number">1</span>,
+                        el: elm,
+                        fn: queueFn,
+                        scope: sc
+                    });
+                    <span class="hljs-comment">//make sure we subscribe to the tick</span>
+                    <span class="hljs-keyword">if</span> (notStarted) {
+                        Game.onTick.subscribe(<span class="hljs-keyword">this</span>.processQueue, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    }
+                };
+                <span class="hljs-keyword">this</span>.starDetails.processQueue = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, oArgs)</span> {</span>
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.queue.length &gt; <span class="hljs-number">0</span>) {
+                        <span class="hljs-keyword">var</span> queue = <span class="hljs-keyword">this</span>.queue,
+                            diff = oArgs[<span class="hljs-number">0</span>] / <span class="hljs-number">1000</span>,
+                            newq = [];
+                        <span class="hljs-keyword">while</span> (queue.length &gt; <span class="hljs-number">0</span>) {
+                            <span class="hljs-keyword">var</span> callback = queue.pop();
+                            callback.secondsRemaining -= diff;
+                            <span class="hljs-keyword">if</span> (callback.secondsRemaining &gt; <span class="hljs-number">0</span>) {
+                                newq.push(callback);
+                            }
+                            callback.fn.call(callback.scope || <span class="hljs-keyword">this</span>, callback.secondsRemaining, callback.el);
+                        }
+                        <span class="hljs-keyword">this</span>.queue = newq;
+                    } <span class="hljs-keyword">else</span> {
+                        Game.onTick.unsubscribe(<span class="hljs-keyword">this</span>.processQueue);
+                    }
+                };
+                <span class="hljs-keyword">this</span>.starDetails.resetQueue = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    Game.onTick.unsubscribe(<span class="hljs-keyword">this</span>.processQueue);
+                    <span class="hljs-keyword">this</span>.queue = [];
+                };
+                <span class="hljs-keyword">this</span>.starDetails.addTab = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tab)</span> {</span>
+                    <span class="hljs-keyword">this</span>.removeableTabs = <span class="hljs-keyword">this</span>.removeableTabs || [];
+                    <span class="hljs-keyword">this</span>.removeableTabs.push(tab);
+                    <span class="hljs-keyword">this</span>.tabView.addTab(tab);
+                };
+                <span class="hljs-keyword">this</span>.starDetails.removeTabs = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> rt = <span class="hljs-keyword">this</span>.removeableTabs;
+                    <span class="hljs-keyword">if</span> (rt &amp;&amp; rt.length &gt; <span class="hljs-number">0</span>) {
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; rt.length; n++) {
+                            Event.purgeElement(rt[n].get(<span class="hljs-string">"contentEl"</span>), <span class="hljs-literal">true</span>);
+                            <span class="hljs-keyword">this</span>.tabView.removeTab(rt[n]);
+                        }
+                        <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.removeableTabs;
+                    }
+                    <span class="hljs-keyword">this</span>.tabView.selectTab(<span class="hljs-number">0</span>);
+                };
+                <span class="hljs-keyword">this</span>.starDetails.resetDisplay = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oSelf)</span> {</span>
+                    <span class="hljs-keyword">delete</span> oSelf.currentShips;
+                    <span class="hljs-keyword">delete</span> oSelf.selectedStar;
+                    <span class="hljs-keyword">this</span>.resetQueue();
+                    <span class="hljs-keyword">this</span>.removeTabs();
+                };
+                <span class="hljs-keyword">this</span>.starDetails.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.starDetails.tabView = <span class="hljs-keyword">new</span> YAHOO.widget.TabView(<span class="hljs-string">"starDetailTabs"</span>);
+                    <span class="hljs-comment">/*Event.delegate("starDetailsInfo", "click", function(e, matchedEl, container){
+                    var data = this.selectedStar;
+                    if(data) {
+                        if(matchedEl.innerHTML == "Send Probe") {
+                            this.SendProbe(data);
+                        }
+                    }
+                }, "button", this, true);*/</span>
+                }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">this</span>.starDetails.hideEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.starDetails.resetDisplay(<span class="hljs-keyword">this</span>);
+                }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">this</span>.starDetails.showEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.bringToTop();
+                });
+                <span class="hljs-keyword">this</span>.starDetails.isStarPanel = <span class="hljs-literal">true</span>;
+                <span class="hljs-keyword">this</span>.starDetails.render();
+                Game.OverlayManager.register(<span class="hljs-keyword">this</span>.starDetails);
+            },
+            _buildPlanetDetailsPanel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> panelId = <span class="hljs-string">"planetDetails"</span>;
+                <span class="hljs-keyword">var</span> panel = document.createElement(<span class="hljs-string">"div"</span>);
+                panel.id = panelId;
+                panel.innerHTML = [<span class="hljs-string">'&lt;div class="hd"&gt;Details&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="bd"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-g"&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u first" id="planetDetailsImg"&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-u" id="planetDetailsInfo"&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div id="planetDetailTabs" class="yui-navset"&gt;'</span>, <span class="hljs-string">'        &lt;ul class="yui-nav"&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;a href="#planetDetailOre"&gt;&lt;em&gt;Ore&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;a href="#"&gt;&lt;em&gt;Send&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;a href="#"&gt;&lt;em&gt;Fleet&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;a href="#"&gt;&lt;em&gt;Unavailable&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;a href="#"&gt;&lt;em&gt;Incoming&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;a href="#"&gt;&lt;em&gt;Orbiting&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;a href="#"&gt;&lt;em&gt;'</span>, <span class="hljs-keyword">this</span>._miningLabel, <span class="hljs-string">'&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;a href="#"&gt;&lt;em&gt;'</span>, <span class="hljs-keyword">this</span>._excavLabel, <span class="hljs-string">'&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;a href="#planetDetailRename"&gt;&lt;em&gt;'</span>, <span class="hljs-keyword">this</span>._renameLabel, <span class="hljs-string">'&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;a href="#planetDetailSendSpies"&gt;&lt;em&gt;'</span>, <span class="hljs-keyword">this</span>._sendSpiesLabel, <span class="hljs-string">'&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;li&gt;&lt;a href="#planetDetailFetchSpies"&gt;&lt;em&gt;'</span>, <span class="hljs-keyword">this</span>._fetchSpiesLabel, <span class="hljs-string">'&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'        &lt;div class="yui-content"&gt;'</span>, <span class="hljs-string">'            &lt;div id="planetDetailOre"&gt;'</span>, <span class="hljs-string">'                &lt;div class="yui-g"&gt;'</span>, <span class="hljs-string">'                    &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'                        &lt;ul&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Anthracite&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsAnthracite"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Bauxite&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsBauxite"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Beryl&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsBeryl"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Chalcopyrite&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsChalcopyrite"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Chromite&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsChromite"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Fluorite&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsFluorite"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Galena&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsGalena"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Goethite&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsGoethite"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Gold&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsGold"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Gypsum&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsGypsum"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;/ul&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'                        &lt;ul&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Halite&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsHalite"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Kerogen&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsKerogen"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Magnetite&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsMagnetite"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Methane&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsMethane"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Monazite&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsMonazite"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Rutile&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsRutile"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Sulfur&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsSulfur"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Trona&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsTrona"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Uraninite&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsUraninite"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Zircon&lt;/label&gt;&lt;span class="buildingDetailsNum" id="planetDetailsZircon"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;/ul&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div&gt;&lt;ul id="planetDetailSendShips"&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div style="border-bottom:1px solid #52acff;text-align:right;"&gt;Set speed:&lt;input type="text" id="planetDetailSetSpeed" value="0" size="6"&gt;&lt;button type="button" id="planetDetailSendFleetSubmit"&gt;Send Fleet&lt;/button&gt;&lt;/div&gt;&lt;div&gt;&lt;ul id="planetDetailSendFleet"&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div&gt;&lt;ul id="planetDetailUnavailShips"&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div&gt;&lt;ul id="planetDetailIncomingShips"&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div&gt;&lt;ul id="planetDetailOrbitingShips"&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;'</span>, <span class="hljs-string">'                &lt;ul class="shipHeader clearafter"&gt;'</span>, <span class="hljs-string">'                    &lt;li class="shipName"&gt;From Empire&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;/ul&gt;'</span>, <span class="hljs-string">'                &lt;div&gt;&lt;ul id="planetDetailMiningShips"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;'</span>, <span class="hljs-string">'                &lt;ul class="shipHeader clearafter"&gt;'</span>, <span class="hljs-string">'                    &lt;li class="shipName"&gt;From Empire&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;/ul&gt;'</span>, <span class="hljs-string">'                &lt;div&gt;&lt;ul id="planetDetailExcavators"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div id="planetDetailRename"&gt;&lt;ul&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label&gt;New Planet Name: &lt;/label&gt;&lt;input type="text" id="planetDetailNewName" maxlength="100" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li class="alert" id="planetDetailRenameMessage"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;button type="button" id="planetDetailRenameSubmit"&gt;Rename&lt;/button&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div id="planetDetailSendSpies"&gt;'</span>, <span class="hljs-string">'                &lt;div class="planetDetailSelectSpies"&gt;'</span>, <span class="hljs-string">'                    &lt;div class="planetDetailSpiesMessage"&gt;&lt;/div&gt;&lt;button&gt;Send&lt;/button&gt;'</span>, <span class="hljs-string">'                    &lt;ul class="planetDetailSpiesList"&gt;'</span>, <span class="hljs-string">'                    &lt;/ul&gt;'</span>, <span class="hljs-string">'                &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;div class="planetDetailSelectSpyShip"&gt;'</span>, <span class="hljs-string">'                    &lt;div class="planetDetailSpyShipHeader"&gt;'</span>, <span class="hljs-string">'                        &lt;div class="planetDetailSpyShipMessage"&gt;Sending &lt;span class="count"&gt;&lt;/span&gt; spies.  Select Ship:&lt;/div&gt;&lt;button&gt;Back&lt;/button&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;ul class="planetDetailSpyShipList"&gt;&lt;/ul&gt;'</span>, <span class="hljs-string">'                &lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div id="planetDetailFetchSpies"&gt;'</span>, <span class="hljs-string">'                &lt;div class="planetDetailSelectSpies"&gt;'</span>, <span class="hljs-string">'                    &lt;div class="planetDetailSpiesMessage"&gt;&lt;/div&gt;&lt;button&gt;Fetch&lt;/button&gt;'</span>, <span class="hljs-string">'                    &lt;ul class="planetDetailSpiesList"&gt;&lt;/ul&gt;'</span>, <span class="hljs-string">'                &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;div class="planetDetailSelectSpyShip"&gt;'</span>, <span class="hljs-string">'                    &lt;div class="planetDetailSpyShipHeader"&gt;'</span>, <span class="hljs-string">'                        &lt;div class="planetDetailSpyShipMessage"&gt;Fetching &lt;span class="count"&gt;&lt;/span&gt; spies.  Select Ship:&lt;/div&gt;&lt;button&gt;Back&lt;/button&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;ul class="planetDetailSpyShipList"&gt;'</span>, <span class="hljs-string">'                    &lt;/ul&gt;'</span>, <span class="hljs-string">'                &lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+                document.body.insertBefore(panel, document.body.firstChild);
+                Dom.addClass(panel, <span class="hljs-string">"nofooter"</span>);
+                <span class="hljs-keyword">this</span>.planetDetails = <span class="hljs-keyword">new</span> YAHOO.widget.Panel(panelId, {
+                    constraintoviewport: <span class="hljs-literal">true</span>,
+                    visible: <span class="hljs-literal">false</span>,
+                    draggable: <span class="hljs-literal">true</span>,
+                    effect: Game.GetContainerEffect(),
+                    fixedcenter: <span class="hljs-literal">false</span>,
+                    close: <span class="hljs-literal">true</span>,
+                    underlay: <span class="hljs-literal">false</span>,
+                    width: <span class="hljs-string">"710px"</span>,
+                    zIndex: <span class="hljs-number">9997</span>,
+                    context: [<span class="hljs-string">"header"</span>, <span class="hljs-string">"tr"</span>, <span class="hljs-string">"br"</span>, [<span class="hljs-string">"beforeShow"</span>, <span class="hljs-string">"windowResize"</span>],
+                        [-<span class="hljs-number">200</span>, <span class="hljs-number">40</span>]
+                    ]
+                });
+                <span class="hljs-keyword">this</span>.planetDetails.addQueue = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(seconds, queueFn, elm, sc)</span> {</span>
+                    <span class="hljs-keyword">this</span>.queue = <span class="hljs-keyword">this</span>.queue || [];
+                    <span class="hljs-comment">//check if the queue is empty and store</span>
+                    <span class="hljs-keyword">var</span> notStarted = <span class="hljs-keyword">this</span>.queue.length == <span class="hljs-number">0</span>;
+                    <span class="hljs-comment">//push new queue item so it's immediately available for the tick</span>
+                    <span class="hljs-keyword">this</span>.queue.push({
+                        secondsRemaining: seconds * <span class="hljs-number">1</span>,
+                        el: elm,
+                        fn: queueFn,
+                        scope: sc
+                    });
+                    <span class="hljs-comment">//make sure we subscribe to the tick</span>
+                    <span class="hljs-keyword">if</span> (notStarted) {
+                        Game.onTick.subscribe(<span class="hljs-keyword">this</span>.processQueue, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    }
+                };
+                <span class="hljs-keyword">this</span>.planetDetails.processQueue = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, oArgs)</span> {</span>
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.queue.length &gt; <span class="hljs-number">0</span>) {
+                        <span class="hljs-keyword">var</span> queue = <span class="hljs-keyword">this</span>.queue,
+                            diff = oArgs[<span class="hljs-number">0</span>] / <span class="hljs-number">1000</span>,
+                            newq = [];
+                        <span class="hljs-keyword">while</span> (queue.length &gt; <span class="hljs-number">0</span>) {
+                            <span class="hljs-keyword">var</span> callback = queue.pop();
+                            callback.secondsRemaining -= diff;
+                            <span class="hljs-keyword">if</span> (callback.secondsRemaining &gt; <span class="hljs-number">0</span>) {
+                                newq.push(callback);
+                            }
+                            callback.fn.call(callback.scope || <span class="hljs-keyword">this</span>, callback.secondsRemaining, callback.el);
+                        }
+                        <span class="hljs-keyword">this</span>.queue = newq;
+                    } <span class="hljs-keyword">else</span> {
+                        Game.onTick.unsubscribe(<span class="hljs-keyword">this</span>.processQueue);
+                    }
+                };
+                <span class="hljs-keyword">this</span>.planetDetails.resetQueue = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    Game.onTick.unsubscribe(<span class="hljs-keyword">this</span>.processQueue);
+                    <span class="hljs-keyword">this</span>.queue = [];
+                };
+                <span class="hljs-keyword">this</span>.planetDetails.addTab = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tab)</span> {</span>
+                    <span class="hljs-keyword">this</span>.removeableTabs = <span class="hljs-keyword">this</span>.removeableTabs || [];
+                    <span class="hljs-keyword">this</span>.removeableTabs.push(tab);
+                    <span class="hljs-keyword">this</span>.tabView.addTab(tab);
+                };
+                <span class="hljs-keyword">this</span>.planetDetails.removeTabs = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> rt = <span class="hljs-keyword">this</span>.removeableTabs;
+                    <span class="hljs-keyword">if</span> (rt &amp;&amp; rt.length &gt; <span class="hljs-number">0</span>) {
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; rt.length; n++) {
+                            <span class="hljs-keyword">this</span>.tabView.removeTab(rt[n]);
+                        }
+                        <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.removeableTabs;
+                    }
+                    <span class="hljs-comment">//this.tabView.selectTab(0);</span>
+                };
+                <span class="hljs-keyword">this</span>.planetDetails.resetDisplay = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oSelf)</span> {</span>
+                    <span class="hljs-keyword">delete</span> oSelf.currentShips;
+                    <span class="hljs-keyword">delete</span> oSelf.selectedBody;
+                    <span class="hljs-keyword">delete</span> oSelf.selectedTile;
+                    <span class="hljs-keyword">this</span>.resetQueue();
+                    <span class="hljs-keyword">this</span>.removeTabs();
+                    <span class="hljs-keyword">var</span> send = Dom.get(<span class="hljs-string">"planetDetailSendShips"</span>),
+                        fleet = Dom.get(<span class="hljs-string">"planetDetailSendFleet"</span>),
+                        unavail = Dom.get(<span class="hljs-string">"planetDetailUnavailShips"</span>),
+                        mining = Dom.get(<span class="hljs-string">"planetDetailMiningShips"</span>),
+                        excav = Dom.get(<span class="hljs-string">"planetDetailExcavators"</span>),
+                        incoming = Dom.get(<span class="hljs-string">"planetDetailIncomingShips"</span>),
+                        orbiting = Dom.get(<span class="hljs-string">"planetDetailOrbitingShips"</span>);
+                    <span class="hljs-keyword">if</span> (send) {
+                        Event.purgeElement(send, <span class="hljs-literal">true</span>);
+                        send.innerHTML = <span class="hljs-string">""</span>;
+                    }
+                    <span class="hljs-keyword">if</span> (fleet) {
+                        Event.purgeElement(fleet, <span class="hljs-literal">true</span>);
+                        fleet.innerHTML = <span class="hljs-string">""</span>;
+                    }
+                    <span class="hljs-keyword">if</span> (unavail) {
+                        Event.purgeElement(unavail, <span class="hljs-literal">true</span>);
+                        unavail.innerHTML = <span class="hljs-string">""</span>;
+                    }
+                    <span class="hljs-keyword">if</span> (mining) {
+                        Event.purgeElement(mining, <span class="hljs-literal">true</span>);
+                        mining.innerHTML = <span class="hljs-string">""</span>;
+                    }
+                    <span class="hljs-keyword">if</span> (excav) {
+                        Event.purgeElement(excav, <span class="hljs-literal">true</span>);
+                        excav.innerHTML = <span class="hljs-string">""</span>;
+                    }
+                    <span class="hljs-keyword">if</span> (incoming) {
+                        Event.purgeElement(incoming, <span class="hljs-literal">true</span>);
+                        incoming.innerHTML = <span class="hljs-string">""</span>;
+                    }
+                    <span class="hljs-keyword">if</span> (orbiting) {
+                        Event.purgeElement(orbiting, <span class="hljs-literal">true</span>);
+                        orbiting.innerHTML = <span class="hljs-string">""</span>;
+                    }
+                };
+                <span class="hljs-keyword">this</span>.planetDetails.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    Event.delegate(<span class="hljs-string">"planetDetailsInfo"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.DetailsClick, <span class="hljs-string">"button"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    <span class="hljs-keyword">var</span> tv = <span class="hljs-keyword">this</span>.planetDetails.tabView = <span class="hljs-keyword">new</span> YAHOO.widget.TabView(<span class="hljs-string">"planetDetailTabs"</span>);
+                    <span class="hljs-keyword">var</span> getShips = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                        <span class="hljs-keyword">if</span> (e.newValue) {
+                            <span class="hljs-keyword">this</span>.GetShips(<span class="hljs-keyword">this</span>.planetDetails, {
+                                body_id: <span class="hljs-keyword">this</span>.selectedBody.id
+                            });
+                        }
+                    };
+                    <span class="hljs-comment">//Send Tab</span>
+                    tv.getTab(<span class="hljs-number">1</span>)
+                        .subscribe(<span class="hljs-string">'beforeActiveChange'</span>, getShips, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    <span class="hljs-comment">//Send Fleet Tab</span>
+                    tv.getTab(<span class="hljs-number">2</span>)
+                        .subscribe(<span class="hljs-string">'beforeActiveChange'</span>, getShips, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    <span class="hljs-comment">//Unavailable Tab</span>
+                    tv.getTab(<span class="hljs-number">3</span>)
+                        .subscribe(<span class="hljs-string">'beforeActiveChange'</span>, getShips, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    <span class="hljs-comment">//Incoming Tab</span>
+                    tv.getTab(<span class="hljs-number">4</span>)
+                        .subscribe(<span class="hljs-string">'beforeActiveChange'</span>, getShips, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    <span class="hljs-comment">//Orbiting Tab</span>
+                    tv.getTab(<span class="hljs-number">5</span>)
+                        .subscribe(<span class="hljs-string">'beforeActiveChange'</span>, getShips, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    <span class="hljs-comment">//Mining Tab</span>
+                    tv.getTab(<span class="hljs-number">6</span>)
+                        .subscribe(<span class="hljs-string">'beforeActiveChange'</span>, getShips, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    <span class="hljs-comment">//Excavator Tab</span>
+                    tv.getTab(<span class="hljs-number">7</span>)
+                        .subscribe(<span class="hljs-string">'beforeActiveChange'</span>, getShips, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    Event.on(<span class="hljs-string">"planetDetailSendFleetSubmit"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.FleetSend, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    Event.on(<span class="hljs-string">"starDetailSendFleetSubmit"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.FleetSend, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    <span class="hljs-keyword">var</span> spyTabs = {
+                        <span class="hljs-string">"planetDetailSendSpies"</span>: <span class="hljs-number">9</span>,
+                        <span class="hljs-string">"planetDetailFetchSpies"</span>: <span class="hljs-number">10</span>
+                    };
+                    <span class="hljs-keyword">var</span> tabChange = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, tabEl)</span> {</span>
+                        <span class="hljs-keyword">if</span> (e.newValue) {
+                            <span class="hljs-keyword">this</span>.ShowSpies(tabEl);
+                        }
+                    },
+                        hideEventFn = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                            <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.avail.spyShips;
+                            <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.avail.spies;
+                        };
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> tabId <span class="hljs-keyword">in</span> spyTabs) {
+                        <span class="hljs-keyword">if</span> (spyTabs.hasOwnProperty(tabId)) {
+                            <span class="hljs-keyword">var</span> tab = tv.getTab(spyTabs[tabId]);
+                            <span class="hljs-keyword">var</span> tabEl = Dom.get(tabId);
+                            tab.subscribe(<span class="hljs-string">'beforeActiveChange'</span>, tabChange, tabEl, <span class="hljs-keyword">this</span>);
+                            tabEl.elSpiesPane = Sel.query(<span class="hljs-string">'.planetDetailSelectSpies'</span>, tabEl, <span class="hljs-literal">true</span>);
+                            tabEl.elSpyShipsPane = Sel.query(<span class="hljs-string">'.planetDetailSelectSpyShip'</span>, tabEl, <span class="hljs-literal">true</span>);
+                            tabEl.elSendButton = Sel.query(<span class="hljs-string">'.planetDetailSelectSpies button'</span>, tabEl, <span class="hljs-literal">true</span>);
+                            tabEl.elSpiesList = Sel.query(<span class="hljs-string">'.planetDetailSpiesList'</span>, tabEl, <span class="hljs-literal">true</span>);
+                            tabEl.elSpyShipsList = Sel.query(<span class="hljs-string">".planetDetailSpyShipList"</span>, tabEl, <span class="hljs-literal">true</span>);
+                            tabEl.elMessage = Sel.query(<span class="hljs-string">'.planetDetailSpiesMessage'</span>, tabEl, <span class="hljs-literal">true</span>);
+                            tabEl.elShipMessageCount = Sel.query(<span class="hljs-string">'.planetDetailSpyShipMessage span.count'</span>, tabEl, <span class="hljs-literal">true</span>);
+                            Event.on(tabEl.elSendButton, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.MoveSpies, tabEl, <span class="hljs-keyword">this</span>);
+                            Event.on(Sel.query(<span class="hljs-string">'.planetDetailSelectSpyShip button'</span>, tabEl, <span class="hljs-literal">true</span>), <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.MoveSpiesCancel, tabEl, <span class="hljs-keyword">this</span>);
+                            Event.delegate(tabEl, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.MoveSpyShip, <span class="hljs-string">".planetDetailSelectSpyShip ul button"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                            <span class="hljs-keyword">this</span>.planetDetails.hideEvent.subscribe(hideEventFn, tabEl, <span class="hljs-literal">true</span>);
+                        }
+                    }
+                    Event.on(<span class="hljs-string">"planetDetailRenameSubmit"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Rename, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">this</span>.planetDetails.hideEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.planetDetails.resetDisplay(<span class="hljs-keyword">this</span>);
+                }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">this</span>.planetDetails.showEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.bringToTop();
+                });
+                <span class="hljs-keyword">this</span>.planetDetails.render();
+                Game.OverlayManager.register(<span class="hljs-keyword">this</span>.planetDetails);
+            },
+            _buildFindPanel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> panelId = <span class="hljs-string">"starFind"</span>;
+                <span class="hljs-keyword">var</span> panel = document.createElement(<span class="hljs-string">"div"</span>);
+                panel.id = panelId;
+                panel.innerHTML = [<span class="hljs-string">'&lt;div class="hd"&gt;Find&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="bd"&gt;'</span>, <span class="hljs-string">'    &lt;label for="'</span>, panelId, <span class="hljs-string">'Find"&gt;By Star Name:&lt;/label&gt;&lt;input type="text" id="'</span>, panelId, <span class="hljs-string">'Find" /&gt;'</span>, <span class="hljs-string">'    &lt;hr /&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;'</span>, <span class="hljs-string">'        &lt;label for="'</span>, panelId, <span class="hljs-string">'X"&gt;X:&lt;/label&gt;&lt;input type="text" id="'</span>, panelId, <span class="hljs-string">'X" size="4" /&gt;'</span>, <span class="hljs-string">'        &lt;label for="'</span>, panelId, <span class="hljs-string">'Y"&gt;Y:&lt;/label&gt;&lt;input type="text" id="'</span>, panelId, <span class="hljs-string">'Y" size="4" /&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="'</span>, panelId, <span class="hljs-string">'Jump"&gt;Jump&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+                document.body.insertBefore(panel, document.body.firstChild);
+                Dom.addClass(panel, <span class="hljs-string">"nofooter"</span>);
+                <span class="hljs-keyword">this</span>.starFind = <span class="hljs-keyword">new</span> YAHOO.widget.Panel(panelId, {
+                    constraintoviewport: <span class="hljs-literal">true</span>,
+                    visible: <span class="hljs-literal">false</span>,
+                    draggable: <span class="hljs-literal">true</span>,
+                    effect: Game.GetContainerEffect(),
+                    fixedcenter: <span class="hljs-literal">false</span>,
+                    close: <span class="hljs-literal">false</span>,
+                    underlay: <span class="hljs-literal">false</span>,
+                    width: <span class="hljs-string">"300px"</span>,
+                    zIndex: <span class="hljs-number">10005</span>,
+                    context: [<span class="hljs-string">"footer"</span>, <span class="hljs-string">"bl"</span>, <span class="hljs-string">"tl"</span>, [<span class="hljs-string">"beforeShow"</span>, <span class="hljs-string">"windowResize"</span>],
+                        [<span class="hljs-number">0</span>, -<span class="hljs-number">5</span>]
+                    ]
+                });
+                <span class="hljs-keyword">this</span>.starFind.createFind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> dataSource = <span class="hljs-keyword">new</span> Util.XHRDataSource(<span class="hljs-string">"/map"</span>);
+                    dataSource.connMethodPost = <span class="hljs-string">"POST"</span>;
+                    dataSource.maxCacheEntries = <span class="hljs-number">2</span>;
+                    dataSource.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
+                    dataSource.responseSchema = {
+                        resultsList: <span class="hljs-string">"result.stars"</span>,
+                        fields: [<span class="hljs-string">"name"</span>, <span class="hljs-string">"color"</span>, <span class="hljs-string">"x"</span>, <span class="hljs-string">"y"</span>]
+                    };
+                    <span class="hljs-keyword">var</span> oTextboxList = <span class="hljs-keyword">new</span> YAHOO.lacuna.TextboxList(<span class="hljs-keyword">this</span>.findInput, dataSource, { <span class="hljs-comment">//config options</span>
+                        maxResultsDisplayed: <span class="hljs-number">25</span>,
+                        minQueryLength: <span class="hljs-number">3</span>,
+                        multiSelect: <span class="hljs-literal">false</span>,
+                        forceSelection: <span class="hljs-literal">false</span>,
+                        useIndicator: <span class="hljs-literal">true</span>
+                    });
+                    oTextboxList.formatResult = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oResultData, sQuery, sResultMatch)</span> {</span>
+                        <span class="hljs-keyword">return</span> [<span class="hljs-string">'&lt;div class="yui-gf"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first" style="background-color:black;"&gt;'</span>, <span class="hljs-string">'        &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'star_map/'</span>, oResultData.color, <span class="hljs-string">'.png" alt="'</span>, oResultData, name, <span class="hljs-string">'" style="width:50px;height:50px;" /&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;'</span>, oResultData.name, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;'</span>, oResultData.x, <span class="hljs-string">' : '</span>, oResultData.y, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">""</span>);
+                    };
+                    oTextboxList.generateRequest = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sQuery)</span> {</span>
+                        <span class="hljs-keyword">var</span> s = Lang.JSON.stringify({
+                            <span class="hljs-string">"id"</span>: YAHOO.rpc.Service._requestId++,
+                            <span class="hljs-string">"method"</span>: <span class="hljs-string">"search_stars"</span>,
+                            <span class="hljs-string">"jsonrpc"</span>: <span class="hljs-string">"2.0"</span>,
+                            <span class="hljs-string">"params"</span>: [
+                                Game.GetSession(<span class="hljs-string">""</span>),
+                                <span class="hljs-built_in">decodeURIComponent</span>(sQuery)
+                            ]
+                        });
+                        <span class="hljs-keyword">return</span> s;
+                    };
+                    oTextboxList.dirtyEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event, isDirty, oSelf)</span> {</span>
+                        <span class="hljs-keyword">var</span> star = <span class="hljs-keyword">this</span>._oTblSingleSelection.Object;
+                        oSelf.X.value = star.x;
+                        oSelf.Y.value = star.y;
+                    }, <span class="hljs-keyword">this</span>);
+                    <span class="hljs-keyword">this</span>.findStar = oTextboxList;
+                };
+                <span class="hljs-keyword">this</span>.starFind.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.starFind.findInput = Dom.get(panelId + <span class="hljs-string">"Find"</span>);
+                    <span class="hljs-keyword">this</span>.starFind.X = Dom.get(panelId + <span class="hljs-string">"X"</span>);
+                    <span class="hljs-keyword">this</span>.starFind.Y = Dom.get(panelId + <span class="hljs-string">"Y"</span>);
+                    Event.on(panelId + <span class="hljs-string">"Jump"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.FindJump, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                    <span class="hljs-keyword">this</span>.starFind.createFind();
+                }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">this</span>.starFind.showEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.starFind.findInput.blur();
+                }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                <span class="hljs-keyword">this</span>.starFind.render();
+            },
+            IsVisible: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._isVisible;
+            },
+            MapVisible: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(visible)</span> {</span>
+                <span class="hljs-keyword">if</span> (visible) {
+                    <span class="hljs-keyword">this</span>.starFind.show();
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">this</span>.starFind.hide();
+                }
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._isVisible != visible) {
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._elGrid) {
+                        <span class="hljs-keyword">this</span>._isVisible = visible;
+                        YAHOO.log(visible, <span class="hljs-string">"info"</span>, <span class="hljs-string">"MapStar.MapVisible"</span>);
+                        <span class="hljs-keyword">if</span> (visible) {
+                            <span class="hljs-keyword">if</span> (!Dom.inDocument(<span class="hljs-keyword">this</span>._elGrid)) {
+                                document.getElementById(<span class="hljs-string">"content"</span>)
+                                    .appendChild(<span class="hljs-keyword">this</span>._elGrid);
+                            }
+                            <span class="hljs-comment">//Dom.setStyle(this._elGrid, "display", visible ? "" : "none");</span>
+                        } <span class="hljs-keyword">else</span> {
+                            <span class="hljs-keyword">this</span>._elGrid = <span class="hljs-keyword">this</span>._elGrid.parentNode.removeChild(<span class="hljs-keyword">this</span>._elGrid);
+                        }
+                        <span class="hljs-keyword">if</span> (visible) {
+                            <span class="hljs-keyword">this</span>.Resize();
+                        }
+                    }
+                }
+            },
+            FindJump: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> x = <span class="hljs-keyword">this</span>.starFind.X.value * <span class="hljs-number">1</span>,
+                    y = <span class="hljs-keyword">this</span>.starFind.Y.value * <span class="hljs-number">1</span>;
+                <span class="hljs-keyword">if</span> (Lang.isNumber(x) &amp;&amp; Lang.isNumber(y)) {
+                    <span class="hljs-keyword">this</span>.Jump(x, y);
+                }
+            },
+            Jump: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xC, yC)</span> {</span>
+                <span class="hljs-keyword">this</span>.LoadGrid({
+                    x: xC,
+                    <span class="hljs-comment">//(xC-1),</span>
+                    y: yC <span class="hljs-comment">//(yC+1)</span>
+                });
+            },
+            Load: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> cId = Game.GetCurrentPlanet()
+                    .id;
+                <span class="hljs-keyword">if</span> (cId) {
+                    <span class="hljs-keyword">var</span> loc = Game.EmpireData.planets[cId];
+                    <span class="hljs-keyword">if</span> (loc) {
+                        <span class="hljs-keyword">this</span>.locationId = cId;
+                        loc.x *= <span class="hljs-number">1</span>;
+                        loc.y *= <span class="hljs-number">1</span>;
+                        <span class="hljs-keyword">this</span>.LoadGrid(loc);
+                    }
+                }
+            },
+            LoadGrid: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(loc)</span> {</span>
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._gridCreated) {
+                    <span class="hljs-keyword">var</span> starMap = document.createElement(<span class="hljs-string">"div"</span>);
+                    starMap.id = <span class="hljs-string">"starMap"</span>;
+                    <span class="hljs-keyword">this</span>._elGrid = document.getElementById(<span class="hljs-string">"content"</span>)
+                        .appendChild(starMap);
+                    <span class="hljs-keyword">this</span>.SetSize();
+                    <span class="hljs-keyword">var</span> map = <span class="hljs-keyword">new</span> Lacuna.Mapper.StarMap(<span class="hljs-string">"starMap"</span>);
+                    <span class="hljs-comment">//map.imgUrlLoc = Lib.AssetUrl + 'ui/mapiator/';</span>
+                    <span class="hljs-comment">//draw what we got</span>
+                    map.redraw();
+                    <span class="hljs-comment">//move to current planet</span>
+                    map.setCenterTo(loc.x, loc.y);
+                    <span class="hljs-keyword">this</span>._map = map;
+                    <span class="hljs-keyword">this</span>._gridCreated = <span class="hljs-literal">true</span>;
+                    Event.delegate(<span class="hljs-keyword">this</span>._map.mapDiv, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.GridClick, <span class="hljs-string">"div.tile"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-comment">//move to current planet</span>
+                    <span class="hljs-keyword">this</span>._map.setCenterTo(loc.x, loc.y);
+                }
+                <span class="hljs-keyword">this</span>.MapVisible(<span class="hljs-literal">true</span>);
+                Lacuna.Pulser.Hide();
+            },
+            GridClick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._map.controller.isDragging()) {
+                    <span class="hljs-keyword">var</span> tile = <span class="hljs-keyword">this</span>._map.tileLayer.findTileById(matchedEl.id);
+                    <span class="hljs-keyword">if</span> (tile &amp;&amp; tile.data) {
+                        <span class="hljs-keyword">if</span> (tile.data.isStar) {
+                            <span class="hljs-keyword">this</span>.ShowStar(tile);
+                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (tile.data.isPlanet) {
+                            <span class="hljs-keyword">this</span>.ShowPlanet(tile);
+                        }
+                    }
+                }
+            },
+            DetailsClick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.selectedBody) {
+                    <span class="hljs-keyword">if</span> (matchedEl.innerHTML == <span class="hljs-string">"View"</span>) {
+                        <span class="hljs-keyword">var</span> id = <span class="hljs-keyword">this</span>.selectedBody.id;
+                        <span class="hljs-keyword">this</span>.planetDetails.hide();
+                        <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onChangeToPlanetView"</span>, id);
+                    }
+                }
+            },
+            SetSize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> size = Game.GetSize();
+                Dom.setStyle(<span class="hljs-keyword">this</span>._elGrid, <span class="hljs-string">"width"</span>, size.w + <span class="hljs-string">"px"</span>);
+                Dom.setStyle(<span class="hljs-keyword">this</span>._elGrid, <span class="hljs-string">"height"</span>, size.h + <span class="hljs-string">"px"</span>);
+            },
+            Resize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.SetSize();
+                <span class="hljs-keyword">this</span>._map.resize();
+            },
+            Reset: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.locationId;
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._map) {
+                    <span class="hljs-keyword">this</span>._map.reset();
+                }
+                <span class="hljs-keyword">this</span>.MapVisible(<span class="hljs-literal">false</span>);
+            },
+            PopulateShipsIncomingTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(panel)</span> {</span>
+                <span class="hljs-keyword">var</span> ships = <span class="hljs-keyword">this</span>.currentShips.incoming || [],
+                    details = Dom.get(panel.isStarPanel ? <span class="hljs-string">"starDetailIncomingShips"</span> : <span class="hljs-string">"planetDetailIncomingShips"</span>);
+                <span class="hljs-keyword">if</span> (ships.length &gt; <span class="hljs-number">0</span>) {
+                    Event.purgeElement(details, <span class="hljs-literal">true</span>);
+                    details.innerHTML = <span class="hljs-string">''</span>;
+                    <span class="hljs-keyword">var</span> li = document.createElement(<span class="hljs-string">"li"</span>);
+                    ships = ships.slice(<span class="hljs-number">0</span>);
+                    ships.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span>
+                        <span class="hljs-keyword">if</span> (a.date_arrives &gt; b.date_arrives) {
+                            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.date_arrives &lt; b.date_arrives) {
+                            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+                        } <span class="hljs-keyword">else</span> {
+                            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+                        }
+                    });
+                    <span class="hljs-keyword">var</span> serverTime = Lib.getTime(Game.ServerData.time);
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; ships.length; i++) {
+                        <span class="hljs-keyword">var</span> ship = ships[i],
+                            nLi = li.cloneNode(<span class="hljs-literal">false</span>),
+                            sec = (Lib.getTime(ship.date_arrives) - serverTime) / <span class="hljs-number">1000</span>;
+                        nLi.Ship = ship;
+                        nLi.innerHTML = [<span class="hljs-string">'&lt;div class="yui-gd" style="margin-bottom:2px;"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first" style="width:20%;background:transparent url('</span>, Lib.AssetUrl, <span class="hljs-string">'star_system/field.png) no-repeat center;text-align:center;"&gt;'</span>, <span class="hljs-string">'        &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ships/'</span>, ship.type, <span class="hljs-string">'.png" style="width:75px;height:75px;" /&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u" style="width:75%"&gt;'</span>, <span class="hljs-string">'        &lt;div class="buildingName"&gt;['</span>, ship.type_human, <span class="hljs-string">'] '</span>, ship.name, <span class="hljs-string">' - Arrives in: &lt;span class="shipArrives"&gt;'</span>, Lib.formatTime(sec), <span class="hljs-string">'&lt;/span&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;label style="font-weight:bold;"&gt;Details:&lt;/label&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;&lt;span&gt;Task:&lt;/span&gt;&lt;span&gt;'</span>, ship.task, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;&lt;span&gt;From:&lt;/span&gt;&lt;span&gt;'</span>, ship.from ? ship.from.name : <span class="hljs-string">'Unknown'</span>, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;&lt;span&gt;To:&lt;/span&gt;&lt;span&gt;'</span>, ship.to.name, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;label style="font-weight:bold;"&gt;Attributes:&lt;/label&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Speed:&lt;span&gt;'</span>, (ship.fleet_speed &gt; <span class="hljs-number">0</span> &amp;&amp; ship.fleet_speed &lt; ship.speed) ? ship.fleet_speed : ship.speed, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;,'</span>, <span class="hljs-string">'            &lt;span&gt;Hold Size:&lt;span&gt;'</span>, ship.hold_size, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Stealth:&lt;span&gt;'</span>, ship.stealth, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Combat:&lt;span&gt;'</span>, ship.combat, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;label style="font-weight:bold;"&gt;Payload:&lt;/label&gt; '</span>,
+                            ship.payload.join(<span class="hljs-string">', '</span>), <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>
+                        ].join(<span class="hljs-string">''</span>);
+                        panel.addQueue(sec, <span class="hljs-keyword">this</span>.ArrivesQueue, nLi);
+                        details.appendChild(nLi);
+                    }
+                } <span class="hljs-keyword">else</span> {
+                    details.innerHTML = <span class="hljs-string">'&lt;li&gt;No Incoming ships&lt;/li&gt;'</span>;
+                }
+                <span class="hljs-comment">//wait for tab to display first</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                        .h - <span class="hljs-number">330</span>;
+                    <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">240</span>) {
+                        Ht = <span class="hljs-number">240</span>;
+                    }
+                    Dom.setStyle(details.parentNode, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                    Dom.setStyle(details.parentNode, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+                }, <span class="hljs-number">10</span>);
+            },
+            ArrivesQueue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(remaining, elLine)</span> {</span>
+                <span class="hljs-keyword">var</span> arrTime;
+                <span class="hljs-keyword">if</span> (remaining &lt;= <span class="hljs-number">0</span>) {
+                    arrTime = <span class="hljs-string">'Overdue '</span> + Lib.formatTime(<span class="hljs-built_in">Math</span>.round(-remaining));
+                } <span class="hljs-keyword">else</span> {
+                    arrTime = Lib.formatTime(<span class="hljs-built_in">Math</span>.round(remaining));
+                }
+                Sel.query(<span class="hljs-string">".shipArrives"</span>, elLine, <span class="hljs-literal">true</span>)
+                    .innerHTML = arrTime;
+            },
+            PopulateShipsSendTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(panel)</span> {</span>
+                <span class="hljs-keyword">var</span> ships = <span class="hljs-keyword">this</span>.currentShips.available,
+                    details = Dom.get(panel.isStarPanel ? <span class="hljs-string">"starDetailSendShips"</span> : <span class="hljs-string">"planetDetailSendShips"</span>),
+                    detailsParent = details.parentNode,
+                    li = document.createElement(<span class="hljs-string">"li"</span>);
+                Event.purgeElement(details, <span class="hljs-literal">true</span>); <span class="hljs-comment">//clear any events before we remove</span>
+                details = detailsParent.removeChild(details); <span class="hljs-comment">//remove from DOM to make this faster</span>
+                details.innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">if</span> (ships.length === <span class="hljs-number">0</span>) {
+                    details.innerHTML = <span class="hljs-string">"No available ships to send."</span>;
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; ships.length; i++) {
+                        <span class="hljs-keyword">var</span> ship = ships[i],
+                            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                        nLi.Ship = ship;
+                        nLi.innerHTML = [<span class="hljs-string">'&lt;div class="yui-gd" style="margin-bottom:2px;"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first" style="width:15%;background:transparent url('</span>, Lib.AssetUrl, <span class="hljs-string">'star_system/field.png) no-repeat center;text-align:center;"&gt;'</span>, <span class="hljs-string">'        &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ships/'</span>, ship.type, <span class="hljs-string">'.png" style="width:60px;height:60px;" /&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u" style="width:67%"&gt;'</span>, <span class="hljs-string">'        &lt;div class="buildingName"&gt;['</span>, ship.type_human, <span class="hljs-string">'] '</span>, ship.name, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;label style="font-weight:bold;"&gt;Details:&lt;/label&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Task:&lt;span&gt;'</span>, ship.task, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;,'</span>, <span class="hljs-string">'            &lt;span&gt;Travel Time:&lt;span&gt;'</span>, Lib.formatTime(ship.estimated_travel_time), <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;label style="font-weight:bold;"&gt;Attributes:&lt;/label&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Speed:&lt;span&gt;'</span>, ship.speed, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;,'</span>, <span class="hljs-string">'            &lt;span&gt;Hold Size:&lt;span&gt;'</span>, ship.hold_size, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;,'</span>, <span class="hljs-string">'            &lt;span&gt;Stealth:&lt;span&gt;'</span>, ship.stealth, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Combat:&lt;span&gt;'</span>, ship.combat, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u" style="width:8%"&gt;'</span>,
+                            ship.task == <span class="hljs-string">"Docked"</span> ? <span class="hljs-string">'        &lt;button type="button"&gt;Send&lt;/button&gt;'</span> : <span class="hljs-string">''</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>
+                        ].join(<span class="hljs-string">''</span>);
+                        <span class="hljs-keyword">if</span> (ship.task == <span class="hljs-string">"Docked"</span>) {
+                            Event.on(Sel.query(<span class="hljs-string">"button"</span>, nLi, <span class="hljs-literal">true</span>), <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.ShipSend, {
+                                Self: <span class="hljs-keyword">this</span>,
+                                Ship: ship,
+                                Line: nLi
+                            }, <span class="hljs-literal">true</span>);
+                        }
+                        details.appendChild(nLi);
+                    }
+                }
+                detailsParent.appendChild(details); <span class="hljs-comment">//add back as child</span>
+                <span class="hljs-comment">//wait for tab to display first</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                        .h - <span class="hljs-number">330</span>;
+                    <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">240</span>) {
+                        Ht = <span class="hljs-number">240</span>;
+                    }
+                    Dom.setStyle(detailsParent, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                    Dom.setStyle(detailsParent, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+                }, <span class="hljs-number">10</span>);
+            },
+            ShipSend: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> oSelf = <span class="hljs-keyword">this</span>.Self,
+                    ship = <span class="hljs-keyword">this</span>.Ship,
+                    target, targetName, panel;
+                <span class="hljs-keyword">if</span> (oSelf.selectedBody) {
+                    target = {
+                        body_id: oSelf.selectedBody.id
+                    };
+                    targetName = oSelf.selectedBody.name;
+                    panel = oSelf.planetDetails;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (oSelf.selectedStar) {
+                    target = {
+                        star_id: oSelf.selectedStar.id
+                    };
+                    targetName = oSelf.selectedStar.name;
+                    panel = oSelf.starDetails;
+                }
+                <span class="hljs-keyword">if</span> (target &amp;&amp; oSelf.NotIsolationist(ship)) {
+                    Game.Services.Buildings.SpacePort.send_ship({
+                        session_id: Game.GetSession(),
+                        ship_id: ship.id,
+                        target: target
+                    }, {
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                            YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"MapStar.ShipSend.send_ship.success"</span>);
+                            Lacuna.Pulser.Hide();
+                            <span class="hljs-keyword">this</span>.Self.fireEvent(<span class="hljs-string">"onMapRpc"</span>, o.result);
+                            <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.Self.currentShips;
+                            <span class="hljs-keyword">this</span>.Self.GetShips(panel, target);
+                            Event.purgeElement(<span class="hljs-keyword">this</span>.Line, <span class="hljs-literal">true</span>);
+                            <span class="hljs-keyword">this</span>.Line.innerHTML = <span class="hljs-string">"Successfully sent "</span> + <span class="hljs-keyword">this</span>.Ship.type_human + <span class="hljs-string">" to "</span> + targetName + <span class="hljs-string">"."</span>;
+                        },
+                        scope: <span class="hljs-keyword">this</span>
+                    });
+                }
+            },
+            NotIsolationist: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ship)</span> {</span>
+                <span class="hljs-keyword">if</span> (Game.EmpireData.is_isolationist == <span class="hljs-string">"1"</span> &amp;&amp; (ship.type == <span class="hljs-string">"colony_ship"</span> || ship.type == <span class="hljs-string">"short_range_colony_ship"</span>)) {
+                    <span class="hljs-keyword">return</span> confirm(<span class="hljs-string">"If you colonize another planet you will no longer be considered an Isolationist and you will be open to attack.  Are you sure you want to do this?"</span>);
+                }
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            },
+            PopulateFleetSendTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(panel)</span> {</span>
+                <span class="hljs-keyword">var</span> ships = <span class="hljs-keyword">this</span>.currentShips.available,
+                    details = Dom.get(panel.isStarPanel ? <span class="hljs-string">"starDetailSendFleet"</span> : <span class="hljs-string">"planetDetailSendFleet"</span>),
+                    btn = Dom.get(panel.isStarPanel ? <span class="hljs-string">"starDetailSendFleetSubmit"</span> : <span class="hljs-string">"planetDetailSendFleetSubmit"</span>),
+                    detailsParent = details.parentNode,
+                    li = document.createElement(<span class="hljs-string">"li"</span>);
+                details = detailsParent.removeChild(details); <span class="hljs-comment">//remove from DOM to make this faster</span>
+                details.innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">if</span> (ships.length === <span class="hljs-number">0</span>) {
+                    details.innerHTML = <span class="hljs-string">"No available ships to send."</span>;
+                    btn.disabled = <span class="hljs-literal">true</span>;
+                } <span class="hljs-keyword">else</span> {
+                    btn.disabled = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; ships.length; i++) {
+                        <span class="hljs-keyword">var</span> ship = ships[i],
+                            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                        nLi.innerHTML = [<span class="hljs-string">'&lt;div class="yui-gd" style="margin-bottom:2px;"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first" style="width:15%;background:transparent url('</span>, Lib.AssetUrl, <span class="hljs-string">'star_system/field.png) no-repeat center;text-align:center;"&gt;'</span>, <span class="hljs-string">'        &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ships/'</span>, ship.type, <span class="hljs-string">'.png" style="width:60px;height:60px;" /&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u" style="width:67%"&gt;'</span>, <span class="hljs-string">'        &lt;div class="buildingName"&gt;['</span>, ship.type_human, <span class="hljs-string">'] '</span>, ship.name, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;label style="font-weight:bold;"&gt;Details:&lt;/label&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Task:&lt;span&gt;'</span>, ship.task, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;,'</span>, <span class="hljs-string">'            &lt;span&gt;Travel Time:&lt;span&gt;'</span>, Lib.formatTime(ship.estimated_travel_time), <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;label style="font-weight:bold;"&gt;Attributes:&lt;/label&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Speed:&lt;span&gt;'</span>, ship.speed, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;,'</span>, <span class="hljs-string">'            &lt;span&gt;Hold Size:&lt;span&gt;'</span>, ship.hold_size, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;,'</span>, <span class="hljs-string">'            &lt;span&gt;Stealth:&lt;span&gt;'</span>, ship.stealth, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Combat:&lt;span&gt;'</span>, ship.combat, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u" style="width:8%"&gt;'</span>,
+                            ship.task == <span class="hljs-string">"Docked"</span> ? <span class="hljs-string">'&lt;input type="checkbox" /&gt;'</span> : <span class="hljs-string">''</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>
+                        ].join(<span class="hljs-string">''</span>);
+                        <span class="hljs-keyword">if</span> (ship.task == <span class="hljs-string">"Docked"</span>) {
+                            Sel.query(<span class="hljs-string">"input"</span>, nLi, <span class="hljs-literal">true</span>)
+                                .Ship = ship;
+                        }
+                        details.appendChild(nLi);
+                    }
+                }
+                detailsParent.appendChild(details); <span class="hljs-comment">//add back as child</span>
+                <span class="hljs-comment">//wait for tab to display first</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                        .h - <span class="hljs-number">330</span>;
+                    <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">240</span>) {
+                        Ht = <span class="hljs-number">240</span>;
+                    }
+                    Dom.setStyle(detailsParent, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                    Dom.setStyle(detailsParent, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+                }, <span class="hljs-number">10</span>);
+            },
+            FleetSend: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                <span class="hljs-keyword">var</span> target, targetName, panel, btn = Event.getTarget(e);
+                btn.disabled = <span class="hljs-literal">true</span>;
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.selectedBody) {
+                    target = {
+                        body_id: <span class="hljs-keyword">this</span>.selectedBody.id
+                    };
+                    targetName = <span class="hljs-keyword">this</span>.selectedBody.name;
+                    panel = <span class="hljs-keyword">this</span>.planetDetails;
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.selectedStar) {
+                    target = {
+                        star_id: <span class="hljs-keyword">this</span>.selectedStar.id
+                    };
+                    targetName = <span class="hljs-keyword">this</span>.selectedStar.name;
+                    panel = <span class="hljs-keyword">this</span>.starDetails;
+                }
+                <span class="hljs-keyword">var</span> speed = <span class="hljs-built_in">parseInt</span>(Dom.get(panel.isStarPanel ? <span class="hljs-string">"starDetailSetSpeed"</span> : <span class="hljs-string">"planetDetailSetSpeed"</span>)
+                    .value, <span class="hljs-number">10</span>);
+                <span class="hljs-keyword">var</span> selected = Sel.query(<span class="hljs-string">"input:checked"</span>, (panel.isStarPanel ? <span class="hljs-string">"starDetailSendFleet"</span> : <span class="hljs-string">"planetDetailSendFleet"</span>));
+                <span class="hljs-keyword">if</span> (selected.length &gt; <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">var</span> ships = [],
+                        shipIds = [],
+                        minSpeed = <span class="hljs-number">999999999</span>;
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; selected.length; n++) {
+                        <span class="hljs-keyword">var</span> s = selected[n].Ship;
+                        s.speed = <span class="hljs-built_in">parseInt</span>(s.speed, <span class="hljs-number">10</span>); <span class="hljs-comment">// probably not needed but play it safe</span>
+                        ships.push(s);
+                        shipIds.push(s.id);
+                        <span class="hljs-keyword">if</span> (s.speed &lt; minSpeed) {
+                            minSpeed = s.speed;
+                        }
+                    }
+                    <span class="hljs-keyword">if</span> (target &amp;&amp; <span class="hljs-keyword">this</span>.NotFleetIsolationist(ships)) {
+                        <span class="hljs-keyword">if</span> (speed &lt; <span class="hljs-number">0</span>) {
+                            alert(<span class="hljs-string">'Set speed cannot be less than zero.'</span>);
+                            btn.disabled = <span class="hljs-literal">false</span>;
+                        } <span class="hljs-keyword">else</span> {
+                            <span class="hljs-keyword">if</span> (speed &gt; <span class="hljs-number">0</span> &amp;&amp; speed &gt; minSpeed) {
+                                alert(<span class="hljs-string">'Set speed cannot exceed the speed of the slowest ship.'</span>);
+                                btn.disabled = <span class="hljs-literal">false</span>;
+                            } <span class="hljs-keyword">else</span> {
+                                Game.Services.Buildings.SpacePort.send_fleet({
+                                    session_id: Game.GetSession(),
+                                    ship_ids: shipIds,
+                                    target: target,
+                                    set_speed: speed
+                                }, {
+                                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                                        Lacuna.Pulser.Hide();
+                                        <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onMapRpc"</span>, o.result);
+                                        <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.currentShips;
+                                        <span class="hljs-keyword">var</span> details = Dom.get(panel.isStarPanel ? <span class="hljs-string">"starDetailSendFleet"</span> : <span class="hljs-string">"planetDetailSendFleet"</span>);
+                                        details.innerHTML = <span class="hljs-string">'&lt;li&gt;Sent '</span> + o.result.fleet.length + <span class="hljs-string">' ships!&lt;/li&gt;'</span>;
+                                        <span class="hljs-keyword">this</span>.GetShips(panel, target);
+                                    },
+                                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                                        btn.disabled = <span class="hljs-literal">false</span>;
+                                    },
+                                    scope: <span class="hljs-keyword">this</span>
+                                });
+                            }
+                        }
+                    }
+                } <span class="hljs-keyword">else</span> {
+                    btn.disabled = <span class="hljs-literal">false</span>;
+                }
+            },
+            NotFleetIsolationist: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ships)</span> {</span>
+                <span class="hljs-keyword">if</span> (Game.EmpireData.is_isolationist == <span class="hljs-string">"1"</span>) {
+                    <span class="hljs-keyword">var</span> hasIsoShip;
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; ships.length; n++) {
+                        <span class="hljs-keyword">if</span> (ships[n].type == <span class="hljs-string">"colony_ship"</span> || ships[n].type == <span class="hljs-string">"short_range_colony_ship"</span>) {
+                            hasIsoShip = <span class="hljs-literal">true</span>;
+                            <span class="hljs-keyword">break</span>;
+                        }
+                    }
+                    <span class="hljs-keyword">if</span> (hasIsoShip) {
+                        <span class="hljs-keyword">return</span> confirm(<span class="hljs-string">"If you colonize another planet you will no longer be considered an Isolationist and you will be open to attack.  Are you sure you want to do this?"</span>);
+                    }
+                }
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            },
+            PopulateShipsUnavailTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(panel)</span> {</span>
+                <span class="hljs-keyword">var</span> ships = <span class="hljs-keyword">this</span>.currentShips.unavailable,
+                    details = Dom.get(panel.isStarPanel ? <span class="hljs-string">"starDetailUnavailShips"</span> : <span class="hljs-string">"planetDetailUnavailShips"</span>),
+                    detailsParent = details.parentNode,
+                    li = document.createElement(<span class="hljs-string">"li"</span>);
+                <span class="hljs-comment">//Event.purgeElement(details, true); //clear any events before we remove</span>
+                details = detailsParent.removeChild(details); <span class="hljs-comment">//remove from DOM to make this faster</span>
+                details.innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">if</span> (ships.length === <span class="hljs-number">0</span>) {
+                    details.innerHTML = <span class="hljs-string">"No unavailable ships."</span>;
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; ships.length; i++) {
+                        <span class="hljs-keyword">var</span> ship = ships[i].ship,
+                            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                        nLi.Ship = ship;
+                        nLi.innerHTML = [<span class="hljs-string">'&lt;div class="yui-gd" style="margin-bottom:5px;"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first" style="width:20%;background:transparent url('</span>, Lib.AssetUrl, <span class="hljs-string">'star_system/field.png) no-repeat center;text-align:center;"&gt;'</span>, <span class="hljs-string">'        &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ships/'</span>, ship.type, <span class="hljs-string">'.png" style="width:50px;height:50px;" /&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u" style="width:75%"&gt;'</span>, <span class="hljs-string">'        &lt;div class="buildingName"&gt;['</span>, ship.type_human, <span class="hljs-string">'] '</span>, ship.name, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;label style="font-weight:bold;"&gt;Details:&lt;/label&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;&lt;span&gt;Task:&lt;/span&gt;&lt;span&gt;'</span>, ship.task, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;label style="font-weight:bold;"&gt;Attributes:&lt;/label&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Speed:&lt;span&gt;'</span>, ship.speed, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;,'</span>, <span class="hljs-string">'            &lt;span&gt;Berth Level:&lt;span&gt;'</span>, ship.berth_level, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;,'</span>, <span class="hljs-string">'            &lt;span&gt;Hold Size:&lt;span&gt;'</span>, ship.hold_size, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;,'</span>, <span class="hljs-string">'            &lt;span&gt;Stealth:&lt;span&gt;'</span>, ship.stealth, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Combat:&lt;span&gt;'</span>, ship.combat, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div style="font-style:italic;"&gt;'</span>, ships[i].reason[<span class="hljs-number">1</span>], <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+                        details.appendChild(nLi);
+                    }
+                }
+                detailsParent.appendChild(details); <span class="hljs-comment">//add back as child</span>
+                <span class="hljs-comment">//wait for tab to display first</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                        .h - <span class="hljs-number">330</span>;
+                    <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">240</span>) {
+                        Ht = <span class="hljs-number">240</span>;
+                    }
+                    Dom.setStyle(detailsParent, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                    Dom.setStyle(detailsParent, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+                }, <span class="hljs-number">10</span>);
+            },
+            PopulateShipsOrbitingTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(panel)</span> {</span>
+                <span class="hljs-keyword">var</span> ships = <span class="hljs-keyword">this</span>.currentShips.orbiting || [],
+                    details = Dom.get(<span class="hljs-string">"planetDetailOrbitingShips"</span>),
+                    detailsParent = details.parentNode,
+                    li = document.createElement(<span class="hljs-string">"li"</span>);
+                Event.purgeElement(details, <span class="hljs-literal">true</span>); <span class="hljs-comment">//clear any events before we remove</span>
+                details = detailsParent.removeChild(details); <span class="hljs-comment">//remove from DOM to make this faster</span>
+                details.innerHTML = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">if</span> (ships.length === <span class="hljs-number">0</span>) {
+                    details.innerHTML = <span class="hljs-string">"No orbiting ships."</span>;
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; ships.length; i++) {
+                        <span class="hljs-keyword">var</span> ship = ships[i],
+                            nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                        nLi.Ship = ship;
+                        nLi.innerHTML = [<span class="hljs-string">'&lt;div class="yui-gd" style="margin-bottom:2px;"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first" style="width:15%;background:transparent url('</span>, Lib.AssetUrl, <span class="hljs-string">'star_system/field.png) no-repeat center;text-align:center;"&gt;'</span>, <span class="hljs-string">'        &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ships/'</span>, ship.type, <span class="hljs-string">'.png" style="width:60px;height:60px;" /&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u" style="width:75%"&gt;'</span>, <span class="hljs-string">'        &lt;div class="buildingName"&gt;['</span>, ship.type_human, <span class="hljs-string">'] '</span>, ship.name, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;label style="font-weight:bold;"&gt;Details:&lt;/label&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Task:&lt;span&gt;'</span>, ship.task, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;,'</span>, <span class="hljs-string">'            &lt;span&gt;From:&lt;span&gt;'</span>, ship.from.name, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;label style="font-weight:bold;"&gt;Attributes:&lt;/label&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Speed:&lt;span&gt;'</span>, ship.speed, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;,'</span>, <span class="hljs-string">'            &lt;span&gt;Hold Size:&lt;span&gt;'</span>, ship.hold_size, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;,'</span>, <span class="hljs-string">'            &lt;span&gt;Stealth:&lt;span&gt;'</span>, ship.stealth, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Combat:&lt;span&gt;'</span>, ship.combat, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+                        details.appendChild(nLi);
+                    }
+                }
+                detailsParent.appendChild(details); <span class="hljs-comment">//add back as child</span>
+                <span class="hljs-comment">//wait for tab to display first</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                        .h - <span class="hljs-number">330</span>;
+                    <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">240</span>) {
+                        Ht = <span class="hljs-number">240</span>;
+                    }
+                    Dom.setStyle(detailsParent, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                    Dom.setStyle(detailsParent, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+                }, <span class="hljs-number">10</span>);
+            },
+            PopulateShipsMiningPlatforms: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(panel)</span> {</span>
+                <span class="hljs-keyword">var</span> ships = <span class="hljs-keyword">this</span>.currentShips.mining_platforms || [];
+                details = Dom.get(<span class="hljs-string">"planetDetailMiningShips"</span>);
+                <span class="hljs-keyword">if</span> (details) {
+                    <span class="hljs-keyword">var</span> parent = details.parentNode;
+                    details = parent.removeChild(details);
+                    <span class="hljs-keyword">if</span> (ships.length &gt; <span class="hljs-number">0</span>) {
+                        Event.purgeElement(details, <span class="hljs-literal">true</span>);
+                        details.innerHTML = <span class="hljs-string">''</span>;
+                        <span class="hljs-keyword">var</span> li = document.createElement(<span class="hljs-string">"li"</span>);
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; ships.length; i++) {
+                            <span class="hljs-keyword">var</span> ship = ships[i],
+                                nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                            nLi.Ship = ship;
+                            Dom.addClass(nLi, <span class="hljs-string">"shipName"</span>);
+                            nLi.innerHTML = ship.empire_name;
+                            Event.on(nLi, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.ShowEmpire, ship.empire_id);
+                            details.appendChild(nLi);
+                        }
+                    } <span class="hljs-keyword">else</span> {
+                        details.innerHTML = <span class="hljs-string">'&lt;li&gt;No mining ships&lt;/li&gt;'</span>;
+                    }
+                    parent.appendChild(details);
+                    <span class="hljs-comment">//wait for tab to display first</span>
+                    setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                        <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                            .h - <span class="hljs-number">330</span>;
+                        <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">240</span>) {
+                            Ht = <span class="hljs-number">240</span>;
+                        }
+                        Dom.setStyle(details.parentNode, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                        Dom.setStyle(details.parentNode, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+                    }, <span class="hljs-number">10</span>);
+                }
+            },
+            PopulateShipsExcavators: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(panel)</span> {</span>
+                <span class="hljs-keyword">var</span> ships = <span class="hljs-keyword">this</span>.currentShips.excavators || [];
+                details = Dom.get(<span class="hljs-string">"planetDetailExcavators"</span>);
+                <span class="hljs-keyword">if</span> (details) {
+                    <span class="hljs-keyword">var</span> parent = details.parentNode;
+                    details = parent.removeChild(details);
+                    <span class="hljs-keyword">if</span> (ships.length &gt; <span class="hljs-number">0</span>) {
+                        Event.purgeElement(details, <span class="hljs-literal">true</span>);
+                        details.innerHTML = <span class="hljs-string">''</span>;
+                        <span class="hljs-keyword">var</span> li = document.createElement(<span class="hljs-string">"li"</span>);
+                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; ships.length; i++) {
+                            <span class="hljs-keyword">var</span> ship = ships[i],
+                                nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                            nLi.Ship = ship;
+                            Dom.addClass(nLi, <span class="hljs-string">"shipName"</span>);
+                            nLi.innerHTML = ship.empire_name;
+                            Event.on(nLi, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.ShowEmpire, ship.empire_id);
+                            details.appendChild(nLi);
+                        }
+                    } <span class="hljs-keyword">else</span> {
+                        details.innerHTML = <span class="hljs-string">'&lt;li&gt;No excavators&lt;/li&gt;'</span>;
+                    }
+                    parent.appendChild(details);
+                    <span class="hljs-comment">//wait for tab to display first</span>
+                    setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                        <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                            .h - <span class="hljs-number">330</span>;
+                        <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">240</span>) {
+                            Ht = <span class="hljs-number">240</span>;
+                        }
+                        Dom.setStyle(details.parentNode, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                        Dom.setStyle(details.parentNode, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+                    }, <span class="hljs-number">10</span>);
+                }
+            },
+            ShowEmpire: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, id)</span> {</span>
+                Lacuna.Info.Empire.Load(id);
+            },
+            GetShips: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(panel, target)</span> {</span>
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.currentShips) {
+                    Lacuna.Pulser.Show();
+                    Game.Services.Buildings.SpacePort.get_ships_for({
+                        session_id: Game.GetSession(),
+                        from_body_id: Game.GetCurrentPlanet()
+                            .id,
+                        target: target
+                    }, {
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                            YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"MapStar.ShowStar.get_ships_for.success"</span>);
+                            Lacuna.Pulser.Hide();
+                            <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onMapRpc"</span>, o.result);
+                            <span class="hljs-keyword">this</span>.currentShips = o.result;
+                            <span class="hljs-keyword">this</span>.PopulateShipsSendTab(panel);
+                            <span class="hljs-keyword">this</span>.PopulateFleetSendTab(panel);
+                            <span class="hljs-keyword">this</span>.PopulateShipsUnavailTab(panel);
+                            <span class="hljs-keyword">this</span>.PopulateShipsIncomingTab(panel);
+                            <span class="hljs-keyword">this</span>.PopulateShipsOrbitingTab(panel);
+                            <span class="hljs-keyword">this</span>.PopulateShipsMiningPlatforms(panel);
+                            <span class="hljs-keyword">this</span>.PopulateShipsExcavators(panel);
+                            panel.removeTabs(); <span class="hljs-comment">//remove any tabs that are removable before adding new ones</span>
+                            <span class="hljs-comment">//select 0 index tab unless we already selected a different one</span>
+                            <span class="hljs-comment">/*if(panel.tabView.get("activeIndex") &lt;= 0) {
+                            panel.tabView.selectTab(0);
+                        }*/</span>
+                        },
+                        scope: <span class="hljs-keyword">this</span>
+                    });
+                }
+            },
+            ShowStar: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tile, keepOpen)</span> {</span>
+                <span class="hljs-keyword">if</span> (!keepOpen) {
+                    Game.OverlayManager.hideAllBut(<span class="hljs-keyword">this</span>.starDetails.id);
+                }
+                <span class="hljs-keyword">var</span> data = tile.data,
+                    panel = <span class="hljs-keyword">this</span>.starDetails;
+                panel.resetDisplay(<span class="hljs-keyword">this</span>);
+                Dom.get(<span class="hljs-string">"starDetailsImg"</span>)
+                    .innerHTML = [<span class="hljs-string">'&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'star_map/'</span>, data.color, <span class="hljs-string">'.png" alt="'</span>, data.name, <span class="hljs-string">'" style="width:100px;height:100px;" /&gt;'</span>].join(<span class="hljs-string">''</span>);
+                Dom.get(<span class="hljs-string">"starDetailsInfo"</span>)
+                    .innerHTML = [<span class="hljs-string">'&lt;ul&gt;'</span>, <span class="hljs-string">'    &lt;li id="starDetailsName"&gt;'</span>, data.name, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;X: &lt;/label&gt;'</span>, data.x, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Y: &lt;/label&gt;'</span>, data.y, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Zone: &lt;/label&gt;'</span>, data.zone, <span class="hljs-string">'&lt;/li&gt;'</span>,
+                        data.station ? (<span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Station: &lt;/label&gt;'</span> + data.station.name + <span class="hljs-string">' ('</span> + data.station.x + <span class="hljs-string">' : '</span> + data.station.y + <span class="hljs-string">')&lt;/li&gt;'</span>) : <span class="hljs-string">''</span>, <span class="hljs-string">'&lt;/ul&gt;'</span>
+                ].join(<span class="hljs-string">''</span>);
+                <span class="hljs-keyword">this</span>.selectedStar = data;
+                <span class="hljs-keyword">this</span>.GetShips(panel, {
+                    star_id: data.id
+                });
+                panel.show();
+            },
+            ShowPlanet: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tile, keepOpen)</span> {</span>
+                <span class="hljs-keyword">if</span> (!keepOpen) {
+                    Game.OverlayManager.hideAllBut(<span class="hljs-keyword">this</span>.planetDetails.id);
+                }
+                <span class="hljs-keyword">var</span> panel = <span class="hljs-keyword">this</span>.planetDetails;
+                Game.Services.Body.get_body_status({
+                    args: {
+                        session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                        body_id: tile.data.id
+                    }
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"ShowPlanet.get_status.success"</span>);
+                        <span class="hljs-keyword">var</span> body = o.result.body,
+                            tab, tabs, empire = body.empire || {
+                                alignment: <span class="hljs-string">"none"</span>,
+                                name: <span class="hljs-string">""</span>
+                            };
+                        panel.resetDisplay(<span class="hljs-keyword">this</span>);
+                        Dom.get(<span class="hljs-string">"planetDetailsImg"</span>)
+                            .innerHTML = [<span class="hljs-string">'&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'star_system/'</span>, body.image, <span class="hljs-string">'.png" alt="'</span>, body.name, <span class="hljs-string">'" style="width:200px;height:200px;" /&gt;'</span>].join(<span class="hljs-string">''</span>);
+                        Dom.get(<span class="hljs-string">"planetDetailsInfo"</span>)
+                            .innerHTML = [<span class="hljs-string">'&lt;ul&gt;'</span>, <span class="hljs-string">'    &lt;li id="planetDetailsName"&gt;'</span>, body.name, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Type: &lt;/label&gt;'</span>, body.type, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Empire: &lt;/label&gt;&lt;span id="planetDetailsEmpire"&gt;'</span>, empire.name, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>,
+                                empire.id ? (<span class="hljs-string">'&lt;li&gt;&lt;label&gt;Isolationist: &lt;/label&gt;'</span> + (empire.is_isolationist == <span class="hljs-string">"1"</span> ? <span class="hljs-string">'Yes'</span> : <span class="hljs-string">'No'</span>) + <span class="hljs-string">'&lt;/li&gt;'</span>) : <span class="hljs-string">''</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Water: &lt;/label&gt;'</span>, body.water, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Planet Size:&lt;/label&gt;'</span>, body.size, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Location in Universe:&lt;/label&gt;'</span>, body.x, <span class="hljs-string">'x : '</span>, body.y, <span class="hljs-string">'y&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Zone:&lt;/label&gt;'</span>, body.zone, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Star:&lt;/label&gt;'</span>, body.star_name, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Orbit:&lt;/label&gt;'</span>, body.orbit, <span class="hljs-string">'&lt;/li&gt;'</span>, (empire.alignment == <span class="hljs-string">"self"</span> || (empire.alignment == <span class="hljs-string">"ally"</span> &amp;&amp; body.type == <span class="hljs-string">"space station"</span>)) ? <span class="hljs-string">'    &lt;li&gt;&lt;button type="button"&gt;View&lt;/button&gt;&lt;/li&gt;'</span> : <span class="hljs-string">''</span>, <span class="hljs-string">'&lt;/ul&gt;'</span>
+                        ].join(<span class="hljs-string">''</span>);
+                        Dom.get(<span class="hljs-string">"planetDetailsAnthracite"</span>)
+                            .innerHTML = body.ore.anthracite;
+                        Dom.get(<span class="hljs-string">"planetDetailsBauxite"</span>)
+                            .innerHTML = body.ore.bauxite;
+                        Dom.get(<span class="hljs-string">"planetDetailsBeryl"</span>)
+                            .innerHTML = body.ore.beryl;
+                        Dom.get(<span class="hljs-string">"planetDetailsChalcopyrite"</span>)
+                            .innerHTML = body.ore.chalcopyrite;
+                        Dom.get(<span class="hljs-string">"planetDetailsChromite"</span>)
+                            .innerHTML = body.ore.chromite;
+                        Dom.get(<span class="hljs-string">"planetDetailsFluorite"</span>)
+                            .innerHTML = body.ore.fluorite;
+                        Dom.get(<span class="hljs-string">"planetDetailsGalena"</span>)
+                            .innerHTML = body.ore.galena;
+                        Dom.get(<span class="hljs-string">"planetDetailsGoethite"</span>)
+                            .innerHTML = body.ore.goethite;
+                        Dom.get(<span class="hljs-string">"planetDetailsGold"</span>)
+                            .innerHTML = body.ore.gold;
+                        Dom.get(<span class="hljs-string">"planetDetailsGypsum"</span>)
+                            .innerHTML = body.ore.gypsum;
+                        Dom.get(<span class="hljs-string">"planetDetailsHalite"</span>)
+                            .innerHTML = body.ore.halite;
+                        Dom.get(<span class="hljs-string">"planetDetailsKerogen"</span>)
+                            .innerHTML = body.ore.kerogen;
+                        Dom.get(<span class="hljs-string">"planetDetailsMagnetite"</span>)
+                            .innerHTML = body.ore.magnetite;
+                        Dom.get(<span class="hljs-string">"planetDetailsMethane"</span>)
+                            .innerHTML = body.ore.methane;
+                        Dom.get(<span class="hljs-string">"planetDetailsMonazite"</span>)
+                            .innerHTML = body.ore.monazite;
+                        Dom.get(<span class="hljs-string">"planetDetailsRutile"</span>)
+                            .innerHTML = body.ore.rutile;
+                        Dom.get(<span class="hljs-string">"planetDetailsSulfur"</span>)
+                            .innerHTML = body.ore.sulfur;
+                        Dom.get(<span class="hljs-string">"planetDetailsTrona"</span>)
+                            .innerHTML = body.ore.trona;
+                        Dom.get(<span class="hljs-string">"planetDetailsUraninite"</span>)
+                            .innerHTML = body.ore.uraninite;
+                        Dom.get(<span class="hljs-string">"planetDetailsZircon"</span>)
+                            .innerHTML = body.ore.zircon;
+                        <span class="hljs-keyword">if</span> (empire.id) {
+                            Dom.setStyle(<span class="hljs-string">"planetDetailsEmpire"</span>, <span class="hljs-string">"cursor"</span>, <span class="hljs-string">"pointer"</span>);
+                            Dom.setStyle(<span class="hljs-string">"planetDetailsEmpire"</span>, <span class="hljs-string">"text-decoration"</span>, <span class="hljs-string">"underline"</span>);
+                            Event.on(<span class="hljs-string">"planetDetailsEmpire"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                                Lacuna.Info.Empire.Load(<span class="hljs-keyword">this</span>.id);
+                            }, empire, <span class="hljs-literal">true</span>);
+                        } <span class="hljs-keyword">else</span> {
+                            Dom.setStyle(<span class="hljs-string">"planetDetailsEmpire"</span>, <span class="hljs-string">"cursor"</span>, <span class="hljs-string">"normal"</span>);
+                            Dom.setStyle(<span class="hljs-string">"planetDetailsEmpire"</span>, <span class="hljs-string">"text-decoration"</span>, <span class="hljs-string">"none"</span>);
+                            Event.removeListener(<span class="hljs-string">"planetDetailsEmpire"</span>, <span class="hljs-string">"click"</span>);
+                        }
+                        <span class="hljs-keyword">if</span> (empire.alignment == <span class="hljs-string">"self"</span>) {
+                            <span class="hljs-keyword">if</span> (panel.renameTab) {
+                                panel.tabView.addTab(panel.renameTab, <span class="hljs-number">1</span>);
+                                <span class="hljs-keyword">delete</span> panel.renameTab;
+                            }
+                            Dom.get(<span class="hljs-string">"planetDetailNewName"</span>)
+                                .value = <span class="hljs-string">""</span>;
+                        } <span class="hljs-keyword">else</span> {
+                            tabs = panel.tabView.get(<span class="hljs-string">"tabs"</span>);
+                            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> nt = <span class="hljs-number">0</span>; nt &lt; tabs.length; nt++) {
+                                tab = panel.tabView.getTab(nt);
+                                <span class="hljs-keyword">if</span> (tab &amp;&amp; tab.get(<span class="hljs-string">"label"</span>) == <span class="hljs-keyword">this</span>._renameLabel) {
+                                    panel.renameTab = tab;
+                                    panel.tabView.removeTab(tab);
+                                    <span class="hljs-keyword">break</span>;
+                                }
+                            }
+                        }
+                        <span class="hljs-keyword">if</span> (empire.alignment == <span class="hljs-string">"none"</span> || empire.is_isolationist == <span class="hljs-string">"1"</span>) {
+                            tabs = panel.tabView.get(<span class="hljs-string">"tabs"</span>);
+                            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> snt = tabs.length; snt &gt;= <span class="hljs-number">0</span>; snt--) {
+                                tab = panel.tabView.getTab(snt);
+                                <span class="hljs-keyword">if</span> (tab &amp;&amp; tab.get(<span class="hljs-string">"label"</span>) == <span class="hljs-keyword">this</span>._sendSpiesLabel) {
+                                    panel.sendSpiesTab = tab;
+                                    panel.tabView.removeTab(tab);
+                                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (tab &amp;&amp; tab.get(<span class="hljs-string">"label"</span>) == <span class="hljs-keyword">this</span>._fetchSpiesLabel) {
+                                    panel.fetchSpiesTab = tab;
+                                    panel.tabView.removeTab(tab);
+                                }
+                            }
+                        } <span class="hljs-keyword">else</span> {
+                            <span class="hljs-keyword">if</span> (panel.sendSpiesTab) {
+                                panel.tabView.addTab(panel.sendSpiesTab);
+                                <span class="hljs-keyword">delete</span> panel.sendSpiesTab;
+                            }
+                            <span class="hljs-keyword">if</span> (panel.fetchSpiesTab) {
+                                panel.tabView.addTab(panel.fetchSpiesTab);
+                                <span class="hljs-keyword">delete</span> panel.fetchSpiesTab;
+                            }
+                        }
+                        <span class="hljs-keyword">if</span> (body.type == <span class="hljs-string">"asteroid"</span>) {
+                            <span class="hljs-keyword">if</span> (panel.miningTab) {
+                                panel.tabView.addTab(panel.miningTab);
+                                <span class="hljs-keyword">delete</span> panel.miningTab;
+                            }
+                        } <span class="hljs-keyword">else</span> {
+                            tabs = panel.tabView.get(<span class="hljs-string">"tabs"</span>);
+                            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> mnt = tabs.length; mnt &gt;= <span class="hljs-number">0</span>; mnt--) {
+                                tab = panel.tabView.getTab(mnt);
+                                <span class="hljs-keyword">if</span> (tab &amp;&amp; tab.get(<span class="hljs-string">"label"</span>) == <span class="hljs-keyword">this</span>._miningLabel) {
+                                    panel.miningTab = tab;
+                                    panel.tabView.removeTab(tab);
+                                }
+                            }
+                        }
+                        <span class="hljs-keyword">if</span> (panel.excavTab) {
+                            panel.tabView.addTab(panel.excavTab);
+                            <span class="hljs-keyword">delete</span> panel.excavTab;
+                        }
+                        <span class="hljs-comment">//this.GetShips(panel,{body_id:body.id});</span>
+                        <span class="hljs-keyword">this</span>.selectedBody = body;
+                        <span class="hljs-keyword">this</span>.selectedTile = tile;
+                        panel.tabView.selectTab(<span class="hljs-number">0</span>);
+                        panel.show();
+                    },
+                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"ShowPlanet.get_status.fail"</span>);
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            },
+            Rename: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> newName = Dom.get(<span class="hljs-string">"planetDetailNewName"</span>)
+                    .value;
+                Game.Services.Body.rename({
+                    session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                    body_id: <span class="hljs-keyword">this</span>.selectedBody.id,
+                    name: newName
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"MapStar.Rename.success"</span>);
+                        <span class="hljs-keyword">if</span> (o.result &amp;&amp; <span class="hljs-keyword">this</span>.selectedBody) {
+                            Dom.get(<span class="hljs-string">"planetDetailRenameMessage"</span>)
+                                .innerHTML = [<span class="hljs-string">"Successfully renamed your planet from "</span>,
+                                    <span class="hljs-keyword">this</span>.selectedBody.name, <span class="hljs-string">" to "</span>, newName, <span class="hljs-string">'.'</span>
+                            ].join(<span class="hljs-string">''</span>);
+                            Lib.fadeOutElm(<span class="hljs-string">"planetDetailRenameMessage"</span>);
+                            Dom.get(<span class="hljs-string">"planetDetailsName"</span>)
+                                .innerHTML = newName;
+                            Game.EmpireData.planets[<span class="hljs-keyword">this</span>.selectedBody.id].name = newName;
+                            Lacuna.Menu.update();
+                            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.selectedTile <span class="hljs-keyword">instanceof</span> YAHOO.lacuna.Mapper.StarTile) {
+                                <span class="hljs-keyword">this</span>._map.tileCache[<span class="hljs-keyword">this</span>.selectedTile.x][<span class="hljs-keyword">this</span>.selectedTile.y].name = newName;
+                                <span class="hljs-keyword">this</span>.selectedTile.refresh();
+                            }
+                            <span class="hljs-keyword">this</span>.selectedBody.name = newName;
+                        }
+                    },
+                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        Dom.get(<span class="hljs-string">"planetDetailRenameMessage"</span>)
+                            .innerHTML = o.error.message;
+                        Lib.fadeOutElm(<span class="hljs-string">"planetDetailRenameMessage"</span>);
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            },
+            ShowSpies: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tab)</span> {</span>
+                Dom.setStyle(tab.elSpiesPane, <span class="hljs-string">'display'</span>, <span class="hljs-string">'block'</span>);
+                Dom.setStyle(tab.elSpyShipsPane, <span class="hljs-string">'display'</span>, <span class="hljs-string">'none'</span>);
+                <span class="hljs-keyword">if</span> (tab.avail &amp;&amp; tab.avail.spies &amp;&amp; tab.avail.spyShips) {
+                    <span class="hljs-keyword">return</span>;
+                }
+                tab.elSpiesList.innerHTML = <span class="hljs-string">""</span>;
+                tab.elSpyShipsList.innerHTML = <span class="hljs-string">""</span>;
+                tab.elMessage.innerHTML = <span class="hljs-string">""</span>;
+                Dom.setStyle(tab.elSendButton, <span class="hljs-string">'display'</span>, <span class="hljs-string">'none'</span>);
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">var</span> method, data;
+                <span class="hljs-keyword">if</span> (tab.id == <span class="hljs-string">'planetDetailSendSpies'</span>) {
+                    method = <span class="hljs-string">'prepare_send_spies'</span>;
+                    data = {
+                        session_id: Game.GetSession(),
+                        on_body_id: Game.GetCurrentPlanet()
+                            .id,
+                        to_body_id: <span class="hljs-keyword">this</span>.selectedBody.id
+                    };
+                } <span class="hljs-keyword">else</span> {
+                    method = <span class="hljs-string">'prepare_fetch_spies'</span>;
+                    data = {
+                        session_id: Game.GetSession(),
+                        on_body_id: <span class="hljs-keyword">this</span>.selectedBody.id,
+                        to_body_id: Game.GetCurrentPlanet()
+                            .id
+                    };
+                }
+                Game.Services.Buildings.SpacePort[method](data, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"MapStar.ShowSpies."</span> + method + <span class="hljs-string">".success"</span>);
+                        <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onMapRpc"</span>, o.result);
+                        Lacuna.Pulser.Hide();
+                        tab.avail = {
+                            spyShips: o.result.ships,
+                            spies: o.result.spies
+                        };
+                        <span class="hljs-keyword">this</span>.populateSpies(tab);
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            },
+            populateSpies: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tab)</span> {</span>
+                <span class="hljs-keyword">var</span> list = tab.elSpiesList;
+                <span class="hljs-keyword">var</span> spies = tab.avail.spies;
+                <span class="hljs-keyword">var</span> ships = tab.avail.spyShips;
+                <span class="hljs-keyword">var</span> verb = tab.id == <span class="hljs-string">'planetDetailSendSpies'</span> ? <span class="hljs-string">'send'</span> : <span class="hljs-string">'fetch'</span>;
+                <span class="hljs-keyword">if</span> (spies.length == <span class="hljs-number">0</span>) {
+                    tab.elMessage.innerHTML = <span class="hljs-string">'No spies available.'</span>;
+                    <span class="hljs-keyword">return</span>;
+                }
+                <span class="hljs-keyword">var</span> maxSpies = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; ships.length; i++) {
+                    <span class="hljs-keyword">var</span> ship = ships[i];
+                    <span class="hljs-keyword">if</span> (ship.max_occupants &gt; maxSpies) {
+                        maxSpies = ship.max_occupants;
+                    }
+                    <span class="hljs-keyword">if</span> (maxSpies &gt; <span class="hljs-number">100</span>) {
+                        maxSpies = <span class="hljs-number">100</span>;
+                    }
+                }
+                <span class="hljs-keyword">if</span> (maxSpies == <span class="hljs-number">0</span>) {
+                    tab.elMessage.innerHTML = <span class="hljs-string">'No ships available.'</span>;
+                } <span class="hljs-keyword">else</span> {
+                    tab.elMessage.innerHTML = <span class="hljs-string">'Select up to '</span> + maxSpies + <span class="hljs-string">' spies to '</span> + verb + <span class="hljs-string">':'</span>;
+                    Dom.setStyle(tab.elSendButton, <span class="hljs-string">'display'</span>, <span class="hljs-string">'inline'</span>);
+                }
+                tab.maxSpies = maxSpies;
+                <span class="hljs-keyword">var</span> li = document.createElement(<span class="hljs-string">'li'</span>);
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> si = <span class="hljs-number">0</span>; si &lt; spies.length; si++) {
+                    <span class="hljs-keyword">var</span> spy = spies[si],
+                        nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    nLi.innerHTML = [<span class="hljs-string">'&lt;div class="yui-gd" style="margin-bottom:2px;"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first description"&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;strong&gt;'</span>, spy.name, <span class="hljs-string">'&lt;/strong&gt;&lt;/div&gt;&lt;div&gt;Level '</span>, spy.level, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;'</span>,
+                        maxSpies == <span class="hljs-number">0</span> ? <span class="hljs-string">''</span> : <span class="hljs-string">'&lt;input type="checkbox" name="spyId" value="'</span> + spy.id + <span class="hljs-string">'" /&gt;'</span>, <span class="hljs-string">'        &lt;div class="attributes"&gt;&lt;span class="attribute"&gt;Offense: '</span>, spy.offense_rating, <span class="hljs-string">'&lt;/span&gt;&lt;span class="attribute"&gt;Defense: '</span>, spy.defense_rating, <span class="hljs-string">'&lt;/span&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>
+                    ].join(<span class="hljs-string">''</span>);
+                    list.appendChild(nLi);
+                }
+                <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                    .h - <span class="hljs-number">330</span>;
+                <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">240</span>) {
+                    Ht = <span class="hljs-number">240</span>;
+                }
+                Dom.setStyle(list, <span class="hljs-string">'height'</span>, Ht + <span class="hljs-string">'px'</span>);
+            },
+            MoveSpies: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, tab)</span> {</span>
+                Event.stopEvent(e);
+                <span class="hljs-keyword">var</span> spies = [];
+                <span class="hljs-keyword">var</span> ships = tab.avail.spyShips;
+                <span class="hljs-keyword">var</span> list = tab.elSpyShipsList;
+                <span class="hljs-keyword">var</span> verb = tab.id == <span class="hljs-string">'planetDetailSendSpies'</span> ? <span class="hljs-string">'send'</span> : <span class="hljs-string">'fetch'</span>;
+                Dom.batch(tab.elSpiesList.getElementsByTagName(<span class="hljs-string">'input'</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> {</span>
+                    <span class="hljs-keyword">if</span> (el.checked) {
+                        spies.push(el.value);
+                    }
+                });
+                <span class="hljs-keyword">if</span> (spies.length == <span class="hljs-number">0</span>) {
+                    alert(<span class="hljs-string">"You must select at least one spy to "</span> + verb + <span class="hljs-string">"!"</span>);
+                    <span class="hljs-keyword">return</span>;
+                }
+                <span class="hljs-keyword">if</span> (spies.length &gt; tab.maxSpies) {
+                    alert(<span class="hljs-string">"You don't have any ships large enough to "</span> + verb + <span class="hljs-string">" "</span> + spies.length + <span class="hljs-string">" spies."</span>);
+                    <span class="hljs-keyword">return</span>;
+                }
+                tab.spiesToMove = spies;
+                list.innerHTML = <span class="hljs-string">''</span>;
+                tab.elShipMessageCount.innerHTML = spies.length;
+                <span class="hljs-keyword">var</span> li = document.createElement(<span class="hljs-string">'li'</span>);
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; ships.length; i++) {
+                    <span class="hljs-keyword">var</span> ship = ships[i];
+                    <span class="hljs-keyword">var</span> usable = ship.max_occupants &gt;= spies.length;
+                    <span class="hljs-keyword">var</span> nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                    nLi.shipId = ship.id;
+                    nLi.innerHTML = [<span class="hljs-string">'&lt;div class="yui-gd" style="margin-bottom:2px;"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first" style="width:20%;background:transparent url('</span>, Lib.AssetUrl, <span class="hljs-string">'star_system/field.png) no-repeat center;text-align:center;"&gt;'</span>, <span class="hljs-string">'        &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ships/'</span>, ship.type, <span class="hljs-string">'.png" style="width:50px;height:50px;" /&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u" style="width:78%"&gt;'</span>,
+                        usable ? <span class="hljs-string">'        &lt;button type="button"&gt;'</span> + verb.charAt(<span class="hljs-number">0</span>)
+                        .toUpperCase() + verb.slice(<span class="hljs-number">1</span>) + <span class="hljs-string">' Spies&lt;/button&gt;'</span> : <span class="hljs-string">''</span>, <span class="hljs-string">'        &lt;div&gt;&lt;strong&gt;['</span>, ship.type_human, <span class="hljs-string">'] '</span>, ship.name, <span class="hljs-string">'&lt;/strong&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;strong&gt;Attributes:&lt;/strong&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Speed:&lt;span&gt;'</span>, ship.speed, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Stealth:&lt;span&gt;'</span>, ship.stealth, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'            &lt;span&gt;Max Spies:&lt;span&gt;'</span>, ship.max_occupants, <span class="hljs-string">'&lt;/span&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>
+                    ].join(<span class="hljs-string">''</span>);
+                    list.appendChild(nLi);
+                }
+                <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                    .h - <span class="hljs-number">260</span>;
+                <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">240</span>) {
+                    Ht = <span class="hljs-number">240</span>;
+                }
+                Dom.setStyle(list, <span class="hljs-string">'height'</span>, Ht + <span class="hljs-string">'px'</span>);
+                Dom.setStyle(tab.elSpiesPane, <span class="hljs-string">'display'</span>, <span class="hljs-string">'none'</span>);
+                Dom.setStyle(tab.elSpyShipsPane, <span class="hljs-string">'display'</span>, <span class="hljs-string">'block'</span>);
+            },
+            MoveSpyShip: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, tab)</span> {</span>
+                Event.stopEvent(e);
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">var</span> shipId = matchedEl.parentNode.parentNode.parentNode.shipId,
+                    spies = tab.spiesToMove,
+                    data = {
+                        session_id: Game.GetSession(),
+                        spy_ids: spies,
+                        ship_id: shipId
+                    },
+                    successMessage, method;
+                <span class="hljs-keyword">if</span> (tab.id == <span class="hljs-string">'planetDetailSendSpies'</span>) {
+                    successMessage = <span class="hljs-string">'Spies sent!'</span>;
+                    method = Game.Services.Buildings.SpacePort.send_spies;
+                    data.on_body_id = Game.GetCurrentPlanet()
+                        .id;
+                    data.to_body_id = <span class="hljs-keyword">this</span>.selectedBody.id;
+                } <span class="hljs-keyword">else</span> {
+                    successMessage = <span class="hljs-string">'Spies fetched!'</span>;
+                    method = Game.Services.Buildings.SpacePort.fetch_spies;
+                    data.on_body_id = <span class="hljs-keyword">this</span>.selectedBody.id;
+                    data.to_body_id = Game.GetCurrentPlanet()
+                        .id;
+                }
+                method(data, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onMapRpc"</span>, o.result);
+                        alert(successMessage + <span class="hljs-string">'  Arrival time: '</span> + Lib.formatServerDateShort(o.result.ship.date_arrives));
+                        <span class="hljs-keyword">delete</span> tab.avail.spies;
+                        <span class="hljs-keyword">delete</span> tab.avail.spyShips;
+                        <span class="hljs-keyword">this</span>.ShowSpies(tab);
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            },
+            MoveSpiesCancel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, tab)</span> {</span>
+                Event.stopEvent(e);
+                Dom.setStyle(tab.elSpiesPane, <span class="hljs-string">'display'</span>, <span class="hljs-string">'block'</span>);
+                Dom.setStyle(tab.elSpyShipsPane, <span class="hljs-string">'display'</span>, <span class="hljs-string">'none'</span>);
+            }
+        };
+        Lang.augmentProto(MapStar, Util.EventProvider);
+        Lacuna.MapStar = <span class="hljs-keyword">new</span> MapStar();
+    })();
+    YAHOO.register(<span class="hljs-string">"mapStar"</span>, YAHOO.lacuna.MapStar, {
+        version: <span class="hljs-string">"1"</span>,
+        build: <span class="hljs-string">"0"</span>
+    });
+}</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>vim: noet:ts=4:sw=4</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

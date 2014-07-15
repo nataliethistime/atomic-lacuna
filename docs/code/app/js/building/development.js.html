@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - development.js</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/building/development.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building/development.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Sel = Util.Selector,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> Development = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        Development.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
+        <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.Development;
+    };
+    Lang.extend(Development, Lacuna.buildings.Building, {
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.result.build_queue &amp;&amp; <span class="hljs-keyword">this</span>.result.build_queue.length &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getQueueTab()];
+            }
+        },
+        _getQueueTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> bq = <span class="hljs-keyword">this</span>.result.build_queue,
+                ul = document.createElement(<span class="hljs-string">"ul"</span>),
+                li = document.createElement(<span class="hljs-string">"li"</span>),
+                div = document.createElement(<span class="hljs-string">"div"</span>),
+                subDiv = div.cloneNode(<span class="hljs-literal">false</span>),
+                hUl = ul.cloneNode(<span class="hljs-literal">false</span>);
+            Dom.addClass(div, <span class="hljs-string">"buildingDetailsExtra"</span>);
+            subDiv.appendChild(document.createTextNode(<span class="hljs-string">'You can subsidize the build queue for '</span> + <span class="hljs-keyword">this</span>.result.subsidy_cost + <span class="hljs-string">' Essentia to finish immediately.'</span>));
+            <span class="hljs-keyword">var</span> btn = document.createElement(<span class="hljs-string">"button"</span>);
+            btn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+            btn.innerHTML = <span class="hljs-string">"Subsidize"</span>;
+            btn = subDiv.appendChild(btn);
+            Event.on(btn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.DevSubsidize, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            div.appendChild(subDiv);
+            Dom.addClass(hUl, <span class="hljs-string">"buildQueue buildQueueHeader clearafter"</span>);
+            hUl.innerHTML = <span class="hljs-string">'&lt;li class="buildQueueName"&gt;Building&lt;/li&gt;&lt;li class="buildQueueLevel"&gt;Level&lt;/li&gt;&lt;li class="buildQueueTime"&gt;Time&lt;/li&gt;&lt;li class="buildQueueCoords"&gt;Coordinates&lt;/li&gt;&lt;li class="buildQueueSubsidy"&gt;Subsidy&lt;/li&gt;&lt;li class="buildQueueAction"&gt;Action&lt;/li&gt;'</span>;
+            div.appendChild(hUl);
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; bq.length; i++) {
+                <span class="hljs-keyword">var</span> bqo = bq[i],
+                    nUl = ul.cloneNode(<span class="hljs-literal">false</span>),
+                    nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                Dom.addClass(nUl, <span class="hljs-string">"buildQueue"</span>);
+                Dom.addClass(nUl, <span class="hljs-string">"clearafter"</span>);
+                Dom.addClass(nLi, <span class="hljs-string">"buildQueueName"</span>);
+                nLi.innerHTML = bqo.name;
+                nUl.appendChild(nLi);
+                nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                Dom.addClass(nLi, <span class="hljs-string">"buildQueueLevel"</span>);
+                nLi.innerHTML = bqo.to_level;
+                nUl.appendChild(nLi);
+                <span class="hljs-keyword">var</span> tLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                Dom.addClass(tLi, <span class="hljs-string">"buildQueueTime"</span>);
+                tLi.innerHTML = Lib.formatTime(bqo.seconds_remaining);
+                nUl.appendChild(tLi);
+                nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                Dom.addClass(nLi, <span class="hljs-string">"buildQueueCoords"</span>);
+                nLi.innerHTML = [bqo.x, <span class="hljs-string">','</span>, bqo.y].join(<span class="hljs-string">''</span>);
+                nUl.appendChild(nLi);
+                nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                Dom.addClass(nLi, <span class="hljs-string">"buildQueueSubsidy"</span>);
+                nLi.innerHTML = bqo.subsidy_cost;
+                nUl.appendChild(nLi);
+                <span class="hljs-keyword">var</span> btn_subsidy = document.createElement(<span class="hljs-string">"button"</span>);
+                btn_subsidy.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+                btn_subsidy.innerHTML = <span class="hljs-string">"Subsidize"</span>;
+                btn_subsidy = subDiv.appendChild(btn_subsidy);
+                Event.on(btn_subsidy, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.DevSubsidizeOneBuild, {
+                    Self: <span class="hljs-keyword">this</span>,
+                    ScheduledId: bqo.building_id
+                }, <span class="hljs-literal">true</span>);
+                nUl.appendChild(btn_subsidy);
+                <span class="hljs-keyword">var</span> btn_cancel = document.createElement(<span class="hljs-string">"button"</span>);
+                btn_cancel.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
+                btn_cancel.innerHTML = <span class="hljs-string">"Cancel"</span>;
+                btn_cancel = subDiv.appendChild(btn_cancel);
+                Event.on(btn_cancel, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.DevCancelOneBuild, {
+                    Self: <span class="hljs-keyword">this</span>,
+                    ScheduledId: bqo.building_id
+                }, <span class="hljs-literal">true</span>);
+                nUl.appendChild(btn_cancel);
+                div.appendChild(nUl);
+                <span class="hljs-keyword">this</span>.addQueue(bqo.seconds_remaining, <span class="hljs-keyword">this</span>.DevMinistryQueue, tLi);
+            }
+            <span class="hljs-keyword">var</span> tab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Build Queue"</span>,
+                contentEl: div
+            });
+            <span class="hljs-keyword">this</span>.queueTab = tab;
+            <span class="hljs-keyword">return</span> tab;
+        },
+        DevMinistryQueue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(remaining, el)</span> {</span>
+            <span class="hljs-keyword">if</span> (remaining &lt;= <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">var</span> ul = el.parentNode,
+                    c = ul.parentNode;
+                c.removeChild(ul);
+            } <span class="hljs-keyword">else</span> {
+                el.innerHTML = Lib.formatTime(<span class="hljs-built_in">Math</span>.round(remaining));
+            }
+        },
+        DevCancelOneBuild: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.Self.service.cancel_build({
+                args: {
+                    session_id: Game.GetSession(),
+                    building_id: <span class="hljs-keyword">this</span>.Self.building.id,
+                    scheduled_id: <span class="hljs-keyword">this</span>.ScheduledId
+                }
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Development.DevCancelOneBuild.success"</span>);
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.Self.queueTab) {
+                        Event.purgeElement(<span class="hljs-keyword">this</span>.Self.queueTab.get(<span class="hljs-string">"contentEl"</span>));
+                        <span class="hljs-keyword">this</span>.Self.removeTab(<span class="hljs-keyword">this</span>.Self.queueTab);
+                    }
+                    <span class="hljs-keyword">this</span>.Self.fireEvent(<span class="hljs-string">"onHide"</span>);
+                    <span class="hljs-keyword">this</span>.Self.fireEvent(<span class="hljs-string">"onUpdateMap"</span>);
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        DevSubsidizeOneBuild: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.Self.service.subsidize_one_build({
+                args: {
+                    session_id: Game.GetSession(),
+                    building_id: <span class="hljs-keyword">this</span>.Self.building.id,
+                    scheduled_id: <span class="hljs-keyword">this</span>.ScheduledId
+                }
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Development.DevSubsidizeOneBuild.success"</span>);
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">var</span> e = Game.EmpireData.essentia * <span class="hljs-number">1</span>;
+                    Game.EmpireData.essentia = e - o.result.essentia_spent * <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.Self.queueTab) {
+                        Event.purgeElement(<span class="hljs-keyword">this</span>.Self.queueTab.get(<span class="hljs-string">"contentEl"</span>));
+                        <span class="hljs-keyword">this</span>.Self.removeTab(<span class="hljs-keyword">this</span>.Self.queueTab);
+                    }
+                    <span class="hljs-keyword">this</span>.Self.fireEvent(<span class="hljs-string">"onHide"</span>);
+                    <span class="hljs-keyword">this</span>.Self.fireEvent(<span class="hljs-string">"onUpdateMap"</span>);
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        DevSubsidize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.service.subsidize_build_queue({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.building.id
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Development.DevSubsidize.success"</span>);
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">var</span> e = Game.EmpireData.essentia * <span class="hljs-number">1</span>;
+                    Game.EmpireData.essentia = e - o.result.essentia_spent * <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.queueTab) {
+                        Event.purgeElement(<span class="hljs-keyword">this</span>.queueTab.get(<span class="hljs-string">"contentEl"</span>));
+                        <span class="hljs-keyword">this</span>.removeTab(<span class="hljs-keyword">this</span>.queueTab);
+                    }
+                    <span class="hljs-comment">//close buildingDetails</span>
+                    <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onHide"</span>);
+                    <span class="hljs-comment">//refresh map</span>
+                    <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onUpdateMap"</span>);
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        }
+    });
+    YAHOO.lacuna.buildings.Development = Development;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

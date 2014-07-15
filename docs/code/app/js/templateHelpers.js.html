@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - templateHelpers.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/templateHelpers.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/templateHelpers.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+<span class="hljs-keyword">var</span> Handlebars = <span class="hljs-built_in">require</span>(<span class="hljs-string">'handlebars'</span>);
+<span class="hljs-keyword">var</span> Lacuna = YAHOO.lacuna,
+    Lib = Lacuna.Library;</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Used in the Production tab of all buildings. Returns &#39;low-resource&#39; if
+if current - upgrade &gt; planet.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">Handlebars.registerHelper(<span class="hljs-string">'lowResource'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(current, upgrade, planet)</span> {</span>
+    <span class="hljs-keyword">if</span> (current - upgrade &gt; planet) {
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'low-resource'</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-string">''</span>;
+});
+Handlebars.registerHelper(<span class="hljs-string">'lowCost'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cost, current)</span> {</span>
+    <span class="hljs-keyword">if</span> (cost &gt; current) {
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'low-resource'</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-string">''</span>;
+});</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Used in a building&#39;s Production tab to remove the error code from a downgrade
+error message.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">Handlebars.registerHelper(<span class="hljs-string">'removeLeadingErrorCode'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(string)</span> {</span>
+    <span class="hljs-keyword">return</span> string.toString()
+        .replace(<span class="hljs-regexp">/^\d+,\s*/</span>, <span class="hljs-string">''</span>);
+});
+Handlebars.registerHelper(<span class="hljs-string">'formatTime'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(string)</span> {</span>
+    <span class="hljs-keyword">return</span> Lib.formatTime(string);
+});</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

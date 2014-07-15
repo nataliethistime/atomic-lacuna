@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - login.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/login.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/login.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Cookie = Util.Cookie,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game,
+        Lib = Lacuna.Library;
+    <span class="hljs-keyword">var</span> Login = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"login"</span>;
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onLoginSuccessful"</span>);
+        <span class="hljs-keyword">var</span> container = document.createElement(<span class="hljs-string">"div"</span>);
+        container.id = <span class="hljs-keyword">this</span>.id;
+        Dom.addClass(container, <span class="hljs-string">"hidden"</span>);</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>currently have to turn off autocomplete.  Firefox asks to
+remember login but is unable to fill in the saved values later.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        container.innerHTML = [<span class="hljs-string">'    &lt;div class="hd"&gt;Login&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="bd"&gt;'</span>, <span class="hljs-string">'        &lt;div class="loginWrapper"&gt;'</span>, <span class="hljs-string">'            &lt;div class="loginMain"&gt;'</span>, <span class="hljs-string">'                &lt;form id="loginForm" name="loginForms" autocomplete="off"&gt;'</span>, <span class="hljs-string">'                    &lt;ul&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label for="loginName"&gt;Empire Name&lt;/label&gt;&lt;input type="text" id="loginName" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label for="loginPass"&gt;Password&lt;/label&gt;&lt;input type="password" id="loginPass"  /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label for="loginRemember"&gt;Remember Empire?&lt;/label&gt;&lt;input type="checkbox" id="loginRemember" /&gt; &lt;button type="submit"&gt;Login&lt;/button&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;label for="selectServer"&gt;Select Server&lt;/label&gt;&lt;select id="selectServer"&gt;&lt;option value="us1"&gt;US1&lt;/option&gt;&lt;option value="pt"&gt;PT&lt;/option&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;/ul&gt;'</span>, <span class="hljs-string">'                    &lt;ul class="loginExtras"&gt;'</span>, <span class="hljs-string">'                        &lt;li&gt;&lt;a id="loginReset" href="#"&gt;Forgotten your password?&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;/ul&gt;'</span>, <span class="hljs-string">'                &lt;/form&gt;'</span>, <span class="hljs-string">'            &lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div class="loginCreate"&gt;'</span>, <span class="hljs-string">'                &lt;ul&gt;'</span>, <span class="hljs-string">'                    &lt;li&gt;&lt;strong&gt;Have a Facebook account?&lt;/strong&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li&gt;Log in or Create Empire&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li&gt;&lt;a href="/facebook/authorize"&gt;&lt;img src="'</span> + Lib.AssetUrl + <span class="hljs-string">'ui/web/facebook-login-button.png" /&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;/ul&gt;'</span>, <span class="hljs-string">'                &lt;hr /&gt;'</span>, <span class="hljs-string">'                &lt;ul&gt;'</span>, <span class="hljs-string">'                    &lt;li&gt;&lt;strong&gt;Don\'t have an account?&lt;/strong&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li&gt;&lt;button id="loginCreate" type="button"&gt;Create an Empire&lt;/button&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;/ul&gt;'</span>, <span class="hljs-string">'            &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div style="border-top:1px solid #52ACFF;padding:15px 5px;text-align:center;"&gt;'</span>, <span class="hljs-string">'            New to the Lacuna Expanse?  Want to find out more before signing up? &lt;a href="http://www.lacunaexpanse.com" target="_blank"&gt;Click here.&lt;/a&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+        document.body.insertBefore(container, document.body.firstChild);
+        Dom.addClass(container, <span class="hljs-string">"nofooter"</span>);
+        <span class="hljs-keyword">this</span>.Dialog = <span class="hljs-keyword">new</span> YAHOO.widget.Panel(<span class="hljs-keyword">this</span>.id, {
+            constraintoviewport: <span class="hljs-literal">true</span>,
+            fixedcenter: <span class="hljs-literal">true</span>,
+            visible: <span class="hljs-literal">false</span>,
+            draggable: <span class="hljs-literal">false</span>,
+            effect: Game.GetContainerEffect(),
+            modal: <span class="hljs-literal">false</span>,
+            close: <span class="hljs-literal">false</span>,
+            width: <span class="hljs-string">"650px"</span>,
+            underlay: <span class="hljs-literal">false</span>,
+            zIndex: <span class="hljs-number">9999</span>
+        });
+        <span class="hljs-keyword">this</span>.Dialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-comment">//get el's after rendered</span>
+            <span class="hljs-keyword">this</span>.elName = Dom.get(<span class="hljs-string">"loginName"</span>);
+            <span class="hljs-keyword">this</span>.elPass = Dom.get(<span class="hljs-string">"loginPass"</span>);
+            <span class="hljs-keyword">this</span>.elCreate = Dom.get(<span class="hljs-string">"loginCreate"</span>);
+            <span class="hljs-keyword">this</span>.elRemember = Dom.get(<span class="hljs-string">"loginRemember"</span>);
+            <span class="hljs-keyword">this</span>.elForm = Dom.get(<span class="hljs-string">"loginForm"</span>);
+            <span class="hljs-keyword">this</span>.elCreate = Dom.get(<span class="hljs-string">"loginCreate"</span>);
+            <span class="hljs-keyword">this</span>.elReset = Dom.get(<span class="hljs-string">"loginReset"</span>);
+            <span class="hljs-keyword">this</span>.elServer = Dom.get(<span class="hljs-string">'selectServer'</span>);
+            Event.addListener(<span class="hljs-keyword">this</span>.elCreate, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                Event.stopEvent(e);
+                <span class="hljs-keyword">this</span>.createEmpire();
+            }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.addListener(<span class="hljs-keyword">this</span>.elReset, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                Event.stopEvent(e);
+                <span class="hljs-keyword">this</span>.resetPassword();
+            }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.addListener(<span class="hljs-keyword">this</span>.elServer, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                Event.stopEvent(e);
+                <span class="hljs-keyword">var</span> server = Lib.getSelectedOptionValue(<span class="hljs-keyword">this</span>.elServer);
+                <span class="hljs-keyword">var</span> url = <span class="hljs-string">'https://'</span> + server + <span class="hljs-string">'.lacunaexpanse.com'</span>;
+                Game.RPCBase = url;
+                Game.Services = Game.InitServices(YAHOO.lacuna.SMD.Services);
+            }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Event.addListener(<span class="hljs-keyword">this</span>.elForm, <span class="hljs-string">"submit"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                Event.stopEvent(e);
+                <span class="hljs-keyword">this</span>.handleLogin();
+            }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Dom.removeClass(<span class="hljs-keyword">this</span>.id, Lib.Styles.HIDDEN);
+        }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">this</span>.Dialog.render();
+        Game.OverlayManager.register(<span class="hljs-keyword">this</span>.Dialog);
+    };
+    Login.prototype = {
+        handleLogin: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Lacuna.Pulser.Show();
+            <span class="hljs-keyword">this</span>.setMessage(<span class="hljs-string">""</span>);
+            <span class="hljs-keyword">var</span> EmpireServ = Game.Services.Empire;
+            EmpireServ.login({
+                name: <span class="hljs-keyword">this</span>.elName.value,
+                password: <span class="hljs-keyword">this</span>.elPass.value,
+                api_key: Lib.ApiKey
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Login.handleLogin.success"</span>);
+                    <span class="hljs-comment">//clear the session just in case</span>
+                    Game.RemoveCookie(<span class="hljs-string">"session"</span>);
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.elRemember.checked) {
+                        Game.SetCookie(<span class="hljs-string">'empireName'</span>, <span class="hljs-keyword">this</span>.elName.value);
+                    } <span class="hljs-keyword">else</span> {
+                        Game.RemoveCookie(<span class="hljs-string">'empireName'</span>);
+                    }
+                    <span class="hljs-keyword">this</span>.elForm.reset();
+                    <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onLoginSuccessful"</span>, o);
+                    <span class="hljs-keyword">this</span>.hide();
+                },
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    <span class="hljs-keyword">if</span> (o.error.code === <span class="hljs-number">1100</span>) {
+                        <span class="hljs-comment">//haven't founded empire yet so take them to species</span>
+                        <span class="hljs-keyword">this</span>.hide();
+                        <span class="hljs-keyword">this</span>.initEmpireCreator();
+                        Game.OverlayManager.hideAll();
+                        Game.SpeciesCreator.show(o.error.data.empire_id);
+                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (o.error.code === <span class="hljs-number">1200</span>) {
+                        alert(o.error.message);
+                        window.location = o.error.data;
+                    } <span class="hljs-keyword">else</span> {
+                        <span class="hljs-keyword">this</span>.setMessage(o.error.message || <span class="hljs-string">"There was a problem logging in.  Please try again."</span>);
+                    }
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(error)</span> {</span>
+            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.Dialog.cfg.getProperty(<span class="hljs-string">"visible"</span>)) {
+                Game.OverlayManager.hideAll();
+                <span class="hljs-keyword">this</span>.elForm.reset();
+                <span class="hljs-keyword">this</span>.Dialog.show();
+                <span class="hljs-keyword">var</span> str = Game.GetCookie(<span class="hljs-string">'empireName'</span>);
+                <span class="hljs-keyword">if</span> (str) {
+                    <span class="hljs-keyword">this</span>.elName.value = str;
+                    <span class="hljs-keyword">this</span>.elRemember.checked = <span class="hljs-literal">true</span>;
+                    <span class="hljs-keyword">this</span>.elPass.focus();
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">this</span>.elName.focus();
+                }
+                <span class="hljs-keyword">if</span> (error) {
+                    <span class="hljs-keyword">this</span>.setMessage(error.message);
+                }
+            }
+        },
+        hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.elMessage) {
+                Dom.replaceClass(<span class="hljs-keyword">this</span>.elMessage, Lib.Styles.ALERT, Lib.Styles.HIDDEN);
+            }
+            <span class="hljs-keyword">this</span>.Dialog.hide();
+        },
+        setMessage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> {</span>
+            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.elMessage) {
+                <span class="hljs-keyword">var</span> d = document.createElement(<span class="hljs-string">"div"</span>);
+                d.id = <span class="hljs-string">"loginMessage"</span>;
+                <span class="hljs-keyword">var</span> eUl = <span class="hljs-keyword">this</span>.elName.parentNode.parentNode;
+                eUl.parentNode.insertBefore(d, eUl.nextSibling);
+                <span class="hljs-keyword">this</span>.elMessage = d;
+            }
+            <span class="hljs-keyword">if</span> (str &amp;&amp; str.length &gt; <span class="hljs-number">0</span>) {
+                Dom.replaceClass(<span class="hljs-keyword">this</span>.elMessage, Lib.Styles.HIDDEN, Lib.Styles.ALERT);
+                <span class="hljs-keyword">this</span>.elMessage.innerHTML = str;
+            } <span class="hljs-keyword">else</span> {
+                Dom.replaceClass(<span class="hljs-keyword">this</span>.elMessage, Lib.Styles.ALERT, Lib.Styles.HIDDEN);
+            }
+        },
+        initEmpireCreator: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (!Game.EmpireCreator) {
+                Game.EmpireCreator = <span class="hljs-keyword">new</span> Lacuna.CreateEmpire(<span class="hljs-keyword">this</span>);
+                Game.EmpireCreator.subscribe(<span class="hljs-string">"onCreateSuccessful"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oArgs)</span> {</span>
+                    <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onLoginSuccessful"</span>, oArgs);
+                }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            }
+        },
+        createEmpire: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.hide(); <span class="hljs-comment">//hide login</span>
+            <span class="hljs-keyword">this</span>.initEmpireCreator();
+            Game.OverlayManager.hideAll();
+            Game.EmpireCreator.show();
+        },
+        resetPassword: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(reset_key)</span> {</span>
+            <span class="hljs-keyword">this</span>.hide(); <span class="hljs-comment">//hide login</span>
+            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.ResetPassword) {
+                <span class="hljs-keyword">this</span>.ResetPassword = <span class="hljs-keyword">new</span> ResetPassword(<span class="hljs-keyword">this</span>);
+                <span class="hljs-keyword">this</span>.ResetPassword.subscribe(<span class="hljs-string">"onResetSuccessful"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oArgs)</span> {</span>
+                    <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onLoginSuccessful"</span>, oArgs);
+                }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            }
+            Game.OverlayManager.hideAll();
+            <span class="hljs-keyword">if</span> (reset_key) {
+                <span class="hljs-keyword">this</span>.ResetPassword.showReset(reset_key);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">this</span>.ResetPassword.show(<span class="hljs-keyword">this</span>.elName.value);
+            }
+        }
+    };
+    Lang.augmentProto(Login, Util.EventProvider);
+    <span class="hljs-keyword">var</span> ResetPassword = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Login)</span> {</span>
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onResetSuccessful"</span>);
+        <span class="hljs-keyword">this</span>._login = Login;
+        <span class="hljs-keyword">this</span>.emailId = <span class="hljs-string">"resetPasswordEmail"</span>;
+        <span class="hljs-keyword">var</span> emailContainer = document.createElement(<span class="hljs-string">"div"</span>);
+        emailContainer.id = <span class="hljs-keyword">this</span>.emailId;
+        Dom.addClass(emailContainer, <span class="hljs-string">"hidden"</span>);
+        emailContainer.innerHTML = [<span class="hljs-string">'    &lt;div class="hd"&gt;Reset Password&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="bd"&gt;'</span>, <span class="hljs-string">'        &lt;form id="resetEmailForm" name="resetEmailForm"&gt;'</span>, <span class="hljs-string">'            &lt;p&gt;'</span>, <span class="hljs-string">'                Enter either your empire name, or the email address used on the account.  You will be sent an email with instructions for resetting your password.'</span>, <span class="hljs-string">'            &lt;/p&gt;'</span>, <span class="hljs-string">'            &lt;ul&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label for="resetEmpireName"&gt;Empire Name&lt;/label&gt;&lt;input type="text" id="resetEmpireName" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label for="resetEmail"&gt;Email&lt;/label&gt;&lt;input type="text" id="resetEmail" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;a href="#" id="resetShowKey"&gt;Already have a reset key?&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;/ul&gt;'</span>, <span class="hljs-string">'        &lt;/form&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="ft"&gt;&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+        document.body.insertBefore(emailContainer, document.body.firstChild);
+        <span class="hljs-keyword">this</span>.EmailDialog = <span class="hljs-keyword">new</span> YAHOO.widget.Dialog(<span class="hljs-keyword">this</span>.emailId, {
+            constraintoviewport: <span class="hljs-literal">true</span>,
+            fixedcenter: <span class="hljs-literal">true</span>,
+            visible: <span class="hljs-literal">false</span>,
+            draggable: <span class="hljs-literal">false</span>,
+            effect: Game.GetContainerEffect(),
+            modal: <span class="hljs-literal">true</span>,
+            close: <span class="hljs-literal">true</span>,
+            width: <span class="hljs-string">"400px"</span>,
+            underlay: <span class="hljs-literal">false</span>,
+            zIndex: <span class="hljs-number">9999</span>,
+            buttons: [{
+                text: <span class="hljs-string">"Send Reset Email"</span>,
+                handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.submit();
+                },
+                isDefault: <span class="hljs-literal">true</span>
+            }, {
+                text: <span class="hljs-string">"Cancel"</span>,
+                handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.cancel();
+                }
+            }],
+            hideaftersubmit: <span class="hljs-literal">false</span>,
+            postmethod: <span class="hljs-string">"manual"</span>
+        });
+        <span class="hljs-keyword">this</span>.EmailDialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.elName = Dom.get(<span class="hljs-string">"resetEmpireName"</span>);
+            <span class="hljs-keyword">this</span>.elEmail = Dom.get(<span class="hljs-string">"resetEmail"</span>);
+            Event.on(<span class="hljs-string">'resetShowKey'</span>, <span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                <span class="hljs-keyword">this</span>.showReset();
+            }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            Dom.removeClass(<span class="hljs-keyword">this</span>.emailId, Lib.Styles.HIDDEN);
+        }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">this</span>.EmailDialog.submitEvent.subscribe(<span class="hljs-keyword">this</span>.sendEmail, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">this</span>.EmailDialog.cancelEvent.subscribe(<span class="hljs-keyword">this</span>.hide, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">this</span>.EmailDialog.render();
+        Game.OverlayManager.register(<span class="hljs-keyword">this</span>.EmailDialog);
+        <span class="hljs-keyword">this</span>.resetId = <span class="hljs-string">"resetPasswordKey"</span>;
+        <span class="hljs-keyword">var</span> resetContainer = document.createElement(<span class="hljs-string">"div"</span>);
+        resetContainer.id = <span class="hljs-keyword">this</span>.resetId;
+        Dom.addClass(resetContainer, <span class="hljs-string">"hidden"</span>);
+        resetContainer.innerHTML = [<span class="hljs-string">'    &lt;div class="hd"&gt;Reset Password&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="bd"&gt;'</span>, <span class="hljs-string">'        &lt;form id="resetForm" name="resetForm"&gt;'</span>, <span class="hljs-string">'            &lt;p&gt;'</span>, <span class="hljs-string">'                Enter the reset key you have received in your email, along with what you would like your password set to.'</span>, <span class="hljs-string">'            &lt;/p&gt;'</span>, <span class="hljs-string">'            &lt;ul&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label for="resetKey"&gt;Reset Key&lt;/label&gt;&lt;input maxlength="36" type="text" id="resetKey" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label for="resetPassword1"&gt;Password&lt;/label&gt;&lt;input type="password" id="resetPassword1" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label for="resetPassword2"&gt;Confirm Password&lt;/label&gt;&lt;input type="password" id="resetPassword2" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;/ul&gt;'</span>, <span class="hljs-string">'        &lt;/form&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="ft"&gt;&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+        document.body.insertBefore(resetContainer, document.body.firstChild);
+        <span class="hljs-keyword">this</span>.ResetDialog = <span class="hljs-keyword">new</span> YAHOO.widget.Dialog(<span class="hljs-keyword">this</span>.resetId, {
+            constraintoviewport: <span class="hljs-literal">true</span>,
+            fixedcenter: <span class="hljs-literal">true</span>,
+            visible: <span class="hljs-literal">false</span>,
+            draggable: <span class="hljs-literal">false</span>,
+            modal: <span class="hljs-literal">true</span>,
+            close: <span class="hljs-literal">true</span>,
+            width: <span class="hljs-string">"450px"</span>,
+            underlay: <span class="hljs-literal">false</span>,
+            zIndex: <span class="hljs-number">9999</span>,
+            buttons: [{
+                text: <span class="hljs-string">"Reset Password"</span>,
+                handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.submit();
+                },
+                isDefault: <span class="hljs-literal">true</span>
+            }, {
+                text: <span class="hljs-string">"Cancel"</span>,
+                handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.cancel();
+                }
+            }],
+            hideaftersubmit: <span class="hljs-literal">false</span>,
+            postmethod: <span class="hljs-string">"manual"</span>
+        });
+        <span class="hljs-keyword">this</span>.ResetDialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.elKey = Dom.get(<span class="hljs-string">"resetKey"</span>);
+            <span class="hljs-keyword">this</span>.elPassword1 = Dom.get(<span class="hljs-string">"resetPassword1"</span>);
+            <span class="hljs-keyword">this</span>.elPassword2 = Dom.get(<span class="hljs-string">"resetPassword2"</span>);
+            Dom.removeClass(<span class="hljs-keyword">this</span>.resetId, Lib.Styles.HIDDEN);
+        }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">this</span>.ResetDialog.submitEvent.subscribe(<span class="hljs-keyword">this</span>.resetPassword, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">this</span>.ResetDialog.cancelEvent.subscribe(<span class="hljs-keyword">this</span>.hide, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">this</span>.ResetDialog.render();
+        Game.OverlayManager.register(<span class="hljs-keyword">this</span>.ResetDialog);
+    };
+    ResetPassword.prototype = {
+        show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(empire_name)</span> {</span>
+            <span class="hljs-keyword">this</span>.elName.value = empire_name ? empire_name : <span class="hljs-string">''</span>;
+            <span class="hljs-keyword">this</span>.elEmail.value = <span class="hljs-string">''</span>;
+            <span class="hljs-keyword">this</span>.EmailDialog.getButtons()[<span class="hljs-number">0</span>].disabled = <span class="hljs-literal">false</span>;
+            <span class="hljs-keyword">this</span>.EmailDialog.show();
+        },
+        hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.EmailDialog.hide();
+            <span class="hljs-keyword">this</span>.ResetDialog.hide();
+            <span class="hljs-keyword">this</span>._login.show();
+        },
+        sendEmail: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> empireName = <span class="hljs-keyword">this</span>.elName.value;
+            <span class="hljs-keyword">var</span> email = <span class="hljs-keyword">this</span>.elEmail.value;
+            <span class="hljs-keyword">var</span> data = {};
+            <span class="hljs-keyword">if</span> (empireName.length &gt; <span class="hljs-number">0</span>) {
+                data.empire_name = empireName;
+            }
+            <span class="hljs-keyword">if</span> (email.length &gt; <span class="hljs-number">0</span>) {
+                data.email = email;
+            }
+            <span class="hljs-keyword">this</span>.EmailDialog.getButtons()[<span class="hljs-number">0</span>].disabled = <span class="hljs-literal">true</span>;
+            Lacuna.Pulser.Show();
+            Game.Services.Empire.send_password_reset_message(data, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"ResetPassword.sendEmail.success"</span>);
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.showReset();
+                },
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    <span class="hljs-keyword">this</span>.EmailDialog.getButtons()[<span class="hljs-number">0</span>].disabled = <span class="hljs-literal">false</span>;
+                },
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        showReset: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(reset_key)</span> {</span>
+            <span class="hljs-keyword">if</span> (reset_key) {
+                <span class="hljs-keyword">this</span>.elKey.value = reset_key;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">this</span>.elKey.value = <span class="hljs-string">''</span>;
+            }
+            <span class="hljs-keyword">this</span>.elPassword1.value = <span class="hljs-string">''</span>;
+            <span class="hljs-keyword">this</span>.elPassword2.value = <span class="hljs-string">''</span>;
+            <span class="hljs-keyword">this</span>.EmailDialog.hide();
+            <span class="hljs-keyword">this</span>.ResetDialog.show();
+        },
+        resetPassword: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> reset_key = <span class="hljs-keyword">this</span>.elKey.value;
+            <span class="hljs-keyword">var</span> password1 = <span class="hljs-keyword">this</span>.elPassword1.value;
+            <span class="hljs-keyword">var</span> password2 = <span class="hljs-keyword">this</span>.elPassword2.value;
+            <span class="hljs-keyword">if</span> (password1 !== password2) {
+                alert(<span class="hljs-string">"Passwords do not match!"</span>);
+            } <span class="hljs-keyword">else</span> {
+                Lacuna.Pulser.Show();
+                Game.Services.Empire.reset_password({
+                    reset_key: reset_key,
+                    password1: password1,
+                    password2: password2,
+                    api_key: Lib.ApiKey
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"ResetPassword.resetPassword.success"</span>);
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">'onResetSuccessful'</span>, o);
+                        <span class="hljs-keyword">this</span>.hide();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            }
+        }
+    };
+    Lang.augmentProto(ResetPassword, Util.EventProvider);
+    Lacuna.Login = Login;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

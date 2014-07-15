@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - building.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/building.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/building.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-comment">/*global YAHOO, $ */</span>
+<span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
+<span class="hljs-keyword">var</span> Templates = <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/templates'</span>),
+    assets = <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/assets'</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
+        Util = YAHOO.util,
+        Dom = Util.Dom,
+        Event = Util.Event,
+        Lacuna = YAHOO.lacuna,
+        Game = Lacuna.Game;
+    <span class="hljs-keyword">var</span> Building = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oResults)</span> {</span>
+        <span class="hljs-keyword">this</span>.repairTemplate = Templates.get(<span class="hljs-string">'tab.building.repair'</span>);
+        <span class="hljs-keyword">this</span>.productionTemplate = Templates.get(<span class="hljs-string">'tab.building.production'</span>);
+        <span class="hljs-keyword">this</span>.storageTemplate = Templates.get(<span class="hljs-string">'tab.building.storage'</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onMapRpc"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onQueueAdd"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onQueueReset"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onAddTab"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onRemoveTab"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onSelectTab"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onReloadTabs"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onUpdateTile"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onUpdateMap"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onRemoveTile"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onHide"</span>);</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>For internal use</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onLoad"</span>);
+        <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onRepair"</span>);</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Common elements</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-keyword">this</span>.building = oResults.building;
+        <span class="hljs-keyword">this</span>.work = oResults.building.work;</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Delete status since it&#39;s rather large</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-keyword">delete</span> oResults.status;</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>So we can store just in case anyway</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-keyword">this</span>.result = oResults;
+    };
+    Building.prototype = {
+        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.unsubscribeAll();
+        },
+        load: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onLoad"</span>);
+        },
+        getTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.building.efficiency, <span class="hljs-number">10</span>) &lt; <span class="hljs-number">100</span> &amp;&amp; <span class="hljs-keyword">this</span>.building.repair_costs) {
+                <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>.getProductionTab(), <span class="hljs-keyword">this</span>.getRepairTab()];
+            }
+            <span class="hljs-keyword">var</span> tabs = [<span class="hljs-keyword">this</span>.getProductionTab()],
+                childTabs = <span class="hljs-keyword">this</span>.building.level &gt; <span class="hljs-number">0</span> ? <span class="hljs-keyword">this</span>.getChildTabs() : [];
+            <span class="hljs-keyword">if</span> (Lang.isArray(childTabs)) {
+                tabs = tabs.concat(childTabs);
+            }</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Incoming supply-chains tab. This is because Station Command
+doesn&#39;t inherit from PCC. It&#39;s here to avoid duplication.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.building.url === <span class="hljs-string">"/planetarycommand"</span> || <span class="hljs-keyword">this</span>.building.url === <span class="hljs-string">"/stationcommand"</span>) {
+                tabs.push(<span class="hljs-keyword">this</span>.getIncomingSupplyChainsTab());
+            }</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Create storage tab last</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.building.upgrade.production &amp;&amp; (<span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.building.food_capacity, <span class="hljs-number">10</span>) + <span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.building.ore_capacity, <span class="hljs-number">10</span>) + <span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.building.water_capacity, <span class="hljs-number">10</span>) + <span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.building.energy_capacity, <span class="hljs-number">10</span>) + <span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.building.waste_capacity, <span class="hljs-number">10</span>)) &gt; <span class="hljs-number">0</span>) {
+                tabs.push(<span class="hljs-keyword">this</span>.getStorageTab());
+            }
+            <span class="hljs-keyword">return</span> tabs;
+        },
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-comment">//overrideable function for child classes that have their own tabs</span>
+            <span class="hljs-comment">//** Must return nothing or an array of tabs **</span>
+            <span class="hljs-keyword">return</span> [];
+        },</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Event Helpers</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        rpcSuccess: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+            <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onMapRpc"</span>, o.result);
+            <span class="hljs-keyword">if</span> (o.result.building &amp;&amp; <span class="hljs-keyword">this</span>.building) {</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>if we suddenly have work update the tile to add the tile.
+if we don&#39;t have work update the tile to remove the timer</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">                <span class="hljs-keyword">var</span> workChanged = ((<span class="hljs-keyword">this</span>.building.work &amp;&amp; !o.result.building.work) || (!<span class="hljs-keyword">this</span>.building.work &amp;&amp; o.result.building.work) || (<span class="hljs-keyword">this</span>.building.work &amp;&amp; o.result.building.work &amp;&amp; <span class="hljs-keyword">this</span>.building.work.end !== o.result.building.work.end));
+                <span class="hljs-keyword">if</span> (workChanged) {
+                    <span class="hljs-keyword">this</span>.building.work = o.result.building.work;
+                    <span class="hljs-keyword">this</span>.work = <span class="hljs-keyword">this</span>.building.work;
+                    <span class="hljs-keyword">this</span>.updateBuildingTile(<span class="hljs-keyword">this</span>.building);
+                }
+                <span class="hljs-comment">/*if(o.result.building.id &amp;&amp; o.result.building.name) {
+                    delete this.building.work;
+                    delete this.building.pending_build;
+                    Lang.augmentObject(this.building, o.result.building, true);
+                }
+                else if(o.result.building.work) {
+                    this.building.work = o.result.building.work;
+                }
+                this.work = this.building.work;
+                if(workChanged) {
+                    this.updateBuildingTile(this.building);
+                }*/</span>
+            }
+        },
+        addQueue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sec, func, elm, sc)</span> {</span>
+            <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onQueueAdd"</span>, {
+                seconds: sec,
+                fn: func,
+                el: elm,
+                scope: sc
+            });
+        },
+        resetQueue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onQueueReset"</span>);
+        },
+        addTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tab)</span> {</span>
+            <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onAddTab"</span>, tab);
+        },
+        removeTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tab)</span> {</span>
+            <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onRemoveTab"</span>, tab);
+        },
+        updateBuildingTile: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(building)</span> {</span>
+            <span class="hljs-comment">//always updated url when doing this since some returns don't have the url</span>
+            building.url = <span class="hljs-keyword">this</span>.building.url;
+            <span class="hljs-keyword">this</span>.building = building;
+            <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onUpdateTile"</span>, <span class="hljs-keyword">this</span>.building);
+        },
+        removeBuildingTile: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(building)</span> {</span>
+            <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onRemoveTile"</span>, building);
+        },
+        getRepairTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.repairTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">'Repair'</span>,
+                content: <span class="hljs-keyword">this</span>.repairTemplate({
+                    efficiency: <span class="hljs-keyword">this</span>.building.efficiency,
+                    assets: assets,
+                    food: <span class="hljs-keyword">this</span>.building.repair_costs.food,
+                    ore: <span class="hljs-keyword">this</span>.building.repair_costs.ore,
+                    water: <span class="hljs-keyword">this</span>.building.repair_costs.water,
+                    energy: <span class="hljs-keyword">this</span>.building.repair_costs.energy
+                })
+            });
+            Event.on(<span class="hljs-string">"repairBuilding"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Repair, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.repairTab;
+        },
+        Repair: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
+            btn.disabled = <span class="hljs-literal">true</span>;
+            Lacuna.Pulser.Show();
+            Game.Services.Buildings.Generic.repair({
+                session_id: Game.GetSession(),
+                building_id: <span class="hljs-keyword">this</span>.building.id
+            }, {
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    Lacuna.Pulser.Hide();
+                    <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.repairTab) {
+                        Event.removeListener(<span class="hljs-string">"repair"</span>, <span class="hljs-string">"click"</span>);
+                        <span class="hljs-keyword">this</span>.removeTab(<span class="hljs-keyword">this</span>.repairTab);
+                        o.result.building.url = <span class="hljs-keyword">this</span>.building.url;
+                        <span class="hljs-keyword">this</span>.building = o.result.building;
+                        <span class="hljs-keyword">this</span>.work = o.result.building.work;
+                        <span class="hljs-keyword">this</span>.result = o.result;
+                        <span class="hljs-keyword">this</span>.updateBuildingTile(o.result.building);
+                        <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onReloadTabs"</span>);
+                    }
+                    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.productionTab) {
+                        <span class="hljs-keyword">this</span>.addTab(<span class="hljs-keyword">this</span>.getProductionTab());
+                    }
+                    <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onRepair"</span>);
+                },
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    btn.disabled = <span class="hljs-literal">false</span>;
+                },
+                target: <span class="hljs-keyword">this</span>.building.url,
+                scope: <span class="hljs-keyword">this</span>
+            });
+        },
+        getProductionTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> level = <span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.building.level, <span class="hljs-number">10</span>);
+            <span class="hljs-keyword">this</span>.productionTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">'Production'</span>,
+                content: <span class="hljs-keyword">this</span>.productionTemplate({
+                    assets: assets,
+                    building: <span class="hljs-keyword">this</span>.building,
+                    upgrade: <span class="hljs-keyword">this</span>.building.upgrade,
+                    downgrade: <span class="hljs-keyword">this</span>.building.downgrade,
+                    planet: Game.GetCurrentPlanet(),
+                    upLevel: level + <span class="hljs-number">1</span>,
+                    downLevel: level - <span class="hljs-number">1</span>,
+                    level: level
+                })
+            });
+            Event.on(<span class="hljs-string">'buildingDetailsDemolish'</span>, <span class="hljs-string">'click'</span>, <span class="hljs-keyword">this</span>.Demolish, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.building.upgrade.can) {
+                Event.on(<span class="hljs-string">'buildingDetailsUpgrade'</span>, <span class="hljs-string">'click'</span>, <span class="hljs-keyword">this</span>.Upgrade, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            }
+            <span class="hljs-keyword">if</span> (level &gt; <span class="hljs-number">1</span>) {
+                Event.on(<span class="hljs-string">'buildingDetailsDowngrade'</span>, <span class="hljs-string">'click'</span>, <span class="hljs-keyword">this</span>.Downgrade, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.productionTab;
+        },
+        Demolish: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> building = <span class="hljs-keyword">this</span>.building;
+            <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">'Are you sure you want to Demolish the level '</span>, building.level, <span class="hljs-string">' '</span>, building.name, <span class="hljs-string">'?'</span>].join(<span class="hljs-string">''</span>))) {
+                Lacuna.Pulser.Show();
+                Game.Services.Buildings.Generic.demolish({
+                    session_id: Game.GetSession(),
+                    building_id: building.id
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">this</span>.removeBuildingTile(building);
+                        <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onHide"</span>);
+                    },
+                    scope: <span class="hljs-keyword">this</span>,
+                    target: building.url
+                });
+            }
+        },
+        Downgrade: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> building = <span class="hljs-keyword">this</span>.building;
+            <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">'Are you sure you want to downgrade the level '</span>, building.level, <span class="hljs-string">' '</span>, building.name, <span class="hljs-string">'?'</span>].join(<span class="hljs-string">''</span>))) {
+                Lacuna.Pulser.Show();
+                Game.Services.Buildings.Generic.downgrade({
+                    session_id: Game.GetSession(),
+                    building_id: building.id
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onMapRpc"</span>, o.result);
+                        <span class="hljs-keyword">var</span> b = building; <span class="hljs-comment">//originally passed in building data from currentBuilding</span>
+                        b.id = o.result.building.id;
+                        b.level = o.result.building.level;
+                        b.pending_build = o.result.building.pending_build;
+                        YAHOO.log(b, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Building.Upgrade.success.building"</span>);
+                        <span class="hljs-keyword">this</span>.updateBuildingTile(b);
+                        <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onHide"</span>);
+                    },
+                    scope: <span class="hljs-keyword">this</span>,
+                    target: building.url
+                });
+            }
+        },
+        Upgrade: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> building = <span class="hljs-keyword">this</span>.building,
+                userUpgrade = <span class="hljs-literal">false</span>;
+            <span class="hljs-keyword">if</span> (building.upgrade.cost.halls) {
+                userUpgrade = confirm(<span class="hljs-string">'Are you sure you want to sacrifice '</span> + building.upgrade.cost.halls + <span class="hljs-string">' Halls of Vrbansk?'</span>);
+            } <span class="hljs-keyword">else</span> {
+                userUpgrade = <span class="hljs-literal">true</span>;
+            }
+            <span class="hljs-keyword">if</span> (userUpgrade) {
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">var</span> BuildingServ = Game.Services.Buildings.Generic,
+                    data = {
+                        session_id: Game.GetSession(<span class="hljs-string">""</span>),
+                        building_id: building.id
+                    };
+                BuildingServ.upgrade(data, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onMapRpc"</span>, o.result);
+                        <span class="hljs-keyword">var</span> b = building; <span class="hljs-comment">//originally passed in building data from currentBuilding</span>
+                        b.id = o.result.building.id;
+                        b.level = o.result.building.level;
+                        b.pending_build = o.result.building.pending_build;
+                        <span class="hljs-keyword">this</span>.updateBuildingTile(b);
+                        <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onHide"</span>);
+                    },
+                    scope: <span class="hljs-keyword">this</span>,
+                    target: building.url
+                });
+            }
+        },
+        getIncomingSupplyChainsTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.incomingSupplyChainTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">"Supply Chains"</span>,
+                content: [<span class="hljs-string">'&lt;div id="incomingSupplyChainInfo" style="margin-bottom: 2px"&gt;'</span>, <span class="hljs-string">'   &lt;div id="incomingSupplyChainList"&gt;'</span>, <span class="hljs-string">'      &lt;b&gt;Incoming Supply Chains&lt;/b&gt;&lt;hr/&gt;'</span>, <span class="hljs-string">'      &lt;ul id="incomingSupplyChainListHeader" class="incomingSupplyChainHeader incomingSupplyChainInfo clearafter"&gt;'</span>, <span class="hljs-string">'        &lt;li class="incomingSupplyChainBody"&gt;From Body&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="incomingSupplyChainResource"&gt;Resource&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="incomingSupplyChainHour"&gt;/hr&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="incomingSupplyChainEfficiency"&gt;Efficiency&lt;/li&gt;'</span>, <span class="hljs-string">'      &lt;/ul&gt;'</span>, <span class="hljs-string">'      &lt;div&gt;&lt;div id="incomingSupplyChainListDetails"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'   &lt;/div&gt;'</span>, <span class="hljs-string">'   &lt;div id="incomingSupplyChainListNone"&gt;&lt;b&gt;No Incoming Supply Chains&lt;/b&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
+            });
+            <span class="hljs-keyword">this</span>.incomingSupplyChainTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.viewIncomingSupplyChainInfo, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.incomingSupplyChainTab;
+        },
+        viewIncomingSupplyChainInfo: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Dom.setStyle(<span class="hljs-string">"incomingSupplyChainList"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+            Dom.setStyle(<span class="hljs-string">"incomingSupplyChainListNone"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.incoming_supply_chains) {
+                Lacuna.Pulser.Show();
+                <span class="hljs-keyword">this</span>.service.view_incoming_supply_chains({
+                    session_id: Game.GetSession(),
+                    building_id: <span class="hljs-keyword">this</span>.building.id
+                }, {
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        Lacuna.Pulser.Hide();
+                        <span class="hljs-keyword">this</span>.rpcSuccess(o);
+                        <span class="hljs-keyword">this</span>.incoming_supply_chains = o.result.supply_chains;
+                        <span class="hljs-keyword">this</span>.incomingSupplyChainList();
+                    },
+                    scope: <span class="hljs-keyword">this</span>
+                });
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">this</span>.incomingSupplyChainList();
+            }
+        },
+        incomingSupplyChainList: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> supply_chains = <span class="hljs-keyword">this</span>.incoming_supply_chains,
+                i, chain, nUl, nLi, details, detailsParent, ul, li;
+            <span class="hljs-keyword">if</span> (supply_chains.length === <span class="hljs-number">0</span>) {
+                Dom.setStyle(<span class="hljs-string">"incomingSupplyChainList"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+                Dom.setStyle(<span class="hljs-string">"incomingSupplyChainListNone"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+                <span class="hljs-keyword">return</span>;
+            }
+            Dom.setStyle(<span class="hljs-string">"incomingSupplyChainList"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
+            Dom.setStyle(<span class="hljs-string">"incomingSupplyChainListNone"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
+            details = Dom.get(<span class="hljs-string">"incomingSupplyChainListDetails"</span>);
+            detailsParent = details.parentNode;
+            ul = document.createElement(<span class="hljs-string">"ul"</span>);
+            li = document.createElement(<span class="hljs-string">"li"</span>);</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>chains list</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">            Event.purgeElement(details, <span class="hljs-literal">true</span>); <span class="hljs-comment">//clear any events before we remove</span>
+            details = detailsParent.removeChild(details); <span class="hljs-comment">//remove from DOM to make this faster</span>
+            details.innerHTML = <span class="hljs-string">""</span>;
+            <span class="hljs-comment">//Dom.setStyle(detailsParent, "display", "");</span>
+            detailsParent.appendChild(details); <span class="hljs-comment">//add back as child</span>
+            <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; supply_chains.length; i += <span class="hljs-number">1</span>) {
+                chain = supply_chains[i];
+                nUl = ul.cloneNode(<span class="hljs-literal">false</span>);
+                Dom.addClass(nUl, <span class="hljs-string">"incomingSupplyChainInfo"</span>);
+                Dom.addClass(nUl, <span class="hljs-string">"clearafter"</span>);
+                nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                Dom.addClass(nLi, <span class="hljs-string">"incomingSupplyChainBody"</span>);
+                <span class="hljs-keyword">if</span> (chain.stalled === <span class="hljs-number">1</span>) {
+                    Dom.addClass(nUl, <span class="hljs-string">"incomingSupplyChainStalled"</span>);
+                    nLi.innerHTML = chain.from_body.name + <span class="hljs-string">" (Stalled)"</span>;
+                } <span class="hljs-keyword">else</span> {
+                    nLi.innerHTML = chain.from_body.name;
+                }
+                nUl.appendChild(nLi);
+                nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                Dom.addClass(nLi, <span class="hljs-string">"incomingSupplyChainResource"</span>);
+                nLi.innerHTML = chain.resource_type.titleCaps();
+                nUl.appendChild(nLi);
+                nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                Dom.addClass(nLi, <span class="hljs-string">"incomingSupplyChainHour"</span>);
+                nLi.innerHTML = chain.resource_hour;
+                nUl.appendChild(nLi);
+                nLi = li.cloneNode(<span class="hljs-literal">false</span>);
+                Dom.addClass(nLi, <span class="hljs-string">"incomingSupplyChainEfficiency"</span>);
+                nLi.innerHTML = chain.percent_transferred;
+                nUl.appendChild(nLi);
+                details.appendChild(nUl);
+            }
+            <span class="hljs-comment">//wait for tab to display first</span>
+            setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">var</span> Ht = Game.GetSize()
+                    .h - <span class="hljs-number">250</span>;
+                <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">250</span>) {
+                    Ht = <span class="hljs-number">250</span>;
+                }
+                Dom.setStyle(detailsParent, <span class="hljs-string">"height"</span>, Ht + <span class="hljs-string">"px"</span>);
+                Dom.setStyle(detailsParent, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
+            }, <span class="hljs-number">10</span>);
+        },
+        getStorageTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
+                label: <span class="hljs-string">'Storage'</span>,
+                content: <span class="hljs-keyword">this</span>.storageTemplate({
+                    assets: assets,
+                    building: <span class="hljs-keyword">this</span>.building,
+                    upgrade: <span class="hljs-keyword">this</span>.building.upgrade
+                })
+            });
+        }
+    };
+    Lang.augmentProto(Building, Util.EventProvider);
+    YAHOO.lacuna.buildings.Building = Building;
+}());</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

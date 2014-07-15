@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - pulse.js</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/pulse.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/pulse.js
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
+YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Pulse = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> panel = <span class="hljs-keyword">new</span> YAHOO.widget.Panel(<span class="hljs-string">"pulsing"</span>, {
+            fixedcenter: <span class="hljs-literal">true</span>,
+            close: <span class="hljs-literal">false</span>,
+            underlay: <span class="hljs-string">"none"</span>,
+            draggable: <span class="hljs-literal">false</span>,
+            <span class="hljs-comment">//effect:{effect:YAHOO.widget.ContainerEffect.FADE,duration:0.2},</span>
+            modal: <span class="hljs-literal">false</span>,
+            visible: <span class="hljs-literal">false</span>,
+            width: <span class="hljs-string">"100px"</span>
+        });
+        YAHOO.util.Dom.removeClass(<span class="hljs-string">"pulsing"</span>, <span class="hljs-string">"hidden"</span>);
+        panel.render();
+        <span class="hljs-keyword">this</span>._panel = panel;
+        <span class="hljs-keyword">this</span>.counter = <span class="hljs-number">0</span>;
+    };
+    Pulse.prototype = {
+        Show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>._panel.bringToTop();
+            <span class="hljs-keyword">this</span>._panel.show();
+            <span class="hljs-comment">//this.counter++;</span>
+        },
+        Hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-comment">//this.counter--;</span>
+            <span class="hljs-comment">//if(this.counter &lt;= 0) {</span></pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>   this.counter = 0;</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">            <span class="hljs-keyword">this</span>._panel.hide();
+            <span class="hljs-comment">//}</span>
+        }
+    };
+    YAHOO.lacuna.Pulse = Pulse;
+})();</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>
