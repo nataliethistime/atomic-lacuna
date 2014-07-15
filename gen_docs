@@ -1,11 +1,11 @@
 # Just to make sure
 rm -rf docs/code
 
-grock --out "docs/code" --style thin      \
-    --glob "src/*.js"                     \
-    --glob "app/js/*.js" --glob "app/js/**/*.js" \
-    --glob "README.md"                    \
-    --glob "app/templates/**/*.html"      \
+grock --out "docs/code" --style thin \
+    --glob "src/*.js"                \
+    --glob "app/js/**/*.js"          \
+    --glob "README.md"               \
+    --glob "app/templates/**/*.hbs"  \
     --glob "app/css/*.css"
 
 # TODO: replace all the emoji's with <img> things.

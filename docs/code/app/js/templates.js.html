@@ -112,7 +112,7 @@ module.exports = {
     },
     fixName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
         name = name.replace(<span class="hljs-regexp">/\./g</span>, path.sep);
-        <span class="hljs-keyword">return</span> name + <span class="hljs-string">'.html'</span>;
+        <span class="hljs-keyword">return</span> name + <span class="hljs-string">'.hbs'</span>;
     },
     addPrefix: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
         <span class="hljs-keyword">return</span> <span class="hljs-string">'__'</span> + name;
@@ -120,7 +120,8 @@ module.exports = {
     getLocation: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
         <span class="hljs-keyword">return</span> path.join(Util.root(), <span class="hljs-string">'templates'</span>, name);
     }
-};</pre></div>
+};
+</pre></div>
       
       </div>
     

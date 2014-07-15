@@ -625,6 +625,54 @@ window.files = [
   ]
 },
 {
+  "path": "app/templates/menu/about.hbs.html",
+  "originalName": "about.hbs",
+  "originalPath": "app/templates/menu/about.hbs",
+  "name": "about.hbs.html",
+  "lang": "handlebars",
+  "toc": []
+},
+{
+  "path": "app/templates/menu/announcement.hbs.html",
+  "originalName": "announcement.hbs",
+  "originalPath": "app/templates/menu/announcement.hbs",
+  "name": "announcement.hbs.html",
+  "lang": "handlebars",
+  "toc": []
+},
+{
+  "path": "app/templates/menu/captcha.hbs.html",
+  "originalName": "captcha.hbs",
+  "originalPath": "app/templates/menu/captcha.hbs",
+  "name": "captcha.hbs.html",
+  "lang": "handlebars",
+  "toc": []
+},
+{
+  "path": "app/templates/tab/building/production.hbs.html",
+  "originalName": "production.hbs",
+  "originalPath": "app/templates/tab/building/production.hbs",
+  "name": "production.hbs.html",
+  "lang": "handlebars",
+  "toc": []
+},
+{
+  "path": "app/templates/tab/building/repair.hbs.html",
+  "originalName": "repair.hbs",
+  "originalPath": "app/templates/tab/building/repair.hbs",
+  "name": "repair.hbs.html",
+  "lang": "handlebars",
+  "toc": []
+},
+{
+  "path": "app/templates/tab/building/storage.hbs.html",
+  "originalName": "storage.hbs",
+  "originalPath": "app/templates/tab/building/storage.hbs",
+  "name": "storage.hbs.html",
+  "lang": "handlebars",
+  "toc": []
+},
+{
   "path": "app/css/styles.css.html",
   "originalName": "styles.css",
   "originalPath": "app/css/styles.css",
