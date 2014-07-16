@@ -64,14 +64,20 @@ YAHOO.namespace("lacuna");
                 num_incoming_ally = this.num_incoming_ally[this.planetId] || 0,
                 num_incoming_enemy = this.num_incoming_enemy[this.planetId] || 0;
             var arr = [];
-            if (skip_incoming_ships == 1) {
+            var serverTime;
+            var len;
+            var s;
+            var ship;
+            var ms;
+            var arrTime;
+            if (skip_incoming_ships === 1) {
                 arr = arr.concat(['<li><span style="color:#f00">DISABLED (see profile)</span></li>']);
             }
             if (num_incoming_enemy > 0) {
                 arr = arr.concat(['<li><span style="color:#fff">', num_incoming_enemy, ' foreign</span></li>']);
-                var serverTime = Lib.getTime(Game.ServerData.time),
-                    len = incoming_enemy.length;
-                for (var s = 0; s < len; s++) {
+                serverTime = Lib.getTime(Game.ServerData.time);
+                len = incoming_enemy.length;
+                for (s = 0; s < len; s++) {
                     var ship = incoming_enemy[s],
                         ms = Lib.getTime(ship.date_arrives) - serverTime,
                         arrTime;
@@ -85,12 +91,11 @@ YAHOO.namespace("lacuna");
             }
             if (num_incoming_ally > 0) {
                 arr = arr.concat(['<li><span style="color:#b0b">', num_incoming_ally, ' allied</span></li>']);
-                var serverTime = Lib.getTime(Game.ServerData.time),
-                    len = incoming_ally.length;
-                for (var s = 0; s < len; s++) {
-                    var ship = incoming_ally[s],
-                        ms = Lib.getTime(ship.date_arrives) - serverTime,
-                        arrTime;
+                serverTime = Lib.getTime(Game.ServerData.time);
+                len = incoming_ally.length;
+                for (s = 0; s < len; s++) {
+                    ship = incoming_ally[s];
+                    ms = Lib.getTime(ship.date_arrives) - serverTime;
                     if (ms > 0) {
                         arrTime = Lib.formatMillisecondTime(ms);
                     } else {
@@ -101,12 +106,11 @@ YAHOO.namespace("lacuna");
             }
             if (num_incoming_own > 0) {
                 arr = arr.concat(['<li><span style="color:#0f0">', num_incoming_own, ' own</span></li>']);
-                var serverTime = Lib.getTime(Game.ServerData.time),
-                    len = incoming_own.length;
+                serverTime = Lib.getTime(Game.ServerData.time);
+                len = incoming_own.length;
                 for (var s = 0; s < len; s++) {
-                    var ship = incoming_own[s],
-                        ms = Lib.getTime(ship.date_arrives) - serverTime,
-                        arrTime;
+                    ship = incoming_own[s];
+                    ms = Lib.getTime(ship.date_arrives) - serverTime;
                     if (ms > 0) {
                         arrTime = Lib.formatMillisecondTime(ms);
                     } else {
@@ -115,7 +119,7 @@ YAHOO.namespace("lacuna");
                     arr = arr.concat(['<li><span style="color:#0f0;">', arrTime, '</span></li>']);
                 }
             }
-            if (num_incoming_own + num_incoming_ally + num_incoming_enemy + skip_incoming_ships == 0) {
+            if (num_incoming_own + num_incoming_ally + num_incoming_enemy + skip_incoming_ships === 0) {
                 arr = arr.concat(['<li><span style="color:#0f0">none</span></li>']);
             }
             list.innerHTML = arr.join('');
@@ -129,10 +133,10 @@ YAHOO.namespace("lacuna");
                 num_incoming_own = planet.num_incoming_own || 0,
                 num_incoming_ally = planet.num_incoming_ally || 0,
                 num_incoming_enemy = planet.num_incoming_enemy || 0;
-            planet_skip_incoming_ships = this.skip_incoming_ships[planet.id] || 0;
-            planet_num_own = this.num_incoming_own[planet.id] || 0;
-            planet_num_ally = this.num_incoming_ally[planet.id] || 0;
-            planet_num_enemy = this.num_incoming_enemy[planet.id] || 0;
+            var planet_skip_incoming_ships = this.skip_incoming_ships[planet.id] || 0;
+            var planet_num_own = this.num_incoming_own[planet.id] || 0;
+            var planet_num_ally = this.num_incoming_ally[planet.id] || 0;
+            var planet_num_enemy = this.num_incoming_enemy[planet.id] || 0;
             this._createDisplay();
             this.skip_incoming_ships[planet.id] = skip_incoming_ships;
             this.incoming_own[planet.id] = incoming_own;

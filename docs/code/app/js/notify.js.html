@@ -91,14 +91,20 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 num_incoming_ally = <span class="hljs-keyword">this</span>.num_incoming_ally[<span class="hljs-keyword">this</span>.planetId] || <span class="hljs-number">0</span>,
                 num_incoming_enemy = <span class="hljs-keyword">this</span>.num_incoming_enemy[<span class="hljs-keyword">this</span>.planetId] || <span class="hljs-number">0</span>;
             <span class="hljs-keyword">var</span> arr = [];
-            <span class="hljs-keyword">if</span> (skip_incoming_ships == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">var</span> serverTime;
+            <span class="hljs-keyword">var</span> len;
+            <span class="hljs-keyword">var</span> s;
+            <span class="hljs-keyword">var</span> ship;
+            <span class="hljs-keyword">var</span> ms;
+            <span class="hljs-keyword">var</span> arrTime;
+            <span class="hljs-keyword">if</span> (skip_incoming_ships === <span class="hljs-number">1</span>) {
                 arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#f00"&gt;DISABLED (see profile)&lt;/span&gt;&lt;/li&gt;'</span>]);
             }
             <span class="hljs-keyword">if</span> (num_incoming_enemy &gt; <span class="hljs-number">0</span>) {
                 arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#fff"&gt;'</span>, num_incoming_enemy, <span class="hljs-string">' foreign&lt;/span&gt;&lt;/li&gt;'</span>]);
-                <span class="hljs-keyword">var</span> serverTime = Lib.getTime(Game.ServerData.time),
-                    len = incoming_enemy.length;
-                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> s = <span class="hljs-number">0</span>; s &lt; len; s++) {
+                serverTime = Lib.getTime(Game.ServerData.time);
+                len = incoming_enemy.length;
+                <span class="hljs-keyword">for</span> (s = <span class="hljs-number">0</span>; s &lt; len; s++) {
                     <span class="hljs-keyword">var</span> ship = incoming_enemy[s],
                         ms = Lib.getTime(ship.date_arrives) - serverTime,
                         arrTime;
@@ -112,12 +118,11 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             }
             <span class="hljs-keyword">if</span> (num_incoming_ally &gt; <span class="hljs-number">0</span>) {
                 arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#b0b"&gt;'</span>, num_incoming_ally, <span class="hljs-string">' allied&lt;/span&gt;&lt;/li&gt;'</span>]);
-                <span class="hljs-keyword">var</span> serverTime = Lib.getTime(Game.ServerData.time),
-                    len = incoming_ally.length;
-                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> s = <span class="hljs-number">0</span>; s &lt; len; s++) {
-                    <span class="hljs-keyword">var</span> ship = incoming_ally[s],
-                        ms = Lib.getTime(ship.date_arrives) - serverTime,
-                        arrTime;
+                serverTime = Lib.getTime(Game.ServerData.time);
+                len = incoming_ally.length;
+                <span class="hljs-keyword">for</span> (s = <span class="hljs-number">0</span>; s &lt; len; s++) {
+                    ship = incoming_ally[s];
+                    ms = Lib.getTime(ship.date_arrives) - serverTime;
                     <span class="hljs-keyword">if</span> (ms &gt; <span class="hljs-number">0</span>) {
                         arrTime = Lib.formatMillisecondTime(ms);
                     } <span class="hljs-keyword">else</span> {
@@ -128,12 +133,11 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             }
             <span class="hljs-keyword">if</span> (num_incoming_own &gt; <span class="hljs-number">0</span>) {
                 arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#0f0"&gt;'</span>, num_incoming_own, <span class="hljs-string">' own&lt;/span&gt;&lt;/li&gt;'</span>]);
-                <span class="hljs-keyword">var</span> serverTime = Lib.getTime(Game.ServerData.time),
-                    len = incoming_own.length;
+                serverTime = Lib.getTime(Game.ServerData.time);
+                len = incoming_own.length;
                 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> s = <span class="hljs-number">0</span>; s &lt; len; s++) {
-                    <span class="hljs-keyword">var</span> ship = incoming_own[s],
-                        ms = Lib.getTime(ship.date_arrives) - serverTime,
-                        arrTime;
+                    ship = incoming_own[s];
+                    ms = Lib.getTime(ship.date_arrives) - serverTime;
                     <span class="hljs-keyword">if</span> (ms &gt; <span class="hljs-number">0</span>) {
                         arrTime = Lib.formatMillisecondTime(ms);
                     } <span class="hljs-keyword">else</span> {
@@ -142,7 +146,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                     arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#0f0;"&gt;'</span>, arrTime, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>]);
                 }
             }
-            <span class="hljs-keyword">if</span> (num_incoming_own + num_incoming_ally + num_incoming_enemy + skip_incoming_ships == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">if</span> (num_incoming_own + num_incoming_ally + num_incoming_enemy + skip_incoming_ships === <span class="hljs-number">0</span>) {
                 arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#0f0"&gt;none&lt;/span&gt;&lt;/li&gt;'</span>]);
             }
             list.innerHTML = arr.join(<span class="hljs-string">''</span>);
@@ -156,10 +160,10 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 num_incoming_own = planet.num_incoming_own || <span class="hljs-number">0</span>,
                 num_incoming_ally = planet.num_incoming_ally || <span class="hljs-number">0</span>,
                 num_incoming_enemy = planet.num_incoming_enemy || <span class="hljs-number">0</span>;
-            planet_skip_incoming_ships = <span class="hljs-keyword">this</span>.skip_incoming_ships[planet.id] || <span class="hljs-number">0</span>;
-            planet_num_own = <span class="hljs-keyword">this</span>.num_incoming_own[planet.id] || <span class="hljs-number">0</span>;
-            planet_num_ally = <span class="hljs-keyword">this</span>.num_incoming_ally[planet.id] || <span class="hljs-number">0</span>;
-            planet_num_enemy = <span class="hljs-keyword">this</span>.num_incoming_enemy[planet.id] || <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">var</span> planet_skip_incoming_ships = <span class="hljs-keyword">this</span>.skip_incoming_ships[planet.id] || <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">var</span> planet_num_own = <span class="hljs-keyword">this</span>.num_incoming_own[planet.id] || <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">var</span> planet_num_ally = <span class="hljs-keyword">this</span>.num_incoming_ally[planet.id] || <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">var</span> planet_num_enemy = <span class="hljs-keyword">this</span>.num_incoming_enemy[planet.id] || <span class="hljs-number">0</span>;
             <span class="hljs-keyword">this</span>._createDisplay();
             <span class="hljs-keyword">this</span>.skip_incoming_ships[planet.id] = skip_incoming_ships;
             <span class="hljs-keyword">this</span>.incoming_own[planet.id] = incoming_own;
