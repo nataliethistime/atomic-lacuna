@@ -22,6 +22,7 @@ body {
     min-width: 1050px;
     /*min-height: 768px;*/
     overflow: hidden;
+    background-color: black;
 }
 select, input, button, textarea, button {
     font-family:verdana;

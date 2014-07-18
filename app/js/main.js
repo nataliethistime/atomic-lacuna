@@ -150,6 +150,12 @@
         require('js/notify');
         require('js/captcha');
         require('js/menu');
+
+        if (window.ATOM_SHELL) {
+            var ipc = require('ipc');
+            ipc.send('atomic-lacuna-render');
+        }
+
         // Start everything!
         YAHOO.widget.Logger.enableBrowserConsole();
         YAHOO.lacuna.Game.Start(query);

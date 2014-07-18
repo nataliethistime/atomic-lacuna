@@ -2,6 +2,7 @@ var app = require('app'),
     BrowserWindow = require('browser-window'),
     fs = require('fs'),
     path = require('path'),
+    ipc = require('ipc'),
 
     Handlebars = require('handlebars'),
     development = process.env.ATOMIC_LACUNA_DEVELOPMENT || false,
@@ -20,12 +21,16 @@ app.on('window-all-closed', function () {
 // This method will be called when atom-shell has done all
 // initialization and is ready to create browser windows.
 app.on('ready', function () {
-    mainWindow = new BrowserWindow({width: 800, height: 600});
-    mainWindow.maximize();
+    mainWindow = new BrowserWindow({width: 800, height: 600, show: false});
     mainWindow.loadUrl('file://' + doIndexStuff());
     mainWindow.on('closed', function() {
         mainWindow = null;
     });
+});
+
+ipc.on('atomic-lacuna-render', function () {
+    mainWindow.maximize();
+    mainWindow.show();
 });
 
 
