@@ -153,7 +153,7 @@
 
         if (window.ATOM_SHELL) {
             var ipc = require('ipc');
-            ipc.send('atomic-lacuna-render');
+            ipc.send('atomic-lacuna-window-show');
         }
 
         // Start everything!

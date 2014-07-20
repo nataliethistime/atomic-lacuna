@@ -22,14 +22,14 @@ app.on('window-all-closed', function () {
 // initialization and is ready to create browser windows.
 app.on('ready', function () {
     mainWindow = new BrowserWindow({width: 800, height: 600, show: false});
+    mainWindow.maximize();
     mainWindow.loadUrl('file://' + doIndexStuff());
     mainWindow.on('closed', function() {
         mainWindow = null;
     });
 });
 
-ipc.on('atomic-lacuna-render', function () {
-    mainWindow.maximize();
+ipc.on('atomic-lacuna-window-show', function () {
     mainWindow.show();
 });
 
