@@ -21,9 +21,9 @@
     "gulp-js-prettify": "0.1.x",
     "gulp-jshint": "1.7.x",
     "jshint-stylish": "0.4.x",
-    "gulp-handlebars": "^2.1.0",
-    "gulp-define-module": "^0.1.1",
-    "gulp-concat": "^2.3.3",
-    "gulp-declare": "^0.2.0"
+    "gulp-handlebars": "2.1.x",
+    "gulp-define-module": "0.1.x",
+    "gulp-concat": "2.3.x",
+    "gulp-declare": "0.2.x"
   }
 }
