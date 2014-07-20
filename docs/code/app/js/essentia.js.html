@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -36,7 +36,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> Essentia = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Essentia = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
         <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onRpc"</span>);
         <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"essentia"</span>;
         <span class="hljs-keyword">var</span> container = document.createElement(<span class="hljs-string">"div"</span>);
@@ -57,7 +57,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             width: <span class="hljs-string">"500px"</span>,
             zIndex: <span class="hljs-number">9999</span>
         });
-        <span class="hljs-keyword">this</span>.Dialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.Dialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.timeFood = Dom.get(<span class="hljs-string">"essentialDetailsTimeFood"</span>);
             <span class="hljs-keyword">this</span>.timeOre = Dom.get(<span class="hljs-string">"essentialDetailsTimeOre"</span>);
             <span class="hljs-keyword">this</span>.timeWater = Dom.get(<span class="hljs-string">"essentialDetailsTimeWater"</span>);
@@ -72,16 +72,16 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             Event.on([<span class="hljs-string">"essentiaBoostFood"</span>, <span class="hljs-string">"essentiaBoostOre"</span>, <span class="hljs-string">"essentiaBoostWater"</span>, <span class="hljs-string">"essentiaBoostEnergy"</span>, <span class="hljs-string">"essentiaBoostHappiness"</span>, <span class="hljs-string">"essentiaBoostStorage"</span>, <span class="hljs-string">"essentiaBoostBuilding"</span>, <span class="hljs-string">"essentiaBoostSpyTraining"</span>], <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.boost, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             Event.on(<span class="hljs-string">'essentiaRedeemButton'</span>, <span class="hljs-string">'click'</span>, <span class="hljs-keyword">this</span>.redeemClick, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             Event.on(<span class="hljs-string">'essentiaInvite'</span>, <span class="hljs-string">'click'</span>, Lacuna.Invite.show, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-            Event.on(<span class="hljs-string">"essentiaPurchaseButton"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            Event.on(<span class="hljs-string">"essentiaPurchaseButton"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                 Event.stopEvent(e);
                 window.open(<span class="hljs-string">"/pay?session_id="</span> + Game.GetSession(), <span class="hljs-string">"essentiaPayment"</span>, <span class="hljs-string">"status=0,toolbar=0,location=0,menubar=0,resizable=1,scrollbars=1,height=550,width=600,directories=0"</span>);
             });
-            Game.onTick.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Game.onTick.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">this</span>.elEssentiaAmount.innerHTML = Game.EmpireData.essentia;
             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             Dom.removeClass(<span class="hljs-keyword">this</span>.id, Lib.Styles.HIDDEN);
         }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-        <span class="hljs-keyword">this</span>.Dialog.hideEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.Dialog.hideEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._interval) {
                 window.clearInterval(<span class="hljs-keyword">this</span>._interval);
                 <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>._interval;
@@ -93,7 +93,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         Game.OverlayManager.register(<span class="hljs-keyword">this</span>.Dialog);
     };
     Essentia.prototype = {
-        _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-string">'    &lt;div class="hd"&gt;Essentia&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="bd"&gt;'</span>, <span class="hljs-string">'        &lt;div class="essentiaAmount"&gt;Current Essentia: &lt;span id="essentiaAmount"&gt;&lt;/span&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div id="essentiaTabs" class="yui-navset"&gt;'</span>, <span class="hljs-string">'            &lt;ul class="yui-nav"&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;a href="#essentiaTabBoost"&gt;&lt;em&gt;Boosts&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;a href="#essentiaGetMore"&gt;&lt;em&gt;Get More Essentia&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-comment">/*            '                &lt;li&gt;&lt;a href="#essentiaGiveEssentia"&gt;&lt;em&gt;Give Essentia&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;', */</span> <span class="hljs-string">'            &lt;/ul&gt;'</span>, <span class="hljs-string">'            &lt;div class="yui-content"&gt;'</span>, <span class="hljs-string">'                &lt;div id="essentiaTabBoost"&gt;'</span>, <span class="hljs-string">'                    &lt;table&gt;'</span>, <span class="hljs-string">'                        &lt;tr&gt;&lt;td colspan="4"&gt;&amp;nbsp;&lt;/td&gt;&lt;th&gt;Expires&lt;/th&gt;&lt;/tr&gt;'</span>, <span class="hljs-string">'                        &lt;tr&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsImg"&gt;&lt;img class="smallFood" title="Food" src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/food.png" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsText"&gt;+25% food per hour&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsCost"&gt;5 &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsBoost"&gt;&lt;button id="essentiaBoostFood" type="button"&gt;Boost&lt;/button&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsTime" id="essentialDetailsTimeFood"&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                        &lt;/tr&gt;'</span>, <span class="hljs-string">'                        &lt;tr&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsImg"&gt;&lt;img class="smallOre" title="Ore" src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/ore.png" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsText"&gt;+25% ore per hour&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsCost"&gt;5 &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsBoost"&gt;&lt;button id="essentiaBoostOre" type="button"&gt;Boost&lt;/button&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsTime" id="essentialDetailsTimeOre"&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                        &lt;/tr&gt;'</span>, <span class="hljs-string">'                        &lt;tr&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsImg"&gt;&lt;img class="smallWater" title="Water" src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/water.png" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsText"&gt;+25% water per hour&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsCost"&gt;5 &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsBoost"&gt;&lt;button id="essentiaBoostWater" type="button"&gt;Boost&lt;/button&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsTime" id="essentialDetailsTimeWater"&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                        &lt;/tr&gt;'</span>, <span class="hljs-string">'                        &lt;tr&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsImg"&gt;&lt;img class="smallEnergy" title="Energy" src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/energy.png" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsText"&gt;+25% energy per hour&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsCost"&gt;5 &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsBoost"&gt;&lt;button id="essentiaBoostEnergy" type="button"&gt;Boost&lt;/button&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsTime" id="essentialDetailsTimeEnergy"&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                        &lt;/tr&gt;'</span>, <span class="hljs-string">'                        &lt;tr&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsImg"&gt;&lt;img class="smallHappiness" title="Happiness" src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/happiness.png" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsText"&gt;+25% happiness per hour&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsCost"&gt;5 &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsBoost"&gt;&lt;button id="essentiaBoostHappiness" type="button"&gt;Boost&lt;/button&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsTime" id="essentialDetailsTimeHappiness"&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                        &lt;/tr&gt;'</span>, <span class="hljs-string">'                        &lt;tr&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsImg"&gt;&lt;img class="smallStorage" title="Storage" src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/storage.png" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsText"&gt;+25% storage capacity&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsCost"&gt;5 &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsBoost"&gt;&lt;button id="essentiaBoostStorage" type="button"&gt;Boost&lt;/button&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                            &lt;td class="essentiaDetailsTime" id="essentialDetailsTimeStorage"&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                        &lt;/tr&gt;'</span>, <span class="hljs-string">'                       &lt;tr&gt;'</span>, <span class="hljs-string">'                           &lt;td class="essentiaDetailsImg"&gt;&lt;img class="smallBuilding" title="Building" src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/build.png" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                           &lt;td class="essentiaDetailsText"&gt;+25% build speed&lt;/td&gt;'</span>, <span class="hljs-string">'                           &lt;td class="essentiaDetailsCost"&gt;5 &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                           &lt;td class="essentiaDetailsBoost"&gt;&lt;button id="essentiaBoostBuilding" type="button"&gt;Boost&lt;/button&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                           &lt;td class="essentiaDetailsTime" id="essentialDetailsTimeBuilding"&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                       &lt;/tr&gt;'</span>, <span class="hljs-string">'                       &lt;tr&gt;'</span>, <span class="hljs-string">'                           &lt;td class="essentiaDetailsImg"&gt;&lt;img class="smallSpy" title="Spy" src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/spy.png" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                           &lt;td class="essentiaDetailsText"&gt;+50% spy training speed&lt;/td&gt;'</span>, <span class="hljs-string">'                           &lt;td class="essentiaDetailsCost"&gt;5 &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" /&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                           &lt;td class="essentiaDetailsBoost"&gt;&lt;button id="essentiaBoostSpyTraining" type="button"&gt;Boost&lt;/button&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                           &lt;td class="essentiaDetailsTime" id="essentialDetailsTimeSpyTraining"&gt;&lt;/td&gt;'</span>, <span class="hljs-string">'                       &lt;/tr&gt;'</span>, <span class="hljs-string">'                    &lt;/table&gt;'</span>, <span class="hljs-string">'                &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;div id="essentiaGetMore"&gt;'</span>, <span class="hljs-string">'                    &lt;b&gt;Purchase Essentia for yourself.&lt;/b&gt;&lt;br /&gt;'</span>, <span class="hljs-string">'                    &lt;button id="essentiaPurchaseButton" type="button"&gt;Purchase Essentia&lt;/button&gt;'</span>, <span class="hljs-string">'                    &lt;hr /&gt;'</span>, <span class="hljs-string">'                    &lt;div&gt;'</span>, <span class="hljs-string">'                        &lt;label&gt;&lt;b&gt;Redeem Essentia Code:&lt;/b&gt;&lt;br /&gt;&lt;input id="essentiaRedeemCode" /&gt;&lt;/label&gt;'</span>, <span class="hljs-string">'                        &lt;button id="essentiaRedeemButton" type="button"&gt;Redeem&lt;/button&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;hr /&gt;'</span>, <span class="hljs-string">'                    &lt;div&gt;'</span>, <span class="hljs-string">'                        &lt;table&gt;'</span>, <span class="hljs-string">'                            &lt;tr&gt;&lt;td&gt;&lt;b&gt;Invite your friends.&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;'</span>, <span class="hljs-string">'                            &lt;tr&gt;&lt;td&gt;Invite your friends to the game and you get free essentia. For every university level past 4 that they achieve, you\'ll get 5 essentia.&lt;/td&gt;&lt;/tr&gt;'</span>, <span class="hljs-string">'                            &lt;tr&gt;&lt;td&gt;That\'s up to 130 essentia per friend!&lt;/td&gt;&lt;/tr&gt;'</span>, <span class="hljs-string">'                            &lt;tr&gt;&lt;td&gt;&lt;button id="essentiaInvite" type="button"&gt;Invite Friends&lt;/button&gt;&lt;/td&gt;&lt;/tr&gt;'</span>, <span class="hljs-string">'                        &lt;/table&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/div&gt;'</span>,</pre></div>
       
       </div>
@@ -124,17 +124,17 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
       
         <div class="code"><pre class="wrapper">                <span class="hljs-string">'            &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
         },
-        show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        show: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-comment">//this is called out of scope so make sure to pass the correct scope in</span>
             Lacuna.Essentia.tabView.selectTab(<span class="hljs-number">0</span>);
             Lacuna.Essentia.elCode.value = <span class="hljs-string">''</span>;
             Game.Services.Empire.view_boosts({
                 session_id: Game.GetSession(<span class="hljs-string">""</span>)
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Essentia.show.success"</span>);
                     <span class="hljs-keyword">var</span> Self = <span class="hljs-keyword">this</span>;
-                    <span class="hljs-keyword">this</span>._interval = window.setInterval(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>._interval = window.setInterval(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                         Self.tick();
                     }, <span class="hljs-number">1000</span>);
                     <span class="hljs-keyword">this</span>.populate(o.result);
@@ -145,11 +145,11 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             Lacuna.Essentia.elEssentiaAmount.innerHTML = Game.EmpireData.essentia;
             Lacuna.Essentia.Dialog.show();
         },
-        hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        hide: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.Dialog.hide();
         },
-        paymentFinished: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(amount)</span> {</span>},
-        redeemClick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        paymentFinished: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(amount)</span> {</span>},
+        redeemClick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             Event.stopEvent(e);
             <span class="hljs-keyword">var</span> code = <span class="hljs-keyword">this</span>.elCode.value;
             <span class="hljs-keyword">var</span> currentEssentia = Game.EmpireData.essentia;
@@ -158,7 +158,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 session_id: Game.GetSession(<span class="hljs-string">""</span>),
                 essentia_code: code
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"EssentiaRedeem.show.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">var</span> addedEssentia = o.result.status.empire.essentia - currentEssentia;
@@ -169,40 +169,40 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        boost: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        boost: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> target = Event.getTarget(e);
             <span class="hljs-keyword">var</span> func;
             <span class="hljs-keyword">switch</span> (target.id) {
-            <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostFood"</span>:
-                func = Game.Services.Empire.boost_food;
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostOre"</span>:
-                func = Game.Services.Empire.boost_ore;
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostWater"</span>:
-                func = Game.Services.Empire.boost_water;
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostEnergy"</span>:
-                func = Game.Services.Empire.boost_energy;
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostHappiness"</span>:
-                func = Game.Services.Empire.boost_happiness;
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostStorage"</span>:
-                func = Game.Services.Empire.boost_storage;
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostBuilding"</span>:
-                func = Game.Services.Empire.boost_building;
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostSpyTraining"</span>:
-                func = Game.Services.Empire.boost_spy_training;
-                <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostFood"</span>:
+                    func = Game.Services.Empire.boost_food;
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostOre"</span>:
+                    func = Game.Services.Empire.boost_ore;
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostWater"</span>:
+                    func = Game.Services.Empire.boost_water;
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostEnergy"</span>:
+                    func = Game.Services.Empire.boost_energy;
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostHappiness"</span>:
+                    func = Game.Services.Empire.boost_happiness;
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostStorage"</span>:
+                    func = Game.Services.Empire.boost_storage;
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostBuilding"</span>:
+                    func = Game.Services.Empire.boost_building;
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"essentiaBoostSpyTraining"</span>:
+                    func = Game.Services.Empire.boost_spy_training;
+                    <span class="hljs-keyword">break</span>;
             }
             <span class="hljs-keyword">if</span> (func) {
                 func({
                     session_id: Game.GetSession(<span class="hljs-string">""</span>)
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Essentia.boost.success"</span>);
                         <span class="hljs-keyword">this</span>.update(o.result);
                         <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onRpc"</span>, o.result);
@@ -211,26 +211,33 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 });
             }
         },
-        update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(results)</span> {</span>
+        update: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(results)</span> {</span>
             <span class="hljs-keyword">if</span> (results.food_boost) {
                 <span class="hljs-keyword">this</span>.updateTime(<span class="hljs-keyword">this</span>.timeFood, results.food_boost);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.ore_boost) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.ore_boost) {
                 <span class="hljs-keyword">this</span>.updateTime(<span class="hljs-keyword">this</span>.timeOre, results.ore_boost);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.water_boost) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.water_boost) {
                 <span class="hljs-keyword">this</span>.updateTime(<span class="hljs-keyword">this</span>.timeWater, results.water_boost);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.energy_boost) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.energy_boost) {
                 <span class="hljs-keyword">this</span>.updateTime(<span class="hljs-keyword">this</span>.timeEnergy, results.energy_boost);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.happiness_boost) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.happiness_boost) {
                 <span class="hljs-keyword">this</span>.updateTime(<span class="hljs-keyword">this</span>.timeHappiness, results.happiness_boost);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.storage_boost) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.storage_boost) {
                 <span class="hljs-keyword">this</span>.updateTime(<span class="hljs-keyword">this</span>.timeStorage, results.storage_boost);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.building_boost) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.building_boost) {
                 <span class="hljs-keyword">this</span>.updateTime(<span class="hljs-keyword">this</span>.timeBuilding, results.building_boost);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.spy_training_boost) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.spy_training_boost) {
                 <span class="hljs-keyword">this</span>.updateTime(<span class="hljs-keyword">this</span>.timeSpyTraining, results.spy_training_boost);
             }
         },
-        populate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(results)</span> {</span>
+        populate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(results)</span> {</span>
             <span class="hljs-keyword">var</span> boosts = results.boosts;
             <span class="hljs-keyword">this</span>.updateTime(<span class="hljs-keyword">this</span>.timeFood, boosts.food);
             <span class="hljs-keyword">this</span>.updateTime(<span class="hljs-keyword">this</span>.timeOre, boosts.ore);
@@ -241,9 +248,9 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-keyword">this</span>.updateTime(<span class="hljs-keyword">this</span>.timeBuilding, boosts.building);
             <span class="hljs-keyword">this</span>.updateTime(<span class="hljs-keyword">this</span>.timeSpyTraining, boosts.spy_training);
         },
-        updateTime: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, sDate)</span> {</span>
+        updateTime: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, sDate)</span> {</span>
             <span class="hljs-keyword">var</span> timers = <span class="hljs-keyword">this</span>.timers;
-            timers[el.id] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            timers[el.id] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (sDate) {
                     <span class="hljs-keyword">var</span> tTime = Lib.getTime(Lib.parseServerDate(sDate)),
                         cTime = Lib.getTime(Game.ServerData.time),
@@ -258,7 +265,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             };
             timers[el.id]();
         },
-        tick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        tick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>.timers) {
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.timers.hasOwnProperty(key)) {
                     <span class="hljs-keyword">this</span>.timers[key]();
@@ -268,8 +275,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
     };
     Lang.augmentProto(Essentia, Util.EventProvider);
     Lacuna.Essentia = <span class="hljs-keyword">new</span> Essentia();
-})();
-</pre></div>
+})();</pre></div>
       
       </div>
     

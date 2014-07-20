@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna");
-(function () {
+(function() {
     var Util = YAHOO.util,
         Cookie = Util.Cookie,
         Dom = Util.Dom,
@@ -8,7 +8,7 @@ YAHOO.namespace("lacuna");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var CreateEmpire = function (Login) {
+    var CreateEmpire = function(Login) {
         this.id = "createEmpire";
         this._login = Login;
         this.createEvent("onCreateSuccessful");
@@ -44,7 +44,7 @@ YAHOO.namespace("lacuna");
             underlay: false,
             zIndex: 9999
         });
-        this.Dialog.renderEvent.subscribe(function () {
+        this.Dialog.renderEvent.subscribe(function() {
             //get el's after rendered
             this.elName = Dom.get("empireName");
             this.elDesc = Dom.get("empireDesc");
@@ -57,10 +57,10 @@ YAHOO.namespace("lacuna");
             this.elMessage = Dom.get("empireMessage");
             this.elCaptchaImage = Dom.get("empireCaptchaImage");
             this.elCaptcha = Dom.get("empireCaptcha");
-            Event.on(this.elCaptchaImage, 'load', function () {
+            Event.on(this.elCaptchaImage, 'load', function() {
                 Dom.setStyle(this, 'visibility', 'inherit');
             });
-            Event.on('empireRefreshCaptcha', 'click', function (e) {
+            Event.on('empireRefreshCaptcha', 'click', function(e) {
                 Event.stopEvent(e);
                 this.refreshCaptcha();
             }, this, true);
@@ -78,22 +78,22 @@ YAHOO.namespace("lacuna");
         this.initSpecies();
     };
     CreateEmpire.prototype = {
-        refreshCaptcha: function () {
+        refreshCaptcha: function() {
             Dom.setStyle(this.elCaptchaImage, 'visibility', 'hidden');
             Game.Services.Empire.fetch_captcha({}, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "RefreshCaptcha");
                     this.captchaGUID = o.result.guid;
                     this.elCaptchaImage.src = o.result.url;
                 },
-                failure: function (o) {
+                failure: function(o) {
                     this.setMessage(o.error.message);
                     return true;
                 },
                 scope: this
             });
         },
-        handleCreate: function () {
+        handleCreate: function() {
             if (!this.elAgreeTOS.checked || !this.elAgreeRules.checked) {
                 this.setMessage("You must agree to the Terms of Service and the rules before registering.");
                 return;
@@ -102,7 +102,8 @@ YAHOO.namespace("lacuna");
             if (this.savedEmpire && this.savedEmpire.name === this.elName.value) {
                 Game.SpeciesCreator.show(this.savedEmpire.id);
                 this.hide(); //hide empire
-            } else {
+            }
+            else {
                 Lacuna.Pulser.Show();
                 var EmpireServ = Game.Services.Empire,
                     data = {
@@ -113,7 +114,8 @@ YAHOO.namespace("lacuna");
                 if (this.facebook) {
                     data.facebook_uid = this.facebook.uid;
                     data.facebook_token = this.facebook.token;
-                } else {
+                }
+                else {
                     data.captcha_guid = this.captchaGUID;
                     data.captcha_solution = this.elCaptcha.value;
                 }
@@ -125,7 +127,7 @@ YAHOO.namespace("lacuna");
                     data.invite_code = this.elFriendCode.value;
                 }
                 EmpireServ.create(data, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "CreateEmpire");
                         this.savedEmpire = data;
                         this.savedEmpire.id = o.result;
@@ -133,14 +135,15 @@ YAHOO.namespace("lacuna");
                         Lacuna.Pulser.Hide();
                         this.hide(); //hide empire
                     },
-                    failure: function (o) {
+                    failure: function(o) {
                         this.setMessage(o.error.message);
                         if (o.error.code === 1014) {
                             this.captchaGUID = o.error.data.guid;
                             this.elCaptchaImage.src = o.error.data.url;
                             this.elCaptcha.value = '';
                             this.elCaptcha.focus();
-                        } else if (o.error.code === 1100) {
+                        }
+                        else if (o.error.code === 1100) {
                             this.savedEmpire = data;
                             this.savedEmpire.id = o.error.data;
                             Game.SpeciesCreator.show(o.error.data.empire_id);
@@ -152,15 +155,15 @@ YAHOO.namespace("lacuna");
                 });
             }
         },
-        handleCancel: function () {
+        handleCancel: function() {
             this.hide();
             this._login.show();
         },
-        setMessage: function (str) {
+        setMessage: function(str) {
             Dom.replaceClass(this.elMessage, Lib.Styles.HIDDEN, Lib.Styles.ALERT);
             this.elMessage.innerHTML = str;
         },
-        facebookReturn: function (uid, token, name) {
+        facebookReturn: function(uid, token, name) {
             this.savedEmpire = undefined;
             this.elName.value = name + "'s Empire";
             this.elAgreeTOS.checked = false;
@@ -173,7 +176,7 @@ YAHOO.namespace("lacuna");
             Game.OverlayManager.hideAll();
             this.Dialog.show();
         },
-        show: function (doNotClear) {
+        show: function(doNotClear) {
             Game.OverlayManager.hideAll();
             Dom.removeClass(this.id, 'facebookLogin');
             delete this.facebook;
@@ -192,14 +195,14 @@ YAHOO.namespace("lacuna");
             this.refreshCaptcha();
             this.Dialog.show();
         },
-        hide: function () {
+        hide: function() {
             Dom.replaceClass(this.elMessage, Lib.Styles.ALERT, Lib.Styles.HIDDEN);
             this.Dialog.hide();
         },
-        initSpecies: function () {
+        initSpecies: function() {
             if (!Game.SpeciesCreator) {
                 Game.SpeciesCreator = new Lacuna.CreateSpecies(this);
-                Game.SpeciesCreator.subscribe("onCreateSuccessful", function (oArgs) {
+                Game.SpeciesCreator.subscribe("onCreateSuccessful", function(oArgs) {
                     this.fireEvent("onCreateSuccessful", oArgs);
                 }, this, true);
             }

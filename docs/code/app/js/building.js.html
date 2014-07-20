@@ -30,14 +30,14 @@
 YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
 <span class="hljs-keyword">var</span> Templates = <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/templates'</span>),
     assets = <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/assets'</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
         Event = Util.Event,
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game;
-    <span class="hljs-keyword">var</span> Building = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oResults)</span> {</span>
+    <span class="hljs-keyword">var</span> Building = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oResults)</span> {</span>
         <span class="hljs-keyword">this</span>.repairTemplate = Templates.get(<span class="hljs-string">'tab.building.repair'</span>);
         <span class="hljs-keyword">this</span>.productionTemplate = Templates.get(<span class="hljs-string">'tab.building.production'</span>);
         <span class="hljs-keyword">this</span>.storageTemplate = Templates.get(<span class="hljs-string">'tab.building.storage'</span>);
@@ -104,13 +104,13 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
         <div class="code"><pre class="wrapper">        <span class="hljs-keyword">this</span>.result = oResults;
     };
     Building.prototype = {
-        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.unsubscribeAll();
         },
-        load: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        load: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onLoad"</span>);
         },
-        getTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getTabs: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.building.efficiency, <span class="hljs-number">10</span>) &lt; <span class="hljs-number">100</span> &amp;&amp; <span class="hljs-keyword">this</span>.building.repair_costs) {
                 <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>.getProductionTab(), <span class="hljs-keyword">this</span>.getRepairTab()];
             }
@@ -150,7 +150,7 @@ doesn&#39;t inherit from PCC. It&#39;s here to avoid duplication.</p>
             }
             <span class="hljs-keyword">return</span> tabs;
         },
-        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-comment">//overrideable function for child classes that have their own tabs</span>
             <span class="hljs-comment">//** Must return nothing or an array of tabs **</span>
             <span class="hljs-keyword">return</span> [];
@@ -166,7 +166,7 @@ doesn&#39;t inherit from PCC. It&#39;s here to avoid duplication.</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">        rpcSuccess: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+        <div class="code"><pre class="wrapper">        rpcSuccess: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
             <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onMapRpc"</span>, o.result);
             <span class="hljs-keyword">if</span> (o.result.building &amp;&amp; <span class="hljs-keyword">this</span>.building) {</pre></div>
       
@@ -201,7 +201,7 @@ if we don&#39;t have work update the tile to remove the timer</p>
                 }*/</span>
             }
         },
-        addQueue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sec, func, elm, sc)</span> {</span>
+        addQueue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(sec, func, elm, sc)</span> {</span>
             <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onQueueAdd"</span>, {
                 seconds: sec,
                 fn: func,
@@ -209,25 +209,25 @@ if we don&#39;t have work update the tile to remove the timer</p>
                 scope: sc
             });
         },
-        resetQueue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        resetQueue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onQueueReset"</span>);
         },
-        addTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tab)</span> {</span>
+        addTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tab)</span> {</span>
             <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onAddTab"</span>, tab);
         },
-        removeTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tab)</span> {</span>
+        removeTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tab)</span> {</span>
             <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onRemoveTab"</span>, tab);
         },
-        updateBuildingTile: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(building)</span> {</span>
+        updateBuildingTile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(building)</span> {</span>
             <span class="hljs-comment">//always updated url when doing this since some returns don't have the url</span>
             building.url = <span class="hljs-keyword">this</span>.building.url;
             <span class="hljs-keyword">this</span>.building = building;
             <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onUpdateTile"</span>, <span class="hljs-keyword">this</span>.building);
         },
-        removeBuildingTile: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(building)</span> {</span>
+        removeBuildingTile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(building)</span> {</span>
             <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onRemoveTile"</span>, building);
         },
-        getRepairTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getRepairTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.repairTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">'Repair'</span>,
                 content: <span class="hljs-keyword">this</span>.repairTemplate({
@@ -242,7 +242,7 @@ if we don&#39;t have work update the tile to remove the timer</p>
             Event.on(<span class="hljs-string">"repairBuilding"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Repair, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.repairTab;
         },
-        Repair: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        Repair: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
             btn.disabled = <span class="hljs-literal">true</span>;
             Lacuna.Pulser.Show();
@@ -250,7 +250,7 @@ if we don&#39;t have work update the tile to remove the timer</p>
                 session_id: Game.GetSession(),
                 building_id: <span class="hljs-keyword">this</span>.building.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.repairTab) {
@@ -268,14 +268,14 @@ if we don&#39;t have work update the tile to remove the timer</p>
                     }
                     <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onRepair"</span>);
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
                 target: <span class="hljs-keyword">this</span>.building.url,
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        getProductionTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getProductionTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> level = <span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.building.level, <span class="hljs-number">10</span>);
             <span class="hljs-keyword">this</span>.productionTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">'Production'</span>,
@@ -299,7 +299,7 @@ if we don&#39;t have work update the tile to remove the timer</p>
             }
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.productionTab;
         },
-        Demolish: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        Demolish: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> building = <span class="hljs-keyword">this</span>.building;
             <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">'Are you sure you want to Demolish the level '</span>, building.level, <span class="hljs-string">' '</span>, building.name, <span class="hljs-string">'?'</span>].join(<span class="hljs-string">''</span>))) {
                 Lacuna.Pulser.Show();
@@ -307,7 +307,7 @@ if we don&#39;t have work update the tile to remove the timer</p>
                     session_id: Game.GetSession(),
                     building_id: building.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">this</span>.removeBuildingTile(building);
@@ -318,7 +318,7 @@ if we don&#39;t have work update the tile to remove the timer</p>
                 });
             }
         },
-        Downgrade: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        Downgrade: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> building = <span class="hljs-keyword">this</span>.building;
             <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">'Are you sure you want to downgrade the level '</span>, building.level, <span class="hljs-string">' '</span>, building.name, <span class="hljs-string">'?'</span>].join(<span class="hljs-string">''</span>))) {
                 Lacuna.Pulser.Show();
@@ -326,7 +326,7 @@ if we don&#39;t have work update the tile to remove the timer</p>
                     session_id: Game.GetSession(),
                     building_id: building.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onMapRpc"</span>, o.result);
                         <span class="hljs-keyword">var</span> b = building; <span class="hljs-comment">//originally passed in building data from currentBuilding</span>
@@ -342,12 +342,13 @@ if we don&#39;t have work update the tile to remove the timer</p>
                 });
             }
         },
-        Upgrade: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        Upgrade: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> building = <span class="hljs-keyword">this</span>.building,
                 userUpgrade = <span class="hljs-literal">false</span>;
             <span class="hljs-keyword">if</span> (building.upgrade.cost.halls) {
                 userUpgrade = confirm(<span class="hljs-string">'Are you sure you want to sacrifice '</span> + building.upgrade.cost.halls + <span class="hljs-string">' Halls of Vrbansk?'</span>);
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 userUpgrade = <span class="hljs-literal">true</span>;
             }
             <span class="hljs-keyword">if</span> (userUpgrade) {
@@ -358,7 +359,7 @@ if we don&#39;t have work update the tile to remove the timer</p>
                         building_id: building.id
                     };
                 BuildingServ.upgrade(data, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onMapRpc"</span>, o.result);
                         <span class="hljs-keyword">var</span> b = building; <span class="hljs-comment">//originally passed in building data from currentBuilding</span>
@@ -373,7 +374,7 @@ if we don&#39;t have work update the tile to remove the timer</p>
                 });
             }
         },
-        getIncomingSupplyChainsTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getIncomingSupplyChainsTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.incomingSupplyChainTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Supply Chains"</span>,
                 content: [<span class="hljs-string">'&lt;div id="incomingSupplyChainInfo" style="margin-bottom: 2px"&gt;'</span>, <span class="hljs-string">'   &lt;div id="incomingSupplyChainList"&gt;'</span>, <span class="hljs-string">'      &lt;b&gt;Incoming Supply Chains&lt;/b&gt;&lt;hr/&gt;'</span>, <span class="hljs-string">'      &lt;ul id="incomingSupplyChainListHeader" class="incomingSupplyChainHeader incomingSupplyChainInfo clearafter"&gt;'</span>, <span class="hljs-string">'        &lt;li class="incomingSupplyChainBody"&gt;From Body&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="incomingSupplyChainResource"&gt;Resource&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="incomingSupplyChainHour"&gt;/hr&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="incomingSupplyChainEfficiency"&gt;Efficiency&lt;/li&gt;'</span>, <span class="hljs-string">'      &lt;/ul&gt;'</span>, <span class="hljs-string">'      &lt;div&gt;&lt;div id="incomingSupplyChainListDetails"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'   &lt;/div&gt;'</span>, <span class="hljs-string">'   &lt;div id="incomingSupplyChainListNone"&gt;&lt;b&gt;No Incoming Supply Chains&lt;/b&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
@@ -381,7 +382,7 @@ if we don&#39;t have work update the tile to remove the timer</p>
             <span class="hljs-keyword">this</span>.incomingSupplyChainTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.viewIncomingSupplyChainInfo, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.incomingSupplyChainTab;
         },
-        viewIncomingSupplyChainInfo: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        viewIncomingSupplyChainInfo: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Dom.setStyle(<span class="hljs-string">"incomingSupplyChainList"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
             Dom.setStyle(<span class="hljs-string">"incomingSupplyChainListNone"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
             <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.incoming_supply_chains) {
@@ -390,7 +391,7 @@ if we don&#39;t have work update the tile to remove the timer</p>
                     session_id: Game.GetSession(),
                     building_id: <span class="hljs-keyword">this</span>.building.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">this</span>.incoming_supply_chains = o.result.supply_chains;
@@ -398,11 +399,12 @@ if we don&#39;t have work update the tile to remove the timer</p>
                     },
                     scope: <span class="hljs-keyword">this</span>
                 });
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">this</span>.incomingSupplyChainList();
             }
         },
-        incomingSupplyChainList: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        incomingSupplyChainList: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> supply_chains = <span class="hljs-keyword">this</span>.incoming_supply_chains,
                 i, chain, nUl, nLi, details, detailsParent, ul, li;
             <span class="hljs-keyword">if</span> (supply_chains.length === <span class="hljs-number">0</span>) {
@@ -442,7 +444,8 @@ if we don&#39;t have work update the tile to remove the timer</p>
                 <span class="hljs-keyword">if</span> (chain.stalled === <span class="hljs-number">1</span>) {
                     Dom.addClass(nUl, <span class="hljs-string">"incomingSupplyChainStalled"</span>);
                     nLi.innerHTML = chain.from_body.name + <span class="hljs-string">" (Stalled)"</span>;
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     nLi.innerHTML = chain.from_body.name;
                 }
                 nUl.appendChild(nLi);
@@ -461,7 +464,7 @@ if we don&#39;t have work update the tile to remove the timer</p>
                 details.appendChild(nUl);
             }
             <span class="hljs-comment">//wait for tab to display first</span>
-            setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> Ht = Game.GetSize()
                     .h - <span class="hljs-number">250</span>;
                 <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">250</span>) {
@@ -471,7 +474,7 @@ if we don&#39;t have work update the tile to remove the timer</p>
                 Dom.setStyle(detailsParent, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
             }, <span class="hljs-number">10</span>);
         },
-        getStorageTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getStorageTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">'Storage'</span>,
                 content: <span class="hljs-keyword">this</span>.storageTemplate({

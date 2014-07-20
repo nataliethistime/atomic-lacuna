@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -35,15 +35,15 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> MiningMinistry = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+    <span class="hljs-keyword">var</span> MiningMinistry = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> {</span>
         MiningMinistry.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
         <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.Mining;
     };
     Lang.extend(MiningMinistry, Lacuna.buildings.Building, {
-        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getPlatformTab(), <span class="hljs-keyword">this</span>._getShipsTab()];
         },
-        _getPlatformTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getPlatformTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.platformTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Platforms"</span>,
                 content: [<span class="hljs-string">'&lt;div id="platformShippingInfo"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="platformContainer"&gt;'</span>, <span class="hljs-string">'    &lt;div id="platformDetails"&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
@@ -51,7 +51,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             <span class="hljs-keyword">this</span>.platformTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.viewPlatforms, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.platformTab;
         },
-        _getShipsTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getShipsTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.shipsTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Ships"</span>,
                 content: [<span class="hljs-string">'&lt;div class="shipsContainer"&gt;'</span>, <span class="hljs-string">'    &lt;ul class="shipHeader shipInfo clearafter"&gt;'</span>, <span class="hljs-string">'        &lt;li class="shipName"&gt;Name&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="shipTask"&gt;Task&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="shipSpeed"&gt;Speed&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="shipHold"&gt;Hold&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="shipAction"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;&lt;div id="shipsDetails"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
@@ -59,7 +59,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             <span class="hljs-keyword">this</span>.shipsTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.viewShips, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.shipsTab;
         },
-        viewPlatforms: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        viewPlatforms: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">if</span> (e.newValue) {
                 <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.platforms) {
                     Lacuna.Pulser.Show();
@@ -67,7 +67,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         session_id: Game.GetSession(),
                         building_id: <span class="hljs-keyword">this</span>.building.id
                     }, {
-                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"MiningMinistry.view_platforms.success"</span>);
                             Lacuna.Pulser.Hide();
                             <span class="hljs-keyword">this</span>.rpcSuccess(o);
@@ -79,39 +79,45 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         },
                         scope: <span class="hljs-keyword">this</span>
                     });
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">this</span>.MiningMinistryPlatforms();
                 }
             }
         },
-        viewShips: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        viewShips: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">if</span> (e.newValue) {
                 <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.ships) {
                     <span class="hljs-keyword">this</span>.MiningMinistryShipsView();
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">this</span>.MiningMinistryShipsPopulate();
                 }
             }
         },
-        CapacityDescription: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(capacity)</span> {</span>
+        CapacityDescription: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(capacity)</span> {</span>
             <span class="hljs-keyword">var</span> output = [<span class="hljs-string">'Current production to shipping metric is '</span>, capacity, <span class="hljs-string">'. '</span>];
             <span class="hljs-keyword">if</span> (capacity === -<span class="hljs-number">1</span>) {
                 output.push(<span class="hljs-string">'You have no ships servicing your platforms.'</span>);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (capacity === <span class="hljs-number">0</span>) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (capacity === <span class="hljs-number">0</span>) {
                 output.push(<span class="hljs-string">'You are producing an insignificant amount of ore. Add more platforms or upgrade your Mining Ministry.'</span>);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (capacity &gt; <span class="hljs-number">100</span>) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (capacity &gt; <span class="hljs-number">100</span>) {
                 output.push(<span class="hljs-string">'You are producing more than your ships can handle. Add more ship to bring the value closer to 100.'</span>);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (capacity &lt; <span class="hljs-number">100</span>) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (capacity &lt; <span class="hljs-number">100</span>) {
                 output.push(<span class="hljs-string">'Your ships have more capacity than the platforms are producing. You may remove ships or add platforms to get closer to 100.'</span>);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (capacity === <span class="hljs-number">100</span>) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (capacity === <span class="hljs-number">100</span>) {
                 output.push(<span class="hljs-string">'Your shipping capacity and production values are exactly in sync.'</span>);
             }
             <span class="hljs-keyword">return</span> output.join(<span class="hljs-string">''</span>);
         },
-        platformClick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        platformClick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Game.StarJump(<span class="hljs-keyword">this</span>);
         },
-        MiningMinistryPlatforms: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        MiningMinistryPlatforms: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> platforms = <span class="hljs-keyword">this</span>.platforms.platforms,
                 details = Dom.get(<span class="hljs-string">"platformDetails"</span>);
             <span class="hljs-keyword">if</span> (details) {
@@ -157,7 +163,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> ore_i <span class="hljs-keyword">in</span> ores) {
                             <span class="hljs-keyword">var</span> ore = ores[ore_i];
                             <span class="hljs-keyword">if</span> (obj[ore + <span class="hljs-string">'_hour'</span>] &gt; <span class="hljs-number">0</span>) {
-                                outOre.push(<span class="hljs-string">'&lt;li&gt;&lt;label&gt;'</span> + ore.replace(<span class="hljs-regexp">/^\w/</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(c)</span> {</span>
+                                outOre.push(<span class="hljs-string">'&lt;li&gt;&lt;label&gt;'</span> + ore.replace(<span class="hljs-regexp">/^\w/</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(c)</span> {</span>
                                     <span class="hljs-keyword">return</span> c.toUpperCase();
                                 }) + <span class="hljs-string">':&lt;/label&gt; '</span>);
                                 outOre.push(obj[ore + <span class="hljs-string">'_hour'</span>]);
@@ -199,7 +205,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> ore_i <span class="hljs-keyword">in</span> ores) {
                         <span class="hljs-keyword">var</span> ore = ores[ore_i];
                         <span class="hljs-keyword">if</span> (totals[ore_i] &gt; <span class="hljs-number">0</span>) {
-                            outOre.push(<span class="hljs-string">'&lt;li&gt;&lt;label&gt;'</span> + ore.replace(<span class="hljs-regexp">/^\w/</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(c)</span> {</span>
+                            outOre.push(<span class="hljs-string">'&lt;li&gt;&lt;label&gt;'</span> + ore.replace(<span class="hljs-regexp">/^\w/</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(c)</span> {</span>
                                 <span class="hljs-keyword">return</span> c.toUpperCase()
                             }) + <span class="hljs-string">':&lt;/label&gt; '</span>);
                             outOre.push(totals[ore_i]);
@@ -212,7 +218,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     details.insertBefore(nUl, details.firstChild);
                 }
                 <span class="hljs-comment">//wait for tab to display first</span>
-                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">var</span> Ht = Game.GetSize()
                         .h - <span class="hljs-number">210</span>;
                     <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">280</span>) {
@@ -223,7 +229,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }, <span class="hljs-number">10</span>);
             }
         },
-        MiningMinistryPlatformAbandon: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        MiningMinistryPlatformAbandon: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">"Are you sure you want to Abandon the mining platform at  "</span>, <span class="hljs-keyword">this</span>.Platform.asteroid.name, <span class="hljs-string">"?"</span>].join(<span class="hljs-string">''</span>))) {
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">this</span>.Self.service.abandon_platform({
@@ -231,7 +237,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     building_id: <span class="hljs-keyword">this</span>.Self.building.id,
                     platform_id: <span class="hljs-keyword">this</span>.Platform.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"MiningMinistry.MiningMinistryPlatformAbandon.success"</span>);
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
@@ -248,13 +254,13 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
             }
         },
-        MiningMinistryShipsView: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        MiningMinistryShipsView: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.service.view_ships({
                 session_id: Game.GetSession(),
                 building_id: <span class="hljs-keyword">this</span>.building.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"MiningMinistry.MiningMinistryShipsView.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
@@ -264,7 +270,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        MiningMinistryShipsPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        MiningMinistryShipsPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> ships = <span class="hljs-keyword">this</span>.ships,
                 details = Dom.get(<span class="hljs-string">"shipsDetails"</span>);
             <span class="hljs-keyword">if</span> (details) {
@@ -280,7 +286,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         nLi = li.cloneNode(<span class="hljs-literal">false</span>);
                     <span class="hljs-keyword">if</span> (ship.task === <span class="hljs-string">"Docked"</span>) {
                         availShips.push(ship);
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         workingShips.push(ship);
                     }
                     nUl.Ship = ship;
@@ -314,7 +321,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                             Self: <span class="hljs-keyword">this</span>,
                             Ship: ship
                         }, <span class="hljs-literal">true</span>);
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         Event.on(bbtn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.MiningMinistryShipsRemove, {
                             Self: <span class="hljs-keyword">this</span>,
                             Ship: ship
@@ -323,7 +331,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     details.appendChild(nUl);
                 }
                 <span class="hljs-comment">//wait for tab to display first</span>
-                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">var</span> Ht = Game.GetSize()
                         .h - <span class="hljs-number">175</span>;
                     <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
@@ -334,14 +342,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }, <span class="hljs-number">10</span>);
             }
         },
-        MiningMinistryShipsAdd: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        MiningMinistryShipsAdd: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.Self.service.add_cargo_ship_to_fleet({
                 session_id: Game.GetSession(),
                 building_id: <span class="hljs-keyword">this</span>.Self.building.id,
                 ship_id: <span class="hljs-keyword">this</span>.Ship.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"MiningMinistry.MiningMinistryShipsAdd.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
@@ -351,14 +359,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 scope: <span class="hljs-keyword">this</span>.Self
             });
         },
-        MiningMinistryShipsRemove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        MiningMinistryShipsRemove: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.Self.service.remove_cargo_ship_from_fleet({
                 session_id: Game.GetSession(),
                 building_id: <span class="hljs-keyword">this</span>.Self.building.id,
                 ship_id: <span class="hljs-keyword">this</span>.Ship.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"MiningMinistry.MiningMinistryShipsRemove.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);

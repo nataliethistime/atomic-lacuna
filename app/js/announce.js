@@ -2,11 +2,11 @@
 'use strict';
 YAHOO.namespace("lacuna");
 var Templates = require('js/templates');
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game;
-    var Announce = function () {
+    var Announce = function() {
         this.id = "announce";
         var container = $('<div></div>')
             .attr('id', this.id)
@@ -35,17 +35,17 @@ var Templates = require('js/templates');
     };
     Announce.prototype = {
         template: Templates.get('menu.announcement'),
-        show: function () {
+        show: function() {
             this.render();
             this.Panel.show();
         },
-        render: function () {
+        render: function() {
             var uri = "/announcement?session_id=" + Game.GetSession();
             this.Panel.setBody(this.template({
                 uri: uri
             }));
         },
-        hide: function () {
+        hide: function() {
             this.Panel.hide();
         }
     };

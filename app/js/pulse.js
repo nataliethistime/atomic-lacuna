@@ -1,7 +1,7 @@
 'use strict';
 YAHOO.namespace("lacuna");
-(function () {
-    var Pulse = function () {
+(function() {
+    var Pulse = function() {
         var panel = new YAHOO.widget.Panel("pulsing", {
             fixedcenter: true,
             close: false,
@@ -18,12 +18,12 @@ YAHOO.namespace("lacuna");
         this.counter = 0;
     };
     Pulse.prototype = {
-        Show: function () {
+        Show: function() {
             this._panel.bringToTop();
             this._panel.show();
             //this.counter++;
         },
-        Hide: function () {
+        Hide: function() {
             //this.counter--;
             //if(this.counter <= 0) {
             //    this.counter = 0;

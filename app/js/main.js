@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+(function() {
     // Load jQuery, and Lodash before anything else just to make sure.
     window.$ = require('jquery');
     window._ = require('lodash');
@@ -12,7 +12,7 @@
         var menu = new Menu();
         menu.append(new MenuItem({
             label: 'Debug Mode',
-            click: function () {
+            click: function() {
                 console.log('Toggling dev tools.');
                 remote.getCurrentWindow()
                     .toggleDevTools();
@@ -23,17 +23,17 @@
         }));
         menu.append(new MenuItem({
             label: 'Copy',
-            click: function () {
+            click: function() {
                 console.error('TODO: implement copy!');
             }
         }));
         menu.append(new MenuItem({
             label: 'Paste',
-            click: function () {
+            click: function() {
                 console.error('TODO: implement paste!');
             }
         }));
-        window.addEventListener('contextmenu', function (e) {
+        window.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             menu.popup(remote.getCurrentWindow());
         }, false);
@@ -53,7 +53,8 @@
     }
     if (window.history.replaceState) {
         window.history.replaceState({}, document.title, l.protocol + '//' + l.host + l.pathname + l.search);
-    } else if (l.hash !== '') {
+    }
+    else if (l.hash !== '') {
         l.hash = '';
     }
     // Make sure the pulser is hidden.
@@ -64,7 +65,8 @@
     var basePath = '';
     if (window.DOWNLOAD_YUI) {
         basePath = 'http://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/';
-    } else {
+    }
+    else {
         var path = require('path');
         var Util = require('js/util');
         basePath = path.join(Util.root(), 'lib', 'yui2') + '/';
@@ -77,7 +79,7 @@
     });
     // List of YUI2 components that need to be loaded.
     loader.require(["autocomplete", "logger", "yahoo", "dom", "connection", "get", "json", "event", "container", "dragdrop", "slider", "animation", "selector", "event-delegate", "event-mouseenter", "paginator", "tabview", "menu", "datatable"]);
-    loader.onSuccess = function (o) {
+    loader.onSuccess = function(o) {
         // RPC and core stuff
         require('js/smd');
         require('js/rpc');

@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper">YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> YAHOO.lacuna.Stats == <span class="hljs-string">"undefined"</span> || !YAHOO.lacuna.Stats) {
-    (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
         <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
             Util = YAHOO.util,
             Dom = Util.Dom,
@@ -36,7 +36,7 @@
             Lacuna = YAHOO.lacuna,
             Game = Lacuna.Game,
             Lib = Lacuna.Library;
-        <span class="hljs-keyword">var</span> Stats = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> Stats = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"stats"</span>;
             <span class="hljs-keyword">var</span> container = document.createElement(<span class="hljs-string">"div"</span>);
             container.id = <span class="hljs-keyword">this</span>.id;
@@ -53,37 +53,37 @@
                 width: <span class="hljs-string">"750px"</span>,
                 zIndex: <span class="hljs-number">9999</span>
             });
-            <span class="hljs-keyword">this</span>.Panel.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.Panel.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 Dom.removeClass(<span class="hljs-keyword">this</span>.id, Lib.Styles.HIDDEN);
                 <span class="hljs-keyword">this</span>.tabView = <span class="hljs-keyword">new</span> YAHOO.widget.TabView(<span class="hljs-string">"statsTabs"</span>);
                 <span class="hljs-keyword">this</span>.tabView.set(<span class="hljs-string">'activeIndex'</span>, <span class="hljs-number">0</span>);
                 <span class="hljs-comment">//subscribe after adding so active doesn't fire</span>
                 <span class="hljs-keyword">this</span>.tabView.getTab(<span class="hljs-number">1</span>)
-                    .subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                    .subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                         <span class="hljs-keyword">if</span> (e.newValue) {
                             <span class="hljs-keyword">this</span>.AllianceStats();
                         }
                     }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
                 <span class="hljs-keyword">this</span>.tabView.getTab(<span class="hljs-number">2</span>)
-                    .subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                    .subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                         <span class="hljs-keyword">if</span> (e.newValue) {
                             <span class="hljs-keyword">this</span>.ColonyStats();
                         }
                     }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
                 <span class="hljs-keyword">this</span>.tabView.getTab(<span class="hljs-number">3</span>)
-                    .subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                    .subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                         <span class="hljs-keyword">if</span> (e.newValue) {
                             <span class="hljs-keyword">this</span>.SpyStats();
                         }
                     }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
                 <span class="hljs-keyword">this</span>.tabView.getTab(<span class="hljs-number">4</span>)
-                    .subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                    .subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                         <span class="hljs-keyword">if</span> (e.newValue) {
                             <span class="hljs-keyword">this</span>.WeeklyMedalStats();
                         }
                     }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
                 <span class="hljs-keyword">this</span>.tabView.getTab(<span class="hljs-number">5</span>)
-                    .subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                    .subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                         <span class="hljs-keyword">if</span> (e.newValue) {
                             <span class="hljs-keyword">this</span>.getServerStats();
                         }
@@ -105,26 +105,27 @@
             Game.OverlayManager.register(<span class="hljs-keyword">this</span>.Panel);
         };
         Stats.prototype = {
-            _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">return</span> [<span class="hljs-string">'    &lt;div class="hd"&gt;Universe Stats&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="bd"&gt;'</span>, <span class="hljs-string">'        &lt;div id="statsTabs" class="yui-navset"&gt;'</span>, <span class="hljs-string">'            &lt;ul class="yui-nav"&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;a href="#statsEmpire"&gt;&lt;em&gt;Empires&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;a href="#statsAlliance"&gt;&lt;em&gt;Alliances&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;a href="#statsColony"&gt;&lt;em&gt;Colonies&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;a href="#statsSpy"&gt;&lt;em&gt;Spies&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;a href="#statsWeeklyMedal"&gt;&lt;em&gt;Weekly Medals&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;a href="#statsGeneral"&gt;&lt;em&gt;General&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;/ul&gt;'</span>, <span class="hljs-string">'            &lt;div id="oHt" class="yui-content"&gt;'</span>, <span class="hljs-string">'                &lt;div id="statsEmpire"&gt;&lt;div&gt;&lt;label style="font-weight:bold;display:inline-block;width:50px;"&gt;Find:&lt;/label&gt;&lt;span style="display:inline-block;width:300px;"&gt;&lt;input type="text" id="statsEmpireFind" /&gt;&lt;/span&gt;&lt;/div&gt;&lt;div id="statsEmpireTable"&gt;&lt;/div&gt;&lt;div id="statsEmpirePaginator"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;div id="statsAlliance"&gt;&lt;div&gt;&lt;label style="font-weight:bold;display:inline-block;width:50px;"&gt;Find:&lt;/label&gt;&lt;span style="display:inline-block;width:300px;"&gt;&lt;input type="text" id="statsAllianceFind" /&gt;&lt;/span&gt;&lt;/div&gt;&lt;div id="statsAllianceTable"&gt;&lt;/div&gt;&lt;div id="statsAlliancePaginator"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;div id="statsColony"&gt;&lt;div id="statsColonyTable"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;div id="statsSpy"&gt;&lt;div id="statsSpyTable"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;div id="statsWeeklyMedal"&gt;&lt;div id="statsWeeklyMedalTable"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;div id="statsGeneral"&gt;'</span>, <span class="hljs-string">'                    &lt;div id="statsGeneralTabs" class="yui-navset"&gt;'</span>, <span class="hljs-string">'                        &lt;ul class="yui-nav"&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;a href="#statsGeneralBodies"&gt;&lt;em&gt;Bodies&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;a href="#statsGeneralBuildings"&gt;&lt;em&gt;Buildings&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;a href="#statsGeneralEmpires"&gt;&lt;em&gt;Empires&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;a href="#statsGeneralOrbits"&gt;&lt;em&gt;Orbits&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;a href="#statsGeneralShips"&gt;&lt;em&gt;Ships&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;a href="#statsGeneralSpies"&gt;&lt;em&gt;Spies&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;a href="#statsGeneralStars"&gt;&lt;em&gt;Stars&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;a href="#statsGeneralGlyphs"&gt;&lt;em&gt;Glyphs&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;/ul&gt;'</span>, <span class="hljs-string">'                        &lt;div id="sHt" class="yui-content" style="overflow:auto;"&gt;'</span>, <span class="hljs-string">'                            &lt;div id="statsGeneralBodies"&gt;'</span>, <span class="hljs-string">'                            &lt;/div&gt;'</span>, <span class="hljs-string">'                            &lt;div id="statsGeneralBuildings"&gt;'</span>, <span class="hljs-string">'                            &lt;/div&gt;'</span>, <span class="hljs-string">'                            &lt;div id="statsGeneralEmpires"&gt;'</span>, <span class="hljs-string">'                            &lt;/div&gt;'</span>, <span class="hljs-string">'                            &lt;div id="statsGeneralOrbits"&gt;'</span>, <span class="hljs-string">'                            &lt;/div&gt;'</span>, <span class="hljs-string">'                            &lt;div id="statsGeneralShips"&gt;'</span>, <span class="hljs-string">'                            &lt;/div&gt;'</span>, <span class="hljs-string">'                            &lt;div id="statsGeneralSpies"&gt;'</span>, <span class="hljs-string">'                            &lt;/div&gt;'</span>, <span class="hljs-string">'                            &lt;div id="statsGeneralStars"&gt;'</span>, <span class="hljs-string">'                            &lt;/div&gt;'</span>, <span class="hljs-string">'                            &lt;div id="statsGeneralGlyphs"&gt;'</span>, <span class="hljs-string">'                            &lt;/div&gt;'</span>, <span class="hljs-string">'                        &lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="ft"&gt;&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
             },
-            getServerStats: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            getServerStats: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 Lacuna.Pulser.Show();
                 Util.Connect.asyncRequest(<span class="hljs-string">'GET'</span>, Game.RPCBase + <span class="hljs-string">'server_overview.json'</span>, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Stats.populateServerStats.success"</span>);
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">try</span> {
                             <span class="hljs-keyword">this</span>._serverOverview = Lang.JSON.parse(o.responseText);
                             <span class="hljs-keyword">this</span>.populateServerStats();
-                        } <span class="hljs-keyword">catch</span> (ex) {
+                        }
+                        <span class="hljs-keyword">catch</span> (ex) {
                             YAHOO.log(ex);
                         }
                     },
                     scope: <span class="hljs-keyword">this</span>
                 });
             },
-            populateServerStats: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            populateServerStats: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>._serverOverview;
                 Event.purgeElement(<span class="hljs-keyword">this</span>.statsGeneralBodies);
                 Event.purgeElement(<span class="hljs-keyword">this</span>.statsGeneralBuildings);
@@ -162,15 +163,15 @@
                 ["Orbit 1 Inhabited", "Orbit 2 Inhabited", "Orbit 3 Inhabited", "Orbit 4 Inhabited", "Orbit 5 Inhabited", "Orbit 6 Inhabited", "Orbit 7 Inhabited", "Orbit 8 Inhabited"]
             ],true);*/</span>
             },
-            expander: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+            expander: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, matchedEl, container)</span> {</span>
                 <span class="hljs-keyword">var</span> ul = Sel.query(<span class="hljs-string">"ul"</span>, matchedEl.parentNode, <span class="hljs-literal">true</span>);
                 Dom.setStyle(ul, <span class="hljs-string">"display"</span>, (Dom.getStyle(ul, <span class="hljs-string">"display"</span>) == <span class="hljs-string">"none"</span> ? <span class="hljs-string">""</span> : <span class="hljs-string">"none"</span>));
             },
-            _getBodiesHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            _getBodiesHtml: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>._serverOverview.bodies;
                 <span class="hljs-keyword">return</span> [<span class="hljs-string">'&lt;ul class="statsList"&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Total Bodies:&lt;/label&gt;'</span>, Lib.formatNumber(data.count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Colonies:&lt;/label&gt;'</span>, Lib.formatNumber(data.colony_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Types&lt;/label&gt;'</span>, <span class="hljs-string">'    &lt;ul class="statsSubList"&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label class="statsSubHeader"&gt;Asteroids&lt;/label&gt;'</span>, <span class="hljs-string">'        &lt;ul style="display:none;"&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Total:&lt;/label&gt;'</span>, Lib.formatNumber(data.types.asteroids.count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Average Orbit:&lt;/label&gt;'</span>, data.types.asteroids.average_orbit, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Average Size:&lt;/label&gt;'</span>, data.types.asteroids.average_size, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Largest Size:&lt;/label&gt;'</span>, data.types.asteroids.largest_size, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Smallest Size:&lt;/label&gt;'</span>, data.types.asteroids.smallest_size, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label class="statsSubHeader"&gt;Gas Giants&lt;/label&gt;'</span>, <span class="hljs-string">'        &lt;ul style="display:none;"&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Total:&lt;/label&gt;'</span>, Lib.formatNumber(data.types.gas_giants.count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Average Orbit:&lt;/label&gt;'</span>, data.types.gas_giants.average_orbit, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Average Size:&lt;/label&gt;'</span>, data.types.gas_giants.average_size, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Largest Size:&lt;/label&gt;'</span>, data.types.gas_giants.largest_size, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Smallest Size:&lt;/label&gt;'</span>, data.types.gas_giants.smallest_size, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label class="statsSubHeader"&gt;Habitables&lt;/label&gt;'</span>, <span class="hljs-string">'        &lt;ul style="display:none;"&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Total:&lt;/label&gt;'</span>, Lib.formatNumber(data.types.habitables.count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Average Orbit:&lt;/label&gt;'</span>, data.types.habitables.average_orbit, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Average Size:&lt;/label&gt;'</span>, data.types.habitables.average_size, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Largest Size:&lt;/label&gt;'</span>, data.types.habitables.largest_size, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Smallest Size:&lt;/label&gt;'</span>, data.types.habitables.smallest_size, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label class="statsSubHeader"&gt;Stations&lt;/label&gt;'</span>, <span class="hljs-string">'        &lt;ul style="display:none;"&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Total:&lt;/label&gt;'</span>, Lib.formatNumber(data.types.stations.count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Average Orbit:&lt;/label&gt;'</span>, data.types.stations.average_orbit, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Average Size:&lt;/label&gt;'</span>, data.types.stations.average_size, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Largest Size:&lt;/label&gt;'</span>, data.types.stations.largest_size, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Smallest Size:&lt;/label&gt;'</span>, data.types.stations.smallest_size, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;/ul&gt;'</span>].join(<span class="hljs-string">''</span>);
             },
-            _getBuildingsHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            _getBuildingsHtml: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>._serverOverview.buildings,
                     output = [<span class="hljs-string">'&lt;ul class="statsList"&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Total Buildings:&lt;/label&gt;'</span>, Lib.formatNumber(data.count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Types&lt;/label&gt;&lt;ul class="statsSubList"&gt;'</span>];
                 <span class="hljs-keyword">var</span> btArr = [];
@@ -187,15 +188,15 @@
                 output.push(<span class="hljs-string">'&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;'</span>);
                 <span class="hljs-keyword">return</span> output.join(<span class="hljs-string">''</span>);
             },
-            _getEmpiresHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            _getEmpiresHtml: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>._serverOverview.empires;
                 <span class="hljs-keyword">return</span> [<span class="hljs-string">'&lt;ul class="statsList"&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Total Empires:&lt;/label&gt;'</span>, Lib.formatNumber(data.count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Active This Week:&lt;/label&gt;'</span>, Lib.formatNumber(data.active_this_week_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Active Today:&lt;/label&gt;'</span>, Lib.formatNumber(data.active_today_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Currently Active:&lt;/label&gt;'</span>, Lib.formatNumber(data.currently_active_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Average University Level:&lt;/label&gt;'</span>, Lib.formatNumber(data.average_university_level), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Highest University Level:&lt;/label&gt;'</span>, Lib.formatNumber(data.highest_university_level), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Empires Using Essentia:&lt;/label&gt;'</span>, Lib.formatNumber(data.essentia_using_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Isolationist Empires:&lt;/label&gt;'</span>, Lib.formatNumber(data.isolationist_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;/ul&gt;'</span>].join(<span class="hljs-string">''</span>);
             },
-            _getOrbitsHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            _getOrbitsHtml: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>._serverOverview.orbits;
                 <span class="hljs-keyword">return</span> [<span class="hljs-string">'&lt;ul class="statsList"&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Orbits&lt;/label&gt;&lt;ul class="statsSubList"&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label class="statsSubHeader"&gt;One&lt;/label&gt;'</span>, <span class="hljs-string">'    &lt;ul style="display:none;"&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Total Bodies:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"1"</span>].bodies), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Inhabited:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"1"</span>].inhabited), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label class="statsSubHeader"&gt;Two&lt;/label&gt;'</span>, <span class="hljs-string">'    &lt;ul style="display:none;"&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Total Bodies:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"2"</span>].bodies), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Inhabited:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"2"</span>].inhabited), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label class="statsSubHeader"&gt;Three&lt;/label&gt;'</span>, <span class="hljs-string">'    &lt;ul style="display:none;"&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Total Bodies:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"3"</span>].bodies), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Inhabited:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"3"</span>].inhabited), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label class="statsSubHeader"&gt;Four&lt;/label&gt;'</span>, <span class="hljs-string">'    &lt;ul style="display:none;"&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Total Bodies:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"4"</span>].bodies), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Inhabited:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"4"</span>].inhabited), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label class="statsSubHeader"&gt;Five&lt;/label&gt;'</span>, <span class="hljs-string">'    &lt;ul style="display:none;"&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Total Bodies:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"5"</span>].bodies), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Inhabited:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"5"</span>].inhabited), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label class="statsSubHeader"&gt;Six&lt;/label&gt;'</span>, <span class="hljs-string">'    &lt;ul style="display:none;"&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Total Bodies:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"6"</span>].bodies), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Inhabited:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"6"</span>].inhabited), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label class="statsSubHeader"&gt;Seven&lt;/label&gt;'</span>, <span class="hljs-string">'    &lt;ul style="display:none;"&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Total Bodies:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"7"</span>].bodies), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Inhabited:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"7"</span>].inhabited), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label class="statsSubHeader"&gt;Eight&lt;/label&gt;'</span>, <span class="hljs-string">'    &lt;ul style="display:none;"&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Total Bodies:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"8"</span>].bodies), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Inhabited:&lt;/label&gt;'</span>, Lib.formatNumber(data[<span class="hljs-string">"8"</span>].inhabited), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;'</span>].join(<span class="hljs-string">''</span>);
             },
-            _getShipsHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            _getShipsHtml: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>._serverOverview.ships,
                     output = [<span class="hljs-string">'&lt;ul class="statsList"&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Total Ships:&lt;/label&gt;'</span>, Lib.formatNumber(data.count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Types&lt;/label&gt;&lt;ul class="statsSubList"&gt;'</span>];
                 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> bt <span class="hljs-keyword">in</span> data.types) {
@@ -206,15 +207,15 @@
                 output.push(<span class="hljs-string">'&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;'</span>);
                 <span class="hljs-keyword">return</span> output.join(<span class="hljs-string">''</span>);
             },
-            _getSpiesHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            _getSpiesHtml: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>._serverOverview.spies;
                 <span class="hljs-keyword">return</span> [<span class="hljs-string">'&lt;ul class="statsList"&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Total Spies:&lt;/label&gt;'</span>, Lib.formatNumber(data.count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Average Defense:&lt;/label&gt;'</span>, Lib.formatNumber(data.average_defense), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Highest Defense:&lt;/label&gt;'</span>, Lib.formatNumber(data.highest_defense), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Average Offense:&lt;/label&gt;'</span>, Lib.formatNumber(data.average_offense), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Highest Offense:&lt;/label&gt;'</span>, Lib.formatNumber(data.highest_offense), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Average Intel XP:&lt;/label&gt;'</span>, Lib.formatNumber(data.average_intel), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Highest Intel XP:&lt;/label&gt;'</span>, Lib.formatNumber(data.highest_intel), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Average Mayhem XP:&lt;/label&gt;'</span>, Lib.formatNumber(data.average_mayhem), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Highest Mayhem XP:&lt;/label&gt;'</span>, Lib.formatNumber(data.highest_mayhem), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Average Politics XP:&lt;/label&gt;'</span>, Lib.formatNumber(data.average_politics), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Highest Politics XP:&lt;/label&gt;'</span>, Lib.formatNumber(data.highest_politics), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Average Theft XP:&lt;/label&gt;'</span>, Lib.formatNumber(data.average_theft), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Highest Theft XP:&lt;/label&gt;'</span>, Lib.formatNumber(data.highest_theft), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Idle:&lt;/label&gt;'</span>, Lib.formatNumber(data.idle_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Travelling:&lt;/label&gt;'</span>, Lib.formatNumber(data.travelling_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Countering Espionage:&lt;/label&gt;'</span>, Lib.formatNumber(data.countering_espionage_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Doing Sweeps:&lt;/label&gt;'</span>, Lib.formatNumber(data.security_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;At the Ministry of Truth:&lt;/label&gt;'</span>, Lib.formatNumber(data.propaganda_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Training:&lt;/label&gt;'</span>, Lib.formatNumber(data.training_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Extra Training:&lt;/label&gt;'</span>, Lib.formatNumber(data.extra_training_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Gathering Intelligence:&lt;/label&gt;'</span>, Lib.formatNumber(data.gathering_intelligence_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Hacking Networks:&lt;/label&gt;'</span>, Lib.formatNumber(data.hacking_networks_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Inciting:&lt;/label&gt;'</span>, Lib.formatNumber(data.inciting_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Sabotaging:&lt;/label&gt;'</span>, Lib.formatNumber(data.sabotaging_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Appropriating:&lt;/label&gt;'</span>, Lib.formatNumber(data.stealing_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Extraction:&lt;/label&gt;'</span>, Lib.formatNumber(data.extraction_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Antipersonal:&lt;/label&gt;'</span>, Lib.formatNumber(data.antipersonal_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Infiltrating:&lt;/label&gt;'</span>, Lib.formatNumber(data.infiltrating_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;In Prison:&lt;/label&gt;'</span>, Lib.formatNumber(data.in_prison_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;For Sale:&lt;/label&gt;'</span>, Lib.formatNumber(data.for_sale_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Unconscious:&lt;/label&gt;'</span>, Lib.formatNumber(data.unconscious_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;/ul&gt;'</span>].join(<span class="hljs-string">''</span>);
             },
-            _getStarsHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            _getStarsHtml: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>._serverOverview.stars;
                 <span class="hljs-keyword">return</span> [<span class="hljs-string">'&lt;ul class="statsList"&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Total Stars:&lt;/label&gt;'</span>, Lib.formatNumber(data.count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Seized Stars:&lt;/label&gt;'</span>, Lib.formatNumber(data.seized_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Probed Stars:&lt;/label&gt;'</span>, Lib.formatNumber(data.probed_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;label&gt;Total Probes:&lt;/label&gt;'</span>, Lib.formatNumber(data.probes_count), <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;/ul&gt;'</span>].join(<span class="hljs-string">''</span>);
             },
-            _getGlyphsHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            _getGlyphsHtml: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>._serverOverview.glyphs;
                 output = [<span class="hljs-string">'&lt;ul class="statsList"&gt;'</span>];
                 <span class="hljs-keyword">var</span> glyphs = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>;
@@ -226,7 +227,7 @@
                     };
                     i++;
                 }
-                glyphs.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span>
+                glyphs.sort(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(a, b)</span> {</span>
                     <span class="hljs-keyword">return</span> a.count - b.count
                 });
                 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; glyphs.length; i++) {
@@ -234,21 +235,22 @@
                 }
                 <span class="hljs-keyword">return</span> output.join(<span class="hljs-string">''</span>);
             },
-            formatPercent: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, oRecord, oColumn, oData)</span> {</span>
+            formatPercent: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, oRecord, oColumn, oData)</span> {</span>
                 el.innerHTML = Util.Number.format(<span class="hljs-built_in">Math</span>.round(oData * <span class="hljs-number">100</span>), {
                     thousandsSeparator: <span class="hljs-string">","</span>,
                     suffix: <span class="hljs-string">"%"</span>
                 });
             },
-            EmpireStats: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            EmpireStats: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.EmpireTable) {
                     <span class="hljs-keyword">this</span>.EmpireTable.requery();
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">this</span>.EmpireFindCreate();
                     <span class="hljs-keyword">this</span>.EmpireColumns = [{
                         key: <span class="hljs-string">"rank"</span>,
                         label: <span class="hljs-string">"Rank"</span>,
-                        formatter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, oRecord, oColumn, oData)</span> {</span>
+                        formatter: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, oRecord, oColumn, oData)</span> {</span>
                             <span class="hljs-keyword">var</span> oState = <span class="hljs-keyword">this</span>.getState();
                             el.innerHTML = <span class="hljs-built_in">Math</span>.floor(oState.pagination.recordOffset + <span class="hljs-keyword">this</span>.rankCounter++);
                         }
@@ -385,36 +387,37 @@
                     <span class="hljs-keyword">this</span>.EmpireTable.subscribe(<span class="hljs-string">"rowMouseoutEvent"</span>, <span class="hljs-keyword">this</span>.EmpireTable.onEventUnhighlightRow);
                     <span class="hljs-keyword">this</span>.EmpireTable.subscribe(<span class="hljs-string">"rowClickEvent"</span>, <span class="hljs-keyword">this</span>.EmpireTable.onEventSelectRow);
                     <span class="hljs-keyword">this</span>.EmpireTable.subscribe(<span class="hljs-string">"cellMouseoverEvent"</span>, <span class="hljs-keyword">this</span>.EmpireTable.onEventHighlightCell);
-                    <span class="hljs-keyword">this</span>.EmpireTable.subscribe(<span class="hljs-string">"cellHighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oArgs)</span> {</span>
+                    <span class="hljs-keyword">this</span>.EmpireTable.subscribe(<span class="hljs-string">"cellHighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oArgs)</span> {</span>
                         <span class="hljs-keyword">if</span> (oArgs.key == <span class="hljs-string">"empire_name"</span> || oArgs.key == <span class="hljs-string">"alliance_name"</span>) {
                             Dom.setStyle(oArgs.el, <span class="hljs-string">"cursor"</span>, <span class="hljs-string">"help"</span>);
                         }
                     });
                     <span class="hljs-keyword">this</span>.EmpireTable.subscribe(<span class="hljs-string">"cellMouseoutEvent"</span>, <span class="hljs-keyword">this</span>.EmpireTable.onEventUnhighlightCell);
-                    <span class="hljs-keyword">this</span>.EmpireTable.subscribe(<span class="hljs-string">"cellUnhighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oArgs)</span> {</span>
+                    <span class="hljs-keyword">this</span>.EmpireTable.subscribe(<span class="hljs-string">"cellUnhighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oArgs)</span> {</span>
                         <span class="hljs-keyword">if</span> (oArgs.key == <span class="hljs-string">"empire_name"</span> || oArgs.key == <span class="hljs-string">"alliance_name"</span>) {
                             Dom.setStyle(oArgs.el, <span class="hljs-string">"cursor"</span>, <span class="hljs-string">"auto"</span>);
                         }
                     });
-                    <span class="hljs-keyword">this</span>.EmpireTable.subscribe(<span class="hljs-string">"cellClickEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> {</span>
+                    <span class="hljs-keyword">this</span>.EmpireTable.subscribe(<span class="hljs-string">"cellClickEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span> {</span>
                         <span class="hljs-keyword">var</span> target = Event.getTarget(ev),
                             column = <span class="hljs-keyword">this</span>.getColumn(target),
                             record;
                         <span class="hljs-keyword">if</span> (column.key == <span class="hljs-string">"empire_name"</span>) {
                             record = <span class="hljs-keyword">this</span>.getRecord(target);
                             Lacuna.Info.Empire.Load(record.getData(<span class="hljs-string">"empire_id"</span>));
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (column.key == <span class="hljs-string">"alliance_name"</span>) {
+                        }
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (column.key == <span class="hljs-string">"alliance_name"</span>) {
                             record = <span class="hljs-keyword">this</span>.getRecord(target);
                             Lacuna.Info.Alliance.Load(record.getData(<span class="hljs-string">"alliance_id"</span>));
                         }
                     });
-                    <span class="hljs-keyword">this</span>.EmpireTable.subscribe(<span class="hljs-string">"postRenderEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.EmpireTable.subscribe(<span class="hljs-string">"postRenderEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                         <span class="hljs-keyword">var</span> els = <span class="hljs-keyword">this</span>.getSelectedTrEls();
                         <span class="hljs-keyword">if</span> (els &amp;&amp; els.length &gt; <span class="hljs-number">0</span>) {
                             <span class="hljs-keyword">this</span>._elBdContainer.scrollTop = els[els.length - <span class="hljs-number">1</span>].offsetTop;
                         }
                     });
-                    <span class="hljs-keyword">this</span>.EmpireTable.handleDataReturnPayload = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oRequest, oResponse, oPayload)</span> {</span>
+                    <span class="hljs-keyword">this</span>.EmpireTable.handleDataReturnPayload = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oRequest, oResponse, oPayload)</span> {</span>
                         oPayload.totalRecords = oResponse.meta.totalRecords;
                         <span class="hljs-keyword">var</span> pn = oResponse.meta.pageNumber - <span class="hljs-number">1</span>;
                         oPayload.pagination = {
@@ -423,7 +426,7 @@
                         };
                         <span class="hljs-keyword">return</span> oPayload;
                     };
-                    <span class="hljs-keyword">this</span>.EmpireTable.requery = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(page)</span> {</span></pre></div>
+                    <span class="hljs-keyword">this</span>.EmpireTable.requery = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(page)</span> {</span></pre></div>
       
       </div>
     
@@ -495,7 +498,7 @@
                         };
                         <span class="hljs-keyword">this</span>._oDataSource.sendRequest(request, callback);
                     };
-                    <span class="hljs-keyword">this</span>.EmpireTable.find = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, page)</span> {</span></pre></div>
+                    <span class="hljs-keyword">this</span>.EmpireTable.find = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, page)</span> {</span></pre></div>
       
       </div>
     
@@ -568,7 +571,7 @@
                         <span class="hljs-keyword">this</span>._oDataSource.sendRequest(request, callback);
                     };
                     <span class="hljs-comment">//overriding generateRequest to send the correct column name back</span>
-                    <span class="hljs-keyword">this</span>.EmpireTable.set(<span class="hljs-string">"generateRequest"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oState, oSelf)</span> {</span></pre></div>
+                    <span class="hljs-keyword">this</span>.EmpireTable.set(<span class="hljs-string">"generateRequest"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oState, oSelf)</span> {</span></pre></div>
       
       </div>
     
@@ -601,7 +604,7 @@
                             ]
                         });
                     });
-                    <span class="hljs-keyword">this</span>.EmpireTable.set(<span class="hljs-string">"formatRow"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elTr, oRecord)</span> {</span>
+                    <span class="hljs-keyword">this</span>.EmpireTable.set(<span class="hljs-string">"formatRow"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(elTr, oRecord)</span> {</span>
                         <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.selectedEmpireId &amp;&amp; oRecord.getData(<span class="hljs-string">"empire_id"</span>) == <span class="hljs-keyword">this</span>.selectedEmpireId) {
                             <span class="hljs-keyword">this</span>.selectRow(oRecord);
                         }
@@ -609,7 +612,7 @@
                     });
                 }
             },
-            EmpireFindCreate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            EmpireFindCreate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> dataSource = <span class="hljs-keyword">new</span> Util.XHRDataSource(Game.RPCBase + <span class="hljs-string">'stats'</span>);
                 dataSource.connMethodPost = <span class="hljs-string">"POST"</span>;
                 dataSource.maxCacheEntries = <span class="hljs-number">2</span>;
@@ -627,7 +630,7 @@
                     formatResultColumnKeys: [<span class="hljs-string">"empire_name"</span>],
                     useIndicator: <span class="hljs-literal">true</span>
                 });
-                oTextboxList.generateRequest = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sQuery)</span> {</span>
+                oTextboxList.generateRequest = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(sQuery)</span> {</span>
                     <span class="hljs-keyword">var</span> state = Lacuna.Stats.EmpireTable.getState(),
                         s = Lang.JSON.stringify({
                             <span class="hljs-string">"id"</span>: YAHOO.rpc.Service._requestId++,
@@ -641,22 +644,23 @@
                         });
                     <span class="hljs-keyword">return</span> s;
                 };
-                oTextboxList.itemSelectEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, oArgs)</span> {</span>
+                oTextboxList.itemSelectEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, oArgs)</span> {</span>
                     oArgs[<span class="hljs-number">0</span>]._elTextbox.value = <span class="hljs-string">""</span>;
                     <span class="hljs-keyword">var</span> data = oArgs[<span class="hljs-number">2</span>];
                     Lacuna.Stats.EmpireTable.find(data.empire_id, data.page_number);
                 });
                 <span class="hljs-keyword">this</span>.empireFind = oTextboxList;
             },
-            AllianceStats: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            AllianceStats: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.AllianceTable) {
                     <span class="hljs-keyword">this</span>.AllianceTable.requery();
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">this</span>.AllianceFindCreate();
                     <span class="hljs-keyword">this</span>.AllianceColumns = [{
                         key: <span class="hljs-string">"rank"</span>,
                         label: <span class="hljs-string">"Rank"</span>,
-                        formatter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, oRecord, oColumn, oData)</span> {</span>
+                        formatter: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, oRecord, oColumn, oData)</span> {</span>
                             <span class="hljs-keyword">var</span> oState = <span class="hljs-keyword">this</span>.getState();
                             el.innerHTML = <span class="hljs-built_in">Math</span>.floor(oState.pagination.recordOffset + <span class="hljs-keyword">this</span>.rankCounter++);
                         }
@@ -814,18 +818,18 @@
                     <span class="hljs-keyword">this</span>.AllianceTable.subscribe(<span class="hljs-string">"rowMouseoutEvent"</span>, <span class="hljs-keyword">this</span>.AllianceTable.onEventUnhighlightRow);
                     <span class="hljs-keyword">this</span>.AllianceTable.subscribe(<span class="hljs-string">"rowClickEvent"</span>, <span class="hljs-keyword">this</span>.AllianceTable.onEventSelectRow);
                     <span class="hljs-keyword">this</span>.AllianceTable.subscribe(<span class="hljs-string">"cellMouseoverEvent"</span>, <span class="hljs-keyword">this</span>.AllianceTable.onEventHighlightCell);
-                    <span class="hljs-keyword">this</span>.AllianceTable.subscribe(<span class="hljs-string">"cellHighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oArgs)</span> {</span>
+                    <span class="hljs-keyword">this</span>.AllianceTable.subscribe(<span class="hljs-string">"cellHighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oArgs)</span> {</span>
                         <span class="hljs-keyword">if</span> (oArgs.key == <span class="hljs-string">"alliance_name"</span>) {
                             Dom.setStyle(oArgs.el, <span class="hljs-string">"cursor"</span>, <span class="hljs-string">"help"</span>);
                         }
                     });
                     <span class="hljs-keyword">this</span>.AllianceTable.subscribe(<span class="hljs-string">"cellMouseoutEvent"</span>, <span class="hljs-keyword">this</span>.AllianceTable.onEventUnhighlightCell);
-                    <span class="hljs-keyword">this</span>.AllianceTable.subscribe(<span class="hljs-string">"cellUnhighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oArgs)</span> {</span>
+                    <span class="hljs-keyword">this</span>.AllianceTable.subscribe(<span class="hljs-string">"cellUnhighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oArgs)</span> {</span>
                         <span class="hljs-keyword">if</span> (oArgs.key == <span class="hljs-string">"alliance_name"</span>) {
                             Dom.setStyle(oArgs.el, <span class="hljs-string">"cursor"</span>, <span class="hljs-string">"auto"</span>);
                         }
                     });
-                    <span class="hljs-keyword">this</span>.AllianceTable.subscribe(<span class="hljs-string">"cellClickEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> {</span>
+                    <span class="hljs-keyword">this</span>.AllianceTable.subscribe(<span class="hljs-string">"cellClickEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span> {</span>
                         <span class="hljs-keyword">var</span> target = Event.getTarget(ev),
                             column = <span class="hljs-keyword">this</span>.getColumn(target);
                         <span class="hljs-keyword">if</span> (column.key == <span class="hljs-string">"alliance_name"</span>) {
@@ -833,13 +837,13 @@
                             Lacuna.Info.Alliance.Load(record.getData(<span class="hljs-string">"alliance_id"</span>));
                         }
                     });
-                    <span class="hljs-keyword">this</span>.AllianceTable.subscribe(<span class="hljs-string">"postRenderEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.AllianceTable.subscribe(<span class="hljs-string">"postRenderEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                         <span class="hljs-keyword">var</span> els = <span class="hljs-keyword">this</span>.getSelectedTrEls();
                         <span class="hljs-keyword">if</span> (els &amp;&amp; els.length &gt; <span class="hljs-number">0</span>) {
                             <span class="hljs-keyword">this</span>._elBdContainer.scrollTop = els[els.length - <span class="hljs-number">1</span>].offsetTop;
                         }
                     });
-                    <span class="hljs-keyword">this</span>.AllianceTable.handleDataReturnPayload = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oRequest, oResponse, oPayload)</span> {</span>
+                    <span class="hljs-keyword">this</span>.AllianceTable.handleDataReturnPayload = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oRequest, oResponse, oPayload)</span> {</span>
                         oPayload.totalRecords = oResponse.meta.totalRecords;
                         <span class="hljs-keyword">var</span> pn = oResponse.meta.pageNumber - <span class="hljs-number">1</span>;
                         oPayload.pagination = {
@@ -848,7 +852,7 @@
                         };
                         <span class="hljs-keyword">return</span> oPayload;
                     };
-                    <span class="hljs-keyword">this</span>.AllianceTable.requery = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(page)</span> {</span></pre></div>
+                    <span class="hljs-keyword">this</span>.AllianceTable.requery = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(page)</span> {</span></pre></div>
       
       </div>
     
@@ -920,7 +924,7 @@
                         };
                         <span class="hljs-keyword">this</span>._oDataSource.sendRequest(request, callback);
                     };
-                    <span class="hljs-keyword">this</span>.AllianceTable.find = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, page)</span> {</span></pre></div>
+                    <span class="hljs-keyword">this</span>.AllianceTable.find = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, page)</span> {</span></pre></div>
       
       </div>
     
@@ -993,7 +997,7 @@
                         <span class="hljs-keyword">this</span>._oDataSource.sendRequest(request, callback);
                     };
                     <span class="hljs-comment">//overriding generateRequest to send the correct column name back</span>
-                    <span class="hljs-keyword">this</span>.AllianceTable.set(<span class="hljs-string">"generateRequest"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oState, oSelf)</span> {</span></pre></div>
+                    <span class="hljs-keyword">this</span>.AllianceTable.set(<span class="hljs-string">"generateRequest"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oState, oSelf)</span> {</span></pre></div>
       
       </div>
     
@@ -1026,7 +1030,7 @@
                             ]
                         });
                     });
-                    <span class="hljs-keyword">this</span>.AllianceTable.set(<span class="hljs-string">"formatRow"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elTr, oRecord)</span> {</span>
+                    <span class="hljs-keyword">this</span>.AllianceTable.set(<span class="hljs-string">"formatRow"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(elTr, oRecord)</span> {</span>
                         <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.selectedAllianceId &amp;&amp; oRecord.getData(<span class="hljs-string">"alliance_id"</span>) == <span class="hljs-keyword">this</span>.selectedAllianceId) {
                             <span class="hljs-keyword">this</span>.selectRow(oRecord);
                         }
@@ -1034,7 +1038,7 @@
                     });
                 }
             },
-            AllianceFindCreate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            AllianceFindCreate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> dataSource = <span class="hljs-keyword">new</span> Util.XHRDataSource(Game.RPCBase + <span class="hljs-string">'stats'</span>);
                 dataSource.connMethodPost = <span class="hljs-string">"POST"</span>;
                 dataSource.maxCacheEntries = <span class="hljs-number">2</span>;
@@ -1052,7 +1056,7 @@
                     formatResultColumnKeys: [<span class="hljs-string">"alliance_name"</span>],
                     useIndicator: <span class="hljs-literal">true</span>
                 });
-                oTextboxList.generateRequest = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sQuery)</span> {</span>
+                oTextboxList.generateRequest = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(sQuery)</span> {</span>
                     <span class="hljs-keyword">var</span> state = Lacuna.Stats.AllianceTable.getState(),
                         s = Lang.JSON.stringify({
                             <span class="hljs-string">"id"</span>: YAHOO.rpc.Service._requestId++,
@@ -1066,21 +1070,22 @@
                         });
                     <span class="hljs-keyword">return</span> s.replace(<span class="hljs-regexp">/%20/g</span>, <span class="hljs-string">' '</span>);
                 };
-                oTextboxList.itemSelectEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, oArgs)</span> {</span>
+                oTextboxList.itemSelectEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, oArgs)</span> {</span>
                     oArgs[<span class="hljs-number">0</span>]._elTextbox.value = <span class="hljs-string">""</span>;
                     <span class="hljs-keyword">var</span> data = oArgs[<span class="hljs-number">2</span>];
                     Lacuna.Stats.AllianceTable.find(data.alliance_id, data.page_number);
                 });
                 <span class="hljs-keyword">this</span>.allianceFind = oTextboxList;
             },
-            ColonyStats: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            ColonyStats: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.ColonyTable) {
                     <span class="hljs-keyword">this</span>.ColonyTable.requery();
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">this</span>.ColonyColumns = [{
                         key: <span class="hljs-string">"rank"</span>,
                         label: <span class="hljs-string">"Rank"</span>,
-                        formatter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, oRecord, oColumn, oData)</span> {</span>
+                        formatter: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, oRecord, oColumn, oData)</span> {</span>
                             el.innerHTML = <span class="hljs-keyword">this</span>.rankCounter++;
                         }
                     }, {
@@ -1167,18 +1172,18 @@
                     <span class="hljs-keyword">this</span>.ColonyTable.subscribe(<span class="hljs-string">"rowMouseoutEvent"</span>, <span class="hljs-keyword">this</span>.ColonyTable.onEventUnhighlightRow);
                     <span class="hljs-keyword">this</span>.ColonyTable.subscribe(<span class="hljs-string">"rowClickEvent"</span>, <span class="hljs-keyword">this</span>.ColonyTable.onEventSelectRow);
                     <span class="hljs-keyword">this</span>.ColonyTable.subscribe(<span class="hljs-string">"cellMouseoverEvent"</span>, <span class="hljs-keyword">this</span>.ColonyTable.onEventHighlightCell);
-                    <span class="hljs-keyword">this</span>.ColonyTable.subscribe(<span class="hljs-string">"cellHighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oArgs)</span> {</span>
+                    <span class="hljs-keyword">this</span>.ColonyTable.subscribe(<span class="hljs-string">"cellHighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oArgs)</span> {</span>
                         <span class="hljs-keyword">if</span> (oArgs.key == <span class="hljs-string">"empire_name"</span>) {
                             Dom.setStyle(oArgs.el, <span class="hljs-string">"cursor"</span>, <span class="hljs-string">"help"</span>);
                         }
                     });
                     <span class="hljs-keyword">this</span>.ColonyTable.subscribe(<span class="hljs-string">"cellMouseoutEvent"</span>, <span class="hljs-keyword">this</span>.ColonyTable.onEventUnhighlightCell);
-                    <span class="hljs-keyword">this</span>.ColonyTable.subscribe(<span class="hljs-string">"cellUnhighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oArgs)</span> {</span>
+                    <span class="hljs-keyword">this</span>.ColonyTable.subscribe(<span class="hljs-string">"cellUnhighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oArgs)</span> {</span>
                         <span class="hljs-keyword">if</span> (oArgs.key == <span class="hljs-string">"empire_name"</span>) {
                             Dom.setStyle(oArgs.el, <span class="hljs-string">"cursor"</span>, <span class="hljs-string">"auto"</span>);
                         }
                     });
-                    <span class="hljs-keyword">this</span>.ColonyTable.subscribe(<span class="hljs-string">"cellClickEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> {</span>
+                    <span class="hljs-keyword">this</span>.ColonyTable.subscribe(<span class="hljs-string">"cellClickEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span> {</span>
                         <span class="hljs-keyword">var</span> target = Event.getTarget(ev),
                             column = <span class="hljs-keyword">this</span>.getColumn(target);
                         <span class="hljs-keyword">if</span> (column.key == <span class="hljs-string">"empire_name"</span>) {
@@ -1186,7 +1191,7 @@
                             Lacuna.Info.Empire.Load(record.getData(<span class="hljs-string">"empire_id"</span>));
                         }
                     });
-                    <span class="hljs-keyword">this</span>.ColonyTable.requery = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div>
+                    <span class="hljs-keyword">this</span>.ColonyTable.requery = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span></pre></div>
       
       </div>
     
@@ -1269,7 +1274,7 @@
                         <span class="hljs-keyword">this</span>._oDataSource.sendRequest(request, callback);
                     };
                     <span class="hljs-comment">//overriding generateRequest to send the correct column name back</span>
-                    <span class="hljs-keyword">this</span>.ColonyTable.set(<span class="hljs-string">"generateRequest"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oState, oSelf)</span> {</span></pre></div>
+                    <span class="hljs-keyword">this</span>.ColonyTable.set(<span class="hljs-string">"generateRequest"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oState, oSelf)</span> {</span></pre></div>
       
       </div>
     
@@ -1302,14 +1307,15 @@
                     });
                 }
             },
-            SpyStats: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            SpyStats: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.SpyTable) {
                     <span class="hljs-keyword">this</span>.SpyTable.requery();
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">this</span>.SpyColumns = [{
                         key: <span class="hljs-string">"rank"</span>,
                         label: <span class="hljs-string">"Rank"</span>,
-                        formatter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, oRecord, oColumn, oData)</span> {</span>
+                        formatter: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, oRecord, oColumn, oData)</span> {</span>
                             el.innerHTML = <span class="hljs-keyword">this</span>.rankCounter++;
                         }
                     }, {
@@ -1321,7 +1327,7 @@
                     }, {
                         key: <span class="hljs-string">"age"</span>,
                         label: <span class="hljs-string">"Age"</span>,
-                        formatter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, oRecord, oColumn, oData)</span> {</span>
+                        formatter: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, oRecord, oColumn, oData)</span> {</span>
                             el.innerHTML = Lib.formatTime(oData);
                         }
                     }, {
@@ -1400,18 +1406,18 @@
                     <span class="hljs-keyword">this</span>.SpyTable.subscribe(<span class="hljs-string">"rowMouseoutEvent"</span>, <span class="hljs-keyword">this</span>.SpyTable.onEventUnhighlightRow);
                     <span class="hljs-keyword">this</span>.SpyTable.subscribe(<span class="hljs-string">"rowClickEvent"</span>, <span class="hljs-keyword">this</span>.SpyTable.onEventSelectRow);
                     <span class="hljs-keyword">this</span>.SpyTable.subscribe(<span class="hljs-string">"cellMouseoverEvent"</span>, <span class="hljs-keyword">this</span>.SpyTable.onEventHighlightCell);
-                    <span class="hljs-keyword">this</span>.SpyTable.subscribe(<span class="hljs-string">"cellHighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oArgs)</span> {</span>
+                    <span class="hljs-keyword">this</span>.SpyTable.subscribe(<span class="hljs-string">"cellHighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oArgs)</span> {</span>
                         <span class="hljs-keyword">if</span> (oArgs.key == <span class="hljs-string">"empire_name"</span>) {
                             Dom.setStyle(oArgs.el, <span class="hljs-string">"cursor"</span>, <span class="hljs-string">"help"</span>);
                         }
                     });
                     <span class="hljs-keyword">this</span>.SpyTable.subscribe(<span class="hljs-string">"cellMouseoutEvent"</span>, <span class="hljs-keyword">this</span>.SpyTable.onEventUnhighlightCell);
-                    <span class="hljs-keyword">this</span>.SpyTable.subscribe(<span class="hljs-string">"cellUnhighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oArgs)</span> {</span>
+                    <span class="hljs-keyword">this</span>.SpyTable.subscribe(<span class="hljs-string">"cellUnhighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oArgs)</span> {</span>
                         <span class="hljs-keyword">if</span> (oArgs.key == <span class="hljs-string">"empire_name"</span>) {
                             Dom.setStyle(oArgs.el, <span class="hljs-string">"cursor"</span>, <span class="hljs-string">"auto"</span>);
                         }
                     });
-                    <span class="hljs-keyword">this</span>.SpyTable.subscribe(<span class="hljs-string">"cellClickEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> {</span>
+                    <span class="hljs-keyword">this</span>.SpyTable.subscribe(<span class="hljs-string">"cellClickEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span> {</span>
                         <span class="hljs-keyword">var</span> target = Event.getTarget(ev),
                             column = <span class="hljs-keyword">this</span>.getColumn(target);
                         <span class="hljs-keyword">if</span> (column.key == <span class="hljs-string">"empire_name"</span>) {
@@ -1419,7 +1425,7 @@
                             Lacuna.Info.Empire.Load(record.getData(<span class="hljs-string">"empire_id"</span>));
                         }
                     });
-                    <span class="hljs-keyword">this</span>.SpyTable.requery = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div>
+                    <span class="hljs-keyword">this</span>.SpyTable.requery = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span></pre></div>
       
       </div>
     
@@ -1502,7 +1508,7 @@
                         <span class="hljs-keyword">this</span>._oDataSource.sendRequest(request, callback);
                     };
                     <span class="hljs-comment">//overriding generateRequest to send the correct column name back</span>
-                    <span class="hljs-keyword">this</span>.SpyTable.set(<span class="hljs-string">"generateRequest"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oState, oSelf)</span> {</span></pre></div>
+                    <span class="hljs-keyword">this</span>.SpyTable.set(<span class="hljs-string">"generateRequest"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oState, oSelf)</span> {</span></pre></div>
       
       </div>
     
@@ -1535,10 +1541,11 @@
                     });
                 }
             },
-            WeeklyMedalStats: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            WeeklyMedalStats: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.WeeklyMedalTable) {
                     <span class="hljs-keyword">this</span>.WeeklyMedalTable.requery();
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">this</span>.WeeklyMedalColumns = [{
                         key: <span class="hljs-string">"empire_name"</span>,
                         label: <span class="hljs-string">"Empire"</span>
@@ -1551,7 +1558,7 @@
                     }, {
                         key: <span class="hljs-string">"medal_image"</span>,
                         label: <span class="hljs-string">"Medal"</span>,
-                        formatter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elLiner, oRecord, oColumn, oData)</span> {</span>
+                        formatter: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(elLiner, oRecord, oColumn, oData)</span> {</span>
                             <span class="hljs-keyword">var</span> name = oRecord.getData(<span class="hljs-string">"medal_name"</span>);
                             elLiner.innerHTML = [<span class="hljs-string">'&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'medal/'</span>, oData, <span class="hljs-string">'.png" alt="'</span>, name, <span class="hljs-string">'" title="'</span>, name, <span class="hljs-string">'" /&gt;'</span>].join(<span class="hljs-string">''</span>);
                         }
@@ -1604,18 +1611,18 @@
                     <span class="hljs-keyword">this</span>.WeeklyMedalTable.subscribe(<span class="hljs-string">"rowMouseoutEvent"</span>, <span class="hljs-keyword">this</span>.WeeklyMedalTable.onEventUnhighlightRow);
                     <span class="hljs-keyword">this</span>.WeeklyMedalTable.subscribe(<span class="hljs-string">"rowClickEvent"</span>, <span class="hljs-keyword">this</span>.WeeklyMedalTable.onEventSelectRow);
                     <span class="hljs-keyword">this</span>.WeeklyMedalTable.subscribe(<span class="hljs-string">"cellMouseoverEvent"</span>, <span class="hljs-keyword">this</span>.WeeklyMedalTable.onEventHighlightCell);
-                    <span class="hljs-keyword">this</span>.WeeklyMedalTable.subscribe(<span class="hljs-string">"cellHighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oArgs)</span> {</span>
+                    <span class="hljs-keyword">this</span>.WeeklyMedalTable.subscribe(<span class="hljs-string">"cellHighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oArgs)</span> {</span>
                         <span class="hljs-keyword">if</span> (oArgs.key == <span class="hljs-string">"empire_name"</span>) {
                             Dom.setStyle(oArgs.el, <span class="hljs-string">"cursor"</span>, <span class="hljs-string">"help"</span>);
                         }
                     });
                     <span class="hljs-keyword">this</span>.WeeklyMedalTable.subscribe(<span class="hljs-string">"cellMouseoutEvent"</span>, <span class="hljs-keyword">this</span>.WeeklyMedalTable.onEventUnhighlightCell);
-                    <span class="hljs-keyword">this</span>.WeeklyMedalTable.subscribe(<span class="hljs-string">"cellUnhighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oArgs)</span> {</span>
+                    <span class="hljs-keyword">this</span>.WeeklyMedalTable.subscribe(<span class="hljs-string">"cellUnhighlightEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oArgs)</span> {</span>
                         <span class="hljs-keyword">if</span> (oArgs.key == <span class="hljs-string">"empire_name"</span>) {
                             Dom.setStyle(oArgs.el, <span class="hljs-string">"cursor"</span>, <span class="hljs-string">"auto"</span>);
                         }
                     });
-                    <span class="hljs-keyword">this</span>.WeeklyMedalTable.subscribe(<span class="hljs-string">"cellClickEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> {</span>
+                    <span class="hljs-keyword">this</span>.WeeklyMedalTable.subscribe(<span class="hljs-string">"cellClickEvent"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span> {</span>
                         <span class="hljs-keyword">var</span> target = Event.getTarget(ev),
                             column = <span class="hljs-keyword">this</span>.getColumn(target);
                         <span class="hljs-keyword">if</span> (column.key == <span class="hljs-string">"empire_name"</span>) {
@@ -1623,7 +1630,7 @@
                             Lacuna.Info.Empire.Load(record.getData(<span class="hljs-string">"empire_id"</span>));
                         }
                     });
-                    <span class="hljs-keyword">this</span>.WeeklyMedalTable.requery = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div>
+                    <span class="hljs-keyword">this</span>.WeeklyMedalTable.requery = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span></pre></div>
       
       </div>
     
@@ -1706,7 +1713,7 @@
                         <span class="hljs-keyword">this</span>._oDataSource.sendRequest(request, callback);
                     };
                     <span class="hljs-comment">//overriding generateRequest to send the correct column name back</span>
-                    <span class="hljs-keyword">this</span>.WeeklyMedalTable.set(<span class="hljs-string">"generateRequest"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oState, oSelf)</span> {</span></pre></div>
+                    <span class="hljs-keyword">this</span>.WeeklyMedalTable.set(<span class="hljs-string">"generateRequest"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oState, oSelf)</span> {</span></pre></div>
       
       </div>
     
@@ -1737,7 +1744,7 @@
                     });
                 }
             },
-            show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            show: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-comment">//this is called out of scope so make sure to pass the correct scope in</span>
                 Lacuna.Stats.EmpireStats();
                 Game.OverlayManager.hideAll();
@@ -1752,10 +1759,10 @@
                 Lacuna.Stats.Panel.show();
                 Lacuna.Stats.Panel.center();
             },
-            hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            hide: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">this</span>.Panel.hide();
             },
-            Reset: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Reset: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.AllianceTable) {
                     <span class="hljs-keyword">this</span>.AllianceTable.requery(<span class="hljs-number">1</span>);
                 }

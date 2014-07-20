@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -9,15 +9,15 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var Shipyard = function (result) {
+    var Shipyard = function(result) {
         Shipyard.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.Shipyard;
     };
     Lang.extend(Shipyard, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getQueueTab(), this._getBuildTab()];
         },
-        _getQueueTab: function () {
+        _getQueueTab: function() {
             var div = document.createElement("div");
             div.innerHTML = ['<div>You may subsidize the build queue for 1 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" /> per ship. <button type="button" class="shipQueueSubsidize">Subsidize</button> </div>', '<ul class="shipQueue shipQueueHeader clearafter"><li class="shipQueueType">Type</li><li class="shipQueueEach">Time To Complete</li></ul>', '<div id="qHt" style="overflow:auto;"><div id="shipsBuilding"></div></div>'].join('');
             Event.on(Sel.query(".shipQueueSubsidize", div, true), "click", this.SubsidizeBuildQueue, this, true);
@@ -25,7 +25,7 @@ YAHOO.namespace("lacuna.buildings");
                 label: "Build Queue",
                 contentEl: div
             });
-            queueTab.subscribe("activeChange", function (e) {
+            queueTab.subscribe("activeChange", function(e) {
                 if (e.newValue) {
                     this.getQueue();
                     var Ht = Game.GetSize()
@@ -39,12 +39,12 @@ YAHOO.namespace("lacuna.buildings");
             this.queueTab = queueTab;
             return queueTab;
         },
-        _getBuildTab: function () {
+        _getBuildTab: function() {
             var buildTab = new YAHOO.widget.Tab({
                 label: "Build Ships",
                 content: ['<div>', '    <div class="clearafter" style="font-weight:bold;">', '        <span id="shipDocksAvailable" style="float:left;"></span>', '        <span style="float:right;"><select id="shipBuildView"><option value="All">All</option><option value="Now" selected="selected">Now</option><option value="Later">Later</option></select></span>', '    </div>', '    <div id="shipBuildMessage" class="error"></div>', '    <div id="bHt" style="overflow:auto;margin-top:2px;border-top:1px solid #52acff;">', '        <ul id="shipDetails">', '        </ul>', '    </div>', '</div>'].join('')
             });
-            buildTab.subscribe("activeChange", function (e) {
+            buildTab.subscribe("activeChange", function(e) {
                 if (e.newValue) {
                     this.getBuild();
                     var Ht = Game.GetSize()
@@ -59,14 +59,14 @@ YAHOO.namespace("lacuna.buildings");
             this.buildTab = buildTab;
             return buildTab;
         },
-        getBuild: function () {
+        getBuild: function() {
             if (!this.ships) {
                 Lacuna.Pulser.Show();
                 this.service.get_buildable({
                     session_id: Game.GetSession(),
                     building_id: this.building.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Shipyard.getBuild.get_buildable.success");
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
@@ -81,11 +81,12 @@ YAHOO.namespace("lacuna.buildings");
                     },
                     scope: this
                 });
-            } else {
+            }
+            else {
                 this.ShipPopulate();
             }
         },
-        getQueue: function () {
+        getQueue: function() {
             if (!this.ship_build_queue) {
                 Lacuna.Pulser.Show();
                 this.service.view_build_queue({
@@ -93,7 +94,7 @@ YAHOO.namespace("lacuna.buildings");
                     building_id: this.building.id,
                     page_number: 1
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Shipyard.getQueue.view_build_queue.success");
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
@@ -102,11 +103,12 @@ YAHOO.namespace("lacuna.buildings");
                     },
                     scope: this
                 });
-            } else {
+            }
+            else {
                 this.ShipyardDisplay();
             }
         },
-        ShipyardDisplay: function () {
+        ShipyardDisplay: function() {
             var bq = this.ship_build_queue,
                 div = Dom.get("shipsBuilding");
             if (div) {
@@ -157,23 +159,24 @@ YAHOO.namespace("lacuna.buildings");
                 divParent.appendChild(div);
             }
         },
-        ShipyardQueue: function (remaining, elLine) {
+        ShipyardQueue: function(remaining, elLine) {
             var compTime;
             if (remaining <= 0) {
                 compTime = 'Overdue ' + Lib.formatTime(Math.round(-remaining));
-            } else {
+            }
+            else {
                 compTime = Lib.formatTime(Math.round(remaining));
             }
             Sel.query("li.shipQueueEach", elLine, true)
                 .innerHTML = compTime;
         },
-        SubsidizeBuildQueue: function () {
+        SubsidizeBuildQueue: function() {
             Lacuna.Pulser.Show();
             this.service.subsidize_build_queue({
                 session_id: Game.GetSession(),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Shipyard.SubsidizeBuildQueue.success");
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
@@ -183,30 +186,32 @@ YAHOO.namespace("lacuna.buildings");
                 scope: this
             });
         },
-        SetBuildMessage: function (message) {
+        SetBuildMessage: function(message) {
             var msg = Dom.get("shipBuildMessage");
             if (msg) {
                 msg.innerHTML = message;
                 Lib.fadeOutElm("shipBuildMessage");
             }
         },
-        SetDocksAvailableMessage: function () {
+        SetDocksAvailableMessage: function() {
             var sda = Dom.get("shipDocksAvailable");
             if (sda) {
                 if (this.ships.docks_available) {
                     var message = 'There are ' + this.ships.docks_available + ' docks available for new ships.';
                     if (this.ships.build_queue_max && this.ships.build_queue_max - this.ships.build_queue_used > 0) {
                         message += '  You can queue ' + (this.ships.build_queue_max - this.ships.build_queue_used) + (this.ships.build_queue_used && this.ships.build_queue_used - 0 ? ' additional' : '') + ' ships.';
-                    } else if (this.ships.build_queue_max) {
+                    }
+                    else if (this.ships.build_queue_max) {
                         message += '  However, your build queue is full.';
                     }
                     sda.innerHTML = message;
-                } else {
+                }
+                else {
                     sda.innerHTML = 'You have no docks available.  Do you still have a Space Port?';
                 }
             }
         },
-        ShipPopulate: function () {
+        ShipPopulate: function() {
             var details = Dom.get("shipDetails");
             if (details) {
                 var ships = this.ships.buildable,
@@ -220,9 +225,11 @@ YAHOO.namespace("lacuna.buildings");
                     if (ships.hasOwnProperty(shipType)) {
                         if (filter === "All") {
                             shipNames.push(shipType);
-                        } else if (filter === "Now" && ships[shipType].can) {
+                        }
+                        else if (filter === "Now" && ships[shipType].can) {
                             shipNames.push(shipType);
-                        } else if (filter === "Later" && !ships[shipType].can) {
+                        }
+                        else if (filter === "Later" && !ships[shipType].can) {
                             shipNames.push(shipType);
                         }
                     }
@@ -263,14 +270,14 @@ YAHOO.namespace("lacuna.buildings");
                 Event.delegate(details, "click", this.ShipExpandDesc, ".shipImage");
             }
         },
-        ShipExpandDesc: function (e, matchedEl, container) {
+        ShipExpandDesc: function(e, matchedEl, container) {
             var desc = Sel.query('div.shipDesc', matchedEl.parentNode.parentNode, true);
             if (desc) {
                 var dis = Dom.getStyle(desc, "display");
                 Dom.setStyle(desc, "display", dis === "none" ? "" : "none");
             }
         },
-        SubsidizeShip: function () {
+        SubsidizeShip: function() {
             Lacuna.Pulser.Show();
             this.Self.service.subsidize_ship({
                 args: {
@@ -279,7 +286,7 @@ YAHOO.namespace("lacuna.buildings");
                     ship_id: this.Ship.id
                 }
             }, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     this.Self.rpcSuccess(o);
                     this.Item.parentNode.removeChild(this.Item);
@@ -287,7 +294,7 @@ YAHOO.namespace("lacuna.buildings");
                 scope: this
             });
         },
-        ShipBuild: function (e) {
+        ShipBuild: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             Lacuna.Pulser.Show();
@@ -298,7 +305,7 @@ YAHOO.namespace("lacuna.buildings");
                 type: this.Type,
                 quantity: qty.value
             }, {
-                success: function (o) {
+                success: function(o) {
                     btn.disabled = false;
                     Lacuna.Pulser.Hide();
                     this.Self.rpcSuccess(o);
@@ -311,7 +318,7 @@ YAHOO.namespace("lacuna.buildings");
                     this.Self.SetDocksAvailableMessage();
                     this.Self.SetBuildMessage("Successfully started building " + this.Ship.type_human + ".");
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this

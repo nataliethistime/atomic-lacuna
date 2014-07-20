@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -8,22 +8,22 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var WaterStorage = function (result) {
+    var WaterStorage = function(result) {
         WaterStorage.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.WaterStorage;
     };
     YAHOO.lang.extend(WaterStorage, YAHOO.lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getDumpTab()];
         },
-        _getDumpTab: function () {
+        _getDumpTab: function() {
             this.dumpTab = new YAHOO.widget.Tab({
                 label: "Dump",
                 contentEl: this.DumpGetDisplay(this.result.dump)
             });
             return this.dumpTab;
         },
-        DumpGetDisplay: function () {
+        DumpGetDisplay: function() {
             var ul = document.createElement('ul'),
                 li = document.createElement('li'),
                 nLi = li.cloneNode(false),
@@ -55,7 +55,7 @@ YAHOO.namespace("lacuna.buildings");
             div.appendChild(msg);
             return div;
         },
-        Dump: function (e) {
+        Dump: function(e) {
             var planet = Game.GetCurrentPlanet();
             var building = this.building;
             var type = "water";
@@ -65,18 +65,20 @@ YAHOO.namespace("lacuna.buildings");
                     Dom.get("dumpMessage")
                         .innerHTML = "Can only convert " + type + " you have stored.";
                     Lib.fadeOutElm("dumpMessage");
-                } else if (amount <= 0) {
+                }
+                else if (amount <= 0) {
                     Dom.get("dumpMessage")
                         .innerHTML = "You must specify an amount greater than zero.";
                     Lib.fadeOutElm("dumpMessage");
-                } else {
+                }
+                else {
                     Lacuna.Pulser.Show();
                     this.service.dump({
                         session_id: Game.GetSession(),
                         building_id: this.building.id,
                         amount: amount
                     }, {
-                        success: function (o) {
+                        success: function(o) {
                             YAHOO.log(o, "info", "WaterStorage.Dump.success");
                             Lacuna.Pulser.Hide();
                             this.rpcSuccess(o);

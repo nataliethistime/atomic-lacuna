@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Util = YAHOO.util,
         Dom = Util.Dom,
         Event = Util.Event,
@@ -35,7 +35,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> CreateSpecies = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Empire)</span> {</span>
+    <span class="hljs-keyword">var</span> CreateSpecies = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(Empire)</span> {</span>
         <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"createSpecies"</span>;
         <span class="hljs-keyword">this</span>._empire = Empire;
         <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onCreateSuccessful"</span>);
@@ -71,7 +71,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             underlay: <span class="hljs-literal">false</span>,
             zIndex: <span class="hljs-number">9999</span>
         });
-        <span class="hljs-keyword">this</span>.Dialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.Dialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.elMessage = Dom.get(<span class="hljs-string">'speciesMessage'</span>);
             <span class="hljs-keyword">this</span>.designer = <span class="hljs-keyword">new</span> Lacuna.SpeciesDesigner();
             <span class="hljs-keyword">this</span>.designer.render(<span class="hljs-string">"speciesCreateDesign"</span>);
@@ -81,7 +81,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         Game.OverlayManager.register(<span class="hljs-keyword">this</span>.Dialog);
     };
     CreateSpecies.prototype = {
-        handleCreate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        handleCreate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.setMessage(<span class="hljs-string">""</span>);
             <span class="hljs-keyword">var</span> EmpireServ = Game.Services.Empire,
                 data = <span class="hljs-keyword">this</span>.designer.getSpeciesData();
@@ -89,7 +89,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.designer.validateSpecies(data)) {
                     <span class="hljs-keyword">return</span>;
                 }
-            } <span class="hljs-keyword">catch</span> (e) {
+            }
+            <span class="hljs-keyword">catch</span> (e) {
                 <span class="hljs-keyword">this</span>.setMessage(e);
                 <span class="hljs-keyword">return</span>;
             }
@@ -98,63 +99,62 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 empire_id: <span class="hljs-keyword">this</span>.empireId,
                 params: data
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"CreateSpecies"</span>);
                     <span class="hljs-keyword">this</span>._found();
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.setMessage(o.error.message);
                     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        handleCancel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        handleCancel: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.hide();
             <span class="hljs-keyword">this</span>._empire.handleCancel();
         },
-        _found: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _found: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">var</span> EmpireServ = Game.Services.Empire;
             EmpireServ.found({
                 empire_id: <span class="hljs-keyword">this</span>.empireId,
                 api_key: Lib.ApiKey
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"CreateSpecies._found.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.hide(); <span class="hljs-comment">//hide species</span>
                     <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onCreateSuccessful"</span>, o);
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.setMessage(o.error.message);
                     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-string">'    &lt;div class="hd"&gt;Create Species&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="bd"&gt;'</span>, <span class="hljs-string">'        &lt;form name="speciesForm"&gt;'</span>, <span class="hljs-string">'            &lt;div id="speciesCreateDesign"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div id="speciesMessage" class="hidden"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/form&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="ft"&gt;&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
         },
-        setMessage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> {</span>
+        setMessage: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str)</span> {</span>
             Dom.replaceClass(<span class="hljs-keyword">this</span>.elMessage, Lib.Styles.HIDDEN, Lib.Styles.ALERT);
             <span class="hljs-keyword">this</span>.elMessage.innerHTML = str;
         },
-        show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(empire)</span> {</span>
+        show: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(empire)</span> {</span>
             <span class="hljs-keyword">this</span>.empireId = empire;
             Game.OverlayManager.hideAll();
             <span class="hljs-keyword">this</span>.Dialog.show();
             <span class="hljs-keyword">this</span>.Dialog.center();
         },
-        hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        hide: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Dom.replaceClass(<span class="hljs-keyword">this</span>.elMessage, Lib.Styles.ALERT, Lib.Styles.HIDDEN);
             <span class="hljs-keyword">this</span>.Dialog.hide();
         }
     };
     YAHOO.lang.augmentProto(CreateSpecies, Util.EventProvider);
     Lacuna.CreateSpecies = CreateSpecies;
-})();
-</pre></div>
+})();</pre></div>
       
       </div>
     

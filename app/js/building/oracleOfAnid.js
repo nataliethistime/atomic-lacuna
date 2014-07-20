@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -10,11 +10,11 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var OracleOfAnid = function (result) {
+    var OracleOfAnid = function(result) {
         OracleOfAnid.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.OracleOfAnid;
         this.maps = {};
-        this.subscribe("onLoad", function () {
+        this.subscribe("onLoad", function() {
             this.CreateFind();
             Event.on("oracleCurrentStar", "click", this.GoToCurrentStar, this, true);
             this.oracleStar = Dom.get("oracleStar");
@@ -32,17 +32,17 @@ YAHOO.namespace("lacuna.buildings");
         }, this, true);
     };
     Lang.extend(OracleOfAnid, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getTab()];
         },
-        _getTab: function () {
+        _getTab: function() {
             this.tab = new YAHOO.widget.Tab({
                 label: "Oracle",
                 content: ['<div>', '    <div><label for="oracleStarFind">Lookup Star Name:</label><div style="display:inline-block;width:300px;"><input type="text" id="oracleStarFind" /></div> or <button type="button" id="oracleCurrentStar">Go To Current Star</button></div>', '    <div id="oracleMessage" style="font-weight: bold; margin: 5px;"></div>', '    <div id="oracleDisplay" style="position:relative;height:150px;width:700px;background:black url(', Lib.AssetUrl, 'star_system/field.png);">', '        <div id="oracleStar" class="tile" style="position:absolute;height:150px;width:150px;left:0px;top:0px;"></div>', '        <div id="oraclePlanetOne" class="tile" style="position:absolute;height:50px;width:50px;left:150px;top:50px;"></div>', '        <div id="oraclePlanetTwo" class="tile" style="position:absolute;height:50px;width:50px;left:210px;top:50px;"></div>', '        <div id="oraclePlanetThree" class="tile" style="position:absolute;height:50px;width:50px;left:270px;top:50px;"></div>', '        <div id="oraclePlanetFour" class="tile" style="position:absolute;height:50px;width:50px;left:330px;top:50px;"></div>', '        <div id="oraclePlanetFive" class="tile" style="position:absolute;height:50px;width:50px;left:390px;top:50px;"></div>', '        <div id="oraclePlanetSix" class="tile" style="position:absolute;height:50px;width:50px;left:450px;top:50px;"></div>', '        <div id="oraclePlanetSeven" class="tile" style="position:absolute;height:50px;width:50px;left:510px;top:50px;"></div>', '        <div id="oraclePlanetEight" class="tile" style="position:absolute;height:50px;width:50px;left:570px;top:50px;"></div>', '    </div>', '</div>'].join('')
             });
             return this.tab;
         },
-        CreateFind: function () {
+        CreateFind: function() {
             if (!this.findStar) {
                 var dataSource = new Util.XHRDataSource("/map");
                 dataSource.connMethodPost = "POST";
@@ -59,10 +59,10 @@ YAHOO.namespace("lacuna.buildings");
                     forceSelection: false,
                     useIndicator: true
                 });
-                oTextboxList.formatResult = function (oResultData, sQuery, sResultMatch) {
+                oTextboxList.formatResult = function(oResultData, sQuery, sResultMatch) {
                     return ['<div class="yui-gf">', '    <div class="yui-u first" style="background-color:black;">', '        <img src="', Lib.AssetUrl, 'star_map/', oResultData.color, '.png" alt="', oResultData, name, '" style="width:50px;height:50px;" />', '    </div>', '    <div class="yui-u">', '        <div>', oResultData.name, '</div>', '        <div>', oResultData.x, ' : ', oResultData.y, '</div>', '    </div>', '</div>'].join("");
                 };
-                oTextboxList.generateRequest = function (sQuery) {
+                oTextboxList.generateRequest = function(sQuery) {
                     var s = Lang.JSON.stringify({
                         "id": YAHOO.rpc.Service._requestId++,
                         "method": "search_stars",
@@ -74,25 +74,25 @@ YAHOO.namespace("lacuna.buildings");
                     });
                     return s;
                 };
-                oTextboxList.dirtyEvent.subscribe(function (event, isDirty, oSelf) {
+                oTextboxList.dirtyEvent.subscribe(function(event, isDirty, oSelf) {
                     var star = this._oTblSingleSelection.Object;
                     oSelf.GetStar(star.id);
                 }, this);
                 this.findStar = oTextboxList;
             }
         },
-        GoToCurrentStar: function () {
+        GoToCurrentStar: function() {
             this.GetStar(Game.GetCurrentPlanet()
                 .star_id);
         },
-        GetStar: function (starId) {
+        GetStar: function(starId) {
             Lacuna.Pulser.Show();
             this.service.get_star({
                 session_id: Game.GetSession(),
                 building_id: this.building.id,
                 star_id: starId
             }, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
                     this.star = o.result.star;
@@ -100,7 +100,7 @@ YAHOO.namespace("lacuna.buildings");
                         .innerHTML = this.star.name;
                     this.Display();
                 },
-                failure: function (o) {
+                failure: function(o) {
                     Dom.get("oracleMessage")
                         .innerHTML = o.error.message;
                     return true;
@@ -108,7 +108,7 @@ YAHOO.namespace("lacuna.buildings");
                 scope: this
             });
         },
-        Display: function () {
+        Display: function() {
             this.oraclePlanetsData = {};
             if (this.oracleStar) {
                 var planets = this.star.bodies,
@@ -137,38 +137,39 @@ YAHOO.namespace("lacuna.buildings");
                 }
             }
         },
-        DisplayClick: function (e, matchedEl, container) {
+        DisplayClick: function(e, matchedEl, container) {
             if (matchedEl.id === "oracleStar") {
                 YAHOO.lacuna.MapStar.ShowStar({
                     data: this.star
                 }, true);
-            } else {
+            }
+            else {
                 var planet;
                 switch (matchedEl.id) {
-                case "oraclePlanetOne":
-                    planet = this.oraclePlanetsData[1];
-                    break;
-                case "oraclePlanetTwo":
-                    planet = this.oraclePlanetsData[2];
-                    break;
-                case "oraclePlanetThree":
-                    planet = this.oraclePlanetsData[3];
-                    break;
-                case "oraclePlanetFour":
-                    planet = this.oraclePlanetsData[4];
-                    break;
-                case "oraclePlanetFive":
-                    planet = this.oraclePlanetsData[5];
-                    break;
-                case "oraclePlanetSix":
-                    planet = this.oraclePlanetsData[6];
-                    break;
-                case "oraclePlanetSeven":
-                    planet = this.oraclePlanetsData[7];
-                    break;
-                case "oraclePlanetEight":
-                    planet = this.oraclePlanetsData[8];
-                    break;
+                    case "oraclePlanetOne":
+                        planet = this.oraclePlanetsData[1];
+                        break;
+                    case "oraclePlanetTwo":
+                        planet = this.oraclePlanetsData[2];
+                        break;
+                    case "oraclePlanetThree":
+                        planet = this.oraclePlanetsData[3];
+                        break;
+                    case "oraclePlanetFour":
+                        planet = this.oraclePlanetsData[4];
+                        break;
+                    case "oraclePlanetFive":
+                        planet = this.oraclePlanetsData[5];
+                        break;
+                    case "oraclePlanetSix":
+                        planet = this.oraclePlanetsData[6];
+                        break;
+                    case "oraclePlanetSeven":
+                        planet = this.oraclePlanetsData[7];
+                        break;
+                    case "oraclePlanetEight":
+                        planet = this.oraclePlanetsData[8];
+                        break;
                 }
                 YAHOO.lacuna.MapStar.ShowPlanet({
                     data: planet

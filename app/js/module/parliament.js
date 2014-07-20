@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.modules");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -9,26 +9,27 @@ YAHOO.namespace("lacuna.modules");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var Parliament = function (result, locationId) {
+    var Parliament = function(result, locationId) {
         Parliament.superclass.constructor.call(this, result);
         this.locationId = locationId;
         this.service = Game.Services.Modules.Parliament;
         this.canRepealLaw = this.building.level >= 5;
     };
     Lang.extend(Parliament, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             if (this.building.level >= 4) {
                 return [this._getCreateTab(), this._getLawsTab(), this._getPropsTab()];
-            } else {
+            }
+            else {
                 return [this._getLawsTab(), this._getPropsTab()];
             }
         },
-        _getLawsTab: function () {
+        _getLawsTab: function() {
             var tab = new YAHOO.widget.Tab({
                 label: "Laws",
                 content: ['<div>', '    <div style="overflow:auto;"><ul id="lawsDetails"></ul></div>', '</div>'].join('')
             });
-            tab.subscribe("activeChange", function (e) {
+            tab.subscribe("activeChange", function(e) {
                 if (e.newValue) {
                     if (!this.laws) {
                         Lacuna.Pulser.Show();
@@ -36,7 +37,7 @@ YAHOO.namespace("lacuna.modules");
                             session_id: Game.GetSession(),
                             body_id: this.locationId
                         }, {
-                            success: function (o) {
+                            success: function(o) {
                                 Lacuna.Pulser.Hide();
                                 this.rpcSuccess(o);
                                 this.laws = o.result.laws;
@@ -54,12 +55,12 @@ YAHOO.namespace("lacuna.modules");
             Event.delegate("lawsDetails", "click", this.handleAllianceLink, "a.alliance_link", this, true);
             return tab;
         },
-        _getPropsTab: function () {
+        _getPropsTab: function() {
             var tab = new YAHOO.widget.Tab({
                 label: "Propositions",
                 content: ['<div>', '    <div style="overflow:auto;"><ul id="propsDetails"></ul></div>', '</div>'].join('')
             });
-            tab.subscribe("activeChange", function (e) {
+            tab.subscribe("activeChange", function(e) {
                 if (e.newValue) {
                     if (!this.props) {
                         Lacuna.Pulser.Show();
@@ -67,7 +68,7 @@ YAHOO.namespace("lacuna.modules");
                             session_id: Game.GetSession(),
                             building_id: this.building.id
                         }, {
-                            success: function (o) {
+                            success: function(o) {
                                 Lacuna.Pulser.Hide();
                                 this.rpcSuccess(o);
                                 this.props = o.result.propositions;
@@ -85,7 +86,7 @@ YAHOO.namespace("lacuna.modules");
             Event.delegate("propsDetails", "click", this.handleAllianceLink, "a.alliance_link", this, true);
             return tab;
         },
-        _getCreateTab: function () {
+        _getCreateTab: function() {
             this.createEvent("onAllianceMembers");
             var opts = ['<option value="proposeWrit" selected>Writ</option>'],
                 dis = [],
@@ -94,8 +95,8 @@ YAHOO.namespace("lacuna.modules");
                 opts[opts.length] = '<option value="proposeTransfer">Transfer Station Ownership</option>';
                 dis[dis.length] = ['    <div id="proposeTransfer" class="proposeOption" style="display:none;">', '        <label>Empire:</label><select id="proposeTransferTo"></select><br />', '        <button type="button" id="proposeTransferSubmit">Propose Transfer</button>', '    </div>'].join('');
                 getAllianceMembers = true;
-                this.subscribe("onLoad", function () {
-                    this.subscribe("onAllianceMembers", function () {
+                this.subscribe("onLoad", function() {
+                    this.subscribe("onAllianceMembers", function() {
                         var sel = Dom.get("proposeTransferTo"),
                             opts = [];
                         for (var n = 0; n < this.allianceMembers.length; n++) {
@@ -113,7 +114,7 @@ YAHOO.namespace("lacuna.modules");
             if (this.building.level >= 7) {
                 opts[opts.length] = '<option value="proposeSeizeStar">Seize Star</option>';
                 dis[dis.length] = ['    <div id="proposeSeizeStar" class="proposeOption" style="display:none;">', '        <label>Star:</label><input type="text" id="proposeSeizeStarFind" /><br />', '        <button type="button" id="proposeSeizeStarSubmit">Propose Seize Star</button>', '    </div>'].join('');
-                this.subscribe("onLoad", function () {
+                this.subscribe("onLoad", function() {
                     this.seizeStarTextboxList = this.CreateStarSearch("proposeSeizeStarFind");
                     Event.on("proposeSeizeStarSubmit", "click", this.SeizeStar, this, true);
                 }, this, true);
@@ -121,12 +122,12 @@ YAHOO.namespace("lacuna.modules");
             if (this.building.level >= 8) {
                 opts[opts.length] = '<option value="proposeRenameStar">Rename Star</option>';
                 dis[dis.length] = ['    <div id="proposeRenameStar" class="proposeOption" style="display:none;">', '        <ul><li><label>Star:</label><select id="proposeRenameStarSelect"></select></li>', '        <li><label>New Name:</label><input type="text" id="proposeRenameStarName" /></li></ul><br />', '        <button type="button" id="proposeRenameStarSubmit">Propose Rename Star</button>', '    </div>'].join('');
-                this.subscribe("onLoad", function () {
+                this.subscribe("onLoad", function() {
                     this.service.get_stars_in_jurisdiction({
                         session_id: Game.GetSession(""),
                         building_id: this.building.id
                     }, {
-                        success: function (o) {
+                        success: function(o) {
                             var el = Dom.get('proposeRenameStarSelect');
                             if (el) {
                                 var stars = o.result.stars;
@@ -147,7 +148,7 @@ YAHOO.namespace("lacuna.modules");
             if (this.building.level >= 9) {
                 opts[opts.length] = '<option value="proposeBroadcast">Broadcast on Net19</option>';
                 dis[dis.length] = ['    <div id="proposeBroadcast" class="proposeOption" style="display:none;">', '        <label>Message:</label><input type="text" id="proposeBroadcastMessage" maxlength="100" size="50" /><br />', '        <button type="button" id="proposeBroadcastSubmit">Propose Broadcast</button>', '    </div>'].join('');
-                this.subscribe("onLoad", function () {
+                this.subscribe("onLoad", function() {
                     Event.on("proposeBroadcastSubmit", "click", this.Broadcast, this, true);
                 }, this, true);
             }
@@ -156,10 +157,10 @@ YAHOO.namespace("lacuna.modules");
                 opts[opts.length] = '<option value="proposeExpel">Expel Member</option>';
                 dis[dis.length] = ['    <div id="proposeInduct" class="proposeOption" style="display:none;">', '        <ul><li><label>Empire:</label><input type="text" id="proposeInductMember" /></li>', '        <li><label>Message:</label><textarea id="proposeInductMessage" rows="4" cols="80"></textarea></li></ul><br />', '        <button type="button" id="proposeInductSubmit">Propose Induct Member</button>', '    </div>', '    <div id="proposeExpel" class="proposeOption" style="display:none;">', '        <ul><li><label>Empire:</label><select id="proposeExpelMember"></select></li>', '        <li><label>Reason:</label><textarea id="proposeExpelReason" rows="4" cols="80"></textarea></li></ul><br />', '        <button type="button" id="proposeExpelSubmit">Propose Expel Member</button>', '    </div>'].join('');
                 getAllianceMembers = true;
-                this.subscribe("onLoad", function () {
+                this.subscribe("onLoad", function() {
                     this.inductMemberTextboxList = this.CreateEmpireSearch("proposeInductMember");
                     Event.on("proposeInductSubmit", "click", this.MemberInduct, this, true);
-                    this.subscribe("onAllianceMembers", function () {
+                    this.subscribe("onAllianceMembers", function() {
                         var sel = Dom.get("proposeExpelMember"),
                             opts = [];
                         for (var n = 0; n < this.allianceMembers.length; n++) {
@@ -178,8 +179,8 @@ YAHOO.namespace("lacuna.modules");
                 opts[opts.length] = '<option value="proposeElectLeader">Elect New Leader</option>';
                 dis[dis.length] = ['    <div id="proposeElectLeader" class="proposeOption" style="display:none;">', '        <label>Empire:</label><select id="proposeElectLeaderMember"></select><br />', '        <button type="button" id="proposeElectLeaderSubmit">Propose as New Leader</button>', '    </div>'].join('');
                 getAllianceMembers = true;
-                this.subscribe("onLoad", function () {
-                    this.subscribe("onAllianceMembers", function () {
+                this.subscribe("onLoad", function() {
+                    this.subscribe("onAllianceMembers", function() {
                         var sel = Dom.get("proposeElectLeaderMember"),
                             opts = [];
                         for (var n = 0; n < this.allianceMembers.length; n++) {
@@ -197,12 +198,12 @@ YAHOO.namespace("lacuna.modules");
             if (this.building.level >= 12) {
                 opts[opts.length] = '<option value="proposeRenameAsteroid">Rename Asteroid</option>';
                 dis[dis.length] = ['    <div id="proposeRenameAsteroid" class="proposeOption" style="display:none;">', '		<ul><li><label>Star:</label><select id="proposeRenameAsteroidStar"></select></li>', '        <li><label>Asteroid:</label><select id="proposeRenameAsteroidName"></select></li>', '        <li><label>Name:</label><input type="text" id="proposeRenameAsteroidNewName" /></li></ul><br />', '        <button type="button" id="proposeRenameAsteroidSubmit">Propose Rename Asteroid</button>', '    </div>'].join('');
-                this.subscribe("onLoad", function () {
+                this.subscribe("onLoad", function() {
                     this.service.get_stars_in_jurisdiction({
                         session_id: Game.GetSession(),
                         building_id: this.building.id,
                     }, {
-                        success: function (o) {
+                        success: function(o) {
                             var el = Dom.get('proposeRenameAsteroidStar');
                             if (el) {
                                 var stars = o.result.stars;
@@ -234,12 +235,12 @@ YAHOO.namespace("lacuna.modules");
             if (this.building.level >= 14) {
                 opts[opts.length] = '<option value="proposeEvictMining">Evict Mining Platform</option>';
                 dis[dis.length] = ['    <div id="proposeEvictMining" class="proposeOption" style="display:none;">', '		<ul><li><label>Star:</label><select id="proposeEvictMiningStar"></select></li>', '		 <li><label>Body:</label><select id="proposeEvictMiningBody"></select></li>', '        <li><label>Empire Mining:</label><select id="proposeEvictMiningId"></select></li><br />', '        <button type="button" id="proposeEvictMiningSubmit">Propose Eviction</button></ul>', '    </div>'].join('');
-                this.subscribe("onLoad", function () {
+                this.subscribe("onLoad", function() {
                     this.service.get_stars_in_jurisdiction({
                         session_id: Game.GetSession(),
                         building_id: this.building.id,
                     }, {
-                        success: function (o) {
+                        success: function(o) {
                             var el = Dom.get('proposeEvictMiningStar');
                             if (el) {
                                 var stars = o.result.stars;
@@ -267,12 +268,12 @@ YAHOO.namespace("lacuna.modules");
             if (this.building.level >= 17) {
                 opts[opts.length] = '<option value="proposeRenameUninhabited">Rename Uninhabited</option>';
                 dis[dis.length] = ['    <div id="proposeRenameUninhabited" class="proposeOption" style="display:none;">', '		<ul><li><label>Star:</label><select id="proposeRenameUninhabitedStar"></select></li>', '        <li><label>Planet:</label><select id="proposeRenameUninhabitedName"></select></li>', '        <li><label>Name:</label><input type="text" id="proposeRenameUninhabitedNewName" /></li></ul><br />', '        <button type="button" id="proposeRenameUninhabitedSubmit">Propose Rename Uninhabited</button>', '    </div>'].join('');
-                this.subscribe("onLoad", function () {
+                this.subscribe("onLoad", function() {
                     this.service.get_stars_in_jurisdiction({
                         session_id: Game.GetSession(),
                         building_id: this.building.id,
                     }, {
-                        success: function (o) {
+                        success: function(o) {
                             var el = Dom.get('proposeRenameUninhabitedStar');
                             if (el) {
                                 var stars = o.result.stars;
@@ -348,12 +349,12 @@ YAHOO.namespace("lacuna.modules");
             if (this.building.level >= 25) {
                 opts[opts.length] = '<option value="proposeFireBfg">Fire BFG</option>';
                 dis[dis.length] = ['    <div id="proposeFireBfg" class="proposeOption" style="display:none;">', '		<ul><li><label>Star:</label><select id="proposeFireBfgStars"></select></li>', '        <li><label>Body:</label><select id="proposeFireBfgBody"></select></li>', '        <li><label>Reason:</label><textarea id="proposeFireBfgReason" rows="4" cols="80"></textarea></li></ul><br />', '        <button type="button" id="proposeFireBfgSubmit">Propose to Fire BFG!</button>', '    </div>'].join('');
-                this.subscribe("onLoad", function () {
+                this.subscribe("onLoad", function() {
                     this.service.get_stars_in_jurisdiction({
                         session_id: Game.GetSession(),
                         building_id: this.building.id,
                     }, {
-                        success: function (o) {
+                        success: function(o) {
                             var el = Dom.get('proposeFireBfgStars');
                             if (el) {
                                 var stars = o.result.stars;
@@ -382,7 +383,7 @@ YAHOO.namespace("lacuna.modules");
                     alliance_id: Game.GetCurrentPlanet()
                         .alliance.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         var el = Dom.get('proposeTransferTo');
                         if (el) {
                             var profile = o.result.profile;
@@ -406,10 +407,10 @@ YAHOO.namespace("lacuna.modules");
                     dis.join(''), '</div>'
                 ].join('')
             });
-            this.subscribe("onLoad", function () {
+            this.subscribe("onLoad", function() {
                 this.proposeOptions = Sel.query("div.proposeOption", "proposeContainer");
                 this.proposeMessage = Dom.get("proposeMessage");
-                Event.on("proposeSelect", "change", function (e) {
+                Event.on("proposeSelect", "change", function(e) {
                     Dom.setStyle(this.proposeOptions, "display", "none");
                     Dom.setStyle(Lib.getSelectedOptionValue("proposeSelect"), "display", "");
                 }, this, true);
@@ -435,7 +436,7 @@ YAHOO.namespace("lacuna.modules");
             }, this, true);
             return tab;
         },
-        ProposeWritTemplateChange: function () {
+        ProposeWritTemplateChange: function() {
             var opt = Game.Resources.writ_templates[Lib.getSelectedOption("proposeWritTemplates")
                 .value];
             Dom.get("proposeTitle")
@@ -443,7 +444,7 @@ YAHOO.namespace("lacuna.modules");
             Dom.get("proposeDesc")
                 .value = opt.description;
         },
-        CreateStarSearch: function (id) {
+        CreateStarSearch: function(id) {
             var dataSource = new Util.XHRDataSource("/map");
             dataSource.connMethodPost = "POST";
             dataSource.maxCacheEntries = 2;
@@ -459,10 +460,10 @@ YAHOO.namespace("lacuna.modules");
                 forceSelection: false,
                 useIndicator: true
             });
-            oTextboxList.formatResult = function (oResultData, sQuery, sResultMatch) {
+            oTextboxList.formatResult = function(oResultData, sQuery, sResultMatch) {
                 return ['<div class="yui-gf">', '    <div class="yui-u first" style="background-color:black;">', '        <img src="', Lib.AssetUrl, 'star_map/', oResultData.color, '.png" alt="', oResultData, name, '" style="width:50px;height:50px;" />', '    </div>', '    <div class="yui-u">', '        <div>', oResultData.name, '</div>', '        <div>', oResultData.x, ' : ', oResultData.y, '</div>', '    </div>', '</div>'].join("");
             };
-            oTextboxList.generateRequest = function (sQuery) {
+            oTextboxList.generateRequest = function(sQuery) {
                 var s = Lang.JSON.stringify({
                     "id": YAHOO.rpc.Service._requestId++,
                     "method": "search_stars",
@@ -476,7 +477,7 @@ YAHOO.namespace("lacuna.modules");
             };
             return oTextboxList;
         },
-        CreateEmpireSearch: function (id) {
+        CreateEmpireSearch: function(id) {
             var dataSource = new Util.XHRDataSource("/empire");
             dataSource.connMethodPost = "POST";
             dataSource.maxCacheEntries = 2;
@@ -494,7 +495,7 @@ YAHOO.namespace("lacuna.modules");
                 formatResultColumnKeys: ["name"],
                 useIndicator: true
             });
-            oTextboxList.generateRequest = function (sQuery) {
+            oTextboxList.generateRequest = function(sQuery) {
                 var s = Lang.JSON.stringify({
                     "id": YAHOO.rpc.Service._requestId++,
                     "method": "find",
@@ -508,7 +509,7 @@ YAHOO.namespace("lacuna.modules");
             };
             return oTextboxList;
         },
-        Broadcast: function (e) {
+        Broadcast: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             this.service.propose_broadcast_on_network19({
@@ -517,7 +518,7 @@ YAHOO.namespace("lacuna.modules");
                 message: Dom.get("proposeBroadcastMessage")
                     .value
             }, {
-                success: function (o) {
+                success: function(o) {
                     this.rpcSuccess(o);
                     this.proposeMessage.innerHTML = "Proposal of Broadcast successful.";
                     Lib.fadeOutElm(this.proposeMessage);
@@ -525,32 +526,32 @@ YAHOO.namespace("lacuna.modules");
                         .value = "";
                     btn.disabled = false;
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this
             });
         },
-        ColonizeOnly: function (e) {
+        ColonizeOnly: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             this.service.propose_members_only_colonization({
                 session_id: Game.GetSession(''),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     this.rpcSuccess(o);
                     this.proposeMessage.innerHTML = "Proposal for Members Only Colonization successful.";
                     Lib.fadeOutElm(this.proposeMessage);
                     btn.disabled = false;
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this
             });
         },
-        EvictMining: function (e) {
+        EvictMining: function(e) {
             var button = Event.getTarget(e),
                 platform = Lib.getSelectedOptionValue('proposeEvictMiningId');
             button.disabled = true;
@@ -561,24 +562,25 @@ YAHOO.namespace("lacuna.modules");
                     building_id: this.building.id,
                     platform_id: platform
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         Lacuna.Pulsar.Hide();
                         this.rpcSuccess(o);
                         this.proposeMessage.innerHTML = "Proposal for Eviction of Mining Platform successful.";
                         Lib.fadeOutElm(this.proposeMessage);
                         button.disabled = false;
                     },
-                    failure: function (o) {
+                    failure: function(o) {
                         button.disabled = false;
                     },
                     scope: this
                 });
-            } else {
+            }
+            else {
                 alert('Must selected a Mining Platform to Evict.');
                 button.disabled = false;
             }
         },
-        FireBFG: function (e) {
+        FireBFG: function(e) {
             var button = Event.getTarget(e),
                 body = Lib.getSelectedOptionValue('proposeFireBfgBody'),
                 reason = Dom.get('proposeFireBfgReason')
@@ -593,24 +595,25 @@ YAHOO.namespace("lacuna.modules");
                         body_id: body,
                         reason: reason
                     }, {
-                        success: function (o) {
+                        success: function(o) {
                             Lacuna.Pulser.Hide();
                             this.rpcSuccess(o);
                             this.proposeMessage.innerHTML = "Proposal to Fire BFG successful.";
                             Lib.fadeOutElm(this.proposeMessage);
                             button.disabled = false;
                         },
-                        failure: function (o) {
+                        failure: function(o) {
                             button.disabled = false;
                         },
                         scope: this
                     });
                 }
-            } else {
+            }
+            else {
                 alert('Must provide a body and a reason!');
             }
         },
-        LoadMining: function (e) {
+        LoadMining: function(e) {
             var bodyId = Lib.getSelectedOptionValue('proposeEvictMiningBody'),
                 miningIdElem = Dom.get('proposeEvictMiningId');
             if (bodyId) {
@@ -620,7 +623,7 @@ YAHOO.namespace("lacuna.modules");
                     building_id: this.building.id,
                     asteroid_id: bodyId
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         Lacuna.Pulser.Hide();
                         var optionValues = [];
                         var platforms = o.result.platforms;
@@ -667,26 +670,26 @@ YAHOO.namespace("lacuna.modules");
 			});
 		}
 	},*/
-        NeutralizeBHG: function (e) {
+        NeutralizeBHG: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             this.service.propose_neutralize_bhg({
                 session_id: Game.GetSession(''),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     this.rpcSuccess(o);
                     this.proposeMessage.innerHTML = "Proposal for Neutralize Black Hold Generators successful.";
                     Lib.fadeOutElm(this.proposeMessage);
                     btn.disabled = false;
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this
             });
         },
-        MemberExpel: function (e) {
+        MemberExpel: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             this.service.propose_expel_member({
@@ -696,7 +699,7 @@ YAHOO.namespace("lacuna.modules");
                 message: Dom.get('proposeExpelReason')
                     .value
             }, {
-                success: function (o) {
+                success: function(o) {
                     this.rpcSuccess(o);
                     this.proposeMessage.innerHTML = "Proposal to Expel Member successful.";
                     Lib.fadeOutElm(this.proposeMessage);
@@ -706,13 +709,13 @@ YAHOO.namespace("lacuna.modules");
                         .value = "";
                     btn.disabled = false;
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this
             });
         },
-        MemberInduct: function (e) {
+        MemberInduct: function(e) {
             if (this.inductMemberTextboxList._oTblSingleSelection) {
                 var btn = Event.getTarget(e);
                 btn.disabled = true;
@@ -724,7 +727,7 @@ YAHOO.namespace("lacuna.modules");
                     message: Dom.get('proposeInductMessage')
                         .value
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         this.rpcSuccess(o);
                         this.proposeMessage.innerHTML = "Proposal to Induct Member successful.";
                         Lib.fadeOutElm(this.proposeMessage);
@@ -733,14 +736,14 @@ YAHOO.namespace("lacuna.modules");
                             .value = "";
                         btn.disabled = false;
                     },
-                    failure: function (o) {
+                    failure: function(o) {
                         btn.disabled = false;
                     },
                     scope: this
                 });
             }
         },
-        MemberNewLeader: function (e) {
+        MemberNewLeader: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             this.service.propose_elect_new_leader({
@@ -748,7 +751,7 @@ YAHOO.namespace("lacuna.modules");
                 building_id: this.building.id,
                 to_empire_id: Lib.getSelectedOptionValue("proposeElectLeaderMember")
             }, {
-                success: function (o) {
+                success: function(o) {
                     this.rpcSuccess(o);
                     this.proposeMessage.innerHTML = "Proposal to Elect New Leader successful.";
                     Lib.fadeOutElm(this.proposeMessage);
@@ -756,51 +759,51 @@ YAHOO.namespace("lacuna.modules");
                         .selectedIndex = -1;
                     btn.disabled = false;
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this
             });
         },
-        MiningOnly: function (e) {
+        MiningOnly: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             this.service.propose_members_only_mining_rights({
                 session_id: Game.GetSession(''),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     this.rpcSuccess(o);
                     this.proposeMessage.innerHTML = "Proposal for Members Only Mining Rights successful.";
                     Lib.fadeOutElm(this.proposeMessage);
                     btn.disabled = false;
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this
             });
         },
-        ExcavationOnly: function (e) {
+        ExcavationOnly: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             this.service.propose_members_only_excavation({
                 session_id: Game.GetSession(''),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     this.rpcSuccess(o);
                     this.proposeMessage.innerHTML = "Proposal for Members Only Excavation successful.";
                     Lib.fadeOutElm(this.proposeMessage);
                     btn.disabled = false;
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this
             });
         },
-        PopulateBodiesForStar: function (e) {
+        PopulateBodiesForStar: function(e) {
             var starId = Lib.getSelectedOptionValue(this.starElement),
                 bodyList = Dom.get(this.bodyElement);
             Lacuna.Pulser.Show();
@@ -809,7 +812,7 @@ YAHOO.namespace("lacuna.modules");
                 building_id: this.Self.building.id,
                 star_id: starId
             }, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     this.Self.rpcSuccess(o);
                     if (bodyList) {
@@ -821,7 +824,8 @@ YAHOO.namespace("lacuna.modules");
                                 if (obj.type === this.type) {
                                     opts[opts.length] = '<option value="' + obj.id + '">' + obj.name + '</option>';
                                 }
-                            } else {
+                            }
+                            else {
                                 opts[opts.length] = '<option value="' + obj.id + '">' + obj.name + '</option>';
                             }
                         }
@@ -832,7 +836,7 @@ YAHOO.namespace("lacuna.modules");
                 scope: this
             });
         },
-        ProposeWrit: function (e) {
+        ProposeWrit: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             this.service.propose_writ({
@@ -843,20 +847,20 @@ YAHOO.namespace("lacuna.modules");
                 description: Dom.get("proposeDesc")
                     .value
             }, {
-                success: function (o) {
+                success: function(o) {
                     this.rpcSuccess(o);
                     this.proposeMessage.innerHTML = "Proposal of Writ successful.";
                     Lib.fadeOutElm(this.proposeMessage);
                     this.ProposeWritTemplateChange();
                     btn.disabled = false;
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this
             });
         },
-        RenameAsteroid: function (e) {
+        RenameAsteroid: function(e) {
             var button = Event.getTarget(e),
                 body = Lib.getSelectedOptionValue('proposeRenameAsteroidName'),
                 newName = Dom.get('proposeRenameAsteroidNewName')
@@ -870,7 +874,7 @@ YAHOO.namespace("lacuna.modules");
                     planet_id: body,
                     name: newName
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
                         this.proposeMessage.innerHTML = "Proposal to Rename asteroid successful.";
@@ -881,17 +885,18 @@ YAHOO.namespace("lacuna.modules");
                         Dom.get('proposeRenameAsteroidName')
                             .selectedIndex = -1;
                     },
-                    failure: function (o) {
+                    failure: function(o) {
                         button.disabled = false;
                     },
                     scope: this
                 });
-            } else {
+            }
+            else {
                 alert('Must select a body and chose a new name!');
                 button.disabled = false;
             }
         },
-        RenameStar: function (e) {
+        RenameStar: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             this.service.propose_rename_star({
@@ -901,7 +906,7 @@ YAHOO.namespace("lacuna.modules");
                 name: Dom.get("proposeRenameStarName")
                     .value
             }, {
-                success: function (o) {
+                success: function(o) {
                     this.rpcSuccess(o);
                     this.proposeMessage.innerHTML = "Proposal to Rename star successful.";
                     Lib.fadeOutElm(this.proposeMessage);
@@ -909,13 +914,13 @@ YAHOO.namespace("lacuna.modules");
                         .selectedIndex = -1;
                     btn.disabled = false;
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this
             });
         },
-        RenameUninhabited: function (e) {
+        RenameUninhabited: function(e) {
             var button = Event.getTarget(e),
                 body = Lib.getSelectedOptionValue('proposeRenameUninhabitedName'),
                 newName = Dom.get('proposeRenameUninhabitedNewName')
@@ -929,7 +934,7 @@ YAHOO.namespace("lacuna.modules");
                     planet_id: body,
                     name: newName
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
                         this.proposeMessage.innerHTML = "Proposal to Rename uninhabited successful.";
@@ -940,17 +945,18 @@ YAHOO.namespace("lacuna.modules");
                         Dom.get('proposeRenameUninhabitedName')
                             .selectedIndex = -1;
                     },
-                    failure: function (o) {
+                    failure: function(o) {
                         button.disabled = false;
                     },
                     scope: this
                 });
-            } else {
+            }
+            else {
                 alert('Must select a body and chose a new name!');
                 button.disabled = false;
             }
         },
-        SeizeStar: function (e) {
+        SeizeStar: function(e) {
             if (this.seizeStarTextboxList._oTblSingleSelection) {
                 var btn = Event.getTarget(e);
                 btn.disabled = true;
@@ -960,21 +966,21 @@ YAHOO.namespace("lacuna.modules");
                     building_id: this.building.id,
                     star_id: selObj.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         this.rpcSuccess(o);
                         this.proposeMessage.innerHTML = "Proposal to Seize star successful.";
                         Lib.fadeOutElm(this.proposeMessage);
                         this.seizeStarTextboxList.ResetSelections();
                         btn.disabled = false;
                     },
-                    failure: function (o) {
+                    failure: function(o) {
                         btn.disabled = false;
                     },
                     scope: this
                 });
             }
         },
-        TransferOwner: function (e) {
+        TransferOwner: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             this.service.propose_transfer_station_ownership({
@@ -982,7 +988,7 @@ YAHOO.namespace("lacuna.modules");
                 building_id: this.building.id,
                 to_empire_id: Lib.getSelectedOptionValue("proposeTransferTo")
             }, {
-                success: function (o) {
+                success: function(o) {
                     this.rpcSuccess(o);
                     this.proposeMessage.innerHTML = "Proposal to Transfer Ownership successful.";
                     Lib.fadeOutElm(this.proposeMessage);
@@ -990,13 +996,13 @@ YAHOO.namespace("lacuna.modules");
                         .selectedIndex = -1;
                     btn.disabled = false;
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this
             });
         },
-        LawsPopulate: function () {
+        LawsPopulate: function() {
             var details = Dom.get("lawsDetails");
             if (details) {
                 var laws = this.laws,
@@ -1015,7 +1021,7 @@ YAHOO.namespace("lacuna.modules");
                 //add child back in
                 parentEl.appendChild(details);
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 230;
                     if (Ht > 300) {
@@ -1027,7 +1033,7 @@ YAHOO.namespace("lacuna.modules");
                 }, 10);
             }
         },
-        LawClick: function (e, matchedEl, container) {
+        LawClick: function(e, matchedEl, container) {
             if (matchedEl.innerHTML === "Repeal") {
                 matchedEl.disabled = true;
                 var el = Dom.getAncestorByTagName(matchedEl, "li");
@@ -1037,11 +1043,11 @@ YAHOO.namespace("lacuna.modules");
                         building_id: this.building.id,
                         law_id: el.Law.id
                     }, {
-                        success: function (o) {
+                        success: function(o) {
                             delete this.props;
                             matchedEl.parentNode.removeChild(matchedEl);
                         },
-                        failure: function () {
+                        failure: function() {
                             matchedEl.disabled = false;
                         },
                         scope: this
@@ -1049,7 +1055,7 @@ YAHOO.namespace("lacuna.modules");
                 }
             }
         },
-        PropsPopulate: function () {
+        PropsPopulate: function() {
             var details = Dom.get("propsDetails");
             if (details) {
                 var props = this.props,
@@ -1071,7 +1077,7 @@ YAHOO.namespace("lacuna.modules");
                 //add child back in
                 parentEl.appendChild(details);
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 230;
                     if (Ht > 300) {
@@ -1083,35 +1089,39 @@ YAHOO.namespace("lacuna.modules");
                 }, 10);
             }
         },
-        PropLineDetails: function (prop, sec) {
+        PropLineDetails: function(prop, sec) {
             if (prop.status === "Passed" || prop.status === "Failed") {
                 return ['<div style="margin-bottom:2px;">', '<div class="yui-gb">', '    <div class="yui-u first"><label>', prop.name, '</label></div>', '    <div class="yui-u">Proposed by <a class="profile_link" href="#', prop.proposed_by.id, '">', prop.proposed_by.name, '</a></div>', '    <div class="yui-u"><label>', prop.status, '</label></div>', '</div>', '<div class="yui-gc">', '    <div class="yui-u first"><div class="propDesc">', this.formatBody(prop.description), '</div></div>', '    <div class="yui-u"><div class="propMyVote">', this.PropVoteDetails(prop), '</div></div>', '</div>', '<table style="width:100%"><col style="width:25%;text-align:center;"><col style="width:25%;text-align:center;"><col style="width:25%;text-align:center;">', '<tr><th>Needed</th><th>Yes</th><th>No</th></tr>', '<tr><td>', prop.votes_needed, '</td><td>', prop.votes_yes, '</td><td>', prop.votes_no, '</td></tr>', '</table>', '</div>'].join('');
-            } else {
+            }
+            else {
                 return ['<div style="margin-bottom:2px;">', '<div class="yui-gb">', '    <div class="yui-u first"><label>', prop.name, '</label></div>', '    <div class="yui-u">Proposed by <a class="profile_link" href="#', prop.proposed_by.id, '">', prop.proposed_by.name, '</a></div>', '    <div class="yui-u">', prop.status, ': <span class="propTime">', Lib.formatTime(sec), '</span></div>', '</div>', '<div class="yui-gc">', '    <div class="yui-u first"><div class="propDesc">', this.formatBody(prop.description), '</div></div>', '    <div class="yui-u"><div class="propMyVote">', this.PropVoteDetails(prop), '</div></div>', '</div>', '<table style="width:100%"><col style="width:25%;text-align:center;"><col style="width:25%;text-align:center;"><col style="width:25%;text-align:center;">', '<tr><th>Needed</th><th>Yes</th><th>No</th></tr>', '<tr><td>', prop.votes_needed, '</td><td>', prop.votes_yes, '</td><td>', prop.votes_no, '</td></tr>', '</table>', '</div>'].join('');
             }
         },
-        PropVoteDetails: function (prop) {
+        PropVoteDetails: function(prop) {
             if (prop.my_vote !== undefined) {
                 return '<label>Voted ' + (prop.my_vote * 1 === 1 ? 'Yes' : 'No') + '</label>';
-            } else {
+            }
+            else {
                 return '<button type="button">Yes</button><button type="button">No</button>';
             }
         },
-        PropQueue: function (remaining, elLine) {
+        PropQueue: function(remaining, elLine) {
             var arrTime;
             if (remaining <= 0) {
                 arrTime = 'Overdue ' + Lib.formatTime(Math.round(-remaining));
-            } else {
+            }
+            else {
                 arrTime = Lib.formatTime(Math.round(remaining));
             }
             var el = Sel.query("span.propTime", elLine, true);
             if (el) {
                 el.innerHTML = arrTime;
-            } else {
+            }
+            else {
                 return true;
             }
         },
-        PropClick: function (e, matchedEl, container) {
+        PropClick: function(e, matchedEl, container) {
             var type = matchedEl.innerHTML;
             if (type === "Yes" || type === "No") {
                 var el = Dom.getAncestorByTagName(matchedEl, "li"),
@@ -1121,7 +1131,7 @@ YAHOO.namespace("lacuna.modules");
                 }
             }
         },
-        PropVoteYes: function (prop, line) {
+        PropVoteYes: function(prop, line) {
             this.service.cast_vote({
                 session_id: Game.GetSession(""),
                 building_id: this.building.id,
@@ -1135,7 +1145,7 @@ YAHOO.namespace("lacuna.modules");
                 }
             });
         },
-        PropVoteNo: function (prop, line) {
+        PropVoteNo: function(prop, line) {
             this.service.cast_vote({
                 session_id: Game.GetSession(""),
                 building_id: this.building.id,
@@ -1149,7 +1159,7 @@ YAHOO.namespace("lacuna.modules");
                 }
             });
         },
-        PropVoteSuccess: function (o) {
+        PropVoteSuccess: function(o) {
             this.Self.rpcSuccess(o);
             var newProp = o.result.proposition;
             for (var i = 0; i < this.Self.props.length; i++) {
@@ -1161,13 +1171,13 @@ YAHOO.namespace("lacuna.modules");
             this.Line.Prop = newProp;
             this.Line.innerHTML = this.Self.PropLineDetails(newProp, 0);
         },
-        formatBody: function (body) {
+        formatBody: function(body) {
             body = body.replace(/&/g, '&amp;');
             body = body.replace(/</g, '&lt;');
             body = body.replace(/>/g, '&gt;');
             body = body.replace(/\n/g, '<br />');
             body = body.replace(/\*([^*]+)\*/gi, '<b>$1</b>');
-            body = body.replace(/\{(food|water|ore|energy|waste|happiness|time|essentia|plots|build)\}/gi, function (str, icon) {
+            body = body.replace(/\{(food|water|ore|energy|waste|happiness|time|essentia|plots|build)\}/gi, function(str, icon) {
                 var cl = 'small' + icon.substr(0, 1)
                     .toUpperCase() + icon.substr(1);
                 return '<img src="' + Lib.AssetUrl + 'ui/s/' + icon + '.png" class="' + cl + '" />';
@@ -1183,14 +1193,14 @@ YAHOO.namespace("lacuna.modules");
             //body = body.replace(/\{Alliance\s+(\d+)\s+([^\}]+)}/gi,'$2');
             return body;
         },
-        handleProfileLink: function (e, el) {
+        handleProfileLink: function(e, el) {
             Event.stopEvent(e);
             var res = el.href.match(/\#(-?\d+)$/);
             if (res) {
                 Lacuna.Info.Empire.Load(res[1]);
             }
         },
-        handleStarmapLink: function (e, el) {
+        handleStarmapLink: function(e, el) {
             Event.stopEvent(e);
             var res = el.href.match(/\#(-?\d+)x(-?\d+)$/);
             Game.StarJump({
@@ -1198,14 +1208,14 @@ YAHOO.namespace("lacuna.modules");
                 y: res[2]
             });
         },
-        handlePlanetLink: function (e, el) {
+        handlePlanetLink: function(e, el) {
             Event.stopEvent(e);
             var res = el.href.match(/\#(-?\d+)$/);
             this.hide();
             var planet = Game.EmpireData.planets[res[1]];
             Game.PlanetJump(planet);
         },
-        handleAllianceLink: function (e, el) {
+        handleAllianceLink: function(e, el) {
             Event.stopEvent(e);
             var res = el.href.match(/\#(-?\d+)$/);
             Lacuna.Info.Alliance.Load(res[1]);

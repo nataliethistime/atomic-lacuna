@@ -41,13 +41,13 @@ if current - upgrade &gt; planet.</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">Handlebars.registerHelper(<span class="hljs-string">'lowResource'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(current, upgrade, planet)</span> {</span>
+        <div class="code"><pre class="wrapper">Handlebars.registerHelper(<span class="hljs-string">'lowResource'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(current, upgrade, planet)</span> {</span>
     <span class="hljs-keyword">if</span> (current - upgrade &gt; planet) {
         <span class="hljs-keyword">return</span> <span class="hljs-string">'low-resource'</span>;
     }
     <span class="hljs-keyword">return</span> <span class="hljs-string">''</span>;
 });
-Handlebars.registerHelper(<span class="hljs-string">'lowCost'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cost, current)</span> {</span>
+Handlebars.registerHelper(<span class="hljs-string">'lowCost'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(cost, current)</span> {</span>
     <span class="hljs-keyword">if</span> (cost &gt; current) {
         <span class="hljs-keyword">return</span> <span class="hljs-string">'low-resource'</span>;
     }
@@ -65,11 +65,11 @@ error message.</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">Handlebars.registerHelper(<span class="hljs-string">'removeLeadingErrorCode'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(string)</span> {</span>
+        <div class="code"><pre class="wrapper">Handlebars.registerHelper(<span class="hljs-string">'removeLeadingErrorCode'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(string)</span> {</span>
     <span class="hljs-keyword">return</span> string.toString()
         .replace(<span class="hljs-regexp">/^\d+,\s*/</span>, <span class="hljs-string">''</span>);
 });
-Handlebars.registerHelper(<span class="hljs-string">'formatTime'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(string)</span> {</span>
+Handlebars.registerHelper(<span class="hljs-string">'formatTime'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(string)</span> {</span>
     <span class="hljs-keyword">return</span> Lib.formatTime(string);
 });</pre></div>
       

@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -8,11 +8,11 @@ YAHOO.namespace("lacuna");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var Alliance = function () {
+    var Alliance = function() {
         this.id = "infoAlliance";
     };
     Alliance.prototype = {
-        _createPanel: function () {
+        _createPanel: function() {
             if (!this.Panel) {
                 var container = document.createElement("div");
                 container.id = this.id;
@@ -31,7 +31,7 @@ YAHOO.namespace("lacuna");
                     width: "450px",
                     zIndex: 9999
                 });
-                this.Panel.renderEvent.subscribe(function () {
+                this.Panel.renderEvent.subscribe(function() {
                     this.name = Dom.get(this.id + 'Name');
                     this.desc = Dom.get(this.id + 'Desc');
                     this.founded = Dom.get(this.id + 'Founded');
@@ -45,17 +45,17 @@ YAHOO.namespace("lacuna");
                 Game.OverlayManager.register(this.Panel);
             }
         },
-        _getHtml: function () {
+        _getHtml: function() {
             return ['    <div class="hd">Alliance</div>', '    <div class="bd">', '        <ul>', '            <li><label>Name:</label><span id="', this.id, 'Name"></span></li>', '            <li><label>Description:</label><span id="', this.id, 'Desc"></span></li>', '            <li><label>Founded:</label><span id="', this.id, 'Founded"></span></li>', '            <li><label>Leader:</label><span id="', this.id, 'Leader"></span></li>', '        </ul>', '        <div style="height:200px;overflow:auto;">', '            <p style="border-bottom:1px solid #52ACFF;"><label>Members:</label><span id="', this.id, 'MemberCount"></span></p>', '            <ul id="', this.id, 'Members">', '            </ul>', '        </div>', '    </div>', '    <div class="ft"></div>'].join('');
         },
-        Load: function (allianceId) {
+        Load: function(allianceId) {
             this._createPanel();
             Lacuna.Pulser.Show();
             Game.Services.Alliance.view_profile({
                 session_id: Game.GetSession(""),
                 alliance_id: allianceId
             }, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     //show now so there is a bit quicker response
                     this.Panel.show();
@@ -78,17 +78,17 @@ YAHOO.namespace("lacuna");
                 scope: this
             });
         },
-        EmpireInfo: function (e, el) {
+        EmpireInfo: function(e, el) {
             Event.stopEvent(e);
             var res = el.href.match(/\#(\d+)$/);
             Lacuna.Info.Empire.Load(res[1]);
         }
     };
-    var Empire = function () {
+    var Empire = function() {
         this.id = "infoEmpire";
     };
     Empire.prototype = {
-        _createPanel: function () {
+        _createPanel: function() {
             if (!this.Panel) {
                 var container = document.createElement("div");
                 container.id = this.id;
@@ -116,7 +116,7 @@ YAHOO.namespace("lacuna");
                     width: "450px",
                     zIndex: 9999
                 });
-                this.Panel.renderEvent.subscribe(function () {
+                this.Panel.renderEvent.subscribe(function() {
                     this.empire = Dom.get(this.id + "Empire");
                     this.status = Dom.get(this.id + "Status");
                     this.desc = Dom.get(this.id + "Desc");
@@ -135,14 +135,14 @@ YAHOO.namespace("lacuna");
                     this.tabView.set('activeIndex', 0);
                     Dom.removeClass(this.id, Lib.Styles.HIDDEN);
                 }, this, true);
-                this.Panel.hideEvent.subscribe(function () {
+                this.Panel.hideEvent.subscribe(function() {
                     delete this.currentEmpire;
                 }, this, true);
                 this.Panel.render();
                 Game.OverlayManager.register(this.Panel);
             }
         },
-        _getHtml: function () {
+        _getHtml: function() {
             var Ht = Game.GetSize()
                 .h - 140;
             if (Ht > 300) {
@@ -150,14 +150,14 @@ YAHOO.namespace("lacuna");
             }
             return ['    <div class="hd">Empire</div>', '    <div class="bd">', '        <div id="', this.id, 'Tabs" class="yui-navset">', '            <ul class="yui-nav">', '                <li><a href="#"><em>Empire</em></a></li>', '                <li><a href="#"><em>Known Colonies</em></a></li>', '                <li><a href="#"><em>Medals</em></a></li>', '                <li><a href="#"><em>Player</em></a></li>', '            </ul>', '            <div class="yui-content" style="padding:0;">', '                <div>', '                    <ul>', '                        <li><label>Empire:</label><span id="', this.id, 'Empire"></span></li>', '                        <li><label>Status:</label><span id="', this.id, 'Status"></span></li>', '                        <li><label>Description:</label><span id="', this.id, 'Desc"></span></li>', '                        <li><label>Species:</label><span id="', this.id, 'Species"></span></li>', '                        <li><label>Alliance:</label><span id="', this.id, 'Alliance" style="text-decoration:underline;cursor:pointer;"></span></li>', '                        <li><label>Colonies:</label><span id="', this.id, 'ColonyCount"></span></li>', '                        <li><label>Founded:</label><span id="', this.id, 'Founded"></span></li>', '                        <li><label>Last Login:</label><span id="', this.id, 'Login"></span></li>', '                </div>', '                <div>', '                    <ul id="', this.id, 'ColoniesList" style="height:', Ht, 'px;width:425px;overflow:auto;">', '                    </ul>', '                </div>', '                <div>', '                    <ul id="', this.id, 'MedalsList" style="height:', Ht, 'px;width:425px;overflow:auto;">', '                    </ul>', '                </div>', '                <div>', '                    <ul>', '                        <li><label>Name:</label><span id="', this.id, 'PlayerName"></span></li>', '                        <li><label>City:</label><span id="', this.id, 'City"></span></li>', '                        <li><label>Country:</label><span id="', this.id, 'Country"></span></li>', '                        <li><label>Skype:</label><span id="', this.id, 'Skype"></span></li>', '                    </ul>', '                </div>', '            </div>', '        </div>', '    </div>', '    <div class="ft"></div>'].join('');
         },
-        Load: function (empireId) {
+        Load: function(empireId) {
             this._createPanel();
             Lacuna.Pulser.Show();
             Game.Services.Empire.view_public_profile({
                 session_id: Game.GetSession(""),
                 empire_id: empireId
             }, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     var profile = o.result.profile;
                     this.currentEmpire = profile;
@@ -193,28 +193,29 @@ YAHOO.namespace("lacuna");
                     }
                     this.coloniesList.innerHTML = colonyArray.join('');
                     if (profile.alliance) {
-                        Event.on(this.id + 'Alliance', "click", function (e, id) {
+                        Event.on(this.id + 'Alliance', "click", function(e, id) {
                             Lacuna.Info.Alliance.Load(id);
                         }, profile.alliance.id);
-                    } else {
+                    }
+                    else {
                         Event.removeListener(this.id + 'Alliance', "click");
                     }
                 },
                 scope: this
             });
         },
-        sendMessage: function (e) {
+        sendMessage: function(e) {
             Event.stopEvent(e);
             if (this.currentEmpire) {
                 Lacuna.Messaging.sendTo(this.currentEmpire.name);
             }
         }
     };
-    var Clock = function () {
+    var Clock = function() {
         this.id = "infoClock";
     };
     Clock.prototype = {
-        _createDisplay: function () {
+        _createDisplay: function() {
             var container = document.createElement("div");
             container.id = "clock";
             Dom.addClass(container, Lib.Styles.HIDDEN);
@@ -234,32 +235,32 @@ YAHOO.namespace("lacuna");
                     [0, -40]
                 ]
             });
-            this.Display.renderEvent.subscribe(function () {
+            this.Display.renderEvent.subscribe(function() {
                 Dom.removeClass("clock", Lib.Styles.HIDDEN);
                 this.clock = Dom.get("clockDisplay");
             });
-            this.Display.showEvent.subscribe(function () {
+            this.Display.showEvent.subscribe(function() {
                 this.Display.bringToTop();
                 Game.onTick.subscribe(this._updating, this.Display, true);
             }, this, true);
-            this.Display.hideEvent.subscribe(function () {
+            this.Display.hideEvent.subscribe(function() {
                 Game.onTick.unsubscribe(this._updating);
             }, this, true);
             this.Display.render();
         },
-        _getHtml: function () {
+        _getHtml: function() {
             return ['    <div class="hd">Server Time</div>', '    <div class="bd">', '        <div id="clockDisplay"></div>', '    </div>'].join('');
         },
-        _updating: function () {
+        _updating: function() {
             this.clock.innerHTML = Lacuna.Game.ServerData.time.toUTCString(); //Lib.formatUTC(Lacuna.Game.ServerData.time);
         },
-        Show: function () {
+        Show: function() {
             if (!this.Display) {
                 this._createDisplay();
             }
             this.Display.show();
         },
-        Hide: function () {
+        Hide: function() {
             if (this.Display) {
                 this.Display.hide();
             }

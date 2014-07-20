@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna");
-(function () {
+(function() {
     var smd = {
         Alliance: {
             "SMDVersion": "2.0",

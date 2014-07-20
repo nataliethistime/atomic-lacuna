@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -35,22 +35,22 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> WaterStorage = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+    <span class="hljs-keyword">var</span> WaterStorage = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> {</span>
         WaterStorage.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
         <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.WaterStorage;
     };
     YAHOO.lang.extend(WaterStorage, YAHOO.lacuna.buildings.Building, {
-        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getDumpTab()];
         },
-        _getDumpTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getDumpTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.dumpTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Dump"</span>,
                 contentEl: <span class="hljs-keyword">this</span>.DumpGetDisplay(<span class="hljs-keyword">this</span>.result.dump)
             });
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.dumpTab;
         },
-        DumpGetDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        DumpGetDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> ul = document.createElement(<span class="hljs-string">'ul'</span>),
                 li = document.createElement(<span class="hljs-string">'li'</span>),
                 nLi = li.cloneNode(<span class="hljs-literal">false</span>),
@@ -82,7 +82,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             div.appendChild(msg);
             <span class="hljs-keyword">return</span> div;
         },
-        Dump: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        Dump: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> planet = Game.GetCurrentPlanet();
             <span class="hljs-keyword">var</span> building = <span class="hljs-keyword">this</span>.building;
             <span class="hljs-keyword">var</span> type = <span class="hljs-string">"water"</span>;
@@ -92,18 +92,20 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     Dom.get(<span class="hljs-string">"dumpMessage"</span>)
                         .innerHTML = <span class="hljs-string">"Can only convert "</span> + type + <span class="hljs-string">" you have stored."</span>;
                     Lib.fadeOutElm(<span class="hljs-string">"dumpMessage"</span>);
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (amount &lt;= <span class="hljs-number">0</span>) {
+                }
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (amount &lt;= <span class="hljs-number">0</span>) {
                     Dom.get(<span class="hljs-string">"dumpMessage"</span>)
                         .innerHTML = <span class="hljs-string">"You must specify an amount greater than zero."</span>;
                     Lib.fadeOutElm(<span class="hljs-string">"dumpMessage"</span>);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     Lacuna.Pulser.Show();
                     <span class="hljs-keyword">this</span>.service.dump({
                         session_id: Game.GetSession(),
                         building_id: <span class="hljs-keyword">this</span>.building.id,
                         amount: amount
                     }, {
-                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"WaterStorage.Dump.success"</span>);
                             Lacuna.Pulser.Hide();
                             <span class="hljs-keyword">this</span>.rpcSuccess(o);

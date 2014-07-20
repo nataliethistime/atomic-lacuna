@@ -32,18 +32,20 @@
       
         <div class="code"><pre class="wrapper">YAHOO.namespace(<span class="hljs-string">"rpc"</span>);
 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> YAHOO.rpc.Service == <span class="hljs-string">"undefined"</span> || !YAHOO.rpc.Service) {
-    (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
         <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
             Util = YAHOO.util;
-        <span class="hljs-keyword">var</span> Service = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(smd, callback, baseUrl)</span> {</span>
+        <span class="hljs-keyword">var</span> Service = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(smd, callback, baseUrl)</span> {</span>
             <span class="hljs-keyword">if</span> (Lang.isString(smd)) {
                 <span class="hljs-keyword">this</span>.smdUrl = smd;
                 <span class="hljs-keyword">this</span>.fetch(smd, callback);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (Lang.isObject(smd)) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (Lang.isObject(smd)) {
                 <span class="hljs-keyword">this</span>._smd = smd;
                 <span class="hljs-keyword">this</span>._baseUrl = baseUrl;
                 <span class="hljs-keyword">this</span>.process(callback);
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"smd should be an object or an url"</span>);
             }
         };
@@ -67,13 +69,13 @@ Method <strong>_generateService</strong>
         </div>
       
       
-        <div class="code"><pre class="wrapper">            _generateService: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(serviceName, method)</span> {</span>
+        <div class="code"><pre class="wrapper">            _generateService: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(serviceName, method)</span> {</span>
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>[method]) {
                     <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"WARNING: "</span> + serviceName + <span class="hljs-string">" already exists for service. Unable to generate function"</span>);
                 }
                 method.name = serviceName;
                 <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
-                <span class="hljs-keyword">var</span> func = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oParams, opts)</span> {</span></pre></div>
+                <span class="hljs-keyword">var</span> func = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oParams, opts)</span> {</span></pre></div>
       
       </div>
     
@@ -89,18 +91,19 @@ Method <strong>_generateService</strong>
                     <span class="hljs-keyword">var</span> baseUrl = self._baseUrl;
                     <span class="hljs-keyword">var</span> envelope = YAHOO.rpc.Envelope[method.envelope || smd.envelope];
                     <span class="hljs-keyword">var</span> callback = {
-                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             <span class="hljs-comment">//YAHOO.log(o, "debug", "RPC.SUCCESS"); //debug</span>
                             <span class="hljs-keyword">var</span> results = envelope.deserialize(o);
                             opts.success.call(opts.scope || self, results);
                         },
-                        failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             <span class="hljs-comment">//YAHOO.log(o, "debug", "RPC.FAILURE"); //debug</span>
                             <span class="hljs-keyword">if</span> (Lang.isFunction(opts.failure)) {
                                 <span class="hljs-keyword">var</span> results;
                                 <span class="hljs-keyword">try</span> {
                                     results = envelope.deserialize(o);
-                                } <span class="hljs-keyword">catch</span> (e) {
+                                }
+                                <span class="hljs-keyword">catch</span> (e) {
                                     results = o;
                                 }
                                 opts.failure.call(opts.scope || self, results);
@@ -171,7 +174,8 @@ Method <strong>_generateService</strong>
                         <span class="hljs-keyword">if</span> (!params[<span class="hljs-number">0</span>] || params[<span class="hljs-number">0</span>].name == <span class="hljs-string">'args'</span>) {
                             params = oParams;
                         }
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         params = oParams;
                     }</pre></div>
       
@@ -205,7 +209,8 @@ Method <strong>_generateService</strong>
         <div class="code"><pre class="wrapper">                        <span class="hljs-keyword">var</span> a = <span class="hljs-keyword">this</span>.smdUrl.split(<span class="hljs-string">'/'</span>);
                         a[a.length - <span class="hljs-number">1</span>] = <span class="hljs-string">""</span>;
                         url = a.join(<span class="hljs-string">"/"</span>) + url;
-                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (baseUrl) {
+                    }
+                    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (baseUrl) {
                         baseUrl = baseUrl.replace(<span class="hljs-regexp">/\/?$/</span>, <span class="hljs-string">'/'</span>);
                         url = url.replace(<span class="hljs-regexp">/^\//</span>, baseUrl);
                     }
@@ -242,7 +247,7 @@ Method <strong>process</strong>
         </div>
       
       
-        <div class="code"><pre class="wrapper">            process: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback)</span> {</span>
+        <div class="code"><pre class="wrapper">            process: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span> {</span>
                 <span class="hljs-keyword">var</span> serviceDefs = <span class="hljs-keyword">this</span>._smd.services;</pre></div>
       
       </div>
@@ -310,11 +315,12 @@ Method <strong>fetch</strong>
         </div>
       
       
-        <div class="code"><pre class="wrapper">            fetch: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(url, callback)</span> {</span>
+        <div class="code"><pre class="wrapper">            fetch: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(url, callback)</span> {</span>
                 <span class="hljs-keyword">if</span> (YAHOO.rpc.Service._smdCache[url]) {
                     <span class="hljs-keyword">this</span>._smd = YAHOO.rpc.Service._smdCache[url];
                     <span class="hljs-keyword">this</span>.process(callback);
-                } <span class="hljs-keyword">else</span> {</pre></div>
+                }
+                <span class="hljs-keyword">else</span> {</pre></div>
       
       </div>
     
@@ -327,12 +333,13 @@ Method <strong>fetch</strong>
       
       
         <div class="code"><pre class="wrapper">                    Util.Connect.asyncRequest(<span class="hljs-string">'GET'</span>, url, {
-                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             <span class="hljs-keyword">try</span> {
                                 <span class="hljs-keyword">this</span>._smd = Lang.JSON.parse(o.responseText);
                                 YAHOO.rpc.Service._smdCache[url] = <span class="hljs-keyword">this</span>._smd;
                                 <span class="hljs-keyword">this</span>.process(callback);
-                            } <span class="hljs-keyword">catch</span> (ex) {
+                            }
+                            <span class="hljs-keyword">catch</span> (ex) {
                                 <span class="hljs-comment">//YAHOO.log(ex);</span>
                                 <span class="hljs-keyword">if</span> (Lang.isFunction(callback.failure)) {
                                     callback.failure.call(callback.scope || <span class="hljs-keyword">this</span>, {
@@ -341,7 +348,7 @@ Method <strong>fetch</strong>
                                 }
                             }
                         },
-                        failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             <span class="hljs-keyword">if</span> (Lang.isFunction(callback.failure)) {
                                 callback.failure.call(callback.scope || <span class="hljs-keyword">this</span>, {
                                     error: <span class="hljs-string">"unable to fetch url "</span> + url
@@ -388,7 +395,7 @@ Method <strong>POST</strong>
         </div>
       
       
-        <div class="code"><pre class="wrapper">            <span class="hljs-string">"POST"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(r)</span> {</span>
+        <div class="code"><pre class="wrapper">            <span class="hljs-string">"POST"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(r)</span> {</span>
                 <span class="hljs-keyword">return</span> Util.Connect.asyncRequest(<span class="hljs-string">'POST'</span>, r.target, r.callback, r.data);
             },</pre></div>
       
@@ -409,7 +416,7 @@ Method <strong>GET</strong>
         </div>
       
       
-        <div class="code"><pre class="wrapper">            <span class="hljs-string">"GET"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(r)</span> {</span>
+        <div class="code"><pre class="wrapper">            <span class="hljs-string">"GET"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(r)</span> {</span>
                 <span class="hljs-keyword">return</span> Util.Connect.asyncRequest(<span class="hljs-string">'GET'</span>, r.target + (r.data ? <span class="hljs-string">'?'</span> + r.data : <span class="hljs-string">''</span>), r.callback, <span class="hljs-string">''</span>);
             },
             jsonp_id: <span class="hljs-number">0</span>,</pre></div>
@@ -431,10 +438,10 @@ Method <strong>JSONP</strong>
         </div>
       
       
-        <div class="code"><pre class="wrapper">            <span class="hljs-string">"JSONP"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(r)</span> {</span>
+        <div class="code"><pre class="wrapper">            <span class="hljs-string">"JSONP"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(r)</span> {</span>
                 r.callbackParamName = r.callbackParamName || <span class="hljs-string">"callback"</span>;
                 <span class="hljs-keyword">var</span> fctName = <span class="hljs-built_in">encodeURIComponent</span>(<span class="hljs-string">"YAHOO.rpc.Transport.JSONP.jsonpCallback"</span> + YAHOO.rpc.Transport.jsonp_id);
-                YAHOO.rpc.Transport.JSONP[<span class="hljs-string">"jsonpCallback"</span> + YAHOO.rpc.Transport.jsonp_id] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(results)</span> {</span>
+                YAHOO.rpc.Transport.JSONP[<span class="hljs-string">"jsonpCallback"</span> + YAHOO.rpc.Transport.jsonp_id] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(results)</span> {</span>
                     <span class="hljs-keyword">if</span> (Lang.isObject(r.callback) &amp;&amp; Lang.isFunction(r.callback.success)) {
                         r.callback.success.call(r.callback.scope || <span class="hljs-keyword">this</span>, results);
                     }
@@ -484,7 +491,7 @@ Static class YAHOO.rpc.Envelope.JSON-RPC-2.0
         </div>
       
       
-        <div class="code"><pre class="wrapper">                serialize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(smd, method, data)</span> {</span>
+        <div class="code"><pre class="wrapper">                serialize: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(smd, method, data)</span> {</span>
                     <span class="hljs-keyword">return</span> {
                         data: Lang.JSON.stringify({
                             <span class="hljs-string">"id"</span>: YAHOO.rpc.Service._requestId++,
@@ -505,23 +512,26 @@ Static class YAHOO.rpc.Envelope.JSON-RPC-2.0
         </div>
       
       
-        <div class="code"><pre class="wrapper">                deserialize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(results)</span> {</span>
+        <div class="code"><pre class="wrapper">                deserialize: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(results)</span> {</span>
                     <span class="hljs-keyword">if</span> (results.getResponseHeader &amp;&amp; (results.getResponseHeader[<span class="hljs-string">"Content-Type"</span>] == <span class="hljs-string">"application/json-rpc"</span> || results.getResponseHeader[<span class="hljs-string">"Content-Type"</span>] == <span class="hljs-string">"application/json"</span>)) {
                         <span class="hljs-keyword">return</span> Lang.JSON.parse(results.responseText);
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         <span class="hljs-keyword">if</span> (results.status == -<span class="hljs-number">1</span>) {
                             <span class="hljs-keyword">return</span> {
                                 <span class="hljs-string">"error"</span>: {
                                     <span class="hljs-string">"message"</span>: <span class="hljs-string">"The Request has been Aborted because it was taking too long."</span>
                                 }
                             };
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.status === <span class="hljs-number">0</span>) {
+                        }
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (results.status === <span class="hljs-number">0</span>) {
                             <span class="hljs-keyword">return</span> {
                                 <span class="hljs-string">"error"</span>: {
                                     <span class="hljs-string">"message"</span>: <span class="hljs-string">"Communication with the server has been interrupted for an unknown reason."</span>
                                 }
                             };
-                        } <span class="hljs-keyword">else</span> {</pre></div>
+                        }
+                        <span class="hljs-keyword">else</span> {</pre></div>
       
       </div>
     
@@ -535,7 +545,8 @@ Static class YAHOO.rpc.Envelope.JSON-RPC-2.0
       
         <div class="code"><pre class="wrapper">                            <span class="hljs-keyword">try</span> {
                                 <span class="hljs-keyword">return</span> Lang.JSON.parse(results.responseText);
-                            } <span class="hljs-keyword">catch</span> (e) {
+                            }
+                            <span class="hljs-keyword">catch</span> (e) {
                                 <span class="hljs-keyword">return</span> {
                                     <span class="hljs-string">"error"</span>: {
                                         <span class="hljs-string">"message"</span>: <span class="hljs-string">"Response Content-Type is not JSON"</span>

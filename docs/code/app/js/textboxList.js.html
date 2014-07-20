@@ -27,14 +27,14 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Util = YAHOO.util,
         Dom = Util.Dom,
         Event = Util.Event,
         Lang = YAHOO.lang,
         Lib = YAHOO.lacuna.Library,
         CSS_PREFIX = <span class="hljs-string">"TextboxList"</span>;
-    <span class="hljs-keyword">var</span> TBL = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elInput, oDataSource, oConfigs)</span> {</span>
+    <span class="hljs-keyword">var</span> TBL = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(elInput, oDataSource, oConfigs)</span> {</span>
         <span class="hljs-keyword">if</span> (!oConfigs) {
             oConfigs = {};
         }
@@ -62,10 +62,12 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-keyword">if</span> (YAHOO.lang.isString(elInput)) {
                 idPrefix = elInput;
                 elInput = document.getElementById(elInput); <span class="hljs-comment">//get dom object</span>
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 idPrefix = elInput.id;
             }
-        } <span class="hljs-keyword">else</span> {
+        }
+        <span class="hljs-keyword">else</span> {
             <span class="hljs-keyword">return</span>;
         }
         <span class="hljs-comment">//setup dom structure</span>
@@ -98,7 +100,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             Dom.addClass(tblListInputLine, CSS_PREFIX + <span class="hljs-string">"Bit"</span>); <span class="hljs-comment">//add the control class to the LI</span>
             tblInput = tblListInputLine.appendChild(tblInput); <span class="hljs-comment">//append our input to the LI</span>
             Dom.addClass(tblInput, CSS_PREFIX + <span class="hljs-string">"Input"</span>); <span class="hljs-comment">//add the control class to the Input</span>
-        } <span class="hljs-keyword">else</span> {
+        }
+        <span class="hljs-keyword">else</span> {
             tblInput = tblContainer.appendChild(tblInput); <span class="hljs-comment">//append our input to the LI</span>
             Dom.addClass(tblInput, CSS_PREFIX + <span class="hljs-string">"InputSingle"</span>); <span class="hljs-comment">//add the control class to the Input</span>
         }
@@ -115,7 +118,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             Dom.addClass(tblIndicator, CSS_PREFIX + <span class="hljs-string">"Indicator"</span>);
             <span class="hljs-keyword">if</span> (oConfigs.multiSelect) {
                 tblIndicator = Dom.insertAfter(tblIndicator, tblInput);
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Dom.addClass(tblIndicator, CSS_PREFIX + <span class="hljs-string">"IndicatorSingle"</span>);
                 tblIndicator = Dom.insertBefore(tblIndicator, tblInput);
             }
@@ -148,10 +152,10 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             Event.addListener(tblInput, <span class="hljs-string">"click"</span>, oSelf._onListTextboxClick, oSelf);
         }
         <span class="hljs-comment">//correctly hide the container when mousing out</span>
-        <span class="hljs-keyword">var</span> mouseEnter = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> mouseEnter = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Event.on(<span class="hljs-keyword">this</span>._elContent, <span class="hljs-string">"mouseleave"</span>, mouseLeave, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
         },
-            mouseLeave = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            mouseLeave = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 Event.removeListener(<span class="hljs-keyword">this</span>._elContent, <span class="hljs-string">"mouseleave"</span>, mouseLeave);
                 <span class="hljs-keyword">this</span>._toggleContainer(<span class="hljs-literal">false</span>);
             };
@@ -160,13 +164,13 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         Event.addListener(tblListContainer, <span class="hljs-string">"click"</span>, oSelf._onListContainerClick, oSelf);
         <span class="hljs-comment">//if we're using indicator add events to hide and show it</span>
         <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.useIndicator) {
-            <span class="hljs-keyword">this</span>.dataRequestEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oSelf, sQuery, oRequest)</span> {</span>
+            <span class="hljs-keyword">this</span>.dataRequestEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oSelf, sQuery, oRequest)</span> {</span>
                 <span class="hljs-keyword">this</span>.showIndicator();
             });
-            <span class="hljs-keyword">this</span>.dataErrorEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oSelf, sQuery)</span> {</span>
+            <span class="hljs-keyword">this</span>.dataErrorEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oSelf, sQuery)</span> {</span>
                 <span class="hljs-keyword">this</span>.hideIndicator();
             });
-            <span class="hljs-keyword">this</span>.dataReturnEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oSelf, sQuery, oRequest)</span> {</span>
+            <span class="hljs-keyword">this</span>.dataReturnEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oSelf, sQuery, oRequest)</span> {</span>
                 <span class="hljs-keyword">this</span>.hideIndicator();
             });
         }
@@ -194,7 +198,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         </div>
       
       
-        <div class="code"><pre class="wrapper">        formatResult: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oResultData, sQuery, sResultMatch)</span> {</span>
+        <div class="code"><pre class="wrapper">        formatResult: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oResultData, sQuery, sResultMatch)</span> {</span>
             <span class="hljs-keyword">var</span> sKey = sResultMatch,</pre></div>
       
       </div>
@@ -251,7 +255,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             }
             <span class="hljs-keyword">return</span> (aMarkup.join(<span class="hljs-string">""</span>));
         },
-        doBeforeExpandContainer: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oTextbox, oContainer, sQuery, aResults)</span> {</span>
+        doBeforeExpandContainer: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oTextbox, oContainer, sQuery, aResults)</span> {</span>
             <span class="hljs-keyword">var</span> pos = Dom.getXY(oTextbox);
             pos[<span class="hljs-number">1</span>] += Dom.get(oTextbox)
                 .offsetHeight + <span class="hljs-number">2</span>;
@@ -269,7 +273,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         </div>
       
       
-        <div class="code"><pre class="wrapper">        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div>
+        <div class="code"><pre class="wrapper">        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span></pre></div>
       
       </div>
     
@@ -297,7 +301,7 @@ For single select will return single data item</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">        Selections: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <div class="code"><pre class="wrapper">        Selections: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.multiSelect) {
                 <span class="hljs-keyword">var</span> arr = [];
                 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>._oTblSelections) {
@@ -306,7 +310,8 @@ For single select will return single data item</p>
                     }
                 }
                 <span class="hljs-keyword">return</span> arr;
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._oTblSingleSelection.Value;
             }
         },</pre></div>
@@ -321,7 +326,7 @@ For single select will return single data item</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">        SelectItems: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items)</span> {</span>
+        <div class="code"><pre class="wrapper">        SelectItems: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(items)</span> {</span>
             <span class="hljs-comment">//clear prior selections</span>
             <span class="hljs-keyword">this</span>._sPastSelections = <span class="hljs-string">""</span>;
             <span class="hljs-keyword">this</span>.ResetSelections();
@@ -350,7 +355,7 @@ For single select will return single data item</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">        ResetSelections: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <div class="code"><pre class="wrapper">        ResetSelections: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.multiSelect) {
                 <span class="hljs-keyword">this</span>._oTblSelections = {};
                 <span class="hljs-keyword">this</span>._aOrigSelections = [];
@@ -360,11 +365,13 @@ For single select will return single data item</p>
                     <span class="hljs-comment">//if it doesn't have the bitbox class it's the input field so break out of the while loop because we're done</span>
                     <span class="hljs-keyword">if</span> (!Dom.hasClass(list.firstChild, CSS_PREFIX + <span class="hljs-string">"BitBox"</span>)) {
                         <span class="hljs-keyword">break</span>;
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         list.removeChild(list.firstChild);
                     }
                 }
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">this</span>._oTblSingleSelection = <span class="hljs-literal">null</span>;
                 <span class="hljs-keyword">this</span>._sOrigSingleSelection = <span class="hljs-string">""</span>;
                 <span class="hljs-keyword">this</span>._elTextbox.value = <span class="hljs-string">""</span>;
@@ -381,10 +388,10 @@ For single select will return single data item</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">        IsSingleRequest: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <div class="code"><pre class="wrapper">        IsSingleRequest: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._singleRequest;
         },
-        handleResponseSingle: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sQuery, oResponse, oPayload)</span> {</span>
+        handleResponseSingle: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(sQuery, oResponse, oPayload)</span> {</span>
             <span class="hljs-keyword">if</span> ((<span class="hljs-keyword">this</span> <span class="hljs-keyword">instanceof</span> YAHOO.widget.AutoComplete) &amp;&amp; <span class="hljs-keyword">this</span>._sName) {
                 <span class="hljs-comment">//focus textbox</span>
                 <span class="hljs-keyword">this</span>._focus();
@@ -400,7 +407,8 @@ For single select will return single data item</p>
                             <span class="hljs-keyword">this</span>._selectItem(elListItem);
                         }
                     }
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-comment">//get first</span>
                     elListItem = allListItemEls[<span class="hljs-number">0</span>];
                     <span class="hljs-comment">//select it</span>
@@ -428,7 +436,7 @@ For single select will return single data item</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">        Select: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key)</span> {</span>
+        <div class="code"><pre class="wrapper">        Select: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key)</span> {</span>
             <span class="hljs-keyword">if</span> (key) {</pre></div>
       
       </div>
@@ -462,7 +470,7 @@ For single select will return single data item</p>
                 });
             }
         },
-        Queue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(keys)</span> {</span>
+        Queue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(keys)</span> {</span>
             <span class="hljs-keyword">if</span> (Lang.isArray(keys) &amp;&amp; keys.length &gt; <span class="hljs-number">0</span>) {</pre></div>
       
       </div>
@@ -508,7 +516,7 @@ For single select will return single data item</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">        _populateList: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sQuery, oResponse, oPayload)</span> {</span></pre></div>
+        <div class="code"><pre class="wrapper">        _populateList: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(sQuery, oResponse, oPayload)</span> {</span></pre></div>
       
       </div>
     
@@ -818,7 +826,8 @@ Null indicates initialized state, which is ok too</p>
         <div class="code"><pre class="wrapper">                        ok = <span class="hljs-keyword">this</span>.doBeforeExpandContainer(<span class="hljs-keyword">this</span>._elTextbox, <span class="hljs-keyword">this</span>._elContainer, sQuery, allResults);
                         <span class="hljs-keyword">this</span>._toggleContainer(ok);
                     }
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">this</span>._toggleContainer(<span class="hljs-literal">false</span>);
                 }
                 <span class="hljs-keyword">return</span>;
@@ -849,7 +858,7 @@ Null indicates initialized state, which is ok too</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">        disable: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <div class="code"><pre class="wrapper">        disable: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.getInputEl()
                 .disabled = <span class="hljs-literal">true</span>;
             <span class="hljs-keyword">this</span>.disabled = <span class="hljs-literal">true</span>;
@@ -864,7 +873,7 @@ Null indicates initialized state, which is ok too</p>
                 Dom.setStyle(<span class="hljs-keyword">this</span>._elTblIcon, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
             }
         },
-        enable: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        enable: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.getInputEl()
                 .disabled = <span class="hljs-literal">false</span>;
             <span class="hljs-keyword">this</span>.disabled = <span class="hljs-literal">undefined</span>;
@@ -891,15 +900,16 @@ Null indicates initialized state, which is ok too</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">        setValid: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(isValid)</span> {</span>
+        <div class="code"><pre class="wrapper">        setValid: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(isValid)</span> {</span>
             <span class="hljs-keyword">this</span>._isValid = isValid;
             <span class="hljs-keyword">if</span> (isValid) {
                 Dom.removeClass(<span class="hljs-keyword">this</span>._elTblContainer, CSS_PREFIX + <span class="hljs-string">"Error"</span>);
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Dom.addClass(<span class="hljs-keyword">this</span>._elTblContainer, CSS_PREFIX + <span class="hljs-string">"Error"</span>);
             }
         },
-        isValid: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        isValid: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._isValid;
         },</pre></div>
       
@@ -913,10 +923,10 @@ Null indicates initialized state, which is ok too</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">        showIndicator: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <div class="code"><pre class="wrapper">        showIndicator: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Dom.setStyle(<span class="hljs-keyword">this</span>._elTblIndicator, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
         },
-        hideIndicator: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        hideIndicator: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Dom.setStyle(<span class="hljs-keyword">this</span>._elTblIndicator, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
         },</pre></div>
       
@@ -930,13 +940,13 @@ Null indicates initialized state, which is ok too</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">        _createDataObject: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+        <div class="code"><pre class="wrapper">        _createDataObject: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span> {</span>
             <span class="hljs-keyword">var</span> oData = {};
             oData.Object = data; <span class="hljs-comment">//store actual data structure for possible later use</span>
             oData.Value = data ? data[<span class="hljs-keyword">this</span>.formatResultLabelKey] : <span class="hljs-literal">null</span>;
             <span class="hljs-keyword">return</span> oData;
         },
-        _createBit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oData)</span> {</span>
+        _createBit: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oData)</span> {</span>
             <span class="hljs-keyword">var</span> elTblListInputLine = <span class="hljs-keyword">this</span>._elTblListInputLine,
                 oSelf = <span class="hljs-keyword">this</span>;
             <span class="hljs-keyword">var</span> bit;
@@ -960,7 +970,7 @@ Null indicates initialized state, which is ok too</p>
             }
             <span class="hljs-keyword">return</span> bit;
         },
-        _updateValue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elListItem)</span> {</span>
+        _updateValue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(elListItem)</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.multiSelect) {
                 <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.suppressInputUpdate) {
                     <span class="hljs-keyword">var</span> elTextbox = <span class="hljs-keyword">this</span>._elTextbox,
@@ -982,11 +992,12 @@ Null indicates initialized state, which is ok too</p>
                     <span class="hljs-keyword">var</span> bit = <span class="hljs-keyword">this</span>._createBit(oData);
                     <span class="hljs-keyword">return</span> bit;
                 }
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 TBL.superclass._updateValue.call(<span class="hljs-keyword">this</span>, elListItem);
             }
         },
-        _selectItem: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elListItem)</span> {</span>
+        _selectItem: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(elListItem)</span> {</span>
             <span class="hljs-keyword">if</span> (elListItem &amp;&amp; elListItem !== <span class="hljs-literal">null</span> &amp;&amp; elListItem._oResultData) {
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.multiSelect) {
                     <span class="hljs-keyword">this</span>._bItemSelected = <span class="hljs-literal">true</span>;
@@ -1000,7 +1011,8 @@ Null indicates initialized state, which is ok too</p>
                         <span class="hljs-keyword">this</span>.itemSelectEvent.fire(<span class="hljs-keyword">this</span>, elListItem, elListItem._oResultData);
                     }
                     <span class="hljs-keyword">this</span>._toggleContainer(<span class="hljs-literal">false</span>);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">var</span> oData = <span class="hljs-keyword">this</span>._createDataObject(elListItem._oResultData);
                     <span class="hljs-keyword">this</span>._oTblSingleSelection = oData;
                     TBL.superclass._selectItem.call(<span class="hljs-keyword">this</span>, elListItem);
@@ -1011,23 +1023,24 @@ Null indicates initialized state, which is ok too</p>
             }
         },
         <span class="hljs-comment">//click event catch</span>
-        _onListTextboxClick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(v, oSelf)</span> {</span>
+        _onListTextboxClick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(v, oSelf)</span> {</span>
             <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.disabled) {
                 Event.stopEvent(v); <span class="hljs-comment">//stop event from bubbling to container</span>
                 oSelf._sendQuery(<span class="hljs-string">""</span>); <span class="hljs-comment">//must pass empty string as query</span>
             }
         },
-        _onListContainerClick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(v, oSelf)</span> {</span>
+        _onListContainerClick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(v, oSelf)</span> {</span>
             <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.disabled) {
                 <span class="hljs-keyword">if</span> (oSelf.minQueryLength === <span class="hljs-number">0</span>) {
                     oSelf._elTextbox.focus();
                     oSelf._sendQuery(<span class="hljs-string">""</span>);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     oSelf._elTextbox.focus();
                 }
             }
         },
-        _onListRemoveBitClick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(v, oSelf)</span> {</span>
+        _onListRemoveBitClick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(v, oSelf)</span> {</span>
             <span class="hljs-keyword">if</span> (oSelf._elTblList &amp;&amp; !oSelf.disabled) {
                 <span class="hljs-keyword">var</span> eventTarget = Event.getTarget(v); <span class="hljs-comment">//stop event from bubbling to container</span>
                 Event.stopEvent(v);
@@ -1045,7 +1058,7 @@ Null indicates initialized state, which is ok too</p>
                 }
             }
         },
-        _updateDirty: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _updateDirty: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-comment">//only update dirty if it's not a select</span>
             <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._singleRequest) {
                 <span class="hljs-keyword">var</span> isDirty;
@@ -1071,7 +1084,8 @@ Null indicates initialized state, which is ok too</p>
                             isDirty = <span class="hljs-literal">true</span>;
                         }
                     }
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     isDirty = (<span class="hljs-keyword">this</span>._sOrigSingleSelection !== <span class="hljs-keyword">this</span>._oTblSingleSelection.Value);
                 }
                 <span class="hljs-comment">//if it changes reset validity</span>
@@ -1101,8 +1115,7 @@ Null indicates initialized state, which is ok too</p>
     });
     <span class="hljs-comment">//assign to global</span>
     YAHOO.lacuna.TextboxList = TBL;
-})();
-</pre></div>
+})();</pre></div>
       
       </div>
     

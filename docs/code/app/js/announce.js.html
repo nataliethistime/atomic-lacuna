@@ -29,11 +29,11 @@
 <span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
 <span class="hljs-keyword">var</span> Templates = <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/templates'</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game;
-    <span class="hljs-keyword">var</span> Announce = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Announce = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
         <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"announce"</span>;
         <span class="hljs-keyword">var</span> container = $(<span class="hljs-string">'&lt;div&gt;&lt;/div&gt;'</span>)
             .attr(<span class="hljs-string">'id'</span>, <span class="hljs-keyword">this</span>.id)
@@ -72,17 +72,17 @@ might close all windows (such as this one) through it.</p>
         <div class="code"><pre class="wrapper">    };
     Announce.prototype = {
         template: Templates.get(<span class="hljs-string">'menu.announcement'</span>),
-        show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        show: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.render();
             <span class="hljs-keyword">this</span>.Panel.show();
         },
-        render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        render: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> uri = <span class="hljs-string">"/announcement?session_id="</span> + Game.GetSession();
             <span class="hljs-keyword">this</span>.Panel.setBody(<span class="hljs-keyword">this</span>.template({
                 uri: uri
             }));
         },
-        hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        hide: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.Panel.hide();
         }
     };

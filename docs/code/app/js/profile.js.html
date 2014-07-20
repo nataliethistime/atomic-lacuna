@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -36,7 +36,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> Profile = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Profile = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
         <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onRpc"</span>);
         <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"profile"</span>;
         <span class="hljs-keyword">var</span> container = document.createElement(<span class="hljs-string">"div"</span>);
@@ -64,7 +64,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             width: <span class="hljs-string">"500px"</span>,
             zIndex: <span class="hljs-number">9999</span>
         });
-        <span class="hljs-keyword">this</span>.Dialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.Dialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.description = Dom.get(<span class="hljs-string">"profileDescription"</span>);
             <span class="hljs-keyword">this</span>.status = Dom.get(<span class="hljs-string">"profileStatus"</span>);
             <span class="hljs-keyword">this</span>.email = Dom.get(<span class="hljs-string">"profileEmail"</span>);
@@ -90,49 +90,49 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-keyword">this</span>.skipIncomingShips = Dom.get(<span class="hljs-string">"profileSkipIncomingShips"</span>);
             <span class="hljs-keyword">this</span>.skipExcavatorReplaceMsg = Dom.get(<span class="hljs-string">"profileSkipExcavatorReplaceMsg"</span>);
             <span class="hljs-keyword">this</span>.dontReplaceExcavator = Dom.get(<span class="hljs-string">"profileDontReplaceExcavator"</span>);
-            Event.on(<span class="hljs-keyword">this</span>.skipFoundNothing, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Event.on(<span class="hljs-keyword">this</span>.skipFoundNothing, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.checked) {
                     Dom.get(<span class="hljs-string">"profileSkipAllExcavator"</span>)
                         .checked = <span class="hljs-literal">false</span>;
                 }
             });
-            Event.on(<span class="hljs-keyword">this</span>.skipExcavatorResources, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Event.on(<span class="hljs-keyword">this</span>.skipExcavatorResources, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.checked) {
                     Dom.get(<span class="hljs-string">"profileSkipAllExcavator"</span>)
                         .checked = <span class="hljs-literal">false</span>;
                 }
             });
-            Event.on(<span class="hljs-keyword">this</span>.skipExcavatorGlyph, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Event.on(<span class="hljs-keyword">this</span>.skipExcavatorGlyph, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.checked) {
                     Dom.get(<span class="hljs-string">"profileSkipAllExcavator"</span>)
                         .checked = <span class="hljs-literal">false</span>;
                 }
             });
-            Event.on(<span class="hljs-keyword">this</span>.skipExcavatorPlan, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Event.on(<span class="hljs-keyword">this</span>.skipExcavatorPlan, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.checked) {
                     Dom.get(<span class="hljs-string">"profileSkipAllExcavator"</span>)
                         .checked = <span class="hljs-literal">false</span>;
                 }
             });
-            Event.on(<span class="hljs-keyword">this</span>.skipExcavatorArtifact, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Event.on(<span class="hljs-keyword">this</span>.skipExcavatorArtifact, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.checked) {
                     Dom.get(<span class="hljs-string">"profileSkipAllExcavator"</span>)
                         .checked = <span class="hljs-literal">false</span>;
                 }
             });
-            Event.on(<span class="hljs-keyword">this</span>.skipExcavatorDestroyed, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Event.on(<span class="hljs-keyword">this</span>.skipExcavatorDestroyed, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.checked) {
                     Dom.get(<span class="hljs-string">"profileSkipAllExcavator"</span>)
                         .checked = <span class="hljs-literal">false</span>;
                 }
             });
-            Event.on(<span class="hljs-keyword">this</span>.skipExcavatorReplaceMsg, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Event.on(<span class="hljs-keyword">this</span>.skipExcavatorReplaceMsg, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.checked) {
                     Dom.get(<span class="hljs-string">"profileSkipExcavatorReplaceMsg"</span>)
                         .checked = <span class="hljs-literal">false</span>;
                 }
             });
-            Event.on(<span class="hljs-keyword">this</span>.skipAllExcavator, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Event.on(<span class="hljs-keyword">this</span>.skipAllExcavator, <span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.checked) {
                     Dom.get(<span class="hljs-string">"profileSkipFoundNothing"</span>)
                         .checked = <span class="hljs-literal">true</span>;
@@ -158,10 +158,10 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-keyword">this</span>.new_password = Dom.get(<span class="hljs-string">"profileNewPassword"</span>);
             <span class="hljs-keyword">this</span>.confirm_password = Dom.get(<span class="hljs-string">"profileConfirmPassword"</span>);
             <span class="hljs-keyword">this</span>.account_tab = Dom.get(<span class="hljs-string">'detailsAccount'</span>);
-            Event.on(<span class="hljs-keyword">this</span>.sitter_password, <span class="hljs-string">'focus'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Event.on(<span class="hljs-keyword">this</span>.sitter_password, <span class="hljs-string">'focus'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">this</span>.type = <span class="hljs-string">'text'</span>;
             });
-            Event.on(<span class="hljs-keyword">this</span>.sitter_password, <span class="hljs-string">'blur'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Event.on(<span class="hljs-keyword">this</span>.sitter_password, <span class="hljs-string">'blur'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">this</span>.type = <span class="hljs-string">'password'</span>;
             });
             <span class="hljs-keyword">this</span>.stopAnim = Dom.get(<span class="hljs-string">"profileDisableDialogAnim"</span>);
@@ -173,14 +173,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-comment">//species tab</span>
             <span class="hljs-keyword">this</span>.hasSpecies = <span class="hljs-literal">false</span>;
             <span class="hljs-keyword">this</span>.tabView.getTab(<span class="hljs-number">2</span>)
-                .subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                .subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                     <span class="hljs-keyword">if</span> (e.newValue &amp;&amp; !<span class="hljs-keyword">this</span>.hasSpecies) {
                         <span class="hljs-keyword">this</span>.hasSpecies = <span class="hljs-literal">true</span>;
                         <span class="hljs-keyword">var</span> requests = <span class="hljs-number">0</span>;
                         Game.Services.Empire.view_species_stats({
                             session_id: Game.GetSession(<span class="hljs-string">""</span>)
                         }, {
-                            success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                            success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                                 YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Profile.show.view_stats.success"</span>);
                                 <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">'onRpc'</span>, o.result);
                                 <span class="hljs-keyword">this</span>.speciesStats = o.result.species;
@@ -194,7 +194,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                         Game.Services.Empire.redefine_species_limits({
                             session_id: Game.GetSession(<span class="hljs-string">""</span>)
                         }, {
-                            success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                            success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                                 YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Profile.redefine_species_limits.success"</span>);
                                 <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">'onRpc'</span>, o.result);
                                 <span class="hljs-keyword">this</span>.speciesRedefineLimits = o.result;
@@ -231,7 +231,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             }, {
                 text: <span class="hljs-string">"Cancel"</span>,
                 handler: {
-                    fn: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    fn: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                         <span class="hljs-keyword">this</span>.hide();
                     }
                 }
@@ -245,7 +245,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             width: <span class="hljs-string">"735px"</span>,
             zIndex: <span class="hljs-number">99999</span>
         });
-        <span class="hljs-keyword">this</span>.SpeciesDialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.SpeciesDialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.SpeciesDesigner = <span class="hljs-keyword">new</span> Lacuna.SpeciesDesigner({
                 templates: <span class="hljs-literal">false</span>
             });
@@ -256,10 +256,10 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         Game.OverlayManager.register(<span class="hljs-keyword">this</span>.SpeciesDialog);
     };
     Profile.prototype = {
-        _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-string">'    &lt;div class="hd"&gt;Profile&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="bd"&gt;'</span>, <span class="hljs-string">'        &lt;form name="profileForm" autocomplete="off"&gt;'</span>, <span class="hljs-string">'            &lt;ul id="profileDetails"&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label style="vertical-align:top;" title="The publicly displayed description for your empire."&gt;Description:&lt;/label&gt;&lt;textarea id="profileDescription" cols="47"&gt;&lt;/textarea&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label title="What are you doing right now?"&gt;Status:&lt;/label&gt;&lt;input id="profileStatus" maxlength="100" size="50" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;/ul&gt;'</span>, <span class="hljs-string">'            &lt;div id="profileTabs" class="yui-navset"&gt;'</span>, <span class="hljs-string">'                &lt;ul class="yui-nav"&gt;'</span>, <span class="hljs-string">'                    &lt;li&gt;&lt;a href="#detailsPlayer"&gt;&lt;em&gt;Player&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li&gt;&lt;a href="#detailsMedals"&gt;&lt;em&gt;Medals&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li&gt;&lt;a href="#detailsSpecies"&gt;&lt;em&gt;Species&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li&gt;&lt;a href="#detailsNotes"&gt;&lt;em&gt;Notes&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li&gt;&lt;a href="#detailsAccount"&gt;&lt;em&gt;Account&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                    &lt;li&gt;&lt;a href="#detailsBrowser"&gt;&lt;em&gt;Browser&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;/ul&gt;'</span>, <span class="hljs-string">'                &lt;div class="yui-content" style="padding:0;"&gt;'</span>, <span class="hljs-string">'                    &lt;div id="detailsPlayer"&gt;'</span>, <span class="hljs-string">'                        &lt;ul id="profilePlayer" style="overflow:auto"&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Name:&lt;input id="profilePlayerName" /&gt;&lt;/label&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label title="Your email is used to recover your password if it is lost, and to send you any unused essentia if you cancel your account."&gt;Email:&lt;input id="profileEmail" /&gt;&lt;/label&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;City:&lt;input id="profileCity" /&gt;&lt;/label&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Country:&lt;input id="profileCountry" /&gt;&lt;/label&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Skype:&lt;input id="profileSkype" /&gt;&lt;/label&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;hr /&gt;&lt;div class="yui-g"&gt;'</span>, <span class="hljs-string">'                                &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'                                    &lt;ul&gt;&lt;li&gt;&lt;input id="profileSkipFacebookWallPosts" type="checkbox" /&gt; Stop Facebook Wall posts&lt;/li&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileSkipMedal" type="checkbox" /&gt; Stop Medal Messages&lt;/li&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileSkipProbeDetected" type="checkbox" /&gt; Stop Probe Detected&lt;/li&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileSkipSpyRecovery" type="checkbox" /&gt; Stop Spy Recovery Messages&lt;/li&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileSkipResource" type="checkbox" /&gt; Stop Resource Warnings&lt;/li&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileSkipPollution" type="checkbox" /&gt; Stop Pollution Warnings&lt;/li&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileSkipHappiness" type="checkbox" /&gt; Stop Happiness Warnings&lt;/li&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileSkipAttackMessages" type="checkbox" /&gt; Stop Attack Messages&lt;/li&gt;'</span>, <span class="hljs-string">'                 &lt;li&gt;&lt;input id="profileSkipIncomingShips" type="checkbox" /&gt; Stop Incoming Ships Notification&lt;/li&gt;'</span>, <span class="hljs-string">'                 &lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'               &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'               &lt;ul id="profileCheckboxes"&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileSkipAllExcavator" type="checkbox" /&gt; Stop All Excavator Messages&lt;/li&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileSkipFoundNothing" type="checkbox" /&gt; Stop Excavator Found Nothing&lt;/li&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileSkipExcavatorGlyph" type="checkbox" /&gt; Stop Excavator Glyph&lt;/li&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileSkipExcavatorResources" type="checkbox" /&gt; Stop Excavator Resources&lt;/li&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileSkipExcavatorPlan" type="checkbox" /&gt; Stop Excavator Plan&lt;/li&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileSkipExcavatorArtifact" type="checkbox" /&gt; Stop Excavator Artifact&lt;/li&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileSkipExcavatorDestroyed" type="checkbox" /&gt; Stop Excavator Destroyed&lt;/li&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileSkipExcavatorReplaceMsg" type="checkbox" /&gt; Stop Excavator Replace Alert&lt;/li&gt;'</span>, <span class="hljs-string">'                                    &lt;li&gt;&lt;input id="profileDontReplaceExcavator" type="checkbox" /&gt; Do not replace Excavator automatically&lt;/li&gt;'</span>, <span class="hljs-string">'               &lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'                            &lt;/div&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;hr /&gt;Today\'s RPC Usage:&lt;span id="profileRpc" style="margin-left:5px;"&gt;&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;/ul&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;div id="detailsMedals"&gt;'</span>, <span class="hljs-string">'                        &lt;div&gt;Select the medals to display on your profile :&lt;/div&gt;'</span>, <span class="hljs-string">'                        &lt;ul id="profileMedalsList" style="overflow:auto;"&gt;'</span>, <span class="hljs-string">'                        &lt;/ul&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;div id="detailsSpecies"&gt;'</span>, <span class="hljs-string">'                        &lt;ul id="profileSpecies" style="overflow:auto;"&gt;'</span>, <span class="hljs-string">'                        &lt;/ul&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;div id="detailsNotes"&gt;'</span>, <span class="hljs-string">'                        &lt;textarea id="profileNotes" title="Write down anything you would like to store with your account."&gt;&lt;/textarea&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;div id="detailsAccount"&gt;'</span>, <span class="hljs-string">'                        &lt;ul&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label title="The sitter password can be used to allow others to log in to your account to help you manage it, but doesn\'t allow access edit your profile or delete the account."&gt;Sitter Password:&lt;input id="profileSitterPassword" type="password" /&gt;&lt;/label&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;/ul&gt;'</span>, <span class="hljs-string">'                        &lt;hr /&gt;'</span>, <span class="hljs-string">'                        &lt;ul&gt;'</span>, <span class="hljs-string">'                            &lt;li style="text-align: center; margin-bottom: 2px;"&gt;Change Account Password:&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;New Password:&lt;input id="profileNewPassword" type="password" /&gt;&lt;/label&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;label&gt;Confirm:&lt;input id="profileConfirmPassword" type="password" /&gt;&lt;/label&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;/ul&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                    &lt;div id="detailsBrowser"&gt;'</span>, <span class="hljs-string">'                        &lt;ul&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;input id="profileDisableDialogAnim" type="checkbox" /&gt; Stop Dialog Animation&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;input id="profileShowBuildingLevels" type="checkbox" /&gt; Always Show Building Levels&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;input id="profileHidePlanets" type="checkbox" /&gt; Hide Planet Images in Star Map&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;input id="profileHideTips" type="checkbox" /&gt; Hide Tips at Login&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;Assets Path: (Note: make sure it ends in a file separator.)&lt;/li&gt;'</span>, <span class="hljs-string">'                            &lt;li&gt;&lt;input id="assetsPath" type="text" placeholder="Assets URL" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                        &lt;/ul&gt;'</span>, <span class="hljs-string">'                    &lt;/div&gt;'</span>, <span class="hljs-string">'                &lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/form&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="ft"&gt;&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
         },
-        handleUpdate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        handleUpdate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> updatesLeft = <span class="hljs-number">1</span>;
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.new_password.value !== <span class="hljs-string">""</span>) {
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.new_password.value !== <span class="hljs-keyword">this</span>.confirm_password.value) {
@@ -267,21 +267,22 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                     <span class="hljs-keyword">this</span>.tabView.set(<span class="hljs-string">'activeIndex'</span>, <span class="hljs-number">4</span>);
                     <span class="hljs-keyword">this</span>.confirm_password.focus();
                     <span class="hljs-keyword">return</span>;
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     updatesLeft++;
                     Game.Services.Empire.change_password({
                         session_id: Game.GetSession(<span class="hljs-string">""</span>),
                         password1: <span class="hljs-keyword">this</span>.new_password.value,
                         password2: <span class="hljs-keyword">this</span>.confirm_password.value
                     }, {
-                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Profile.handleUpdate.password.success"</span>);
                             Dom.removeClass(<span class="hljs-keyword">this</span>.account_tab, <span class="hljs-string">'password-changed'</span>);
                             <span class="hljs-keyword">if</span> (--updatesLeft === <span class="hljs-number">0</span>) {
                                 <span class="hljs-keyword">this</span>.hide();
                             }
                         },
-                        failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             <span class="hljs-keyword">this</span>.tabView.set(<span class="hljs-string">'activeIndex'</span>, <span class="hljs-number">4</span>);
                             <span class="hljs-keyword">this</span>.new_password.focus();
                             <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
@@ -302,7 +303,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 <span class="hljs-keyword">var</span> newEffect;
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.stopAnim.checked) {
                     Game.SetCookieSettings(<span class="hljs-string">"disableDialogAnim"</span>, <span class="hljs-string">"1"</span>);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     Game.RemoveCookieSettings(<span class="hljs-string">"disableDialogAnim"</span>);
                     newEffect = Game.GetContainerEffect();
                 }
@@ -314,7 +316,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-keyword">if</span> (Game.GetCookieSettings(<span class="hljs-string">"showLevels"</span>, <span class="hljs-string">"0"</span>) !== (<span class="hljs-keyword">this</span>.showLevels.checked ? <span class="hljs-string">"1"</span> : <span class="hljs-string">"0"</span>)) {
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.showLevels.checked) {
                     Game.SetCookieSettings(<span class="hljs-string">"showLevels"</span>, <span class="hljs-string">"1"</span>);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     Game.RemoveCookieSettings(<span class="hljs-string">"showLevels"</span>);
                 }
                 <span class="hljs-keyword">var</span> levels = Sel.query(<span class="hljs-string">"#planetMap .tileContainer .planetMapTileActionLevel"</span>);
@@ -325,7 +328,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-keyword">if</span> (Game.GetCookieSettings(<span class="hljs-string">"hidePlanets"</span>, <span class="hljs-string">"0"</span>) !== (<span class="hljs-keyword">this</span>.hidePlanets.checked ? <span class="hljs-string">"1"</span> : <span class="hljs-string">"0"</span>)) {
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.hidePlanets.checked) {
                     Game.SetCookieSettings(<span class="hljs-string">"hidePlanets"</span>, <span class="hljs-string">"1"</span>);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     Game.RemoveCookieSettings(<span class="hljs-string">"hidePlanets"</span>);
                 }
                 <span class="hljs-keyword">if</span> (YAHOO.lacuna.MapStar.IsVisible()) {
@@ -336,7 +340,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-keyword">if</span> (Game.GetCookieSettings(<span class="hljs-string">"hideTips"</span>, <span class="hljs-string">"0"</span>) !== (<span class="hljs-keyword">this</span>.hideTips.checked ? <span class="hljs-string">"1"</span> : <span class="hljs-string">"0"</span>)) {
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.hideTips.checked) {
                     Game.SetCookieSettings(<span class="hljs-string">"hideTips"</span>, <span class="hljs-string">"1"</span>);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     Game.RemoveCookieSettings(<span class="hljs-string">"hideTips"</span>);
                 }
             }
@@ -376,7 +381,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                     skip_incoming_ships: <span class="hljs-keyword">this</span>.skipIncomingShips.checked ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>
                 }
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Profile.handleUpdate.success"</span>);
                     <span class="hljs-keyword">if</span> (--updatesLeft === <span class="hljs-number">0</span>) {
                         <span class="hljs-keyword">this</span>.hide();
@@ -385,12 +390,12 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        show: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-comment">//this is called out of scope so make sure to pass the correct scope in</span>
             Game.Services.Empire.view_profile({
                 session_id: Game.GetSession(<span class="hljs-string">""</span>)
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Profile.show.view_profile.success"</span>);
                     <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">'onRpc'</span>, o.result);
                     <span class="hljs-keyword">this</span>.populateProfile(o.result);
@@ -402,10 +407,10 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             Lacuna.Profile.Dialog.center();
             Lacuna.Profile.Dialog.show();
         },
-        hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        hide: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.Dialog.hide();
         },
-        populateProfile: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(results)</span> {</span>
+        populateProfile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(results)</span> {</span>
             <span class="hljs-keyword">var</span> p = results.profile;
             <span class="hljs-keyword">this</span>.description.value = p.description;
             <span class="hljs-keyword">this</span>.status.value = p.status_message;
@@ -467,7 +472,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             Dom.setStyle(<span class="hljs-keyword">this</span>.medals, <span class="hljs-string">'height'</span>, Ht + <span class="hljs-string">'px'</span>);
             <span class="hljs-keyword">this</span>.Dialog.center();
         },
-        populateSpecies: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        populateSpecies: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> frag = document.createDocumentFragment(),
                 li = document.createElement(<span class="hljs-string">'li'</span>);
             <span class="hljs-keyword">var</span> stat = <span class="hljs-keyword">this</span>.speciesStats;
@@ -533,7 +538,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             }
             Dom.setStyle(<span class="hljs-keyword">this</span>.species, <span class="hljs-string">'height'</span>, Ht + <span class="hljs-string">'px'</span>);
         },
-        showSpeciesRedefine: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        showSpeciesRedefine: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             Event.stopEvent(e);
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.speciesRedefineLimits.can) {
                 <span class="hljs-keyword">this</span>.Dialog.hide();
@@ -544,11 +549,12 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 <span class="hljs-keyword">this</span>.SpeciesDesigner.setSpeciesLocks(<span class="hljs-keyword">this</span>.speciesRedefineLimits);
                 <span class="hljs-keyword">this</span>.SpeciesDialog.getButtons()[<span class="hljs-number">0</span>].innerHTML = [<span class="hljs-keyword">this</span>.speciesRedefineLimits.essentia_cost, <span class="hljs-string">' &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia smallImg" /&gt; Update'</span>].join(<span class="hljs-string">''</span>);
                 <span class="hljs-keyword">this</span>.SpeciesDialog.show();
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 alert(<span class="hljs-string">"Can't redefine species: "</span> + <span class="hljs-keyword">this</span>.speciesRedefineLimits.reason);
             }
         },
-        redefineSpecies: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        redefineSpecies: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>.SpeciesDesigner.getSpeciesData();
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.SpeciesDesigner.compareSpeciesData(data, <span class="hljs-keyword">this</span>.speciesStats)) {
                 <span class="hljs-keyword">this</span>.SpeciesDialog.hide();
@@ -558,7 +564,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.SpeciesDesigner.validateSpecies(data)) {
                     <span class="hljs-keyword">return</span>;
                 }
-            } <span class="hljs-keyword">catch</span> (e) {
+            }
+            <span class="hljs-keyword">catch</span> (e) {
                 alert(e);
                 <span class="hljs-keyword">return</span>;
             }
@@ -567,7 +574,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 session_id: Game.GetSession(<span class="hljs-string">""</span>),
                 params: data
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Profile.redefine_species.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.hasSpecies = <span class="hljs-literal">false</span>;
@@ -580,8 +587,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
     };
     Lang.augmentProto(Profile, Util.EventProvider);
     Lacuna.Profile = <span class="hljs-keyword">new</span> Profile();
-})();
-</pre></div>
+})();</pre></div>
       
       </div>
     

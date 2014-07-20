@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna");
-(function () {
+(function() {
     var Util = YAHOO.util,
         Dom = Util.Dom,
         Event = Util.Event,
@@ -8,7 +8,7 @@ YAHOO.namespace("lacuna");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var CreateSpecies = function (Empire) {
+    var CreateSpecies = function(Empire) {
         this.id = "createSpecies";
         this._empire = Empire;
         this.createEvent("onCreateSuccessful");
@@ -44,7 +44,7 @@ YAHOO.namespace("lacuna");
             underlay: false,
             zIndex: 9999
         });
-        this.Dialog.renderEvent.subscribe(function () {
+        this.Dialog.renderEvent.subscribe(function() {
             this.elMessage = Dom.get('speciesMessage');
             this.designer = new Lacuna.SpeciesDesigner();
             this.designer.render("speciesCreateDesign");
@@ -54,7 +54,7 @@ YAHOO.namespace("lacuna");
         Game.OverlayManager.register(this.Dialog);
     };
     CreateSpecies.prototype = {
-        handleCreate: function () {
+        handleCreate: function() {
             this.setMessage("");
             var EmpireServ = Game.Services.Empire,
                 data = this.designer.getSpeciesData();
@@ -62,7 +62,8 @@ YAHOO.namespace("lacuna");
                 if (!this.designer.validateSpecies(data)) {
                     return;
                 }
-            } catch (e) {
+            }
+            catch (e) {
                 this.setMessage(e);
                 return;
             }
@@ -71,55 +72,55 @@ YAHOO.namespace("lacuna");
                 empire_id: this.empireId,
                 params: data
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "CreateSpecies");
                     this._found();
                 },
-                failure: function (o) {
+                failure: function(o) {
                     this.setMessage(o.error.message);
                     return true;
                 },
                 scope: this
             });
         },
-        handleCancel: function () {
+        handleCancel: function() {
             this.hide();
             this._empire.handleCancel();
         },
-        _found: function () {
+        _found: function() {
             Lacuna.Pulser.Show();
             var EmpireServ = Game.Services.Empire;
             EmpireServ.found({
                 empire_id: this.empireId,
                 api_key: Lib.ApiKey
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "CreateSpecies._found.success");
                     Lacuna.Pulser.Hide();
                     this.hide(); //hide species
                     this.fireEvent("onCreateSuccessful", o);
                 },
-                failure: function (o) {
+                failure: function(o) {
                     this.setMessage(o.error.message);
                     return true;
                 },
                 scope: this
             });
         },
-        _getHtml: function () {
+        _getHtml: function() {
             return ['    <div class="hd">Create Species</div>', '    <div class="bd">', '        <form name="speciesForm">', '            <div id="speciesCreateDesign"></div>', '            <div id="speciesMessage" class="hidden"></div>', '        </form>', '    </div>', '    <div class="ft"></div>'].join('');
         },
-        setMessage: function (str) {
+        setMessage: function(str) {
             Dom.replaceClass(this.elMessage, Lib.Styles.HIDDEN, Lib.Styles.ALERT);
             this.elMessage.innerHTML = str;
         },
-        show: function (empire) {
+        show: function(empire) {
             this.empireId = empire;
             Game.OverlayManager.hideAll();
             this.Dialog.show();
             this.Dialog.center();
         },
-        hide: function () {
+        hide: function() {
             Dom.replaceClass(this.elMessage, Lib.Styles.ALERT, Lib.Styles.HIDDEN);
             this.Dialog.hide();
         }

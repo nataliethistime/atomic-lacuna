@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -35,32 +35,32 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> ThemePark = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+    <span class="hljs-keyword">var</span> ThemePark = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> {</span>
         ThemePark.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
         <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.ThemePark;
     };
     Lang.extend(ThemePark, Lacuna.buildings.Building, {
-        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getTab()];
         },
-        _getTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.tab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Operations"</span>,
                 content: [<span class="hljs-string">'&lt;div id="ThemeParkWorking" style="display:none;"&gt;'</span>, <span class="hljs-string">'    Time left on current operations: &lt;span id="ThemeParkTime"&gt;&lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div id="ThemeParkMessage" style="margin-top:5px;"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div id="ThemeParkDisplay" style="display:none;margin:5px 0;"&gt;'</span>, <span class="hljs-string">'    &lt;button type="button" id="Operate"&gt;Open Theme Park&lt;/button&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
             });
             Event.on(<span class="hljs-string">"Operate"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.operate, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-            <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">this</span>.updateDisplay(<span class="hljs-keyword">this</span>.result); <span class="hljs-comment">//first load this will be accurate</span>
             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tab;
         },
-        operate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        operate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.service.operate({
                 session_id: Game.GetSession(),
                 building_id: <span class="hljs-keyword">this</span>.building.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">this</span>.updateDisplay(o.result);
@@ -68,13 +68,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        updateDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+        updateDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> {</span>
             <span class="hljs-keyword">var</span> isWorking = result.building.work &amp;&amp; result.building.work.seconds_remaining &gt; <span class="hljs-number">0</span>;
             <span class="hljs-keyword">if</span> (isWorking) {
                 Dom.setStyle(<span class="hljs-string">"ThemeParkWorking"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
                 <span class="hljs-keyword">this</span>.resetQueue();
                 <span class="hljs-keyword">this</span>.addQueue(result.building.work.seconds_remaining, <span class="hljs-keyword">this</span>.parkQueue, <span class="hljs-string">"ThemeParkTime"</span>);
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Dom.setStyle(<span class="hljs-string">"ThemeParkWorking"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
             }
             <span class="hljs-keyword">if</span> (result.themepark.can_operate) {
@@ -82,23 +83,26 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 <span class="hljs-keyword">if</span> (isWorking) {
                     Dom.get(<span class="hljs-string">"Operate"</span>)
                         .innerHTML = <span class="hljs-string">"Extend Theme Park Operations"</span>;
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     Dom.get(<span class="hljs-string">"Operate"</span>)
                         .innerHTML = <span class="hljs-string">"Open Theme Park"</span>;
                 }
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Dom.setStyle(<span class="hljs-string">"ThemeParkDisplay"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                 Dom.get(<span class="hljs-string">"ThemeParkMessage"</span>)
                     .innerHTML = result.themepark.reason[<span class="hljs-number">1</span>];
             }
         },
-        parkQueue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(remaining, el)</span> {</span>
+        parkQueue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(remaining, el)</span> {</span>
             <span class="hljs-keyword">if</span> (remaining &lt;= <span class="hljs-number">0</span>) {
                 <span class="hljs-keyword">var</span> span = Dom.get(el),
                     p = span.parentNode;
                 p.removeChild(span);
                 p.innerHTML = <span class="hljs-string">"Park is closed."</span>;
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Dom.get(el)
                     .innerHTML = Lib.formatTime(<span class="hljs-built_in">Math</span>.round(remaining));
             }

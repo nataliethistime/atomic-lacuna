@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -8,15 +8,15 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var TheDillonForge = function (result) {
+    var TheDillonForge = function(result) {
         TheDillonForge.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.TheDillonForge;
     };
     Lang.extend(TheDillonForge, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getForgeTab()];
         },
-        _getForgeTab: function () {
+        _getForgeTab: function() {
             this.splitTab = new YAHOO.widget.Tab({
                 label: "Forge",
                 content: ['<div id="forgeSplitPlan">', '  <div><b>Split a plan into glyphs.</b></div>', '  <div id="forgeSplitPlanForm"></div>', '<hr/>', '</div>', '<div id="forgeMakePlan">', '  <div><b>Combine level 1 plans into a higher level plan.</b></div>', '  <div id="forgeMakePlanForm"></div>', '</div>', '<div id="forgeSubsidize">', '  <div><b>Subsidize current task.</b></div>', '  <div id="forgeSubsidizeForm"><div>', '</div>'].join('')
@@ -24,21 +24,22 @@ YAHOO.namespace("lacuna.buildings");
             this.splitTab.subscribe("activeChange", this.viewForgeTab, this, true);
             return this.splitTab;
         },
-        viewForgeTab: function () {
+        viewForgeTab: function() {
             if (this.result.tasks.can === 1) {
                 Dom.setStyle("forgeMakePlan", "display", "");
                 Dom.setStyle("forgeSplitPlan", "display", "");
                 Dom.setStyle("forgeSubsidize", "display", "none");
                 this.viewForgeMakePlan();
                 this.viewForgeSplitPlan();
-            } else {
+            }
+            else {
                 Dom.setStyle("forgeMakePlan", "display", "none");
                 Dom.setStyle("forgeSplitPlan", "display", "none");
                 Dom.setStyle("forgeSubsidize", "display", "");
                 this.viewForgeSubsidize();
             }
         },
-        viewForgeMakePlan: function () {
+        viewForgeMakePlan: function() {
             var make_plan = this.result.tasks.make_plan,
                 make_form = Dom.get("forgeMakePlanForm");
             if (make_plan.length === 0) {
@@ -53,27 +54,35 @@ YAHOO.namespace("lacuna.buildings");
             emptyFirst.setAttribute("value", "");
             emptyFirst.innerHTML = "Select plan (maximum level) &#91;time to make&#93;";
             select.appendChild(emptyFirst);
-            make_plan.sort(function (a, b) {
+            make_plan.sort(function(a, b) {
                 if (a["class"] > b["class"]) {
                     return 1;
-                } else if (a["class"] < b["class"]) {
+                }
+                else if (a["class"] < b["class"]) {
                     return -1;
-                } else {
+                }
+                else {
                     if (a.name > b.name) {
                         return 1;
-                    } else if (a.name < b.name) {
+                    }
+                    else if (a.name < b.name) {
                         return -1;
-                    } else {
+                    }
+                    else {
                         if (a.level > b.level) {
                             return 1;
-                        } else if (a.level < b.level) {
+                        }
+                        else if (a.level < b.level) {
                             return -1;
-                        } else {
+                        }
+                        else {
                             if (a.extra_build_level > b.extra_build_level) {
                                 return 1;
-                            } else if (a.extra_build_level < b.extra_build_level) {
+                            }
+                            else if (a.extra_build_level < b.extra_build_level) {
                                 return -1;
-                            } else {
+                            }
+                            else {
                                 return 0;
                             }
                         }
@@ -106,7 +115,7 @@ YAHOO.namespace("lacuna.buildings");
                 Self: this
             }, true);
         },
-        MakePlan: function () {
+        MakePlan: function() {
             var plan_class = Lib.getSelectedOptionValue("forgeMakePlanSelect"),
                 level = Dom.get("forgeMakePlanLevel")
                     .value;
@@ -125,7 +134,7 @@ YAHOO.namespace("lacuna.buildings");
                 plan_class: plan_class,
                 level: level
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "TheDillonForge.MakePlan.success");
                     Lacuna.Pulser.Hide();
                     this.Self.rpcSuccess(o);
@@ -135,7 +144,7 @@ YAHOO.namespace("lacuna.buildings");
                 scope: this
             });
         },
-        viewForgeSplitPlan: function () {
+        viewForgeSplitPlan: function() {
             var split_plan = this.result.tasks.split_plan,
                 split_form = Dom.get("forgeSplitPlanForm");
             if (split_plan.length === 0) {
@@ -150,22 +159,28 @@ YAHOO.namespace("lacuna.buildings");
             emptyFirst.setAttribute("value", "");
             emptyFirst.innerHTML = "Select plan (levels) &#91;time to split&#93;";
             select.appendChild(emptyFirst);
-            split_plan.sort(function (a, b) {
+            split_plan.sort(function(a, b) {
                 if (a.name > b.name) {
                     return 1;
-                } else if (a.name < b.name) {
+                }
+                else if (a.name < b.name) {
                     return -1;
-                } else {
+                }
+                else {
                     if (a.level > b.level) {
                         return 1;
-                    } else if (a.level < b.level) {
+                    }
+                    else if (a.level < b.level) {
                         return -1;
-                    } else {
+                    }
+                    else {
                         if (a.extra_build_level > b.extra_build_level) {
                             return 1;
-                        } else if (a.extra_build_level < b.extra_build_level) {
+                        }
+                        else if (a.extra_build_level < b.extra_build_level) {
                             return -1;
-                        } else {
+                        }
+                        else {
                             return 0;
                         }
                     }
@@ -204,7 +219,7 @@ YAHOO.namespace("lacuna.buildings");
                 Self: this
             }, true);
         },
-        SplitPlan: function () {
+        SplitPlan: function() {
             var selected = Lib.getSelectedOptionValue("forgeSplitPlanSelect"),
                 quantity = Dom.get("forgeSplitPlanQuantity")
                     .value;
@@ -226,7 +241,7 @@ YAHOO.namespace("lacuna.buildings");
                     extra_build_level: selected[2],
                     quantity: quantity,
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "TheDillonForge.SplitPlan.success");
                         Lacuna.Pulser.Hide();
                         this.Self.rpcSuccess(o);
@@ -237,7 +252,7 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        viewForgeSubsidize: function () {
+        viewForgeSubsidize: function() {
             var form = Dom.get("forgeSubsidizeForm"),
                 cost = this.result.tasks.subsidy_cost,
                 work = this.result.tasks.working,
@@ -250,13 +265,13 @@ YAHOO.namespace("lacuna.buildings");
                 Self: this
             }, true);
         },
-        Subsidize: function () {
+        Subsidize: function() {
             Lacuna.Pulser.Show();
             this.Self.service.subsidize({
                 session_id: Game.GetSession(),
                 building_id: this.Self.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "TheDillonForge.Subsidize.success");
                     Lacuna.Pulser.Hide();
                     this.Self.rpcSuccess(o);

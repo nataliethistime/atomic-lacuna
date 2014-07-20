@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -10,7 +10,7 @@ YAHOO.namespace("lacuna.buildings");
         Game = Lacuna.Game,
         Lib = Lacuna.Library,
         stashSel = '<select><option value="1">1</option><option value="10">10</option><option value="100">100</option><option value="1000" selected="selected">1000</option><option value="10000">10000</option></select>';
-    var Embassy = function (result) {
+    var Embassy = function(result) {
         Embassy.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.Embassy;
         this.alliance = result.alliance_status;
@@ -20,24 +20,26 @@ YAHOO.namespace("lacuna.buildings");
         }
     };
     Lang.extend(Embassy, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             if (this.alliance) {
                 var tabs = [this._getStashTab(), this._getAllianceTab(), this._getMemberTab(), this._getInvitesTab()];
                 if (this.isLeader) {
                     tabs.push(this._getSendTab());
                 }
                 return tabs;
-            } else {
+            }
+            else {
                 return [this._getCreateTab(), this._getInvitesTab()];
             }
         },
-        _getAllianceTab: function () {
+        _getAllianceTab: function() {
             var div = document.createElement("div");
             if (this.isLeader) {
                 div.innerHTML = ['<div>', '    <ul>', '        <li><label>Founded: </label>', Lib.formatServerDate(this.alliance.date_created), '</li>', '        <li><label>Description: </label><input type="text" id="embassyAllianceDesc" value="', this.alliance.description, '" size="50" /></li>', '        <li><label>Forums: </label><input type="text" id="embassyAllianceForums" value="', this.alliance.forum_uri, '" size="50" /></li>', '        <li><label>Announcements: </label><textarea id="embassyAllianceAnnoucements" rows="2" cols="80">', this.alliance.announcements, '</textarea></li>', '        <li id="embassyAllianceMessage"></li>', '        <li><button type="button" id="embassyAllianceUpdate">Save</button></li>', '    </ul>', '    <hr /><div><button type="button" id="embassyAllianceDissolve">Dissolve Alliance</button>', '</div>'].join('');
                 Event.on("embassyAllianceUpdate", "click", this.UpdateAlliance, this, true);
                 Event.on("embassyAllianceDissolve", "click", this.DissolveAlliance, this, true);
-            } else {
+            }
+            else {
                 div.innerHTML = ['<div>', '    <ul>', '        <li><label>Founded: </label>', Lib.formatServerDate(this.alliance.date_created), '</li>', '        <li><label>Description: </label>', this.alliance.description, '</li>', '        <li><label>Forums: </label>', this.alliance.forum_uri ? ['<a href="', this.alliance.forum_uri, '" target="_blank">View</a>'].join('') : '', '</li>', '        <li><label>Announcements: </label>', this.alliance.announcements ? this.alliance.announcements.replace('\n', '<br />') : "", '</li>', '    </ul>', '    <hr /><div>', '        <textarea id="embassyAllianceLeaveReason" rows="3" cols="80"></textarea>', '        <button type="button" id="embassyAllianceLeave">Leave Alliance</button>', '    </div>', '</div>'].join('');
                 Event.on("embassyAllianceLeave", "click", this.LeaveAlliance, this, true);
             }
@@ -47,14 +49,14 @@ YAHOO.namespace("lacuna.buildings");
             });
             return this.allianceTab;
         },
-        _getMemberTab: function () {
+        _getMemberTab: function() {
             this.memberTab = new YAHOO.widget.Tab({
                 label: "Members",
                 content: ['<div>', '    <ul class="embassyHeader embassyInfo clearafter">', '        <li class="embassyEmpire">Empire</li>', '        <li class="embassyAction"></li>', '        <li class="embassyMessage"></li>', '    </ul>', '    <div><div id="embassyMemberDetails"></div></div>', '</div>'].join('')
             });
             return this.memberTab;
         },
-        _getCreateTab: function () {
+        _getCreateTab: function() {
             this.createTab = new YAHOO.widget.Tab({
                 label: "Create Alliance",
                 content: ['<div>', '    <label>Alliance Name</label><input type="text" id="embassyCreateName" />', '    <div id="embassyCreateMessage" class="alert"></div>', '    <button type="button" id="embassyCreateSubmit">Create</button>', '</div>'].join('')
@@ -62,7 +64,7 @@ YAHOO.namespace("lacuna.buildings");
             Event.on("embassyCreateSubmit", "click", this.CreateAlliance, this, true);
             return this.createTab;
         },
-        _getInvitesTab: function () {
+        _getInvitesTab: function() {
             this.invitesTab = new YAHOO.widget.Tab({
                 label: "View Invites",
                 content: ['<div>', '    <ul class="embassyHeader embassyInfo clearafter">', '        <li class="embassyAlliance">Alliance</li>', '        <li class="embassyAction"></li>', '        <li class="embassyAction"></li>', '        <li class="embassyMessage"></li>', '    </ul>', '    <div><div id="embassyInvitesDetails"></div></div>', '</div>'].join('')
@@ -70,7 +72,7 @@ YAHOO.namespace("lacuna.buildings");
             this.invitesTab.subscribe("activeChange", this.getInvites, this, true);
             return this.invitesTab;
         },
-        _getSendTab: function () {
+        _getSendTab: function() {
             this.sendTab = new YAHOO.widget.Tab({
                 label: "Send Invites",
                 content: ['<div>', '    <ul>', '        <li>Invite: <span style="width:200px;display:inline-block;"><input id="embassySendTo" type="text" /></span></li>', '        <li>Message: <textarea id="embassySendMessage" rows="1" cols="80"></textarea></li>', '        <li><button type="button" id="embassySendInvite">Send Invite</button></li>', '    </ul>', '    <hr />', '    <h3>Pending Invites</h3>', '    <ul class="embassyHeader embassyInfo clearafter">', '        <li class="embassyEmpire">Empire</li>', '        <li class="embassyAction"></li>', '        <li class="embassyMessage"></li>', '    </ul>', '    <div><div id="embassySendDetails"></div></div>', '</div>'].join('')
@@ -79,7 +81,7 @@ YAHOO.namespace("lacuna.buildings");
             Event.on("embassySendInvite", "click", this.SendInvite, this, true);
             return this.sendTab;
         },
-        _getStashTab: function () {
+        _getStashTab: function() {
             this.stashTab = new YAHOO.widget.Tab({
                 label: "Stash",
                 content: ['<div id="embassyStashAnnounce"></div>', '<div class="embassyStash yui-g">', '    <div class="yui-g first">', '        <div class="yui-u first">', '            <legend>On Planet</legend>', '            <div class="embassyContainers" id="sopHt"><ul id="embassyStashOnPlanet"></ul></div>', '        </div>', '        <div class="yui-u">', '            <legend>Donate</legend>', '            <div class="embassyContainers" id="stdHt"><ul id="embassyStashToDonate"></ul></div>', '            <div>Total:<span id="embassyTotalDonate">0</span></div>', '        </div>', '    </div>', '    <div class="yui-g">', '        <div class="yui-u first">', '            <legend>Exchange</legend>', '            <div class="embassyContainers" id="steHt"><ul id="embassyStashToExchange"></ul></div>', '            <div>Total:<span id="embassyTotalExchange">0</span></div>', '        </div>', '        <div class="yui-u">', '            <legend>In Stash</legend>', '            <div class="embassyContainers" id="sisHt"><ul id="embassyStashInStash"></ul></div>', '        </div>', '    </div>', '</div>', '<div style="text-align: center;">', '    <div id="embassyStashMessage" class="alert"></div>', '    <button type="button" id="embassyStashSubmit">Transfer</button>', '</div>'].join('')
@@ -92,7 +94,7 @@ YAHOO.namespace("lacuna.buildings");
             Event.delegate("embassyStashToExchange", "click", this.StashExchangeRemove, "button", this, true);
             return this.stashTab;
         },
-        _createSendToSelect: function () {
+        _createSendToSelect: function() {
             var dataSource = new Util.XHRDataSource("/empire");
             dataSource.connMethodPost = "POST";
             dataSource.maxCacheEntries = 2;
@@ -110,7 +112,7 @@ YAHOO.namespace("lacuna.buildings");
                 formatResultColumnKeys: ["name"],
                 useIndicator: true
             });
-            oTextboxList.generateRequest = function (sQuery) {
+            oTextboxList.generateRequest = function(sQuery) {
                 var s = Lang.JSON.stringify({
                     "id": YAHOO.rpc.Service._requestId++,
                     "method": "find",
@@ -125,14 +127,14 @@ YAHOO.namespace("lacuna.buildings");
             this.embassySendTo = oTextboxList;
         },
         //Stash
-        getStash: function (e) {
+        getStash: function(e) {
             if (e.newValue) {
                 Lacuna.Pulser.Show();
                 this.service.view_stash({
                     session_id: Game.GetSession(),
                     building_id: this.building.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
                         delete o.result.status;
@@ -143,7 +145,7 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        StashPopulate: function () {
+        StashPopulate: function() {
             /*
         "stash" : {"gold" : 4500},
         "stored" : {"energy" : 40000},
@@ -177,7 +179,8 @@ YAHOO.namespace("lacuna.buildings");
                                     onPlanet.appendChild(nLi);
                                 }
                             }
-                        } else if (stash.stored[r] && resource) {
+                        }
+                        else if (stash.stored[r] && resource) {
                             nLi = li.cloneNode(false);
                             nLi.Stash = {
                                 type: r,
@@ -207,7 +210,8 @@ YAHOO.namespace("lacuna.buildings");
                                     inStash.appendChild(nLi);
                                 }
                             }
-                        } else if (stash.stash[r] && resource) {
+                        }
+                        else if (stash.stash[r] && resource) {
                             nLi = li.cloneNode(false);
                             nLi.Stash = {
                                 type: r,
@@ -229,7 +233,7 @@ YAHOO.namespace("lacuna.buildings");
             Dom.setStyle(Dom.get('steHt'), 'height', Ht + 'px');
             Dom.setStyle(Dom.get('sisHt'), 'height', Ht + 'px');
         },
-        StashDonateAdd: function (e, matchedEl, container) {
+        StashDonateAdd: function(e, matchedEl, container) {
             var quantity = Lib.getSelectedOptionValue(matchedEl.previousSibling) * 1,
                 li = matchedEl.parentNode,
                 c = Dom.get("embassyStashToDonate");
@@ -246,7 +250,7 @@ YAHOO.namespace("lacuna.buildings");
                     }
                     Dom.addClass(item, "stashItem");
                     Dom.addClass(del, "stashDelete");
-                    Event.on(del, "click", function (e) {
+                    Event.on(del, "click", function(e) {
                         var ed = Event.getTarget(e),
                             ep = ed.parentNode;
                         this.updateStashDonate(ep.Object.quantity * -1);
@@ -260,7 +264,8 @@ YAHOO.namespace("lacuna.buildings");
                     content.innerHTML = ['<span class="stashName">', item.Object.type.titleCaps(), ' (<label class="quantity">', quantity, '</label>)</span> ', stashSel, '<button type="button">-</button>'].join('');
                     c.appendChild(item);
                     this.updateStashDonate(quantity);
-                } else {
+                }
+                else {
                     var found = exists[0],
                         newTotal = found.Object.quantity + quantity,
                         diff = quantity,
@@ -275,7 +280,7 @@ YAHOO.namespace("lacuna.buildings");
                 }
             }
         },
-        StashDonateRemove: function (e, matchedEl, container) {
+        StashDonateRemove: function(e, matchedEl, container) {
             var quantity = Lib.getSelectedOptionValue(matchedEl.previousSibling) * 1,
                 li = matchedEl.parentNode.parentNode;
             if (quantity) {
@@ -290,14 +295,15 @@ YAHOO.namespace("lacuna.buildings");
                     this.updateStashDonate(li.Object.quantity * -1);
                     Event.purgeElement(li);
                     li.parentNode.removeChild(li);
-                } else {
+                }
+                else {
                     lq.innerHTML = newTotal;
                     li.Object.quantity = newTotal;
                     this.updateStashDonate(diff);
                 }
             }
         },
-        StashExchangeAdd: function (e, matchedEl, container) {
+        StashExchangeAdd: function(e, matchedEl, container) {
             var quantity = Lib.getSelectedOptionValue(matchedEl.previousSibling) * 1,
                 li = matchedEl.parentNode,
                 c = Dom.get("embassyStashToExchange");
@@ -314,7 +320,7 @@ YAHOO.namespace("lacuna.buildings");
                     }
                     Dom.addClass(item, "stashItem");
                     Dom.addClass(del, "stashDelete");
-                    Event.on(del, "click", function (e) {
+                    Event.on(del, "click", function(e) {
                         var ed = Event.getTarget(e),
                             ep = ed.parentNode;
                         this.updateStashExchange(ep.Object.quantity * -1);
@@ -328,7 +334,8 @@ YAHOO.namespace("lacuna.buildings");
                     content.innerHTML = ['<span class="stashName">', item.Object.type.titleCaps(), ' (<label class="quantity">', quantity, '</label>)</span> ', stashSel, '<button type="button">-</button>'].join('');
                     c.appendChild(item);
                     this.updateStashExchange(quantity);
-                } else {
+                }
+                else {
                     var found = exists[0],
                         newTotal = found.Object.quantity + quantity,
                         diff = quantity,
@@ -343,7 +350,7 @@ YAHOO.namespace("lacuna.buildings");
                 }
             }
         },
-        StashExchangeRemove: function (e, matchedEl, container) {
+        StashExchangeRemove: function(e, matchedEl, container) {
             var quantity = Lib.getSelectedOptionValue(matchedEl.previousSibling) * 1,
                 li = matchedEl.parentNode.parentNode;
             if (quantity) {
@@ -358,24 +365,25 @@ YAHOO.namespace("lacuna.buildings");
                     this.updateStashExchange(li.Object.quantity * -1);
                     Event.purgeElement(li);
                     li.parentNode.removeChild(li);
-                } else {
+                }
+                else {
                     lq.innerHTML = newTotal;
                     li.Object.quantity = newTotal;
                     this.updateStashExchange(diff);
                 }
             }
         },
-        updateStashDonate: function (byVal) {
+        updateStashDonate: function(byVal) {
             var c = Dom.get("embassyTotalDonate"),
                 cv = c.innerHTML * 1;
             c.innerHTML = cv + byVal;
         },
-        updateStashExchange: function (byVal) {
+        updateStashExchange: function(byVal) {
             var c = Dom.get("embassyTotalExchange"),
                 cv = c.innerHTML * 1;
             c.innerHTML = cv + byVal;
         },
-        StashSubmit: function () {
+        StashSubmit: function() {
             var data = {
                 session_id: Game.GetSession(""),
                 building_id: this.building.id
@@ -405,27 +413,32 @@ YAHOO.namespace("lacuna.buildings");
             if (donateTotal === 0) {
                 Dom.get("embassyStashMessage")
                     .innerHTML = "Must add items to donate to Stash.";
-            } else if (exchangeTotal > 0 && this.stash.exchanges_remaining_today <= 0) {
+            }
+            else if (exchangeTotal > 0 && this.stash.exchanges_remaining_today <= 0) {
                 Dom.get("embassyStashMessage")
                     .innerHTML = 'You have already used up the amount of stash exchanges you can perform in a single day.';
-            } else if (exchangeTotal > 0 && donateTotal > this.stash.max_exchange_size) {
+            }
+            else if (exchangeTotal > 0 && donateTotal > this.stash.max_exchange_size) {
                 Dom.get("embassyStashMessage")
                     .innerHTML = ['You are only able to transfer ', this.stash.max_exchange_size, ' resources from the stash.'].join('');
-            } else if (exchangeTotal > 0 && donateTotal !== exchangeTotal) {
+            }
+            else if (exchangeTotal > 0 && donateTotal !== exchangeTotal) {
                 Dom.get("embassyStashMessage")
                     .innerHTML = 'Total amount of resources transfered from stash must be equal to the amount donating.';
-            } else {
+            }
+            else {
                 if (exchangeTotal > 0) {
                     data.request = exchangeItems;
                     serviceFunc = this.service.exchange_with_stash;
-                } else {
+                }
+                else {
                     serviceFunc = this.service.donate_to_stash;
                 }
                 Dom.get("embassyStashMessage")
                     .innerHTML = "";
                 Lacuna.Pulser.Show();
                 serviceFunc(data, {
-                    success: function (o) {
+                    success: function(o) {
                         this.rpcSuccess(o);
                         var n;
                         for (n = 0; n < toDonateLis.length; n++) {
@@ -457,7 +470,7 @@ YAHOO.namespace("lacuna.buildings");
             }
         },
         //Create
-        CreateAlliance: function () {
+        CreateAlliance: function() {
             var data = {
                 session_id: Game.GetSession(""),
                 building_id: this.building.id,
@@ -467,9 +480,10 @@ YAHOO.namespace("lacuna.buildings");
             if (!data.name || data.name.length === 0) {
                 Dom.get("embassyCreateMessage")
                     .innerHTML = "Must enter a name.";
-            } else {
+            }
+            else {
                 this.service.create_alliance(data, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Embassy.CreateAlliance.success");
                         this.rpcSuccess(o);
                         this.alliance = o.result.alliance;
@@ -490,14 +504,14 @@ YAHOO.namespace("lacuna.buildings");
             }
         },
         //View Invites
-        getInvites: function (e) {
+        getInvites: function(e) {
             if (e.newValue) {
                 Lacuna.Pulser.Show();
                 this.service.get_my_invites({
                     session_id: Game.GetSession(),
                     building_id: this.building.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Embassy.get_my_invites.success");
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
@@ -508,7 +522,7 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        InvitesPopulate: function () {
+        InvitesPopulate: function() {
             var details = Dom.get("embassyInvitesDetails");
             if (details) {
                 var invites = this.invites,
@@ -558,7 +572,7 @@ YAHOO.namespace("lacuna.buildings");
                     details.appendChild(nUl);
                 }
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 170;
                     if (Ht > 300) {
@@ -569,7 +583,7 @@ YAHOO.namespace("lacuna.buildings");
                 }, 10);
             }
         },
-        InvitesAccept: function () {
+        InvitesAccept: function() {
             if (confirm(['Are you sure you want to accept the alliance invite from ', this.Invite.name, '?'].join(''))) {
                 this.Self.service.accept_invite({
                     session_id: Game.GetSession(""),
@@ -578,7 +592,7 @@ YAHOO.namespace("lacuna.buildings");
                     message: (Sel.query('.embassyActionMessage', this.Line, true)
                         .value || "")
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Embassy.accept_invite.success");
                         this.Self.rpcSuccess(o);
                         var arr = this.Self.invites;
@@ -601,7 +615,7 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        InvitesReject: function () {
+        InvitesReject: function() {
             if (confirm(['Are you sure you want to reject the alliance invite from ', this.Invite.name, '?'].join(''))) {
                 this.Self.service.reject_invite({
                     session_id: Game.GetSession(""),
@@ -610,7 +624,7 @@ YAHOO.namespace("lacuna.buildings");
                     message: (Sel.query('.embassyActionMessage', this.Line, true)
                         .value || "")
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Embassy.reject_invite.success");
                         this.Self.rpcSuccess(o);
                         var arr = this.Self.invites;
@@ -628,7 +642,7 @@ YAHOO.namespace("lacuna.buildings");
             }
         },
         //Alliance Admin
-        UpdateAlliance: function () {
+        UpdateAlliance: function() {
             this.service.update_alliance({
                 session_id: Game.GetSession(""),
                 building_id: this.building.id,
@@ -641,7 +655,7 @@ YAHOO.namespace("lacuna.buildings");
                         .value
                 }
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Embassy.update_alliance.success");
                     this.rpcSuccess(o);
                     Dom.get("embassyAllianceMessage")
@@ -652,7 +666,7 @@ YAHOO.namespace("lacuna.buildings");
                             to: 0
                         }
                     }, 3);
-                    a.onComplete.subscribe(function () {
+                    a.onComplete.subscribe(function() {
                         Dom.get("embassyAllianceMessage")
                             .innerHTML = "";
                         Dom.setStyle("embassyAllianceMessage", "opacity", 1);
@@ -663,7 +677,7 @@ YAHOO.namespace("lacuna.buildings");
                 scope: this
             });
         },
-        LeaveAlliance: function () {
+        LeaveAlliance: function() {
             if (confirm(['Are you sure you want to leave ', this.alliance.name, '?'].join(''))) {
                 this.service.leave_alliance({
                     session_id: Game.GetSession(""),
@@ -671,7 +685,7 @@ YAHOO.namespace("lacuna.buildings");
                     message: Dom.get("embassyAllianceLeaveReason")
                         .value
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Embassy.leave_alliance.success");
                         this.rpcSuccess(o);
                         delete this.alliance;
@@ -687,13 +701,13 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        DissolveAlliance: function () {
+        DissolveAlliance: function() {
             if (confirm(['All Space Stations will be abandoned. Are you sure you want to dissolve ', this.alliance.name, '?'].join(''))) {
                 this.service.dissolve_alliance({
                     session_id: Game.GetSession(""),
                     building_id: this.building.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Embassy.dissolve_alliance.success");
                         this.rpcSuccess(o);
                         delete this.alliance;
@@ -710,7 +724,7 @@ YAHOO.namespace("lacuna.buildings");
             }
         },
         //Alliance Inviting
-        getPendingInvites: function (e) {
+        getPendingInvites: function(e) {
             if (e.newValue) {
                 if (!this.embassySendTo) {
                     this._createSendToSelect();
@@ -720,7 +734,7 @@ YAHOO.namespace("lacuna.buildings");
                     session_id: Game.GetSession(),
                     building_id: this.building.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Embassy.get_pending_invites.success");
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
@@ -731,7 +745,7 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        PendingPopulate: function () {
+        PendingPopulate: function() {
             var details = Dom.get("embassySendDetails");
             if (details) {
                 var pendingInvites = this.pendingInvites,
@@ -769,7 +783,7 @@ YAHOO.namespace("lacuna.buildings");
                     details.appendChild(nUl);
                 }
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 290;
                     if (Ht > 300) {
@@ -780,7 +794,7 @@ YAHOO.namespace("lacuna.buildings");
                 }, 10);
             }
         },
-        PendingWithdraw: function () {
+        PendingWithdraw: function() {
             if (confirm(['Are you sure you want to withdraw the invite from ', this.Invite.name].join(''))) {
                 this.Self.service.withdraw_invite({
                     session_id: Game.GetSession(""),
@@ -789,7 +803,7 @@ YAHOO.namespace("lacuna.buildings");
                     message: (Sel.query('.embassyPendingActionMessage', this.Line, true)
                         .value || "")
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Embassy.withdraw_invite.success");
                         this.Self.rpcSuccess(o);
                         var arr = this.Self.pendingInvites;
@@ -806,7 +820,7 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        SendInvite: function () {
+        SendInvite: function() {
             var inviteeId = this.embassySendTo._oTblSingleSelection && this.embassySendTo._oTblSingleSelection.Object.id || null;
             if (inviteeId) {
                 this.service.send_invite({
@@ -816,7 +830,7 @@ YAHOO.namespace("lacuna.buildings");
                     message: Dom.get("embassySendMessage")
                         .value
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Embassy.send_invite.success");
                         this.rpcSuccess(o);
                         this.embassySendTo.ResetSelections();
@@ -832,7 +846,7 @@ YAHOO.namespace("lacuna.buildings");
             }
         },
         //Members
-        MembersPopulate: function () {
+        MembersPopulate: function() {
             var details = Dom.get("embassyMemberDetails");
             if (details && this.alliance) {
                 var members = this.alliance.members,
@@ -882,7 +896,7 @@ YAHOO.namespace("lacuna.buildings");
                     details.appendChild(nUl);
                 }
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 170;
                     if (Ht > 300) {
@@ -893,10 +907,10 @@ YAHOO.namespace("lacuna.buildings");
                 }, 10);
             }
         },
-        EmpireInfo: function (e, id) {
+        EmpireInfo: function(e, id) {
             Lacuna.Info.Empire.Load(id);
         },
-        MembersExpel: function () {
+        MembersExpel: function() {
             if (confirm(['Are you sure you want to expel ', this.Member.name, ' from the alliance?'].join(''))) {
                 this.Self.service.expel_member({
                     session_id: Game.GetSession(""),
@@ -905,7 +919,7 @@ YAHOO.namespace("lacuna.buildings");
                     message: (Sel.query('.embassyMembersMessage', this.Line, true)
                         .value || "")
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Embassy.expel_member.success");
                         this.Self.rpcSuccess(o);
                         this.Self.alliance = o.result.alliance;
@@ -916,14 +930,14 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        MembersPromote: function () {
+        MembersPromote: function() {
             if (confirm(['Are you sure you want to transfer alliance control to ', this.Member.name, '?'].join(''))) {
                 this.Self.service.assign_alliance_leader({
                     session_id: Game.GetSession(""),
                     building_id: this.Self.building.id,
                     new_leader_id: this.Member.empire_id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Embassy.assign_alliance_leader.success");
                         this.Self.rpcSuccess(o);
                         this.Self.alliance = o.result.alliance;

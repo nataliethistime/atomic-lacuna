@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -8,32 +8,32 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var ThemePark = function (result) {
+    var ThemePark = function(result) {
         ThemePark.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.ThemePark;
     };
     Lang.extend(ThemePark, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getTab()];
         },
-        _getTab: function () {
+        _getTab: function() {
             this.tab = new YAHOO.widget.Tab({
                 label: "Operations",
                 content: ['<div id="ThemeParkWorking" style="display:none;">', '    Time left on current operations: <span id="ThemeParkTime"></span>', '</div>', '<div id="ThemeParkMessage" style="margin-top:5px;"></div>', '<div id="ThemeParkDisplay" style="display:none;margin:5px 0;">', '    <button type="button" id="Operate">Open Theme Park</button>', '</div>'].join('')
             });
             Event.on("Operate", "click", this.operate, this, true);
-            this.subscribe("onLoad", function () {
+            this.subscribe("onLoad", function() {
                 this.updateDisplay(this.result); //first load this will be accurate
             }, this, true);
             return this.tab;
         },
-        operate: function () {
+        operate: function() {
             Lacuna.Pulser.Show();
             this.service.operate({
                 session_id: Game.GetSession(),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
                     this.updateDisplay(o.result);
@@ -41,13 +41,14 @@ YAHOO.namespace("lacuna.buildings");
                 scope: this
             });
         },
-        updateDisplay: function (result) {
+        updateDisplay: function(result) {
             var isWorking = result.building.work && result.building.work.seconds_remaining > 0;
             if (isWorking) {
                 Dom.setStyle("ThemeParkWorking", "display", "");
                 this.resetQueue();
                 this.addQueue(result.building.work.seconds_remaining, this.parkQueue, "ThemeParkTime");
-            } else {
+            }
+            else {
                 Dom.setStyle("ThemeParkWorking", "display", "none");
             }
             if (result.themepark.can_operate) {
@@ -55,23 +56,26 @@ YAHOO.namespace("lacuna.buildings");
                 if (isWorking) {
                     Dom.get("Operate")
                         .innerHTML = "Extend Theme Park Operations";
-                } else {
+                }
+                else {
                     Dom.get("Operate")
                         .innerHTML = "Open Theme Park";
                 }
-            } else {
+            }
+            else {
                 Dom.setStyle("ThemeParkDisplay", "display", "none");
                 Dom.get("ThemeParkMessage")
                     .innerHTML = result.themepark.reason[1];
             }
         },
-        parkQueue: function (remaining, el) {
+        parkQueue: function(remaining, el) {
             if (remaining <= 0) {
                 var span = Dom.get(el),
                     p = span.parentNode;
                 p.removeChild(span);
                 p.innerHTML = "Park is closed.";
-            } else {
+            }
+            else {
                 Dom.get(el)
                     .innerHTML = Lib.formatTime(Math.round(remaining));
             }

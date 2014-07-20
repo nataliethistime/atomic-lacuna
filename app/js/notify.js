@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -8,7 +8,7 @@ YAHOO.namespace("lacuna");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var Notify = function () {
+    var Notify = function() {
         this.skip_incoming_ships = {};
         this.incoming_own = {};
         this.num_incoming_own = {};
@@ -18,7 +18,7 @@ YAHOO.namespace("lacuna");
         this.num_incoming_enemy = {};
     };
     Notify.prototype = {
-        _createDisplay: function () {
+        _createDisplay: function() {
             if (!this.Display) {
                 var container = document.createElement("div");
                 container.id = "notify";
@@ -39,22 +39,22 @@ YAHOO.namespace("lacuna");
                         [0, 40]
                     ]
                 });
-                this.Display.renderEvent.subscribe(function () {
+                this.Display.renderEvent.subscribe(function() {
                     this.notifyList = Dom.get('notifyList');
                     this.notify = Dom.get("notify");
                     Dom.removeClass(this.notify, Lib.Styles.HIDDEN);
                 });
-                this.Display.showEvent.subscribe(function () {
+                this.Display.showEvent.subscribe(function() {
                     Dom.setStyle(this.notifyList.parentNode, "max-height", (Game.GetSize()
                         .h - 125) + "px");
                 });
                 this.Display.render();
             }
         },
-        _getHtml: function () {
+        _getHtml: function() {
             return ['    <div class="hd" style="background:transparent;">Incoming Ships.</div>', '    <div class="bd" style="background: url(', Lib.AssetUrl, 'ui/transparent_black.png) repeat scroll 0pt 0pt transparent;">', '        <div style="overflow:auto;">', '            <ul id="notifyList"></ul>', '        </div>', '    </div>'].join('');
         },
-        _updating: function () {
+        _updating: function() {
             var list = this.Display.notifyList;
             var incoming_own = this.incoming_own[this.planetId] || [],
                 incoming_ally = this.incoming_ally[this.planetId] || [],
@@ -83,7 +83,8 @@ YAHOO.namespace("lacuna");
                         arrTime;
                     if (ms > 0) {
                         arrTime = Lib.formatMillisecondTime(ms);
-                    } else {
+                    }
+                    else {
                         arrTime = 'Overdue ' + Lib.formatMillisecondTime(-ms);
                     }
                     arr = arr.concat(['<li><span style="color:#fff;">', arrTime, '</span></li>']);
@@ -98,7 +99,8 @@ YAHOO.namespace("lacuna");
                     ms = Lib.getTime(ship.date_arrives) - serverTime;
                     if (ms > 0) {
                         arrTime = Lib.formatMillisecondTime(ms);
-                    } else {
+                    }
+                    else {
                         arrTime = 'Overdue ' + Lib.formatMillisecondTime(-ms);
                     }
                     arr = arr.concat(['<li><span style="color:#b0b;">', arrTime, '</span></li>']);
@@ -113,7 +115,8 @@ YAHOO.namespace("lacuna");
                     ms = Lib.getTime(ship.date_arrives) - serverTime;
                     if (ms > 0) {
                         arrTime = Lib.formatMillisecondTime(ms);
-                    } else {
+                    }
+                    else {
                         arrTime = 'Overdue ' + Lib.formatMillisecondTime(-ms);
                     }
                     arr = arr.concat(['<li><span style="color:#0f0;">', arrTime, '</span></li>']);
@@ -125,7 +128,7 @@ YAHOO.namespace("lacuna");
             list.innerHTML = arr.join('');
             this.Display.show();
         },
-        Load: function (planet) {
+        Load: function(planet) {
             var incoming_own = planet.incoming_own_ships || [],
                 incoming_ally = planet.incoming_ally_ships || [],
                 incoming_enemy = planet.incoming_enemy_ships || [],
@@ -153,14 +156,14 @@ YAHOO.namespace("lacuna");
             this.Display.show();
             this.Display.bringToTop();
         },
-        Show: function (planetId) {
+        Show: function(planetId) {
             this.planetId = planetId;
             if (this.Display) {
                 this.Display.show();
                 this.Display.bringToTop();
             }
         },
-        Hide: function () {
+        Hide: function() {
             if (this.Display) {
                 this.Display.hide();
             }

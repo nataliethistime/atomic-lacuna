@@ -53,9 +53,8 @@ gulp.task('code-build', function() {
 gulp.task('code-clean', function () {
     gulp.src(JS_FILES)
         .pipe(beautify({
-            preserve_newlines : false,
-            jslint_happy : true,
-            break_chained_methods : true
+            max_preserve_newlines : 3,
+            brace_style : 'end-expand'
         }))
         .pipe(gulp.dest('app/js'));
 });

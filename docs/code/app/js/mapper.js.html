@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -39,14 +39,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         Lib = Lacuna.Library;
     <span class="hljs-keyword">var</span> Mapper = {};
     Mapper.util = {
-        modulo: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val, mod)</span> {</span>
+        modulo: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val, mod)</span> {</span>
             <span class="hljs-keyword">var</span> res = val % mod;
             <span class="hljs-keyword">if</span> (res &lt; <span class="hljs-number">0</span>) {
                 res += mod;
             }
             <span class="hljs-keyword">return</span> res;
         },
-        copy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, c)</span> {</span>
+        copy: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj, c)</span> {</span>
             <span class="hljs-keyword">if</span> (!c) {
                 c = {};
             }
@@ -55,18 +55,18 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             }
             <span class="hljs-keyword">return</span> c;
         },
-        clone: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> {</span>
+        clone: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span> {</span>
             <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Constructor</span><span class="hljs-params">()</span> {</span>}
             Constructor.prototype = obj;
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Constructor();
         },
-        forEach: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(array, fun)</span> {</span>
+        forEach: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(array, fun)</span> {</span>
             <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; array.length; i++) {
                 fun(array[i], i);
             }
         }
     };
-    Mapper.MovableContainer = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parentEl)</span> {</span>
+    Mapper.MovableContainer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parentEl)</span> {</span>
         <span class="hljs-keyword">var</span> div = document.createElement(<span class="hljs-string">'div'</span>);
         Dom.addClass(div, <span class="hljs-string">"movableContainer"</span>);
         div.style.position = <span class="hljs-string">'absolute'</span>;
@@ -76,31 +76,31 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         parentEl.appendChild(div);
     };
     Mapper.MovableContainer.prototype = {
-        move: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
+        move: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x, y)</span> {</span>
             <span class="hljs-keyword">this</span>.offsetX += x;
             <span class="hljs-keyword">this</span>.offsetY += y;
             <span class="hljs-keyword">this</span>._container.style.left = <span class="hljs-string">''</span> + <span class="hljs-keyword">this</span>.offsetX + <span class="hljs-string">'px'</span>;
             <span class="hljs-keyword">this</span>._container.style.top = <span class="hljs-string">''</span> + <span class="hljs-keyword">this</span>.offsetY + <span class="hljs-string">'px'</span>;
             Dom.setStyle(<span class="hljs-keyword">this</span>._parentEl, <span class="hljs-string">'background-position'</span>, <span class="hljs-keyword">this</span>.offsetX + <span class="hljs-string">'px '</span> + <span class="hljs-keyword">this</span>.offsetY + <span class="hljs-string">'px'</span>);
         },
-        reset: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        reset: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.offsetX = <span class="hljs-number">0</span>;
             <span class="hljs-keyword">this</span>.offsetY = <span class="hljs-number">0</span>;
             <span class="hljs-keyword">this</span>.move(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
         },
-        appendChild: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(c)</span> {</span>
+        appendChild: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(c)</span> {</span>
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._container.appendChild(c);
         },
-        removeChild: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(c)</span> {</span>
+        removeChild: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(c)</span> {</span>
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._container.removeChild(c);
         }
     };
-    Mapper.VisibleArea = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(map)</span> {</span>
+    Mapper.VisibleArea = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map)</span> {</span>
         <span class="hljs-keyword">this</span>._map = map;
         <span class="hljs-keyword">this</span>.reset();
     };
     Mapper.VisibleArea.prototype = {
-        move: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(mx, my)</span> {</span>
+        move: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(mx, my)</span> {</span>
             <span class="hljs-keyword">var</span> mb = <span class="hljs-keyword">this</span>._map.maxBounds; <span class="hljs-comment">// = {x1Left:-15,x2Right:15,y1Top:15,y2Bottom:-15};</span>
             <span class="hljs-keyword">var</span> maxWidth = <span class="hljs-keyword">this</span>._map.width;
             <span class="hljs-keyword">var</span> maxHeight = <span class="hljs-keyword">this</span>._map.height;
@@ -121,13 +121,15 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 <span class="hljs-comment">//x axis</span>
                 <span class="hljs-keyword">if</span> (mx &lt; <span class="hljs-number">0</span> &amp;&amp; cb.x1 &lt; mb.x1Left) { <span class="hljs-comment">//if moving left</span>
                     mx = mb.x1Left * tileSize - extraSpaceWidth - <span class="hljs-keyword">this</span>.left;
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (mx &gt; <span class="hljs-number">0</span> &amp;&amp; cb.x2 &gt; (mb.x2Right + <span class="hljs-number">1</span>)) { <span class="hljs-comment">//if moving right</span>
+                }
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (mx &gt; <span class="hljs-number">0</span> &amp;&amp; cb.x2 &gt; (mb.x2Right + <span class="hljs-number">1</span>)) { <span class="hljs-comment">//if moving right</span>
                     mx = ((mb.x2Right + <span class="hljs-number">1</span>) * tileSize) - (<span class="hljs-keyword">this</span>.left + maxWidth - extraSpaceWidth);
                 }
                 <span class="hljs-comment">//y axis</span>
                 <span class="hljs-keyword">if</span> (my &lt; <span class="hljs-number">0</span> &amp;&amp; cb.y1 &gt; mb.y1Top) { <span class="hljs-comment">//if moving up</span>
                     my = <span class="hljs-number">0</span> - mb.y1Top * tileSize - extraSpaceHeight - <span class="hljs-keyword">this</span>.top;
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (my &gt; <span class="hljs-number">0</span> &amp;&amp; cb.y2 &lt; (mb.y2Bottom - <span class="hljs-number">1</span>)) { <span class="hljs-comment">//if moving down</span>
+                }
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (my &gt; <span class="hljs-number">0</span> &amp;&amp; cb.y2 &lt; (mb.y2Bottom - <span class="hljs-number">1</span>)) { <span class="hljs-comment">//if moving down</span>
                     my = -((mb.y2Bottom - <span class="hljs-number">1</span>) * tileSize) - (<span class="hljs-keyword">this</span>.top + maxHeight - extraSpaceHeight);
                 }
             }
@@ -143,10 +145,10 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 y: my
             };
         },
-        coordBounds: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        coordBounds: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.calcCoordBounds(<span class="hljs-keyword">this</span>.left, <span class="hljs-keyword">this</span>.top, <span class="hljs-keyword">this</span>.right, <span class="hljs-keyword">this</span>.bottom);
         },
-        calcCoordBounds: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x1, y1, x2, y2)</span> {</span>
+        calcCoordBounds: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x1, y1, x2, y2)</span> {</span>
             <span class="hljs-keyword">var</span> tileSize = <span class="hljs-keyword">this</span>._map.tileSizeInPx;
             <span class="hljs-keyword">return</span> {
                 x1: <span class="hljs-built_in">Math</span>.floor(x1 / tileSize),
@@ -155,15 +157,15 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 y2: <span class="hljs-built_in">Math</span>.floor((y2 * -<span class="hljs-number">1</span>) / tileSize)
             };
         },
-        topLeftLoc: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        topLeftLoc: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> tileSize = <span class="hljs-keyword">this</span>._map.tileSizeInPx;
             <span class="hljs-keyword">return</span> [<span class="hljs-built_in">Math</span>.floor(<span class="hljs-keyword">this</span>.left / tileSize), <span class="hljs-built_in">Math</span>.ceil(<span class="hljs-keyword">this</span>.top / tileSize)];
         },
-        bottomRightLoc: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        bottomRightLoc: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> tileSize = <span class="hljs-keyword">this</span>._map.tileSizeInPx;
             <span class="hljs-keyword">return</span> [<span class="hljs-built_in">Math</span>.ceil(<span class="hljs-keyword">this</span>.right / tileSize), <span class="hljs-built_in">Math</span>.floor(<span class="hljs-keyword">this</span>.bottom / tileSize)];
         },
-        centerLoc: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        centerLoc: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> tileSize = <span class="hljs-keyword">this</span>._map.tileSizeInPx;
             <span class="hljs-keyword">return</span> [<span class="hljs-built_in">Math</span>.floor(<span class="hljs-keyword">this</span>.centerX / tileSize), <span class="hljs-built_in">Math</span>.ceil((<span class="hljs-keyword">this</span>.centerY * -<span class="hljs-number">1</span>) / tileSize)];</pre></div>
       
@@ -183,21 +185,21 @@ y = Math.ceil(yO);/
       
       
         <div class="code"><pre class="wrapper">        },
-        centerLocPx: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        centerLocPx: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>.centerX, <span class="hljs-keyword">this</span>.centerY];
         },
-        reset: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        reset: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.left = <span class="hljs-number">0</span>;
             <span class="hljs-keyword">this</span>.top = <span class="hljs-number">0</span>;
             <span class="hljs-keyword">this</span>.move(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
         },
-        resize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        resize: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-comment">//left and top don't change</span>
             <span class="hljs-keyword">this</span>.right = <span class="hljs-keyword">this</span>.left + <span class="hljs-keyword">this</span>._map.width;
             <span class="hljs-keyword">this</span>.bottom = <span class="hljs-keyword">this</span>.top + <span class="hljs-keyword">this</span>._map.height;
         }
     };
-    <span class="hljs-keyword">var</span> Tile = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, z, ox, oy, layer)</span> {</span>
+    <span class="hljs-keyword">var</span> Tile = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x, y, z, ox, oy, layer)</span> {</span>
         <span class="hljs-keyword">this</span>.z = z;
         <span class="hljs-keyword">this</span>.x = x;
         <span class="hljs-keyword">this</span>.y = y;
@@ -227,8 +229,8 @@ y = Math.ceil(yO);/
     };
     Tile.prototype = {
         <span class="hljs-comment">//blank init that will always get called.  override in sub classes to change defaults</span>
-        init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>},
-        refresh: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>},
+        refresh: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> obj = <span class="hljs-keyword">this</span>.map.getTile(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y, <span class="hljs-keyword">this</span>.z);
             <span class="hljs-keyword">this</span>.blank = obj.blank;
             <span class="hljs-keyword">this</span>.data = obj.data;
@@ -236,43 +238,44 @@ y = Math.ceil(yO);/
                 <span class="hljs-keyword">this</span>.url = obj.url;
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.url) {
                     Dom.setStyle(<span class="hljs-keyword">this</span>.domElement, <span class="hljs-string">"background"</span>, <span class="hljs-string">'transparent url('</span> + <span class="hljs-keyword">this</span>.url + <span class="hljs-string">') no-repeat scroll center'</span>);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     Dom.setStyle(<span class="hljs-keyword">this</span>.domElement, <span class="hljs-string">"background"</span>, <span class="hljs-string">'transparent'</span>);
                 }
             }
         },
-        appendToDom: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        appendToDom: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.domElement &amp;&amp; !<span class="hljs-keyword">this</span>.blank &amp;&amp; !Dom.isAncestor(<span class="hljs-keyword">this</span>.layer.tileContainer, <span class="hljs-keyword">this</span>.domElement)) {
                 <span class="hljs-keyword">this</span>.layer.tileContainer.appendChild(<span class="hljs-keyword">this</span>.domElement);
             }
         },
-        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.unsubscribeAll();
             <span class="hljs-keyword">this</span>.remove();
             <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.domElement;
         },
-        remove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        remove: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.domElement &amp;&amp; <span class="hljs-keyword">this</span>.domElement.parentNode) {
                 <span class="hljs-keyword">this</span>.domElement.parentNode.removeChild(<span class="hljs-keyword">this</span>.domElement);
             }
         }
     };
     Lang.augmentProto(Tile, Util.EventProvider);
-    Tile.idFor = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, z)</span> {</span>
+    Tile.idFor = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x, y, z)</span> {</span>
         <span class="hljs-keyword">return</span> <span class="hljs-string">'tile_'</span> + x + <span class="hljs-string">'_'</span> + y + <span class="hljs-string">'_'</span> + z;
     };
-    Mapper.StarTile = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, z, ox, oy, layer)</span> {</span>
+    Mapper.StarTile = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x, y, z, ox, oy, layer)</span> {</span>
         Mapper.StarTile.superclass.constructor.call(<span class="hljs-keyword">this</span>, x, y, z, ox, oy, layer);
     };
     Lang.extend(Mapper.StarTile, Tile, {
-        init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.domElement.title = <span class="hljs-keyword">this</span>.data ? [<span class="hljs-keyword">this</span>.data.name, <span class="hljs-string">" ("</span>, <span class="hljs-keyword">this</span>.x, <span class="hljs-string">","</span>, <span class="hljs-keyword">this</span>.y, <span class="hljs-string">")"</span>].join(<span class="hljs-string">''</span>) : <span class="hljs-string">"Uncharted Space"</span>;
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.data) {
                 <span class="hljs-keyword">this</span>._createImage();
                 <span class="hljs-keyword">this</span>._createAlignments();
             }
         },
-        refresh: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        refresh: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> obj = <span class="hljs-keyword">this</span>.map.getTile(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y, <span class="hljs-keyword">this</span>.z);
             <span class="hljs-keyword">this</span>.blank = obj.blank;
             <span class="hljs-keyword">this</span>.image = obj.image;
@@ -287,7 +290,8 @@ y = Math.ceil(yO);/
                     <span class="hljs-keyword">var</span> q = <span class="hljs-keyword">this</span>.map.tileSizeInPx;
                     <span class="hljs-keyword">this</span>.offsetX = <span class="hljs-keyword">this</span>.origOffsetX - q;
                     <span class="hljs-keyword">this</span>.offsetY = <span class="hljs-keyword">this</span>.origOffsetY - q;
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">this</span>.tileSizeInPx = <span class="hljs-keyword">this</span>.map.tileSizeInPx;
                     <span class="hljs-keyword">this</span>.offsetX = <span class="hljs-keyword">this</span>.origOffsetX;
                     <span class="hljs-keyword">this</span>.offsetY = <span class="hljs-keyword">this</span>.origOffsetY;
@@ -299,7 +303,7 @@ y = Math.ceil(yO);/
             }
             <span class="hljs-keyword">this</span>.init();
         },
-        _createImage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _createImage: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.imageHolder) {
                 <span class="hljs-keyword">var</span> image = <span class="hljs-keyword">this</span>.domElement.appendChild(document.createElement(<span class="hljs-string">'div'</span>));
                 Dom.setStyle(image, <span class="hljs-string">"width"</span>, <span class="hljs-keyword">this</span>.tileSizeInPx + <span class="hljs-string">'px'</span>);
@@ -314,30 +318,32 @@ y = Math.ceil(yO);/
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.data.orbit) {
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.map.hidePlanets) {
                     <span class="hljs-keyword">switch</span> (<span class="hljs-keyword">this</span>.data.type) {
-                    <span class="hljs-keyword">case</span> <span class="hljs-string">'habitable planet'</span>:
-                        <span class="hljs-keyword">this</span>.imageHolder.innerHTML = <span class="hljs-string">"H"</span>;
-                        <span class="hljs-keyword">break</span>;
-                    <span class="hljs-keyword">case</span> <span class="hljs-string">'gas giant'</span>:
-                        <span class="hljs-keyword">this</span>.imageHolder.innerHTML = <span class="hljs-string">"G"</span>;
-                        <span class="hljs-keyword">break</span>;
-                    <span class="hljs-keyword">case</span> <span class="hljs-string">'asteroid'</span>:
-                        <span class="hljs-keyword">this</span>.imageHolder.innerHTML = <span class="hljs-string">"A"</span>;
-                        <span class="hljs-keyword">break</span>;
-                    <span class="hljs-keyword">case</span> <span class="hljs-string">'space station'</span>:
-                        <span class="hljs-keyword">this</span>.imageHolder.innerHTML = <span class="hljs-string">"S"</span>;
-                        <span class="hljs-keyword">break</span>;
-                    <span class="hljs-keyword">default</span>:
-                        <span class="hljs-keyword">this</span>.imageHolder.innerHTML = <span class="hljs-string">"U"</span>;
-                        <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">case</span> <span class="hljs-string">'habitable planet'</span>:
+                            <span class="hljs-keyword">this</span>.imageHolder.innerHTML = <span class="hljs-string">"H"</span>;
+                            <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">case</span> <span class="hljs-string">'gas giant'</span>:
+                            <span class="hljs-keyword">this</span>.imageHolder.innerHTML = <span class="hljs-string">"G"</span>;
+                            <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">case</span> <span class="hljs-string">'asteroid'</span>:
+                            <span class="hljs-keyword">this</span>.imageHolder.innerHTML = <span class="hljs-string">"A"</span>;
+                            <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">case</span> <span class="hljs-string">'space station'</span>:
+                            <span class="hljs-keyword">this</span>.imageHolder.innerHTML = <span class="hljs-string">"S"</span>;
+                            <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">default</span>:
+                            <span class="hljs-keyword">this</span>.imageHolder.innerHTML = <span class="hljs-string">"U"</span>;
+                            <span class="hljs-keyword">break</span>;
                     }
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">var</span> pSize = ((<span class="hljs-number">100</span> - <span class="hljs-built_in">Math</span>.abs(<span class="hljs-keyword">this</span>.data.size - <span class="hljs-number">100</span>)) / (<span class="hljs-number">100</span> / <span class="hljs-keyword">this</span>.tileSizeInPx)) + <span class="hljs-number">15</span>;
                     <span class="hljs-keyword">this</span>.imageHolder.innerHTML = [<span class="hljs-string">'&lt;img src="'</span>, <span class="hljs-keyword">this</span>.image, <span class="hljs-string">'" class="planet planet'</span>, <span class="hljs-keyword">this</span>.data.orbit, <span class="hljs-string">'" style="width:'</span>, pSize, <span class="hljs-string">'px;height:'</span>, pSize, <span class="hljs-string">'px;margin-top:'</span>, <span class="hljs-built_in">Math</span>.floor(((<span class="hljs-keyword">this</span>.tileSizeInPx - pSize) / <span class="hljs-number">2</span>)), <span class="hljs-string">'px;" /&gt;'</span>].join(<span class="hljs-string">''</span>);
                     <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.data.body_has_fissure) {
                         <span class="hljs-keyword">this</span>.fissureHolder.innerHTML = [<span class="hljs-string">'&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'star_map/fissure_icon.png" class="planet" style="width:'</span>, pSize, <span class="hljs-string">'px;height:'</span>, pSize, <span class="hljs-string">'px;margin-top:'</span>, <span class="hljs-built_in">Math</span>.floor(((<span class="hljs-keyword">this</span>.tileSizeInPx - pSize) / <span class="hljs-number">2</span>)), <span class="hljs-string">'px;" /&gt;'</span>].join(<span class="hljs-string">''</span>);
                     }
                 }
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.data.station) {
                     <span class="hljs-keyword">var</span> station = <span class="hljs-keyword">this</span>.data.station;
                     <span class="hljs-keyword">var</span> pSize = <span class="hljs-keyword">this</span>.tileSizeInPx;
@@ -346,25 +352,28 @@ y = Math.ceil(yO);/
                 <span class="hljs-keyword">this</span>.imageHolder.innerHTML = [<span class="hljs-string">'&lt;img src="'</span>, <span class="hljs-keyword">this</span>.image, <span class="hljs-string">'" class="star" style="width:'</span>, <span class="hljs-keyword">this</span>.tileSizeInPx, <span class="hljs-string">'px;height:'</span>, <span class="hljs-keyword">this</span>.tileSizeInPx, <span class="hljs-string">'px;" /&gt;'</span>].join(<span class="hljs-string">''</span>);
             }
         },
-        _createAlignments: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _createAlignments: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.data.empire &amp;&amp; <span class="hljs-keyword">this</span>.data.empire.alignment) {
                 <span class="hljs-keyword">this</span>._buildAlignmentHolder();
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.data.orbit) {
                     <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.map.hidePlanets) {
                         Dom.addClass(<span class="hljs-keyword">this</span>.alignHolder, <span class="hljs-keyword">this</span>.data.empire.alignment);
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         <span class="hljs-keyword">var</span> pSize = ((<span class="hljs-number">100</span> - <span class="hljs-built_in">Math</span>.abs(<span class="hljs-keyword">this</span>.data.size - <span class="hljs-number">100</span>)) / (<span class="hljs-number">100</span> / <span class="hljs-keyword">this</span>.tileSizeInPx)) + <span class="hljs-number">15</span>;
                         <span class="hljs-keyword">this</span>.alignHolder.innerHTML = [<span class="hljs-string">'&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'star_map/'</span>, <span class="hljs-keyword">this</span>.data.empire.alignment, <span class="hljs-string">'.png" class="planet" style="width:'</span>, pSize, <span class="hljs-string">'px;height:'</span>, pSize, <span class="hljs-string">'px;margin-top:'</span>, <span class="hljs-built_in">Math</span>.floor(((<span class="hljs-keyword">this</span>.tileSizeInPx - pSize) / <span class="hljs-number">2</span>)), <span class="hljs-string">'px;" /&gt;'</span>].join(<span class="hljs-string">''</span>);
                     }
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">this</span>.alignHolder.innerHTML = [<span class="hljs-string">'&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'star_map/'</span>, <span class="hljs-keyword">this</span>.data.empire.alignment, <span class="hljs-string">'.png" class="star" style="width:'</span>, <span class="hljs-keyword">this</span>.tileSizeInPx, <span class="hljs-string">'px;height:'</span>, <span class="hljs-keyword">this</span>.tileSizeInPx, <span class="hljs-string">'px;" /&gt;'</span>].join(<span class="hljs-string">''</span>);
                 }
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.map.hidePlanets &amp;&amp; <span class="hljs-keyword">this</span>.data.orbit) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.map.hidePlanets &amp;&amp; <span class="hljs-keyword">this</span>.data.orbit) {
                 <span class="hljs-keyword">this</span>._buildAlignmentHolder();
                 Dom.addClass(<span class="hljs-keyword">this</span>.alignHolder, <span class="hljs-string">'probed'</span>);
             }
         },
-        _buildLogoHolder: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _buildLogoHolder: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.logoHolder) {
                 <span class="hljs-keyword">var</span> logo = <span class="hljs-keyword">this</span>.domElement.appendChild(document.createElement(<span class="hljs-string">'div'</span>));
                 Dom.setStyle(logo, <span class="hljs-string">"width"</span>, <span class="hljs-keyword">this</span>.tileSizeInPx + <span class="hljs-string">'px'</span>);
@@ -376,7 +385,7 @@ y = Math.ceil(yO);/
                 <span class="hljs-keyword">this</span>.logoHolder = logo;
             }
         },
-        _buildFissureHolder: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _buildFissureHolder: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.fissureHolder) {
                 <span class="hljs-keyword">var</span> fissure = <span class="hljs-keyword">this</span>.domElement.appendChild(document.createElement(<span class="hljs-string">'div'</span>));
                 Dom.setStyle(fissure, <span class="hljs-string">"width"</span>, <span class="hljs-keyword">this</span>.tileSizeInPx + <span class="hljs-string">'px'</span>);
@@ -388,7 +397,7 @@ y = Math.ceil(yO);/
                 <span class="hljs-keyword">this</span>.fissureHolder = fissure;
             }
         },
-        _buildAlignmentHolder: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _buildAlignmentHolder: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.alignHolder) {
                 <span class="hljs-keyword">var</span> align = <span class="hljs-keyword">this</span>.domElement.appendChild(document.createElement(<span class="hljs-string">'div'</span>));
                 Dom.setStyle(align, <span class="hljs-string">"width"</span>, <span class="hljs-keyword">this</span>.tileSizeInPx + <span class="hljs-string">'px'</span>);
@@ -401,17 +410,18 @@ y = Math.ceil(yO);/
             }
         }
     });
-    Mapper.PlanetTile = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, z, ox, oy, layer)</span> {</span>
+    Mapper.PlanetTile = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x, y, z, ox, oy, layer)</span> {</span>
         Mapper.PlanetTile.superclass.constructor.call(<span class="hljs-keyword">this</span>, x, y, z, ox, oy, layer);
         Dom.addClass(<span class="hljs-keyword">this</span>.domElement, <span class="hljs-string">"tile"</span> + <span class="hljs-keyword">this</span>.tileSizeInPx);
     };
     Lang.extend(Mapper.PlanetTile, Tile, {
-        init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.domElement.title = <span class="hljs-keyword">this</span>.data ? <span class="hljs-keyword">this</span>.data.name : <span class="hljs-string">"Ground"</span>;
             <span class="hljs-keyword">this</span>._createActionIcon();
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.data &amp;&amp; <span class="hljs-keyword">this</span>.data.efficiency * <span class="hljs-number">1</span> &lt; <span class="hljs-number">100</span>) {
                 <span class="hljs-keyword">this</span>._createEfficiencyBar(<span class="hljs-keyword">this</span>.data.efficiency * <span class="hljs-number">1</span>);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.cBar) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.cBar) {
                 <span class="hljs-keyword">this</span>.cBar.parentNode.removeChild(<span class="hljs-keyword">this</span>.cBar);
                 <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.cBar;
                 <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.eBar;
@@ -430,33 +440,35 @@ y = Math.ceil(yO);/
             delete this.counterBuild;
         }*/</span>
         },
-        refresh: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        refresh: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Mapper.PlanetTile.superclass.refresh.call(<span class="hljs-keyword">this</span>);
             <span class="hljs-keyword">this</span>.init();
         },
-        appendToDom: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        appendToDom: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.domElement &amp;&amp; !Dom.isAncestor(<span class="hljs-keyword">this</span>.layer.tileContainer, <span class="hljs-keyword">this</span>.domElement)) {
                 <span class="hljs-keyword">this</span>.layer.tileContainer.appendChild(<span class="hljs-keyword">this</span>.domElement);
             }
         },
-        remove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        remove: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.stopTick();
             Mapper.PlanetTile.superclass.remove.call(<span class="hljs-keyword">this</span>);
         },
-        startTick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        startTick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.data) {
                 <span class="hljs-keyword">var</span> subTick;
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.data.pending_build &amp;&amp; <span class="hljs-keyword">this</span>.data.pending_build.seconds_remaining &gt; <span class="hljs-number">0</span>) {
                     <span class="hljs-keyword">this</span>._createBuildCounter();
                     subTick = <span class="hljs-literal">true</span>;
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.counterBuild) {
+                }
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.counterBuild) {
                     <span class="hljs-keyword">this</span>.counterBuild.parentNode.removeChild(<span class="hljs-keyword">this</span>.counterBuild);
                     <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.counterBuild;
                 }
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.data.work &amp;&amp; <span class="hljs-keyword">this</span>.data.work.seconds_remaining &gt; <span class="hljs-number">0</span>) {
                     <span class="hljs-keyword">this</span>._createWorkCounter();
                     subTick = <span class="hljs-literal">true</span>;
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.counterWork) {
+                }
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.counterWork) {
                     <span class="hljs-keyword">this</span>.counterWork.parentNode.removeChild(<span class="hljs-keyword">this</span>.counterWork);
                     <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.counterWork;
                 }
@@ -466,7 +478,7 @@ y = Math.ceil(yO);/
                 }
             }
         },
-        stopTick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        stopTick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.isTicking) {
                 Game.onTick.unsubscribe(<span class="hljs-keyword">this</span>.tick, <span class="hljs-keyword">this</span>);
                 <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.isTicking;
@@ -480,7 +492,7 @@ y = Math.ceil(yO);/
                 }
             }
         },
-        finishTick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        finishTick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.stopTick();
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.data.pending_build &amp;&amp; <span class="hljs-keyword">this</span>.data.upgrade) {
                 <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.data.pending_build;
@@ -488,11 +500,12 @@ y = Math.ceil(yO);/
                 <span class="hljs-keyword">this</span>.data.image = <span class="hljs-keyword">this</span>.data.upgrade.image;
                 <span class="hljs-keyword">this</span>.map.addSingleTileData(<span class="hljs-keyword">this</span>.data);
                 <span class="hljs-keyword">this</span>.refresh();
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onReload"</span>, <span class="hljs-keyword">this</span>);
             }
         },
-        tick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, oArgs)</span> {</span>
+        tick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, oArgs)</span> {</span>
             <span class="hljs-keyword">var</span> tickSec = oArgs[<span class="hljs-number">0</span>] / <span class="hljs-number">1000</span>,
                 hasUpgrade, hasWork;
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.data.pending_build) {
@@ -522,13 +535,15 @@ y = Math.ceil(yO);/
             }
             <span class="hljs-keyword">if</span> (!hasUpgrade &amp;&amp; !hasWork) {
                 <span class="hljs-keyword">this</span>.finishTick();
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!hasUpgrade &amp;&amp; <span class="hljs-keyword">this</span>.data.pending_build &amp;&amp; <span class="hljs-keyword">this</span>.data.pending_build.seconds_remaining &lt;= <span class="hljs-number">0</span>) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!hasUpgrade &amp;&amp; <span class="hljs-keyword">this</span>.data.pending_build &amp;&amp; <span class="hljs-keyword">this</span>.data.pending_build.seconds_remaining &lt;= <span class="hljs-number">0</span>) {
                 <span class="hljs-keyword">this</span>.finishTick();
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!hasWork &amp;&amp; <span class="hljs-keyword">this</span>.data.work &amp;&amp; <span class="hljs-keyword">this</span>.data.work.seconds_remaining &lt;= <span class="hljs-number">0</span>) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!hasWork &amp;&amp; <span class="hljs-keyword">this</span>.data.work &amp;&amp; <span class="hljs-keyword">this</span>.data.work.seconds_remaining &lt;= <span class="hljs-number">0</span>) {
                 <span class="hljs-keyword">this</span>.finishTick();
             }
         },
-        refreshCounter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        refreshCounter: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> obj = <span class="hljs-keyword">this</span>.map.getTile(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y, <span class="hljs-keyword">this</span>.z);
             <span class="hljs-keyword">this</span>.blank = obj.blank;
             <span class="hljs-keyword">this</span>.url = obj.url;
@@ -562,7 +577,7 @@ delete this.counterBuild;
       
       
         <div class="code"><pre class="wrapper">        },
-        _createBuildCounter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _createBuildCounter: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.counterBuild) {
                 <span class="hljs-keyword">var</span> counterBuild = <span class="hljs-keyword">this</span>.domElement.appendChild(document.createElement(<span class="hljs-string">'div'</span>));
                 Dom.addClass(counterBuild, <span class="hljs-string">"planetMapTileCounter"</span>);
@@ -571,7 +586,7 @@ delete this.counterBuild;
                 <span class="hljs-keyword">this</span>.counterBuild = counterBuild;
             }
         },
-        _createWorkCounter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _createWorkCounter: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.counterWork) {
                 <span class="hljs-keyword">var</span> counterWork = <span class="hljs-keyword">this</span>.domElement.appendChild(document.createElement(<span class="hljs-string">'div'</span>));
                 Dom.addClass(counterWork, <span class="hljs-string">"planetMapTileCounterWork"</span>);
@@ -581,18 +596,21 @@ delete this.counterBuild;
             }
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.cBar) {
                 Dom.setStyle(<span class="hljs-keyword">this</span>.counterWork, <span class="hljs-string">"bottom"</span>, <span class="hljs-string">"20px"</span>);
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Dom.setStyle(<span class="hljs-keyword">this</span>.counterWork, <span class="hljs-string">"bottom"</span>, <span class="hljs-string">"0"</span>);
             }
         },
-        _createActionIcon: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _createActionIcon: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.actionIcon) {
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.data) {
                     <span class="hljs-keyword">this</span>.actionIcon.innerHTML = [<span class="hljs-string">'&lt;div class="planetMapTileActionLevel"&gt;'</span>, <span class="hljs-keyword">this</span>.data.level, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">this</span>.actionIcon.innerHTML = <span class="hljs-string">'&lt;div class="planetMapTileActionButton"&gt;&lt;/div&gt;'</span>;
                 }
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">var</span> div = <span class="hljs-keyword">this</span>.domElement.appendChild(document.createElement(<span class="hljs-string">'div'</span>));
                 Dom.addClass(div, <span class="hljs-string">"planetMapTileActionContainer"</span>);
                 Dom.setStyle(div, <span class="hljs-string">"width"</span>, <span class="hljs-keyword">this</span>.tileSizeInPx + <span class="hljs-string">'px'</span>);
@@ -602,13 +620,14 @@ delete this.counterBuild;
                         Dom.setStyle(div, <span class="hljs-string">"visibility"</span>, <span class="hljs-string">"visible"</span>);
                     }
                     div.innerHTML = [<span class="hljs-string">'&lt;div class="planetMapTileActionLevel"&gt;'</span>, <span class="hljs-keyword">this</span>.data.level, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     div.innerHTML = <span class="hljs-string">'&lt;div class="planetMapTileActionButton"&gt;&lt;/div&gt;'</span>;
                 }
                 <span class="hljs-keyword">this</span>.actionIcon = div;
             }
         },
-        _createEfficiencyBar: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(efficiency)</span> {</span>
+        _createEfficiencyBar: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(efficiency)</span> {</span>
             <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.cBar) {
                 <span class="hljs-keyword">var</span> bar = <span class="hljs-keyword">this</span>.domElement.appendChild(document.createElement(<span class="hljs-string">'div'</span>));
                 Dom.addClass(bar, <span class="hljs-string">"planetMapEfficiencyBarContainer"</span>);
@@ -623,25 +642,27 @@ delete this.counterBuild;
                 Dom.setStyle(<span class="hljs-keyword">this</span>.cBar, <span class="hljs-string">"border-color"</span>, <span class="hljs-string">'yellow'</span>);
                 Dom.setStyle(<span class="hljs-keyword">this</span>.eBar, <span class="hljs-string">"background-color"</span>, <span class="hljs-string">'yellow'</span>);
                 Dom.setStyle(<span class="hljs-keyword">this</span>.eBar, <span class="hljs-string">"color"</span>, <span class="hljs-string">'black'</span>);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (efficiency &gt; <span class="hljs-number">30</span>) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (efficiency &gt; <span class="hljs-number">30</span>) {
                 Dom.setStyle(<span class="hljs-keyword">this</span>.cBar, <span class="hljs-string">"border-color"</span>, <span class="hljs-string">'orange'</span>);
                 Dom.setStyle(<span class="hljs-keyword">this</span>.eBar, <span class="hljs-string">"background-color"</span>, <span class="hljs-string">'orange'</span>);
                 Dom.setStyle(<span class="hljs-keyword">this</span>.eBar, <span class="hljs-string">"color"</span>, <span class="hljs-string">'white'</span>);
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Dom.setStyle(<span class="hljs-keyword">this</span>.cBar, <span class="hljs-string">"border-color"</span>, <span class="hljs-string">'red'</span>);
                 Dom.setStyle(<span class="hljs-keyword">this</span>.eBar, <span class="hljs-string">"background-color"</span>, <span class="hljs-string">'red'</span>);
                 Dom.setStyle(<span class="hljs-keyword">this</span>.eBar, <span class="hljs-string">"color"</span>, <span class="hljs-string">'white'</span>);
             }
         }
     });
-    Mapper.CoordLayer = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(map)</span> {</span>
+    Mapper.CoordLayer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map)</span> {</span>
         <span class="hljs-keyword">this</span>.map = map;
         <span class="hljs-keyword">this</span>.offsetX = <span class="hljs-number">0</span>;
         <span class="hljs-keyword">this</span>.offsetY = <span class="hljs-number">0</span>;
         <span class="hljs-keyword">this</span>.div = document.createElement(<span class="hljs-string">'div'</span>); <span class="hljs-comment">//so we can clone it a lot</span>
     };
     Mapper.CoordLayer.prototype = {
-        startDrag: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        startDrag: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.hasAnim) {
                 <span class="hljs-keyword">this</span>.xAnimOff.stop();
                 <span class="hljs-keyword">this</span>.xAnimOn.animate();
@@ -649,13 +670,13 @@ delete this.counterBuild;
                 <span class="hljs-keyword">this</span>.yAnimOn.animate();
             }
         },
-        endDrag: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        endDrag: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.hasAnim) {
                 <span class="hljs-keyword">this</span>.xAnimOff.animate();
                 <span class="hljs-keyword">this</span>.yAnimOff.animate();
             }
         },
-        move: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span></pre></div>
+        move: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x, y)</span> {</span></pre></div>
       
       </div>
     
@@ -696,7 +717,8 @@ start by repositioning to match the current view</p>
                 <span class="hljs-keyword">if</span> (coord &lt; xMin || coord &gt; xMax) {
                     Dom.addClass(el, <span class="hljs-string">'out-of-bounds'</span>);
                     el.innerHTML = <span class="hljs-string">''</span>;
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     Dom.removeClass(el, <span class="hljs-string">'out-of-bounds'</span>);
                     el.innerHTML = coord;
                 }
@@ -711,18 +733,19 @@ start by repositioning to match the current view</p>
                 <span class="hljs-keyword">if</span> (coord &lt; yMin || coord &gt; yMax) {
                     Dom.addClass(el, <span class="hljs-string">'out-of-bounds'</span>);
                     el.innerHTML = <span class="hljs-string">''</span>;
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     Dom.removeClass(el, <span class="hljs-string">'out-of-bounds'</span>);
                     el.innerHTML = coord;
                 }
             }
         },
-        resize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        resize: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.displayXCoords();
             <span class="hljs-keyword">this</span>.displayYCoords();
             <span class="hljs-keyword">this</span>.move(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
         },
-        redraw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        redraw: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.containerDiv) {
                 <span class="hljs-keyword">this</span>.map.movableContainer.removeChild(<span class="hljs-keyword">this</span>.containerDiv);
             }
@@ -743,7 +766,7 @@ start by repositioning to match the current view</p>
             <span class="hljs-keyword">this</span>.move(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
             <span class="hljs-keyword">this</span>.endDrag();
         },
-        displayXCoords: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        displayXCoords: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.xCoords) {
                 <span class="hljs-keyword">this</span>.xCoords.parentNode.removeChild(<span class="hljs-keyword">this</span>.xCoords);
             }
@@ -777,7 +800,7 @@ start by repositioning to match the current view</p>
                 <span class="hljs-keyword">this</span>.hasAnim = <span class="hljs-number">1</span>;
             }
         },
-        displayYCoords: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        displayYCoords: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.yCoords) {
                 <span class="hljs-keyword">this</span>.yCoords.parentNode.removeChild(<span class="hljs-keyword">this</span>.yCoords);
             }
@@ -816,7 +839,7 @@ start by repositioning to match the current view</p>
             }
         }
     };
-    <span class="hljs-keyword">var</span> TileLayer = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(map, visibleArea, TileConstructor)</span> {</span>
+    <span class="hljs-keyword">var</span> TileLayer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map, visibleArea, TileConstructor)</span> {</span>
         <span class="hljs-keyword">this</span>.tileCache = {};</pre></div>
       
       </div>
@@ -862,40 +885,41 @@ s.backgroundColor = &#39;#477&#39;;</p>
         <span class="hljs-keyword">this</span>.render();
     };
     TileLayer.prototype = {
-        findTile: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, zoom)</span> {</span>
+        findTile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x, y, zoom)</span> {</span>
             <span class="hljs-comment">//if(this.tileCache) {}</span>
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tileCache[Tile.idFor(x, y, zoom)];
         },
-        findTileById: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> {</span>
+        findTileById: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id)</span> {</span>
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tileCache[id];
         },
-        tileAtPosition: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
+        tileAtPosition: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x, y)</span> {</span>
             <span class="hljs-keyword">var</span> tileSizeInPx = <span class="hljs-keyword">this</span>.map.tileSizeInPx;
             <span class="hljs-keyword">return</span> [<span class="hljs-built_in">Math</span>.floor(x / tileSizeInPx), <span class="hljs-built_in">Math</span>.floor(y / tileSizeInPx)];
         },
-        _getTiles: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x1, x2, y1, y2)</span> {</span>
+        _getTiles: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x1, x2, y1, y2)</span> {</span>
             <span class="hljs-comment">//show anything we already have</span>
             <span class="hljs-keyword">this</span>._showCachedTiles();
             <span class="hljs-comment">//get any new tiles we need</span>
             <span class="hljs-keyword">this</span>.map.getTileData({
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">this</span>.showTiles();
                 },
                 scope: <span class="hljs-keyword">this</span>
             }, x1, x2, y1, y2);
         },
-        onReloadTile: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tile)</span> {</span>
+        onReloadTile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tile)</span> {</span>
             <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onReloadTile"</span>, tile);
         },
-        render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(getNew)</span> {</span>
+        render: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(getNew)</span> {</span>
             <span class="hljs-keyword">if</span> (getNew) {
                 <span class="hljs-keyword">var</span> bounds = <span class="hljs-keyword">this</span>.visibleArea.coordBounds();
                 <span class="hljs-keyword">this</span>._getTiles(bounds.x1, bounds.x2, bounds.y1, bounds.y2);
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">this</span>.showTiles();
             }
         },
-        removeAllTilesNotContainedIn: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(hash)</span> {</span>
+        removeAllTilesNotContainedIn: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(hash)</span> {</span>
             <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>.tileCache) {
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.tileCache.hasOwnProperty(key) &amp;&amp; !hash[key]) {
                     <span class="hljs-keyword">var</span> tile = <span class="hljs-keyword">this</span>.tileCache[key];
@@ -903,14 +927,14 @@ s.backgroundColor = &#39;#477&#39;;</p>
                 }
             }
         },
-        deleteCache: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        deleteCache: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>.tileCache) {
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.tileCache.hasOwnProperty(key)) {
                     <span class="hljs-keyword">this</span>.tileCache[key].destroy();
                 }
             }
         },
-        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.unsubscribeAll();
             <span class="hljs-keyword">this</span>.deleteCache();
             <span class="hljs-comment">//this.map.movableContainer.removeChild( this.tileContainer );</span>
@@ -919,20 +943,20 @@ s.backgroundColor = &#39;#477&#39;;</p>
             <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.tileContainer;
             <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.tileCache;
         },
-        clear: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        clear: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.removeAllTilesNotContainedIn({});
         },
-        reset: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        reset: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.removeAllTilesNotContainedIn({});
             <span class="hljs-keyword">this</span>.tileCache = {};
         }
     };
     Lang.augmentProto(TileLayer, Util.EventProvider);
-    Mapper.StarTileLayer = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(map, visibleArea, TileConstructor)</span> {</span>
+    Mapper.StarTileLayer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map, visibleArea, TileConstructor)</span> {</span>
         Mapper.StarTileLayer.superclass.constructor.call(<span class="hljs-keyword">this</span>, map, visibleArea, TileConstructor);
     };
     Lang.extend(Mapper.StarTileLayer, TileLayer, {
-        _showCachedTiles: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _showCachedTiles: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.tileCache) {
                 <span class="hljs-keyword">var</span> bounds = <span class="hljs-keyword">this</span>.visibleArea.coordBounds();
                 <span class="hljs-keyword">var</span> planets = Game.EmpireData.planetsByName || {};
@@ -961,7 +985,7 @@ s.backgroundColor = &#39;#477&#39;;</p>
                 }
             }
         },
-        showTiles: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(refresh)</span> {</span>
+        showTiles: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(refresh)</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.tileCache) {
                 <span class="hljs-keyword">var</span> bounds = <span class="hljs-keyword">this</span>.visibleArea.coordBounds();
                 <span class="hljs-keyword">var</span> tiles = {};
@@ -979,10 +1003,12 @@ s.backgroundColor = &#39;#477&#39;;</p>
                             <span class="hljs-keyword">this</span>.tileCache[tile.id] = tile;
                             tile.appendToDom();
                             doSub = <span class="hljs-literal">true</span>;
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (refresh) {
+                        }
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (refresh) {
                             tile.refresh();
                             doSub = <span class="hljs-literal">true</span>;
-                        } <span class="hljs-keyword">else</span> {
+                        }
+                        <span class="hljs-keyword">else</span> {
                             <span class="hljs-keyword">if</span> (tile.blank) {
                                 tile.refresh();
                             }
@@ -1000,7 +1026,7 @@ s.backgroundColor = &#39;#477&#39;;</p>
             }
         }
     });
-    Mapper.PlanetTileLayer = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(map, visibleArea, TileConstructor)</span> {</span>
+    Mapper.PlanetTileLayer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map, visibleArea, TileConstructor)</span> {</span>
         <span class="hljs-keyword">this</span>.bounds = {
             x1: map.maxBounds.x1Left,
             x2: map.maxBounds.x2Right,
@@ -1010,7 +1036,7 @@ s.backgroundColor = &#39;#477&#39;;</p>
         Mapper.PlanetTileLayer.superclass.constructor.call(<span class="hljs-keyword">this</span>, map, visibleArea, TileConstructor);
     };
     Lang.extend(Mapper.PlanetTileLayer, TileLayer, {
-        _showCachedTiles: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _showCachedTiles: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.tileCache) {
                 <span class="hljs-keyword">var</span> bounds = <span class="hljs-keyword">this</span>.bounds;
                 <span class="hljs-comment">//from left to right (smaller to bigger)</span>
@@ -1030,7 +1056,7 @@ s.backgroundColor = &#39;#477&#39;;</p>
                 }
             }
         },
-        showTiles: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(refresh)</span> {</span>
+        showTiles: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(refresh)</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.tileCache) {
                 <span class="hljs-keyword">var</span> bounds = <span class="hljs-keyword">this</span>.bounds;
                 <span class="hljs-keyword">var</span> tiles = {};
@@ -1048,10 +1074,12 @@ s.backgroundColor = &#39;#477&#39;;</p>
                             <span class="hljs-keyword">this</span>.tileCache[tile.id] = tile;
                             tile.appendToDom();
                             doSub = <span class="hljs-literal">true</span>;
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (refresh) {
+                        }
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (refresh) {
                             tile.refresh();
                             doSub = <span class="hljs-literal">true</span>;
-                        } <span class="hljs-keyword">else</span> {
+                        }
+                        <span class="hljs-keyword">else</span> {
                             <span class="hljs-keyword">if</span> (tile.blank) {
                                 tile.refresh();
                             }
@@ -1068,7 +1096,7 @@ s.backgroundColor = &#39;#477&#39;;</p>
             }
         }
     });
-    <span class="hljs-keyword">var</span> Map = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(divId, options)</span> {</span>
+    <span class="hljs-keyword">var</span> Map = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(divId, options)</span> {</span>
         <span class="hljs-keyword">var</span> IE = <span class="hljs-string">'\v'</span> === <span class="hljs-string">'v'</span>; <span class="hljs-comment">// detect IE</span>
         <span class="hljs-keyword">this</span>.IE = IE;
         <span class="hljs-comment">//this.tileSizeInPx = undefined;</span>
@@ -1093,13 +1121,14 @@ s.backgroundColor = &#39;#477&#39;;</p>
         <span class="hljs-keyword">var</span> ua = navigator.userAgent;
         <span class="hljs-keyword">if</span> (ua.match(<span class="hljs-regexp">/iPhone|iPod|iPad/i</span>)) {
             <span class="hljs-keyword">this</span>.controller = <span class="hljs-keyword">new</span> Mapper.iPhoneController(<span class="hljs-keyword">this</span>);
-        } <span class="hljs-keyword">else</span> {
+        }
+        <span class="hljs-keyword">else</span> {
             <span class="hljs-keyword">this</span>.controller = <span class="hljs-keyword">new</span> Mapper.TraditionalController(<span class="hljs-keyword">this</span>);
         }
     };
     Map.prototype = {
         <span class="hljs-comment">//blank init that will always get called.  override in sub classes to change defaults</span>
-        init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>},</pre></div>
+        init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>},</pre></div>
       
       </div>
     
@@ -1113,7 +1142,7 @@ the center will be the same as before the zoom</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">        zoomIn: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <div class="code"><pre class="wrapper">        zoomIn: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-comment">//YAHOO.log("zooming in", "info", "Mapper.Map");</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.zoom &gt;= <span class="hljs-keyword">this</span>.maxZoom) {
                 <span class="hljs-keyword">return</span>;
@@ -1121,7 +1150,7 @@ the center will be the same as before the zoom</p>
             <span class="hljs-keyword">this</span>.setZoomLevel(<span class="hljs-keyword">this</span>.zoom + <span class="hljs-number">1</span>);
             <span class="hljs-comment">//called by zoom display change //this.refresh();</span>
         },
-        zoomOut: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        zoomOut: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-comment">//YAHOO.log("zooming out", "info", "Mapper.Map");</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.zoom &lt;= <span class="hljs-keyword">this</span>.minZoom) {
                 <span class="hljs-keyword">return</span>;
@@ -1129,17 +1158,17 @@ the center will be the same as before the zoom</p>
             <span class="hljs-keyword">this</span>.setZoomLevel(<span class="hljs-keyword">this</span>.zoom - <span class="hljs-number">1</span>);
             <span class="hljs-comment">//called by zoom display change //this.refresh();</span>
         },
-        setTileSizeInPx: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(size)</span> {</span>
+        setTileSizeInPx: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(size)</span> {</span>
             <span class="hljs-keyword">this</span>.tileSizeInPx = size;
             <span class="hljs-comment">//this.mapExtendInPx = this.tileSizeInPx * (1&lt;&lt;this.zoom);</span>
         },
-        addElement: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(p)</span> {</span>
+        addElement: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(p)</span> {</span>
             <span class="hljs-keyword">this</span>._pathsAndPolygons[p.id] = p;
         },
-        removeElement: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(p)</span> {</span>
+        removeElement: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(p)</span> {</span>
             <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>._pathsAndPolygons[p.id];
         },
-        moveByTiles: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
+        moveByTiles: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x, y)</span> {</span>
             <span class="hljs-keyword">var</span> absX = <span class="hljs-built_in">Math</span>.abs(x),
                 absY = <span class="hljs-built_in">Math</span>.abs(y),
                 durMS = absX &gt; absY ? <span class="hljs-keyword">this</span>.tileSizeInPx * absX : <span class="hljs-keyword">this</span>.tileSizeInPx * absY,
@@ -1154,20 +1183,22 @@ the center will be the same as before the zoom</p>
                 lastDuration = <span class="hljs-number">0</span>,
                 anim = <span class="hljs-keyword">new</span> Util.Anim(<span class="hljs-literal">undefined</span>, <span class="hljs-literal">undefined</span>, durMS);
             anim.useSeconds = <span class="hljs-literal">false</span>; <span class="hljs-comment">//keep everything in ms</span>
-            anim.onTween.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type, data)</span> {</span>
+            anim.onTween.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(type, data)</span> {</span>
                 <span class="hljs-keyword">var</span> completed = data[<span class="hljs-number">0</span>].duration,
                     factor = completed - lastDuration,
                     moveX, moveY;
                 lastDuration = completed;
                 <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Math</span>.abs(progX) &gt;= <span class="hljs-built_in">Math</span>.abs(totalX)) {
                     moveX = <span class="hljs-number">0</span>;
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     moveX = stepX * factor;
                     progX += moveX;
                 }
                 <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Math</span>.abs(progY) &gt;= <span class="hljs-built_in">Math</span>.abs(totalY)) {
                     moveY = <span class="hljs-number">0</span>;
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     moveY = stepY * factor;
                     progY += moveY;
                 }
@@ -1175,7 +1206,7 @@ the center will be the same as before the zoom</p>
             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             anim.animate();
         },
-        moveByPx: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
+        moveByPx: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x, y)</span> {</span>
             <span class="hljs-keyword">var</span> n = <span class="hljs-keyword">this</span>.visibleArea.move(x * -<span class="hljs-number">1</span>, y * -<span class="hljs-number">1</span>);
             <span class="hljs-comment">//move values back to positive for us to use</span>
             x = n.x * -<span class="hljs-number">1</span>;
@@ -1206,14 +1237,14 @@ this.tileLayer.render();
                 <span class="hljs-string">"y"</span>: y
             };
         },
-        setZoomLevel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(level)</span> {</span>
+        setZoomLevel: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(level)</span> {</span>
             <span class="hljs-keyword">this</span>.zoom = level * <span class="hljs-number">1</span>;
             <span class="hljs-keyword">this</span>.controller.setZoomDisplay(<span class="hljs-keyword">this</span>.zoom);
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.tileLayer) {
                 <span class="hljs-keyword">this</span>.tileLayer.clear();
             }
         },
-        redraw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        redraw: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.width = <span class="hljs-keyword">this</span>.mapDiv.offsetWidth;
             <span class="hljs-keyword">this</span>.height = <span class="hljs-keyword">this</span>.mapDiv.offsetHeight;
             <span class="hljs-comment">//this.centerX = Math.floor(0.5 * this.width);</span>
@@ -1226,11 +1257,11 @@ this.tileLayer.render();
             }
             <span class="hljs-keyword">this</span>.tileLayer = <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.TileLayer(<span class="hljs-keyword">this</span>, Mapper.util.clone(<span class="hljs-keyword">this</span>.visibleArea), <span class="hljs-keyword">this</span>.Tile);
             <span class="hljs-comment">//pass through</span>
-            <span class="hljs-keyword">this</span>.tileLayer.subscribe(<span class="hljs-string">"onReloadTile"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tile)</span> {</span>
+            <span class="hljs-keyword">this</span>.tileLayer.subscribe(<span class="hljs-string">"onReloadTile"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tile)</span> {</span>
                 <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onReloadTile"</span>, tile.data.id);
             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
         },
-        refresh: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(isZoom)</span> {</span>
+        refresh: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(isZoom)</span> {</span>
             <span class="hljs-comment">//store location before we redraw</span>
             <span class="hljs-keyword">var</span> vac = isZoom ? <span class="hljs-keyword">this</span>.visibleArea.centerLoc() : <span class="hljs-keyword">this</span>.visibleArea.centerLocPx();
             <span class="hljs-comment">//set tile size</span>
@@ -1240,18 +1271,19 @@ this.tileLayer.render();
             <span class="hljs-comment">//reset location after draw</span>
             <span class="hljs-keyword">if</span> (isZoom) {
                 <span class="hljs-keyword">this</span>.setCenterTo(vac[<span class="hljs-number">0</span>], vac[<span class="hljs-number">1</span>]);
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">this</span>.setCenterToPx(vac[<span class="hljs-number">0</span>], vac[<span class="hljs-number">1</span>]);
             }
         },
-        resize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        resize: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.width = <span class="hljs-keyword">this</span>.mapDiv.offsetWidth;
             <span class="hljs-keyword">this</span>.height = <span class="hljs-keyword">this</span>.mapDiv.offsetHeight;
             <span class="hljs-keyword">this</span>.visibleArea.resize();
             <span class="hljs-keyword">this</span>.coordLayer.resize();
             <span class="hljs-keyword">this</span>.tileLayer.showTiles();
         },
-        setCenterTo: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(locX, locY)</span> {</span>
+        setCenterTo: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(locX, locY)</span> {</span>
             <span class="hljs-keyword">if</span> (Lang.isNumber(locX) &amp;&amp; Lang.isNumber(locY) &amp;&amp; <span class="hljs-keyword">this</span>.tileLayer) {
                 <span class="hljs-keyword">var</span> otherWidth = <span class="hljs-keyword">this</span>.visibleArea.centerX,
                     otherHeight = <span class="hljs-keyword">this</span>.visibleArea.centerY,
@@ -1273,7 +1305,7 @@ this.tileLayer.render();
             this.moveByPx(ox * -1, oy * -1);*/</span>
             }
         },
-        setCenterToPx: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(pX, pY)</span> {</span>
+        setCenterToPx: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(pX, pY)</span> {</span>
             <span class="hljs-keyword">if</span> (Lang.isNumber(pX) &amp;&amp; Lang.isNumber(pY) &amp;&amp; <span class="hljs-keyword">this</span>.tileLayer) {
                 <span class="hljs-keyword">var</span> otherWidth = <span class="hljs-keyword">this</span>.visibleArea.centerX,
                     otherHeight = <span class="hljs-keyword">this</span>.visibleArea.centerY,
@@ -1294,42 +1326,42 @@ this.tileLayer.render();
         </div>
       
       
-        <div class="code"><pre class="wrapper">        getTile: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, z)</span> {</span>},
-        getBounds: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>},
-        updateBounds: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oTile)</span> {</span>},
-        addTileData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(aTiles)</span> {</span>}
+        <div class="code"><pre class="wrapper">        getTile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x, y, z)</span> {</span>},
+        getBounds: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>},
+        updateBounds: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oTile)</span> {</span>},
+        addTileData: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aTiles)</span> {</span>}
     };
     Lang.augmentProto(Map, Util.EventProvider);
     <span class="hljs-keyword">var</span> MAX_STAR_AREA = <span class="hljs-number">3001</span>;
-    Mapper.StarMap = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(divId, options)</span> {</span>
+    Mapper.StarMap = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(divId, options)</span> {</span>
         Mapper.StarMap.superclass.constructor.call(<span class="hljs-keyword">this</span>, divId, options);
         Dom.setStyle(<span class="hljs-keyword">this</span>.mapDiv, <span class="hljs-string">'background-image'</span>, <span class="hljs-string">'url("'</span> + Lib.AssetUrl + <span class="hljs-string">'star_system/field.png")'</span>);
     };
     Lang.extend(Mapper.StarMap, Map, {
-        _setTileSizeByZoom: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _setTileSizeByZoom: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Game.SetCookieSettings(<span class="hljs-string">"starZoom"</span>, <span class="hljs-keyword">this</span>.zoom);
             <span class="hljs-keyword">switch</span> (<span class="hljs-keyword">this</span>.zoom) {
-            <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
-                <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">150</span>);
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
-                <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">100</span>);
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> -<span class="hljs-number">1</span>:
-                <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">50</span>);
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> -<span class="hljs-number">2</span>:
-                <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">35</span>);
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> -<span class="hljs-number">3</span>:
-                <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">20</span>);
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">default</span>:
-                <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">75</span>);
-                <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
+                    <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">150</span>);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">100</span>);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> -<span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">50</span>);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> -<span class="hljs-number">2</span>:
+                    <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">35</span>);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> -<span class="hljs-number">3</span>:
+                    <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">20</span>);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">default</span>:
+                    <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">75</span>);
+                    <span class="hljs-keyword">break</span>;
             }
         },
-        init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.maxZoom = <span class="hljs-number">2</span>;
             <span class="hljs-keyword">this</span>.minZoom = -<span class="hljs-number">3</span>;
             <span class="hljs-keyword">var</span> mapSize = Game.ServerData.star_map_size;
@@ -1346,7 +1378,7 @@ this.tileLayer.render();
             <span class="hljs-keyword">this</span>.hidePlanets = Game.GetCookieSettings(<span class="hljs-string">"hidePlanets"</span>, <span class="hljs-number">0</span>) * <span class="hljs-number">1</span>;
             <span class="hljs-keyword">this</span>._setTileSizeByZoom();
         },
-        getTile: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
+        getTile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x, y)</span> {</span>
             <span class="hljs-keyword">var</span> xSet = <span class="hljs-keyword">this</span>.tileCache[x],
                 body = xSet ? xSet[y] : <span class="hljs-literal">null</span>;
             <span class="hljs-keyword">if</span> (body) {
@@ -1355,19 +1387,21 @@ this.tileLayer.render();
                         data: body,
                         image: [Lib.AssetUrl, <span class="hljs-string">'star_map/'</span>, body.color, <span class="hljs-string">'.png'</span>].join(<span class="hljs-string">''</span>)
                     };
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (body.isPlanet) {
+                }
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (body.isPlanet) {
                     <span class="hljs-keyword">return</span> {
                         data: body,
                         image: [Lib.AssetUrl, <span class="hljs-string">'star_system/'</span>, body.image, <span class="hljs-string">'.png'</span>].join(<span class="hljs-string">''</span>)
                     };
                 }
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">return</span> {
                     blank: <span class="hljs-literal">true</span>
                 };
             }
         },
-        getTileData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback, x1, x2, y1, y2)</span> {</span>
+        getTileData: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback, x1, x2, y1, y2)</span> {</span>
             <span class="hljs-keyword">var</span> xDiff = <span class="hljs-built_in">Math</span>.abs(x2 - x1),
                 yDiff = <span class="hljs-built_in">Math</span>.abs(y2 - y1);
             <span class="hljs-keyword">if</span> ((xDiff * yDiff) &gt; MAX_STAR_AREA) { <span class="hljs-comment">//if out of bounds split and try again</span>
@@ -1376,12 +1410,14 @@ this.tileLayer.render();
                     half = <span class="hljs-built_in">Math</span>.floor(xDiff / <span class="hljs-number">2</span>);
                     <span class="hljs-keyword">this</span>.getTileData(callback, x1, x1 + half, y1, y2);
                     <span class="hljs-keyword">this</span>.getTileData(callback, x2 - half, x2, y1, y2);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     half = <span class="hljs-built_in">Math</span>.floor(yDiff / <span class="hljs-number">2</span>);
                     <span class="hljs-keyword">this</span>.getTileData(callback, x1, x2, y1, y1 - half);
                     <span class="hljs-keyword">this</span>.getTileData(callback, x1, x2, y2 + half, y2);
                 }
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-comment">//YAHOO.log(data, "debug", "StarMap.getTileData.requestData");</span>
                 Lacuna.Pulser.Show();
                 Game.Services.Map.get_star_map({
@@ -1393,7 +1429,7 @@ this.tileLayer.render();
                         bottom: y2
                     }
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-comment">//YAHOO.log(o, "debug", "StarMap.getTileData.get_stars.success");</span>
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">if</span> (o &amp;&amp; o.result) {
@@ -1402,7 +1438,7 @@ this.tileLayer.render();
                             callback.success.call(callback.scope || <span class="hljs-keyword">this</span>, callback.argument);
                         }
                     },
-                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-keyword">if</span> (callback.failure) {
                             callback.failure.call(callback.scope || <span class="hljs-keyword">this</span>, o);
                             <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
@@ -1412,7 +1448,7 @@ this.tileLayer.render();
                 });
             }
         },
-        getBounds: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getBounds: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.bounds[<span class="hljs-keyword">this</span>.zoom] || {
                 x1Left: <span class="hljs-number">0</span>,
                 x2Right: <span class="hljs-number">0</span>,
@@ -1420,7 +1456,7 @@ this.tileLayer.render();
                 y2Bottom: <span class="hljs-number">0</span>
             };
         },
-        addTileData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(aStars)</span> {</span>
+        addTileData: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(aStars)</span> {</span>
             <span class="hljs-comment">//var startZoomLevel = 0;</span>
             <span class="hljs-keyword">var</span> cp = Game.GetCurrentPlanet();
             <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; aStars.length; i++) {
@@ -1446,38 +1482,38 @@ this.tileLayer.render();
             }
             <span class="hljs-comment">//return startZoomLevel;</span>
         },
-        reset: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        reset: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.tileCache = {};
             <span class="hljs-keyword">this</span>.bounds = {};
             <span class="hljs-keyword">this</span>.tileLayer.reset();
         }
     });
-    Mapper.PlanetMap = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(divId, options)</span> {</span>
+    Mapper.PlanetMap = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(divId, options)</span> {</span>
         Mapper.PlanetMap.superclass.constructor.call(<span class="hljs-keyword">this</span>, divId);
         <span class="hljs-keyword">this</span>.setSurfaceUrl(options.surfaceUrl);
     };
     Lang.extend(Mapper.PlanetMap, Map, {
-        _setTileSizeByZoom: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _setTileSizeByZoom: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Game.SetCookieSettings(<span class="hljs-string">"planetZoom"</span>, <span class="hljs-keyword">this</span>.zoom);
             <span class="hljs-keyword">switch</span> (<span class="hljs-keyword">this</span>.zoom) {
-            <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
-                <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">400</span>);
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
-                <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">300</span>);
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> -<span class="hljs-number">1</span>:
-                <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">100</span>);
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> -<span class="hljs-number">2</span>:
-                <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">50</span>);
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">default</span>:
-                <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">200</span>);
-                <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
+                    <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">400</span>);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">300</span>);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> -<span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">100</span>);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> -<span class="hljs-number">2</span>:
+                    <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">50</span>);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">default</span>:
+                    <span class="hljs-keyword">this</span>.setTileSizeInPx(<span class="hljs-number">200</span>);
+                    <span class="hljs-keyword">break</span>;
             }
         },
-        init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.maxZoom = <span class="hljs-number">2</span>;
             <span class="hljs-keyword">this</span>.minZoom = -<span class="hljs-number">2</span>;
             <span class="hljs-keyword">this</span>.bounds = {
@@ -1497,7 +1533,7 @@ this.tileLayer.render();
             <span class="hljs-keyword">this</span>.zoom = Game.GetCookieSettings(<span class="hljs-string">"planetZoom"</span>, <span class="hljs-number">0</span>) * <span class="hljs-number">1</span>;
             <span class="hljs-keyword">this</span>._setTileSizeByZoom();
         },
-        setCenterToCommand: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        setCenterToCommand: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.command) { <span class="hljs-comment">// &amp;&amp; this.tileLayer) {</span>
                 <span class="hljs-keyword">this</span>.setCenterTo(<span class="hljs-keyword">this</span>.command.x, <span class="hljs-keyword">this</span>.command.y);</pre></div>
       
@@ -1517,19 +1553,19 @@ this.tileLayer.render();
       
         <div class="code"><pre class="wrapper">            }
         },
-        getTileImageSize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getTileImageSize: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">switch</span> (<span class="hljs-keyword">this</span>.zoom) {
-            <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
-                <span class="hljs-keyword">return</span> <span class="hljs-string">"400/"</span>;
-            <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
-                <span class="hljs-keyword">return</span> <span class="hljs-string">"300/"</span>;
-            <span class="hljs-keyword">case</span> -<span class="hljs-number">1</span>:
-                <span class="hljs-keyword">return</span> <span class="hljs-string">"100/"</span>;
-            <span class="hljs-keyword">case</span> -<span class="hljs-number">2</span>:
-                <span class="hljs-keyword">return</span> <span class="hljs-string">"50/"</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
+                    <span class="hljs-keyword">return</span> <span class="hljs-string">"400/"</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">return</span> <span class="hljs-string">"300/"</span>;
+                <span class="hljs-keyword">case</span> -<span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">return</span> <span class="hljs-string">"100/"</span>;
+                <span class="hljs-keyword">case</span> -<span class="hljs-number">2</span>:
+                    <span class="hljs-keyword">return</span> <span class="hljs-string">"50/"</span>;
             }
         },
-        getTile: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, z)</span> {</span>
+        getTile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x, y, z)</span> {</span>
             <span class="hljs-keyword">var</span> ySet = <span class="hljs-keyword">this</span>.tileCache[x],
                 building = ySet ? ySet[y] : <span class="hljs-literal">null</span>;
             <span class="hljs-keyword">if</span> (building &amp;&amp; building.image) {
@@ -1538,34 +1574,36 @@ this.tileLayer.render();
                     data: building,
                     url: [Lib.AssetUrl, <span class="hljs-string">'planet_side/'</span>, <span class="hljs-keyword">this</span>.getTileImageSize(), building.image, <span class="hljs-string">'.png'</span>].join(<span class="hljs-string">''</span>)
                 };
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">return</span> {
                     blank: <span class="hljs-literal">true</span>
                 };
             }
         },
-        getTileData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback, x1, x2, y1, y2)</span> {</span>
+        getTileData: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback, x1, x2, y1, y2)</span> {</span>
             <span class="hljs-comment">//since we should have all the data already, just call success</span>
             callback.success.call(callback.scope || <span class="hljs-keyword">this</span>, callback.argument);
         },
-        getBounds: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getBounds: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.bounds;
         },
-        setSurfaceUrl: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(surfaceUrl)</span> {</span>
+        setSurfaceUrl: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(surfaceUrl)</span> {</span>
             <span class="hljs-keyword">this</span>._surfaceUrl = surfaceUrl;
             Dom.setStyle(<span class="hljs-keyword">this</span>.mapDiv, <span class="hljs-string">'background-image'</span>, <span class="hljs-string">'url("'</span> + surfaceUrl + <span class="hljs-string">'")'</span>);
         },
-        setPlotsAvailable: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(plots)</span> {</span>
+        setPlotsAvailable: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(plots)</span> {</span>
             <span class="hljs-keyword">if</span> (plots &gt; <span class="hljs-number">0</span>) {
                 Dom.removeClass(<span class="hljs-keyword">this</span>.mapDiv, <span class="hljs-string">'plots-full'</span>);
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Dom.addClass(<span class="hljs-keyword">this</span>.mapDiv, <span class="hljs-string">'plots-full'</span>);
             }
         },
         <span class="hljs-comment">//don't update bounds on plant.  We have all data at start</span>
         <span class="hljs-comment">/*updateBounds : function(oTile) {
     },*/</span>
-        addTileData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oTiles, filterOutDeleted)</span> {</span>
+        addTileData: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oTiles, filterOutDeleted)</span> {</span>
             <span class="hljs-keyword">var</span> startZoomLevel = <span class="hljs-number">0</span>,
                 newTileCache = {};
             <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> tKey <span class="hljs-keyword">in</span> oTiles) {
@@ -1595,7 +1633,7 @@ this.tileLayer.render();
             <span class="hljs-keyword">this</span>.tileCache = newTileCache;
             <span class="hljs-keyword">return</span> startZoomLevel;
         },
-        addSingleTileData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oBuilding)</span> {</span>
+        addSingleTileData: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oBuilding)</span> {</span>
             <span class="hljs-keyword">if</span> (oBuilding.url === <span class="hljs-string">"/planetarycommand"</span> || oBuilding.url === <span class="hljs-string">"/stationcommand"</span>) {
                 <span class="hljs-keyword">this</span>.command = oBuilding;
                 <span class="hljs-keyword">this</span>.command.x *= <span class="hljs-number">1</span>;
@@ -1609,7 +1647,7 @@ this.tileLayer.render();
             }
             <span class="hljs-keyword">this</span>.tileCache[oBuilding.x][oBuilding.y] = oBuilding;
         },
-        refreshTile: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(building)</span> {</span>
+        refreshTile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(building)</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.tileLayer) {
                 <span class="hljs-keyword">this</span>.addSingleTileData(building);
                 <span class="hljs-keyword">var</span> tile = <span class="hljs-keyword">this</span>.tileLayer.findTile(building.x, building.y, <span class="hljs-keyword">this</span>.zoom);
@@ -1618,7 +1656,7 @@ this.tileLayer.render();
                 }
             }
         },
-        refreshTileCounter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(building)</span> {</span>
+        refreshTileCounter: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(building)</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.tileLayer) {
                 <span class="hljs-keyword">this</span>.addSingleTileData(building);
                 <span class="hljs-keyword">var</span> tile = <span class="hljs-keyword">this</span>.tileLayer.findTile(building.x, building.y, <span class="hljs-keyword">this</span>.zoom);
@@ -1627,7 +1665,7 @@ this.tileLayer.render();
                 }
             }
         },
-        removeTile: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
+        removeTile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x, y)</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.tileCache &amp;&amp; <span class="hljs-keyword">this</span>.tileCache[x] &amp;&amp; <span class="hljs-keyword">this</span>.tileCache[x][y]) {
                 <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.tileCache[x][y];
             }
@@ -1636,12 +1674,12 @@ this.tileLayer.render();
                 tile.refresh();
             }
         },
-        reset: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        reset: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.tileCache = {};
             <span class="hljs-keyword">this</span>.tileLayer.reset();
         }
     });
-    Mapper.TraditionalController = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(map)</span> {</span>
+    Mapper.TraditionalController = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map)</span> {</span>
         <span class="hljs-keyword">this</span>.map = map;
         <span class="hljs-keyword">this</span>.dd = <span class="hljs-keyword">new</span> YAHOO.util.DragDrop(map.mapDiv, <span class="hljs-string">'mapper'</span>);
         <span class="hljs-keyword">this</span>.dd.subscribe(<span class="hljs-string">"dragEvent"</span>, <span class="hljs-keyword">this</span>.moveMap, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
@@ -1666,7 +1704,7 @@ this.tileLayer.render();
         <span class="hljs-keyword">var</span> lastMove = (<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-number">0</span>))
             .getTime();
         <span class="hljs-keyword">var</span> timerActive = <span class="hljs-literal">false</span>;
-        Game.onScroll(map.mapDiv, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, x, y)</span> {</span>
+        Game.onScroll(map.mapDiv, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, x, y)</span> {</span>
             xMove += x;
             yMove += y;</pre></div>
       
@@ -1701,7 +1739,7 @@ this.tileLayer.render();
       
         <div class="code"><pre class="wrapper">            <span class="hljs-keyword">if</span> (!timerActive) {
                 timerActive = <span class="hljs-literal">true</span>;
-                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     map.tileLayer.render(<span class="hljs-literal">true</span>);
                     timerActive = <span class="hljs-literal">false</span>;
                 }, <span class="hljs-number">1000</span>);
@@ -1713,7 +1751,7 @@ this.tileLayer.render();
         navEl.className = <span class="hljs-string">'mapiator_nav'</span>;
         navEl.innerHTML = [<span class="hljs-string">'&lt;div class="mapiator_nav_up" title="Move Up"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="mapiator_nav_right" title="Move Right"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="mapiator_nav_down" title="Move Down"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="mapiator_nav_left" title="Move Left"&gt;&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
         map.mapDiv.appendChild(navEl);
-        <span class="hljs-keyword">var</span> clickMoveMap = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, o)</span> {</span>
+        <span class="hljs-keyword">var</span> clickMoveMap = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, o)</span> {</span>
             map.moveByTiles(o[<span class="hljs-number">0</span>], o[<span class="hljs-number">1</span>]);
         };
         Event.on(Sel.query(<span class="hljs-string">".mapiator_nav_up"</span>, navEl, <span class="hljs-literal">true</span>), <span class="hljs-string">"click"</span>, clickMoveMap, [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>]);
@@ -1732,14 +1770,14 @@ this.tileLayer.render();
             <span class="hljs-keyword">var</span> zoomSize = <span class="hljs-number">140</span>;
             <span class="hljs-keyword">var</span> zoomScale = <span class="hljs-built_in">Math</span>.floor(zoomSize / (map.maxZoom - map.minZoom));
             <span class="hljs-keyword">var</span> zoomSlider = YAHOO.widget.Slider.getVertSlider(sliderId, thumbId, <span class="hljs-number">0</span>, zoomSize, zoomScale);
-            zoomSlider.setZoom = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(zoom, skipAnim, force, silent)</span> {</span>
+            zoomSlider.setZoom = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(zoom, skipAnim, force, silent)</span> {</span>
                 <span class="hljs-keyword">this</span>.setValue((map.maxZoom - zoom) * zoomScale, skipAnim, force, silent);
             };
-            zoomSlider.getZoom = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            zoomSlider.getZoom = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">return</span> map.maxZoom - <span class="hljs-keyword">this</span>.getValue() / zoomScale;
             };
             zoomSlider.setZoom(map.zoom, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
-            zoomSlider.subscribe(<span class="hljs-string">"change"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            zoomSlider.subscribe(<span class="hljs-string">"change"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 map.setZoomLevel(<span class="hljs-keyword">this</span>.getZoom());
                 map.refresh(<span class="hljs-literal">true</span>);
             });
@@ -1747,18 +1785,18 @@ this.tileLayer.render();
         }
     };
     Mapper.TraditionalController.prototype = {
-        setZoomDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(zoom)</span> {</span>
+        setZoomDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(zoom)</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.zoomSlider &amp;&amp; <span class="hljs-keyword">this</span>.zoomSlider.getZoom() !== zoom) {
                 <span class="hljs-keyword">this</span>.zoomSlider.setZoom(zoom);
             }
         },
-        startDrag: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        startDrag: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             clearTimeout(<span class="hljs-keyword">this</span>._timeout);
             <span class="hljs-keyword">this</span>.xmove = <span class="hljs-keyword">this</span>.ymove = <span class="hljs-literal">undefined</span>;
             <span class="hljs-keyword">this</span>._dragging = <span class="hljs-literal">true</span>;
             <span class="hljs-keyword">this</span>.map.coordLayer.startDrag();
         },
-        moveMap: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oArgs)</span> {</span>
+        moveMap: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oArgs)</span> {</span>
             Event.preventDefault(oArgs.e);
             <span class="hljs-keyword">var</span> x = Event.getPageX(oArgs.e),
                 y = Event.getPageY(oArgs.e);
@@ -1768,9 +1806,9 @@ this.tileLayer.render();
             <span class="hljs-keyword">this</span>.xmove = x;
             <span class="hljs-keyword">this</span>.ymove = y;
         },
-        endDrag: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        endDrag: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> oSelf = <span class="hljs-keyword">this</span>;
-            <span class="hljs-keyword">this</span>._timeout = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>._timeout = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 clearTimeout(oSelf._timeout);
                 oSelf.xmove = oSelf.ymove = <span class="hljs-literal">undefined</span>;
                 oSelf.map.coordLayer.endDrag();
@@ -1778,47 +1816,50 @@ this.tileLayer.render();
                 oSelf._dragging = <span class="hljs-literal">false</span>;
             }, <span class="hljs-number">500</span>);
         },
-        isDragging: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        isDragging: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._dragging; <span class="hljs-comment">// Math.abs(this.xmove) &gt; 5;</span>
         },
-        moveKey: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(evName, evInfo)</span> {</span>
+        moveKey: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(evName, evInfo)</span> {</span>
             <span class="hljs-keyword">var</span> keyCode = evInfo[<span class="hljs-number">0</span>],
                 e = evInfo[<span class="hljs-number">1</span>];
             <span class="hljs-keyword">if</span> (!Dom.inDocument(<span class="hljs-keyword">this</span>.map.mapDiv)) {
                 <span class="hljs-keyword">return</span>;
             }
             <span class="hljs-keyword">switch</span> (e.target.tagName) {
-            <span class="hljs-keyword">case</span> <span class="hljs-string">"INPUT"</span>:
-            <span class="hljs-keyword">case</span> <span class="hljs-string">"SELECT"</span>:
-            <span class="hljs-keyword">case</span> <span class="hljs-string">"TEXTAREA"</span>:
-                <span class="hljs-keyword">return</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"INPUT"</span>:
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"SELECT"</span>:
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"TEXTAREA"</span>:
+                    <span class="hljs-keyword">return</span>;
             }
             <span class="hljs-keyword">if</span> (keyCode === KL.KEY.UP) {
                 <span class="hljs-keyword">this</span>.map.moveByTiles(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (keyCode === KL.KEY.DOWN) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (keyCode === KL.KEY.DOWN) {
                 <span class="hljs-keyword">this</span>.map.moveByTiles(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (keyCode === KL.KEY.LEFT) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (keyCode === KL.KEY.LEFT) {
                 <span class="hljs-keyword">this</span>.map.moveByTiles(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (keyCode === KL.KEY.RIGHT) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (keyCode === KL.KEY.RIGHT) {
                 <span class="hljs-keyword">this</span>.map.moveByTiles(-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>);
             }
         },
-        moveKeyUp: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(evName, evInfo)</span> {</span>
+        moveKeyUp: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(evName, evInfo)</span> {</span>
             <span class="hljs-keyword">var</span> keyCode = evInfo[<span class="hljs-number">0</span>];
             <span class="hljs-keyword">var</span> e = evInfo[<span class="hljs-number">1</span>];
             <span class="hljs-keyword">if</span> (!Dom.inDocument(<span class="hljs-keyword">this</span>.map.mapDiv)) {
                 <span class="hljs-keyword">return</span>;
             }
             <span class="hljs-keyword">switch</span> (e.target.tagName) {
-            <span class="hljs-keyword">case</span> <span class="hljs-string">"INPUT"</span>:
-            <span class="hljs-keyword">case</span> <span class="hljs-string">"SELECT"</span>:
-            <span class="hljs-keyword">case</span> <span class="hljs-string">"TEXTAREA"</span>:
-                <span class="hljs-keyword">return</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"INPUT"</span>:
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"SELECT"</span>:
+                <span class="hljs-keyword">case</span> <span class="hljs-string">"TEXTAREA"</span>:
+                    <span class="hljs-keyword">return</span>;
             }
             <span class="hljs-keyword">this</span>.map.tileLayer.render(<span class="hljs-literal">true</span>);
         }
     };
-    Mapper.iPhoneController = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(map)</span> {</span>
+    Mapper.iPhoneController = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map)</span> {</span>
         <span class="hljs-keyword">this</span>.map = map;
         <span class="hljs-keyword">this</span>.currentX = <span class="hljs-number">0</span>;
         <span class="hljs-keyword">this</span>.currentY = <span class="hljs-number">0</span>;
@@ -1830,20 +1871,20 @@ this.tileLayer.render();
         }
     };
     Mapper.iPhoneController.prototype = {
-        touchStart: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        touchStart: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">if</span> (e.touches.length === <span class="hljs-number">1</span>) { <span class="hljs-comment">// Only deal with one finger</span>
                 <span class="hljs-keyword">var</span> touch = e.touches[<span class="hljs-number">0</span>]; <span class="hljs-comment">// Get the information for finger #1</span>
                 <span class="hljs-keyword">this</span>.currentX = touch.pageX;
                 <span class="hljs-keyword">this</span>.currentY = touch.pageY;
             }
         },
-        touchEnd: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        touchEnd: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">if</span> (e.touches.length === <span class="hljs-number">1</span>) { <span class="hljs-comment">// Only deal with one finger</span>
                 <span class="hljs-keyword">this</span>.currentX = <span class="hljs-number">0</span>;
                 <span class="hljs-keyword">this</span>.currentY = <span class="hljs-number">0</span>;
             }
         },
-        touchMove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        touchMove: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">if</span> (e.touches.length === <span class="hljs-number">1</span>) {
                 e.preventDefault();
                 <span class="hljs-keyword">var</span> touch = e.touches[<span class="hljs-number">0</span>];
@@ -1854,7 +1895,7 @@ this.tileLayer.render();
                 <span class="hljs-keyword">this</span>.currentY = touch.pageY;
             }
         },
-        gestureEnd: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span></pre></div>
+        gestureEnd: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span></pre></div>
       
       </div>
     
@@ -1873,13 +1914,12 @@ this.tileLayer.render();
                 <span class="hljs-keyword">this</span>.map.zoomOut();
             }
         },
-        isDragging: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        isDragging: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         }
     };
     YAHOO.lacuna.Mapper = Mapper;
-})();
-</pre></div>
+})();</pre></div>
       
       </div>
     

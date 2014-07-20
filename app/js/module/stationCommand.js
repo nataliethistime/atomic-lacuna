@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.modules");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -9,7 +9,7 @@ YAHOO.namespace("lacuna.modules");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var StationCommand = function (result) {
+    var StationCommand = function(result) {
         StationCommand.superclass.constructor.call(this, result);
         this.service = Game.Services.Modules.StationCommand;
     };

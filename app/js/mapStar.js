@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -9,7 +9,7 @@ YAHOO.namespace("lacuna");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var MapStar = function () {
+    var MapStar = function() {
         this.createEvent("onMapRpc");
         //this.createEvent("onChangeToSystemView");
         this.createEvent("onChangeToPlanetView");
@@ -23,7 +23,7 @@ YAHOO.namespace("lacuna");
         this._buildFindPanel();
     };
     MapStar.prototype = {
-        _buildDetailsPanel: function () {
+        _buildDetailsPanel: function() {
             var panelId = "starDetails";
             var panel = document.createElement("div");
             panel.id = panelId;
@@ -42,7 +42,7 @@ YAHOO.namespace("lacuna");
                 zIndex: 9997,
                 context: ["header", "tl", "bl"]
             });
-            this.starDetails.addQueue = function (seconds, queueFn, elm, sc) {
+            this.starDetails.addQueue = function(seconds, queueFn, elm, sc) {
                 this.queue = this.queue || [];
                 //check if the queue is empty and store
                 var notStarted = this.queue.length == 0;
@@ -58,7 +58,7 @@ YAHOO.namespace("lacuna");
                     Game.onTick.subscribe(this.processQueue, this, true);
                 }
             };
-            this.starDetails.processQueue = function (e, oArgs) {
+            this.starDetails.processQueue = function(e, oArgs) {
                 if (this.queue.length > 0) {
                     var queue = this.queue,
                         diff = oArgs[0] / 1000,
@@ -72,20 +72,21 @@ YAHOO.namespace("lacuna");
                         callback.fn.call(callback.scope || this, callback.secondsRemaining, callback.el);
                     }
                     this.queue = newq;
-                } else {
+                }
+                else {
                     Game.onTick.unsubscribe(this.processQueue);
                 }
             };
-            this.starDetails.resetQueue = function () {
+            this.starDetails.resetQueue = function() {
                 Game.onTick.unsubscribe(this.processQueue);
                 this.queue = [];
             };
-            this.starDetails.addTab = function (tab) {
+            this.starDetails.addTab = function(tab) {
                 this.removeableTabs = this.removeableTabs || [];
                 this.removeableTabs.push(tab);
                 this.tabView.addTab(tab);
             };
-            this.starDetails.removeTabs = function () {
+            this.starDetails.removeTabs = function() {
                 var rt = this.removeableTabs;
                 if (rt && rt.length > 0) {
                     for (var n = 0; n < rt.length; n++) {
@@ -96,13 +97,13 @@ YAHOO.namespace("lacuna");
                 }
                 this.tabView.selectTab(0);
             };
-            this.starDetails.resetDisplay = function (oSelf) {
+            this.starDetails.resetDisplay = function(oSelf) {
                 delete oSelf.currentShips;
                 delete oSelf.selectedStar;
                 this.resetQueue();
                 this.removeTabs();
             };
-            this.starDetails.renderEvent.subscribe(function () {
+            this.starDetails.renderEvent.subscribe(function() {
                 this.starDetails.tabView = new YAHOO.widget.TabView("starDetailTabs");
                 /*Event.delegate("starDetailsInfo", "click", function(e, matchedEl, container){
                 var data = this.selectedStar;
@@ -113,17 +114,17 @@ YAHOO.namespace("lacuna");
                 }
             }, "button", this, true);*/
             }, this, true);
-            this.starDetails.hideEvent.subscribe(function () {
+            this.starDetails.hideEvent.subscribe(function() {
                 this.starDetails.resetDisplay(this);
             }, this, true);
-            this.starDetails.showEvent.subscribe(function () {
+            this.starDetails.showEvent.subscribe(function() {
                 this.bringToTop();
             });
             this.starDetails.isStarPanel = true;
             this.starDetails.render();
             Game.OverlayManager.register(this.starDetails);
         },
-        _buildPlanetDetailsPanel: function () {
+        _buildPlanetDetailsPanel: function() {
             var panelId = "planetDetails";
             var panel = document.createElement("div");
             panel.id = panelId;
@@ -144,7 +145,7 @@ YAHOO.namespace("lacuna");
                     [-200, 40]
                 ]
             });
-            this.planetDetails.addQueue = function (seconds, queueFn, elm, sc) {
+            this.planetDetails.addQueue = function(seconds, queueFn, elm, sc) {
                 this.queue = this.queue || [];
                 //check if the queue is empty and store
                 var notStarted = this.queue.length == 0;
@@ -160,7 +161,7 @@ YAHOO.namespace("lacuna");
                     Game.onTick.subscribe(this.processQueue, this, true);
                 }
             };
-            this.planetDetails.processQueue = function (e, oArgs) {
+            this.planetDetails.processQueue = function(e, oArgs) {
                 if (this.queue.length > 0) {
                     var queue = this.queue,
                         diff = oArgs[0] / 1000,
@@ -174,20 +175,21 @@ YAHOO.namespace("lacuna");
                         callback.fn.call(callback.scope || this, callback.secondsRemaining, callback.el);
                     }
                     this.queue = newq;
-                } else {
+                }
+                else {
                     Game.onTick.unsubscribe(this.processQueue);
                 }
             };
-            this.planetDetails.resetQueue = function () {
+            this.planetDetails.resetQueue = function() {
                 Game.onTick.unsubscribe(this.processQueue);
                 this.queue = [];
             };
-            this.planetDetails.addTab = function (tab) {
+            this.planetDetails.addTab = function(tab) {
                 this.removeableTabs = this.removeableTabs || [];
                 this.removeableTabs.push(tab);
                 this.tabView.addTab(tab);
             };
-            this.planetDetails.removeTabs = function () {
+            this.planetDetails.removeTabs = function() {
                 var rt = this.removeableTabs;
                 if (rt && rt.length > 0) {
                     for (var n = 0; n < rt.length; n++) {
@@ -197,7 +199,7 @@ YAHOO.namespace("lacuna");
                 }
                 //this.tabView.selectTab(0);
             };
-            this.planetDetails.resetDisplay = function (oSelf) {
+            this.planetDetails.resetDisplay = function(oSelf) {
                 delete oSelf.currentShips;
                 delete oSelf.selectedBody;
                 delete oSelf.selectedTile;
@@ -239,10 +241,10 @@ YAHOO.namespace("lacuna");
                     orbiting.innerHTML = "";
                 }
             };
-            this.planetDetails.renderEvent.subscribe(function () {
+            this.planetDetails.renderEvent.subscribe(function() {
                 Event.delegate("planetDetailsInfo", "click", this.DetailsClick, "button", this, true);
                 var tv = this.planetDetails.tabView = new YAHOO.widget.TabView("planetDetailTabs");
-                var getShips = function (e) {
+                var getShips = function(e) {
                     if (e.newValue) {
                         this.GetShips(this.planetDetails, {
                             body_id: this.selectedBody.id
@@ -276,12 +278,12 @@ YAHOO.namespace("lacuna");
                     "planetDetailSendSpies": 9,
                     "planetDetailFetchSpies": 10
                 };
-                var tabChange = function (e, tabEl) {
+                var tabChange = function(e, tabEl) {
                     if (e.newValue) {
                         this.ShowSpies(tabEl);
                     }
                 },
-                    hideEventFn = function () {
+                    hideEventFn = function() {
                         delete this.avail.spyShips;
                         delete this.avail.spies;
                     };
@@ -305,16 +307,16 @@ YAHOO.namespace("lacuna");
                 }
                 Event.on("planetDetailRenameSubmit", "click", this.Rename, this, true);
             }, this, true);
-            this.planetDetails.hideEvent.subscribe(function () {
+            this.planetDetails.hideEvent.subscribe(function() {
                 this.planetDetails.resetDisplay(this);
             }, this, true);
-            this.planetDetails.showEvent.subscribe(function () {
+            this.planetDetails.showEvent.subscribe(function() {
                 this.bringToTop();
             });
             this.planetDetails.render();
             Game.OverlayManager.register(this.planetDetails);
         },
-        _buildFindPanel: function () {
+        _buildFindPanel: function() {
             var panelId = "starFind";
             var panel = document.createElement("div");
             panel.id = panelId;
@@ -335,7 +337,7 @@ YAHOO.namespace("lacuna");
                     [0, -5]
                 ]
             });
-            this.starFind.createFind = function () {
+            this.starFind.createFind = function() {
                 var dataSource = new Util.XHRDataSource("/map");
                 dataSource.connMethodPost = "POST";
                 dataSource.maxCacheEntries = 2;
@@ -351,10 +353,10 @@ YAHOO.namespace("lacuna");
                     forceSelection: false,
                     useIndicator: true
                 });
-                oTextboxList.formatResult = function (oResultData, sQuery, sResultMatch) {
+                oTextboxList.formatResult = function(oResultData, sQuery, sResultMatch) {
                     return ['<div class="yui-gf">', '    <div class="yui-u first" style="background-color:black;">', '        <img src="', Lib.AssetUrl, 'star_map/', oResultData.color, '.png" alt="', oResultData, name, '" style="width:50px;height:50px;" />', '    </div>', '    <div class="yui-u">', '        <div>', oResultData.name, '</div>', '        <div>', oResultData.x, ' : ', oResultData.y, '</div>', '    </div>', '</div>'].join("");
                 };
-                oTextboxList.generateRequest = function (sQuery) {
+                oTextboxList.generateRequest = function(sQuery) {
                     var s = Lang.JSON.stringify({
                         "id": YAHOO.rpc.Service._requestId++,
                         "method": "search_stars",
@@ -366,32 +368,33 @@ YAHOO.namespace("lacuna");
                     });
                     return s;
                 };
-                oTextboxList.dirtyEvent.subscribe(function (event, isDirty, oSelf) {
+                oTextboxList.dirtyEvent.subscribe(function(event, isDirty, oSelf) {
                     var star = this._oTblSingleSelection.Object;
                     oSelf.X.value = star.x;
                     oSelf.Y.value = star.y;
                 }, this);
                 this.findStar = oTextboxList;
             };
-            this.starFind.renderEvent.subscribe(function () {
+            this.starFind.renderEvent.subscribe(function() {
                 this.starFind.findInput = Dom.get(panelId + "Find");
                 this.starFind.X = Dom.get(panelId + "X");
                 this.starFind.Y = Dom.get(panelId + "Y");
                 Event.on(panelId + "Jump", "click", this.FindJump, this, true);
                 this.starFind.createFind();
             }, this, true);
-            this.starFind.showEvent.subscribe(function () {
+            this.starFind.showEvent.subscribe(function() {
                 this.starFind.findInput.blur();
             }, this, true);
             this.starFind.render();
         },
-        IsVisible: function () {
+        IsVisible: function() {
             return this._isVisible;
         },
-        MapVisible: function (visible) {
+        MapVisible: function(visible) {
             if (visible) {
                 this.starFind.show();
-            } else {
+            }
+            else {
                 this.starFind.hide();
             }
             if (this._isVisible != visible) {
@@ -404,7 +407,8 @@ YAHOO.namespace("lacuna");
                                 .appendChild(this._elGrid);
                         }
                         //Dom.setStyle(this._elGrid, "display", visible ? "" : "none");
-                    } else {
+                    }
+                    else {
                         this._elGrid = this._elGrid.parentNode.removeChild(this._elGrid);
                     }
                     if (visible) {
@@ -413,21 +417,21 @@ YAHOO.namespace("lacuna");
                 }
             }
         },
-        FindJump: function () {
+        FindJump: function() {
             var x = this.starFind.X.value * 1,
                 y = this.starFind.Y.value * 1;
             if (Lang.isNumber(x) && Lang.isNumber(y)) {
                 this.Jump(x, y);
             }
         },
-        Jump: function (xC, yC) {
+        Jump: function(xC, yC) {
             this.LoadGrid({
                 x: xC,
                 //(xC-1),
                 y: yC //(yC+1)
             });
         },
-        Load: function () {
+        Load: function() {
             var cId = Game.GetCurrentPlanet()
                 .id;
             if (cId) {
@@ -440,7 +444,7 @@ YAHOO.namespace("lacuna");
                 }
             }
         },
-        LoadGrid: function (loc) {
+        LoadGrid: function(loc) {
             Lacuna.Pulser.Show();
             if (!this._gridCreated) {
                 var starMap = document.createElement("div");
@@ -457,26 +461,28 @@ YAHOO.namespace("lacuna");
                 this._map = map;
                 this._gridCreated = true;
                 Event.delegate(this._map.mapDiv, "click", this.GridClick, "div.tile", this, true);
-            } else {
+            }
+            else {
                 //move to current planet
                 this._map.setCenterTo(loc.x, loc.y);
             }
             this.MapVisible(true);
             Lacuna.Pulser.Hide();
         },
-        GridClick: function (e, matchedEl, container) {
+        GridClick: function(e, matchedEl, container) {
             if (!this._map.controller.isDragging()) {
                 var tile = this._map.tileLayer.findTileById(matchedEl.id);
                 if (tile && tile.data) {
                     if (tile.data.isStar) {
                         this.ShowStar(tile);
-                    } else if (tile.data.isPlanet) {
+                    }
+                    else if (tile.data.isPlanet) {
                         this.ShowPlanet(tile);
                     }
                 }
             }
         },
-        DetailsClick: function (e, matchedEl, container) {
+        DetailsClick: function(e, matchedEl, container) {
             if (this.selectedBody) {
                 if (matchedEl.innerHTML == "View") {
                     var id = this.selectedBody.id;
@@ -485,23 +491,23 @@ YAHOO.namespace("lacuna");
                 }
             }
         },
-        SetSize: function () {
+        SetSize: function() {
             var size = Game.GetSize();
             Dom.setStyle(this._elGrid, "width", size.w + "px");
             Dom.setStyle(this._elGrid, "height", size.h + "px");
         },
-        Resize: function () {
+        Resize: function() {
             this.SetSize();
             this._map.resize();
         },
-        Reset: function () {
+        Reset: function() {
             delete this.locationId;
             if (this._map) {
                 this._map.reset();
             }
             this.MapVisible(false);
         },
-        PopulateShipsIncomingTab: function (panel) {
+        PopulateShipsIncomingTab: function(panel) {
             var ships = this.currentShips.incoming || [],
                 details = Dom.get(panel.isStarPanel ? "starDetailIncomingShips" : "planetDetailIncomingShips");
             if (ships.length > 0) {
@@ -509,12 +515,14 @@ YAHOO.namespace("lacuna");
                 details.innerHTML = '';
                 var li = document.createElement("li");
                 ships = ships.slice(0);
-                ships.sort(function (a, b) {
+                ships.sort(function(a, b) {
                     if (a.date_arrives > b.date_arrives) {
                         return 1;
-                    } else if (a.date_arrives < b.date_arrives) {
+                    }
+                    else if (a.date_arrives < b.date_arrives) {
                         return -1;
-                    } else {
+                    }
+                    else {
                         return 0;
                     }
                 });
@@ -530,11 +538,12 @@ YAHOO.namespace("lacuna");
                     panel.addQueue(sec, this.ArrivesQueue, nLi);
                     details.appendChild(nLi);
                 }
-            } else {
+            }
+            else {
                 details.innerHTML = '<li>No Incoming ships</li>';
             }
             //wait for tab to display first
-            setTimeout(function () {
+            setTimeout(function() {
                 var Ht = Game.GetSize()
                     .h - 330;
                 if (Ht > 240) {
@@ -544,17 +553,18 @@ YAHOO.namespace("lacuna");
                 Dom.setStyle(details.parentNode, "overflow-y", "auto");
             }, 10);
         },
-        ArrivesQueue: function (remaining, elLine) {
+        ArrivesQueue: function(remaining, elLine) {
             var arrTime;
             if (remaining <= 0) {
                 arrTime = 'Overdue ' + Lib.formatTime(Math.round(-remaining));
-            } else {
+            }
+            else {
                 arrTime = Lib.formatTime(Math.round(remaining));
             }
             Sel.query(".shipArrives", elLine, true)
                 .innerHTML = arrTime;
         },
-        PopulateShipsSendTab: function (panel) {
+        PopulateShipsSendTab: function(panel) {
             var ships = this.currentShips.available,
                 details = Dom.get(panel.isStarPanel ? "starDetailSendShips" : "planetDetailSendShips"),
                 detailsParent = details.parentNode,
@@ -564,7 +574,8 @@ YAHOO.namespace("lacuna");
             details.innerHTML = "";
             if (ships.length === 0) {
                 details.innerHTML = "No available ships to send.";
-            } else {
+            }
+            else {
                 for (var i = 0; i < ships.length; i++) {
                     var ship = ships[i],
                         nLi = li.cloneNode(false);
@@ -584,7 +595,7 @@ YAHOO.namespace("lacuna");
             }
             detailsParent.appendChild(details); //add back as child
             //wait for tab to display first
-            setTimeout(function () {
+            setTimeout(function() {
                 var Ht = Game.GetSize()
                     .h - 330;
                 if (Ht > 240) {
@@ -594,7 +605,7 @@ YAHOO.namespace("lacuna");
                 Dom.setStyle(detailsParent, "overflow-y", "auto");
             }, 10);
         },
-        ShipSend: function () {
+        ShipSend: function() {
             var oSelf = this.Self,
                 ship = this.Ship,
                 target, targetName, panel;
@@ -604,7 +615,8 @@ YAHOO.namespace("lacuna");
                 };
                 targetName = oSelf.selectedBody.name;
                 panel = oSelf.planetDetails;
-            } else if (oSelf.selectedStar) {
+            }
+            else if (oSelf.selectedStar) {
                 target = {
                     star_id: oSelf.selectedStar.id
                 };
@@ -617,7 +629,7 @@ YAHOO.namespace("lacuna");
                     ship_id: ship.id,
                     target: target
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "MapStar.ShipSend.send_ship.success");
                         Lacuna.Pulser.Hide();
                         this.Self.fireEvent("onMapRpc", o.result);
@@ -630,13 +642,13 @@ YAHOO.namespace("lacuna");
                 });
             }
         },
-        NotIsolationist: function (ship) {
+        NotIsolationist: function(ship) {
             if (Game.EmpireData.is_isolationist == "1" && (ship.type == "colony_ship" || ship.type == "short_range_colony_ship")) {
                 return confirm("If you colonize another planet you will no longer be considered an Isolationist and you will be open to attack.  Are you sure you want to do this?");
             }
             return true;
         },
-        PopulateFleetSendTab: function (panel) {
+        PopulateFleetSendTab: function(panel) {
             var ships = this.currentShips.available,
                 details = Dom.get(panel.isStarPanel ? "starDetailSendFleet" : "planetDetailSendFleet"),
                 btn = Dom.get(panel.isStarPanel ? "starDetailSendFleetSubmit" : "planetDetailSendFleetSubmit"),
@@ -647,7 +659,8 @@ YAHOO.namespace("lacuna");
             if (ships.length === 0) {
                 details.innerHTML = "No available ships to send.";
                 btn.disabled = true;
-            } else {
+            }
+            else {
                 btn.disabled = false;
                 for (var i = 0; i < ships.length; i++) {
                     var ship = ships[i],
@@ -664,7 +677,7 @@ YAHOO.namespace("lacuna");
             }
             detailsParent.appendChild(details); //add back as child
             //wait for tab to display first
-            setTimeout(function () {
+            setTimeout(function() {
                 var Ht = Game.GetSize()
                     .h - 330;
                 if (Ht > 240) {
@@ -674,7 +687,7 @@ YAHOO.namespace("lacuna");
                 Dom.setStyle(detailsParent, "overflow-y", "auto");
             }, 10);
         },
-        FleetSend: function (e) {
+        FleetSend: function(e) {
             var target, targetName, panel, btn = Event.getTarget(e);
             btn.disabled = true;
             if (this.selectedBody) {
@@ -683,7 +696,8 @@ YAHOO.namespace("lacuna");
                 };
                 targetName = this.selectedBody.name;
                 panel = this.planetDetails;
-            } else if (this.selectedStar) {
+            }
+            else if (this.selectedStar) {
                 target = {
                     star_id: this.selectedStar.id
                 };
@@ -710,18 +724,20 @@ YAHOO.namespace("lacuna");
                     if (speed < 0) {
                         alert('Set speed cannot be less than zero.');
                         btn.disabled = false;
-                    } else {
+                    }
+                    else {
                         if (speed > 0 && speed > minSpeed) {
                             alert('Set speed cannot exceed the speed of the slowest ship.');
                             btn.disabled = false;
-                        } else {
+                        }
+                        else {
                             Game.Services.Buildings.SpacePort.send_fleet({
                                 session_id: Game.GetSession(),
                                 ship_ids: shipIds,
                                 target: target,
                                 set_speed: speed
                             }, {
-                                success: function (o) {
+                                success: function(o) {
                                     Lacuna.Pulser.Hide();
                                     this.fireEvent("onMapRpc", o.result);
                                     delete this.currentShips;
@@ -729,7 +745,7 @@ YAHOO.namespace("lacuna");
                                     details.innerHTML = '<li>Sent ' + o.result.fleet.length + ' ships!</li>';
                                     this.GetShips(panel, target);
                                 },
-                                failure: function (o) {
+                                failure: function(o) {
                                     btn.disabled = false;
                                 },
                                 scope: this
@@ -737,11 +753,12 @@ YAHOO.namespace("lacuna");
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 btn.disabled = false;
             }
         },
-        NotFleetIsolationist: function (ships) {
+        NotFleetIsolationist: function(ships) {
             if (Game.EmpireData.is_isolationist == "1") {
                 var hasIsoShip;
                 for (var n = 0; n < ships.length; n++) {
@@ -756,7 +773,7 @@ YAHOO.namespace("lacuna");
             }
             return true;
         },
-        PopulateShipsUnavailTab: function (panel) {
+        PopulateShipsUnavailTab: function(panel) {
             var ships = this.currentShips.unavailable,
                 details = Dom.get(panel.isStarPanel ? "starDetailUnavailShips" : "planetDetailUnavailShips"),
                 detailsParent = details.parentNode,
@@ -766,7 +783,8 @@ YAHOO.namespace("lacuna");
             details.innerHTML = "";
             if (ships.length === 0) {
                 details.innerHTML = "No unavailable ships.";
-            } else {
+            }
+            else {
                 for (var i = 0; i < ships.length; i++) {
                     var ship = ships[i].ship,
                         nLi = li.cloneNode(false);
@@ -777,7 +795,7 @@ YAHOO.namespace("lacuna");
             }
             detailsParent.appendChild(details); //add back as child
             //wait for tab to display first
-            setTimeout(function () {
+            setTimeout(function() {
                 var Ht = Game.GetSize()
                     .h - 330;
                 if (Ht > 240) {
@@ -787,7 +805,7 @@ YAHOO.namespace("lacuna");
                 Dom.setStyle(detailsParent, "overflow-y", "auto");
             }, 10);
         },
-        PopulateShipsOrbitingTab: function (panel) {
+        PopulateShipsOrbitingTab: function(panel) {
             var ships = this.currentShips.orbiting || [],
                 details = Dom.get("planetDetailOrbitingShips"),
                 detailsParent = details.parentNode,
@@ -797,7 +815,8 @@ YAHOO.namespace("lacuna");
             details.innerHTML = "";
             if (ships.length === 0) {
                 details.innerHTML = "No orbiting ships.";
-            } else {
+            }
+            else {
                 for (var i = 0; i < ships.length; i++) {
                     var ship = ships[i],
                         nLi = li.cloneNode(false);
@@ -808,7 +827,7 @@ YAHOO.namespace("lacuna");
             }
             detailsParent.appendChild(details); //add back as child
             //wait for tab to display first
-            setTimeout(function () {
+            setTimeout(function() {
                 var Ht = Game.GetSize()
                     .h - 330;
                 if (Ht > 240) {
@@ -818,7 +837,7 @@ YAHOO.namespace("lacuna");
                 Dom.setStyle(detailsParent, "overflow-y", "auto");
             }, 10);
         },
-        PopulateShipsMiningPlatforms: function (panel) {
+        PopulateShipsMiningPlatforms: function(panel) {
             var ships = this.currentShips.mining_platforms || [];
             details = Dom.get("planetDetailMiningShips");
             if (details) {
@@ -837,12 +856,13 @@ YAHOO.namespace("lacuna");
                         Event.on(nLi, "click", this.ShowEmpire, ship.empire_id);
                         details.appendChild(nLi);
                     }
-                } else {
+                }
+                else {
                     details.innerHTML = '<li>No mining ships</li>';
                 }
                 parent.appendChild(details);
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 330;
                     if (Ht > 240) {
@@ -853,7 +873,7 @@ YAHOO.namespace("lacuna");
                 }, 10);
             }
         },
-        PopulateShipsExcavators: function (panel) {
+        PopulateShipsExcavators: function(panel) {
             var ships = this.currentShips.excavators || [];
             details = Dom.get("planetDetailExcavators");
             if (details) {
@@ -872,12 +892,13 @@ YAHOO.namespace("lacuna");
                         Event.on(nLi, "click", this.ShowEmpire, ship.empire_id);
                         details.appendChild(nLi);
                     }
-                } else {
+                }
+                else {
                     details.innerHTML = '<li>No excavators</li>';
                 }
                 parent.appendChild(details);
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 330;
                     if (Ht > 240) {
@@ -888,10 +909,10 @@ YAHOO.namespace("lacuna");
                 }, 10);
             }
         },
-        ShowEmpire: function (e, id) {
+        ShowEmpire: function(e, id) {
             Lacuna.Info.Empire.Load(id);
         },
-        GetShips: function (panel, target) {
+        GetShips: function(panel, target) {
             if (!this.currentShips) {
                 Lacuna.Pulser.Show();
                 Game.Services.Buildings.SpacePort.get_ships_for({
@@ -900,7 +921,7 @@ YAHOO.namespace("lacuna");
                         .id,
                     target: target
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "MapStar.ShowStar.get_ships_for.success");
                         Lacuna.Pulser.Hide();
                         this.fireEvent("onMapRpc", o.result);
@@ -922,7 +943,7 @@ YAHOO.namespace("lacuna");
                 });
             }
         },
-        ShowStar: function (tile, keepOpen) {
+        ShowStar: function(tile, keepOpen) {
             if (!keepOpen) {
                 Game.OverlayManager.hideAllBut(this.starDetails.id);
             }
@@ -941,7 +962,7 @@ YAHOO.namespace("lacuna");
             });
             panel.show();
         },
-        ShowPlanet: function (tile, keepOpen) {
+        ShowPlanet: function(tile, keepOpen) {
             if (!keepOpen) {
                 Game.OverlayManager.hideAllBut(this.planetDetails.id);
             }
@@ -952,7 +973,7 @@ YAHOO.namespace("lacuna");
                     body_id: tile.data.id
                 }
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "ShowPlanet.get_status.success");
                     var body = o.result.body,
                         tab, tabs, empire = body.empire || {
@@ -1009,10 +1030,11 @@ YAHOO.namespace("lacuna");
                     if (empire.id) {
                         Dom.setStyle("planetDetailsEmpire", "cursor", "pointer");
                         Dom.setStyle("planetDetailsEmpire", "text-decoration", "underline");
-                        Event.on("planetDetailsEmpire", "click", function () {
+                        Event.on("planetDetailsEmpire", "click", function() {
                             Lacuna.Info.Empire.Load(this.id);
                         }, empire, true);
-                    } else {
+                    }
+                    else {
                         Dom.setStyle("planetDetailsEmpire", "cursor", "normal");
                         Dom.setStyle("planetDetailsEmpire", "text-decoration", "none");
                         Event.removeListener("planetDetailsEmpire", "click");
@@ -1024,7 +1046,8 @@ YAHOO.namespace("lacuna");
                         }
                         Dom.get("planetDetailNewName")
                             .value = "";
-                    } else {
+                    }
+                    else {
                         tabs = panel.tabView.get("tabs");
                         for (var nt = 0; nt < tabs.length; nt++) {
                             tab = panel.tabView.getTab(nt);
@@ -1042,12 +1065,14 @@ YAHOO.namespace("lacuna");
                             if (tab && tab.get("label") == this._sendSpiesLabel) {
                                 panel.sendSpiesTab = tab;
                                 panel.tabView.removeTab(tab);
-                            } else if (tab && tab.get("label") == this._fetchSpiesLabel) {
+                            }
+                            else if (tab && tab.get("label") == this._fetchSpiesLabel) {
                                 panel.fetchSpiesTab = tab;
                                 panel.tabView.removeTab(tab);
                             }
                         }
-                    } else {
+                    }
+                    else {
                         if (panel.sendSpiesTab) {
                             panel.tabView.addTab(panel.sendSpiesTab);
                             delete panel.sendSpiesTab;
@@ -1062,7 +1087,8 @@ YAHOO.namespace("lacuna");
                             panel.tabView.addTab(panel.miningTab);
                             delete panel.miningTab;
                         }
-                    } else {
+                    }
+                    else {
                         tabs = panel.tabView.get("tabs");
                         for (var mnt = tabs.length; mnt >= 0; mnt--) {
                             tab = panel.tabView.getTab(mnt);
@@ -1082,14 +1108,14 @@ YAHOO.namespace("lacuna");
                     panel.tabView.selectTab(0);
                     panel.show();
                 },
-                failure: function (o) {
+                failure: function(o) {
                     YAHOO.log(o, "info", "ShowPlanet.get_status.fail");
                     return true;
                 },
                 scope: this
             });
         },
-        Rename: function () {
+        Rename: function() {
             var newName = Dom.get("planetDetailNewName")
                 .value;
             Game.Services.Body.rename({
@@ -1097,7 +1123,7 @@ YAHOO.namespace("lacuna");
                 body_id: this.selectedBody.id,
                 name: newName
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "MapStar.Rename.success");
                     if (o.result && this.selectedBody) {
                         Dom.get("planetDetailRenameMessage")
@@ -1116,7 +1142,7 @@ YAHOO.namespace("lacuna");
                         this.selectedBody.name = newName;
                     }
                 },
-                failure: function (o) {
+                failure: function(o) {
                     Dom.get("planetDetailRenameMessage")
                         .innerHTML = o.error.message;
                     Lib.fadeOutElm("planetDetailRenameMessage");
@@ -1125,7 +1151,7 @@ YAHOO.namespace("lacuna");
                 scope: this
             });
         },
-        ShowSpies: function (tab) {
+        ShowSpies: function(tab) {
             Dom.setStyle(tab.elSpiesPane, 'display', 'block');
             Dom.setStyle(tab.elSpyShipsPane, 'display', 'none');
             if (tab.avail && tab.avail.spies && tab.avail.spyShips) {
@@ -1145,7 +1171,8 @@ YAHOO.namespace("lacuna");
                         .id,
                     to_body_id: this.selectedBody.id
                 };
-            } else {
+            }
+            else {
                 method = 'prepare_fetch_spies';
                 data = {
                     session_id: Game.GetSession(),
@@ -1155,7 +1182,7 @@ YAHOO.namespace("lacuna");
                 };
             }
             Game.Services.Buildings.SpacePort[method](data, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "MapStar.ShowSpies." + method + ".success");
                     this.fireEvent("onMapRpc", o.result);
                     Lacuna.Pulser.Hide();
@@ -1168,7 +1195,7 @@ YAHOO.namespace("lacuna");
                 scope: this
             });
         },
-        populateSpies: function (tab) {
+        populateSpies: function(tab) {
             var list = tab.elSpiesList;
             var spies = tab.avail.spies;
             var ships = tab.avail.spyShips;
@@ -1189,7 +1216,8 @@ YAHOO.namespace("lacuna");
             }
             if (maxSpies == 0) {
                 tab.elMessage.innerHTML = 'No ships available.';
-            } else {
+            }
+            else {
                 tab.elMessage.innerHTML = 'Select up to ' + maxSpies + ' spies to ' + verb + ':';
                 Dom.setStyle(tab.elSendButton, 'display', 'inline');
             }
@@ -1210,13 +1238,13 @@ YAHOO.namespace("lacuna");
             }
             Dom.setStyle(list, 'height', Ht + 'px');
         },
-        MoveSpies: function (e, tab) {
+        MoveSpies: function(e, tab) {
             Event.stopEvent(e);
             var spies = [];
             var ships = tab.avail.spyShips;
             var list = tab.elSpyShipsList;
             var verb = tab.id == 'planetDetailSendSpies' ? 'send' : 'fetch';
-            Dom.batch(tab.elSpiesList.getElementsByTagName('input'), function (el) {
+            Dom.batch(tab.elSpiesList.getElementsByTagName('input'), function(el) {
                 if (el.checked) {
                     spies.push(el.value);
                 }
@@ -1253,7 +1281,7 @@ YAHOO.namespace("lacuna");
             Dom.setStyle(tab.elSpiesPane, 'display', 'none');
             Dom.setStyle(tab.elSpyShipsPane, 'display', 'block');
         },
-        MoveSpyShip: function (e, matchedEl, tab) {
+        MoveSpyShip: function(e, matchedEl, tab) {
             Event.stopEvent(e);
             Lacuna.Pulser.Show();
             var shipId = matchedEl.parentNode.parentNode.parentNode.shipId,
@@ -1270,7 +1298,8 @@ YAHOO.namespace("lacuna");
                 data.on_body_id = Game.GetCurrentPlanet()
                     .id;
                 data.to_body_id = this.selectedBody.id;
-            } else {
+            }
+            else {
                 successMessage = 'Spies fetched!';
                 method = Game.Services.Buildings.SpacePort.fetch_spies;
                 data.on_body_id = this.selectedBody.id;
@@ -1278,7 +1307,7 @@ YAHOO.namespace("lacuna");
                     .id;
             }
             method(data, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     this.fireEvent("onMapRpc", o.result);
                     alert(successMessage + '  Arrival time: ' + Lib.formatServerDateShort(o.result.ship.date_arrives));
@@ -1289,7 +1318,7 @@ YAHOO.namespace("lacuna");
                 scope: this
             });
         },
-        MoveSpiesCancel: function (e, tab) {
+        MoveSpiesCancel: function(e, tab) {
             Event.stopEvent(e);
             Dom.setStyle(tab.elSpiesPane, 'display', 'block');
             Dom.setStyle(tab.elSpyShipsPane, 'display', 'none');

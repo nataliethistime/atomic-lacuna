@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -35,7 +35,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> Notify = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Notify = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
         <span class="hljs-keyword">this</span>.skip_incoming_ships = {};
         <span class="hljs-keyword">this</span>.incoming_own = {};
         <span class="hljs-keyword">this</span>.num_incoming_own = {};
@@ -45,7 +45,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         <span class="hljs-keyword">this</span>.num_incoming_enemy = {};
     };
     Notify.prototype = {
-        _createDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _createDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.Display) {
                 <span class="hljs-keyword">var</span> container = document.createElement(<span class="hljs-string">"div"</span>);
                 container.id = <span class="hljs-string">"notify"</span>;
@@ -66,22 +66,22 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                         [<span class="hljs-number">0</span>, <span class="hljs-number">40</span>]
                     ]
                 });
-                <span class="hljs-keyword">this</span>.Display.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.Display.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">this</span>.notifyList = Dom.get(<span class="hljs-string">'notifyList'</span>);
                     <span class="hljs-keyword">this</span>.notify = Dom.get(<span class="hljs-string">"notify"</span>);
                     Dom.removeClass(<span class="hljs-keyword">this</span>.notify, Lib.Styles.HIDDEN);
                 });
-                <span class="hljs-keyword">this</span>.Display.showEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.Display.showEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     Dom.setStyle(<span class="hljs-keyword">this</span>.notifyList.parentNode, <span class="hljs-string">"max-height"</span>, (Game.GetSize()
                         .h - <span class="hljs-number">125</span>) + <span class="hljs-string">"px"</span>);
                 });
                 <span class="hljs-keyword">this</span>.Display.render();
             }
         },
-        _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-string">'    &lt;div class="hd" style="background:transparent;"&gt;Incoming Ships.&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="bd" style="background: url('</span>, Lib.AssetUrl, <span class="hljs-string">'ui/transparent_black.png) repeat scroll 0pt 0pt transparent;"&gt;'</span>, <span class="hljs-string">'        &lt;div style="overflow:auto;"&gt;'</span>, <span class="hljs-string">'            &lt;ul id="notifyList"&gt;&lt;/ul&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
         },
-        _updating: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _updating: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> list = <span class="hljs-keyword">this</span>.Display.notifyList;
             <span class="hljs-keyword">var</span> incoming_own = <span class="hljs-keyword">this</span>.incoming_own[<span class="hljs-keyword">this</span>.planetId] || [],
                 incoming_ally = <span class="hljs-keyword">this</span>.incoming_ally[<span class="hljs-keyword">this</span>.planetId] || [],
@@ -110,7 +110,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                         arrTime;
                     <span class="hljs-keyword">if</span> (ms &gt; <span class="hljs-number">0</span>) {
                         arrTime = Lib.formatMillisecondTime(ms);
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         arrTime = <span class="hljs-string">'Overdue '</span> + Lib.formatMillisecondTime(-ms);
                     }
                     arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#fff;"&gt;'</span>, arrTime, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>]);
@@ -125,7 +126,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                     ms = Lib.getTime(ship.date_arrives) - serverTime;
                     <span class="hljs-keyword">if</span> (ms &gt; <span class="hljs-number">0</span>) {
                         arrTime = Lib.formatMillisecondTime(ms);
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         arrTime = <span class="hljs-string">'Overdue '</span> + Lib.formatMillisecondTime(-ms);
                     }
                     arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#b0b;"&gt;'</span>, arrTime, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>]);
@@ -140,7 +142,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                     ms = Lib.getTime(ship.date_arrives) - serverTime;
                     <span class="hljs-keyword">if</span> (ms &gt; <span class="hljs-number">0</span>) {
                         arrTime = Lib.formatMillisecondTime(ms);
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         arrTime = <span class="hljs-string">'Overdue '</span> + Lib.formatMillisecondTime(-ms);
                     }
                     arr = arr.concat([<span class="hljs-string">'&lt;li&gt;&lt;span style="color:#0f0;"&gt;'</span>, arrTime, <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>]);
@@ -152,7 +155,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             list.innerHTML = arr.join(<span class="hljs-string">''</span>);
             <span class="hljs-keyword">this</span>.Display.show();
         },
-        Load: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(planet)</span> {</span>
+        Load: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(planet)</span> {</span>
             <span class="hljs-keyword">var</span> incoming_own = planet.incoming_own_ships || [],
                 incoming_ally = planet.incoming_ally_ships || [],
                 incoming_enemy = planet.incoming_enemy_ships || [],
@@ -180,14 +183,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-keyword">this</span>.Display.show();
             <span class="hljs-keyword">this</span>.Display.bringToTop();
         },
-        Show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(planetId)</span> {</span>
+        Show: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(planetId)</span> {</span>
             <span class="hljs-keyword">this</span>.planetId = planetId;
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.Display) {
                 <span class="hljs-keyword">this</span>.Display.show();
                 <span class="hljs-keyword">this</span>.Display.bringToTop();
             }
         },
-        Hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        Hide: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.Display) {
                 <span class="hljs-keyword">this</span>.Display.hide();
             }
@@ -195,8 +198,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         }
     };
     Lacuna.Notify = <span class="hljs-keyword">new</span> Notify();
-})();
-</pre></div>
+})();</pre></div>
       
       </div>
     

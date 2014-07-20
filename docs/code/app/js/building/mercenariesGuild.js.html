@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -37,7 +37,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> MercenariesGuild = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+    <span class="hljs-keyword">var</span> MercenariesGuild = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> {</span>
         MercenariesGuild.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
         <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.MercenariesGuild;
         <span class="hljs-keyword">this</span>.availableAcceptText = <span class="hljs-string">"Accept"</span>;
@@ -47,7 +47,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
         <span class="hljs-keyword">this</span>.spySize = <span class="hljs-number">350</span>;
         <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onLoadSpies"</span>);
         <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.building.level &gt; <span class="hljs-number">0</span>) {
-            <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">this</span>.getSpies();
                 <span class="hljs-keyword">this</span>.mine.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.getMine, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
                 <span class="hljs-keyword">this</span>.avail.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.getAvailable, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
@@ -56,7 +56,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
         }
     };
     Lang.extend(MercenariesGuild, Lacuna.buildings.Building, {
-        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.availablePager) {
                 <span class="hljs-keyword">this</span>.availablePager.destroy();
             }
@@ -65,25 +65,25 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             }
             MercenariesGuild.superclass.destroy.call(<span class="hljs-keyword">this</span>);
         },
-        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.mineTabIndex = <span class="hljs-number">2</span>; <span class="hljs-comment">//array location plus 1 since Production tab is always first</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getAvailTab(), <span class="hljs-keyword">this</span>._getMineTab(), <span class="hljs-keyword">this</span>._getAddTab()];
         },
-        _getAvailTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getAvailTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.avail = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Available Mercs"</span>,
                 content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;ul class="tradeHeader tradeInfo clearafter"&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeEmpire"&gt;Empire&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeOfferedDate"&gt;Offered Date&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeAsking"&gt;Cost&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeOffer"&gt;Offering&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeAction"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeAction"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;&lt;div id="tradeAvailableDetails"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div id="tradeAvailablePaginator"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
             });
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.avail;
         },
-        _getMineTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getMineTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.mine = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"My Mercs"</span>,
                 content: [<span class="hljs-string">'&lt;div class="myMercenariesGuilds"&gt;'</span>, <span class="hljs-string">'    &lt;ul class="tradeHeader tradeInfo clearafter"&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeOfferedDate"&gt;Offered Date&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeAsking"&gt;Cost&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeOffer"&gt;Offering&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeAction"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;&lt;div id="tradeMineDetails"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div id="tradeMinePaginator"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
             });
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.mine;
         },
-        _getAddTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getAddTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.add = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Add Merc"</span>,
                 content: [<span class="hljs-string">'&lt;div id="aHt"&gt;'</span>, <span class="hljs-string">'&lt;ul style="margin-top:5px;"&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Spy:&lt;/label&gt;&lt;select id="tradeAddSpyName"&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li style="margin: 5px 0;"&gt;&lt;label&gt;Asking Essentia:&lt;/label&gt;&lt;input type="text" id="tradeAddAskingQuantity" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li style="margin-bottom:5px;"&gt;&lt;label&gt;With Ship:&lt;/label&gt;&lt;select id="tradeAddShip"&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li id="tradeAddMessage" class="alert"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;/ul&gt;&lt;/div&gt;&lt;button id="tradeAdd" type="button"&gt;'</span>, <span class="hljs-keyword">this</span>.addMercenariesGuildText, <span class="hljs-string">'&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>)
@@ -92,14 +92,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             Event.on(<span class="hljs-string">"tradeAdd"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.AddMerc, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.add;
         },
-        getSpies: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(force)</span> {</span>
+        getSpies: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(force)</span> {</span>
             <span class="hljs-keyword">if</span> (force || !<span class="hljs-keyword">this</span>.spies) {
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">this</span>.service.get_spies({
                     session_id: Game.GetSession(<span class="hljs-string">""</span>),
                     building_id: <span class="hljs-keyword">this</span>.building.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">this</span>.spies = o.result.spies;
                         <span class="hljs-keyword">this</span>.spySize = o.result.cargo_space_used_each || <span class="hljs-keyword">this</span>.spySize;
@@ -111,7 +111,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             }
         },
         <span class="hljs-comment">//View Available</span>
-        getAvailable: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        getAvailable: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">if</span> (e.newValue &amp;&amp; !<span class="hljs-keyword">this</span>.availableMercs) {
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">var</span> data = {
@@ -120,7 +120,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     page_number: <span class="hljs-number">1</span>
                 };
                 <span class="hljs-keyword">this</span>.service.view_market(data, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">delete</span> o.result.status; <span class="hljs-comment">//get rid of status after we process it, since it's big</span>
@@ -140,7 +140,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
             }
         },
-        AvailablePopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        AvailablePopulate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"tradeAvailableDetails"</span>);
             <span class="hljs-keyword">if</span> (details) {
                 <span class="hljs-keyword">var</span> trades = <span class="hljs-keyword">this</span>.availableMercs.trades,
@@ -200,7 +200,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     details.appendChild(nUl);
                 }
                 <span class="hljs-comment">//wait for tab to display first</span>
-                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">var</span> Ht = Game.GetSize()
                         .h - <span class="hljs-number">240</span>;
                     <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
@@ -212,7 +212,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }, <span class="hljs-number">10</span>);
             }
         },
-        AvailableHandlePagination: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newState)</span> {</span>
+        AvailableHandlePagination: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newState)</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">var</span> data = {
                 session_id: Game.GetSession(),
@@ -220,7 +220,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 page_number: newState.page
             };
             <span class="hljs-keyword">this</span>.service.view_market(data, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">delete</span> o.result.status; <span class="hljs-comment">//get rid of status after we process it, since it's big</span>
@@ -242,7 +242,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
       
         <div class="code"><pre class="wrapper">            <span class="hljs-keyword">this</span>.availablePager.setState(newState);
         },
-        AvailableAccept: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        AvailableAccept: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
             btn.disabled = <span class="hljs-literal">true</span>;
             Lacuna.Pulser.Show();
@@ -251,7 +251,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 building_id: <span class="hljs-keyword">this</span>.Self.building.id,
                 trade_id: <span class="hljs-keyword">this</span>.MercenariesGuild.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"MercenariesGuild.accept_trade.success"</span>);
                     <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
                     <span class="hljs-comment">//force get the new availabe list after accepting so we get a new captcha</span>
@@ -261,13 +261,13 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     });
                     Lacuna.Pulser.Hide();
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        AvailableReport: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        AvailableReport: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
             btn.disabled = <span class="hljs-literal">true</span>;
             Lacuna.Pulser.Show();
@@ -276,23 +276,23 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 building_id: <span class="hljs-keyword">this</span>.Self.building.id,
                 trade_id: <span class="hljs-keyword">this</span>.MercenariesGuild.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     Event.purgeElement(btn);
                     btn.parentNode.removeChild(btn);
                     <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
                     Lacuna.Pulser.Hide();
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        EmpireProfile: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, empire)</span> {</span>
+        EmpireProfile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, empire)</span> {</span>
             Lacuna.Info.Empire.Load(empire.id);
         },
         <span class="hljs-comment">//View Mine</span>
-        getMine: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        getMine: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">if</span> (e.newValue &amp;&amp; !<span class="hljs-keyword">this</span>.mineMercs) {
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">this</span>.service.view_my_market({
@@ -300,7 +300,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     building_id: <span class="hljs-keyword">this</span>.building.id,
                     page_number: <span class="hljs-number">1</span>
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">delete</span> o.result.status; <span class="hljs-comment">//get rid of status after we process it, since it's big</span>
@@ -320,7 +320,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
             }
         },
-        MinePopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        MinePopulate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"tradeMineDetails"</span>);
             <span class="hljs-keyword">if</span> (details) {
                 <span class="hljs-keyword">var</span> trades = <span class="hljs-keyword">this</span>.mineMercs.trades,
@@ -362,7 +362,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     details.appendChild(nUl);
                 }
                 <span class="hljs-comment">//wait for tab to display first</span>
-                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">var</span> Ht = Game.GetSize()
                         .h - <span class="hljs-number">240</span>;
                     <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
@@ -374,14 +374,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }, <span class="hljs-number">10</span>);
             }
         },
-        MineHandlePagination: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newState)</span> {</span>
+        MineHandlePagination: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newState)</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.service.view_my_market({
                 session_id: Game.GetSession(),
                 building_id: <span class="hljs-keyword">this</span>.building.id,
                 page_number: newState.page
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"MercenariesGuild.view_available_trades.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
@@ -404,7 +404,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
       
         <div class="code"><pre class="wrapper">            <span class="hljs-keyword">this</span>.minePage.setState(newState);
         },
-        MineWithdraw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        MineWithdraw: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
             btn.disabled = <span class="hljs-literal">true</span>;
             <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">'Are you sure you want to withdraw the trade asking for '</span>, <span class="hljs-keyword">this</span>.Trade.ask, <span class="hljs-string">' essentia and offering '</span>, <span class="hljs-keyword">this</span>.Trade.offer, <span class="hljs-string">'?'</span>].join(<span class="hljs-string">''</span>))) {
@@ -414,7 +414,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     building_id: <span class="hljs-keyword">this</span>.Self.building.id,
                     trade_id: <span class="hljs-keyword">this</span>.Trade.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
                         <span class="hljs-comment">//splice out removed trade</span>
                         <span class="hljs-keyword">var</span> trades = <span class="hljs-keyword">this</span>.Self.mineMercs.trades;
@@ -430,17 +430,18 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.Self.tradeShips;
                         <span class="hljs-keyword">this</span>.Self.getSpies(<span class="hljs-literal">true</span>);
                     },
-                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                         btn.disabled = <span class="hljs-literal">false</span>;
                     },
                     scope: <span class="hljs-keyword">this</span>
                 });
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 btn.disabled = <span class="hljs-literal">false</span>;
             }
         },
         <span class="hljs-comment">//Add trade</span>
-        populateAddSpyName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        populateAddSpyName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> elm = Dom.get(<span class="hljs-string">"tradeAddSpyName"</span>),
                 opt = document.createElement(<span class="hljs-string">"option"</span>),
                 nOpt;
@@ -455,14 +456,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
         },
-        getAddShips: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        getAddShips: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">if</span> (e.newValue &amp;&amp; !<span class="hljs-keyword">this</span>.tradeShips) {
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">this</span>.service.get_trade_ships({
                     session_id: Game.GetSession(<span class="hljs-string">""</span>),
                     building_id: <span class="hljs-keyword">this</span>.building.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">var</span> elm = Dom.get(<span class="hljs-string">"tradeAddShip"</span>),
                             opt = document.createElement(<span class="hljs-string">"option"</span>),
@@ -487,19 +488,20 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
             }
         },
-        updateAddCargo: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(byVal)</span> {</span>
+        updateAddCargo: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(byVal)</span> {</span>
             <span class="hljs-keyword">var</span> c = Dom.get(<span class="hljs-string">"tradeAddCargo"</span>),
                 cv = c.innerHTML * <span class="hljs-number">1</span>;
             c.innerHTML = cv + byVal;
         },
-        AddMerc: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        AddMerc: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> qVal = Dom.get(<span class="hljs-string">"tradeAddAskingQuantity"</span>)
                 .value * <span class="hljs-number">1</span>;
             <span class="hljs-keyword">if</span> (!Lang.isNumber(qVal) || qVal &lt;= <span class="hljs-number">0</span>) {
                 Dom.get(<span class="hljs-string">"tradeAddMessage"</span>)
                     .innerHTML = <span class="hljs-string">"Quantity of asking essentia must be a number and greater than 0"</span>;
                 <span class="hljs-keyword">return</span>;
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Dom.get(<span class="hljs-string">"tradeAddMessage"</span>)
                     .innerHTML = <span class="hljs-string">""</span>;
             }
@@ -514,7 +516,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             };
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.service.add_to_market(data, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.tradeShips;
                     <span class="hljs-keyword">this</span>.getSpies(<span class="hljs-literal">true</span>);
@@ -525,7 +527,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     btn.disabled = <span class="hljs-literal">false</span>;
                     Lacuna.Pulser.Hide();
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>

@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -8,15 +8,15 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var MiningMinistry = function (result) {
+    var MiningMinistry = function(result) {
         MiningMinistry.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.Mining;
     };
     Lang.extend(MiningMinistry, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getPlatformTab(), this._getShipsTab()];
         },
-        _getPlatformTab: function () {
+        _getPlatformTab: function() {
             this.platformTab = new YAHOO.widget.Tab({
                 label: "Platforms",
                 content: ['<div id="platformShippingInfo"></div>', '<div class="platformContainer">', '    <div id="platformDetails">', '    </div>', '</div>'].join('')
@@ -24,7 +24,7 @@ YAHOO.namespace("lacuna.buildings");
             this.platformTab.subscribe("activeChange", this.viewPlatforms, this, true);
             return this.platformTab;
         },
-        _getShipsTab: function () {
+        _getShipsTab: function() {
             this.shipsTab = new YAHOO.widget.Tab({
                 label: "Ships",
                 content: ['<div class="shipsContainer">', '    <ul class="shipHeader shipInfo clearafter">', '        <li class="shipName">Name</li>', '        <li class="shipTask">Task</li>', '        <li class="shipSpeed">Speed</li>', '        <li class="shipHold">Hold</li>', '        <li class="shipAction"></li>', '    </ul>', '    <div><div id="shipsDetails"></div></div>', '</div>'].join('')
@@ -32,7 +32,7 @@ YAHOO.namespace("lacuna.buildings");
             this.shipsTab.subscribe("activeChange", this.viewShips, this, true);
             return this.shipsTab;
         },
-        viewPlatforms: function (e) {
+        viewPlatforms: function(e) {
             if (e.newValue) {
                 if (!this.platforms) {
                     Lacuna.Pulser.Show();
@@ -40,7 +40,7 @@ YAHOO.namespace("lacuna.buildings");
                         session_id: Game.GetSession(),
                         building_id: this.building.id
                     }, {
-                        success: function (o) {
+                        success: function(o) {
                             YAHOO.log(o, "info", "MiningMinistry.view_platforms.success");
                             Lacuna.Pulser.Hide();
                             this.rpcSuccess(o);
@@ -52,39 +52,45 @@ YAHOO.namespace("lacuna.buildings");
                         },
                         scope: this
                     });
-                } else {
+                }
+                else {
                     this.MiningMinistryPlatforms();
                 }
             }
         },
-        viewShips: function (e) {
+        viewShips: function(e) {
             if (e.newValue) {
                 if (!this.ships) {
                     this.MiningMinistryShipsView();
-                } else {
+                }
+                else {
                     this.MiningMinistryShipsPopulate();
                 }
             }
         },
-        CapacityDescription: function (capacity) {
+        CapacityDescription: function(capacity) {
             var output = ['Current production to shipping metric is ', capacity, '. '];
             if (capacity === -1) {
                 output.push('You have no ships servicing your platforms.');
-            } else if (capacity === 0) {
+            }
+            else if (capacity === 0) {
                 output.push('You are producing an insignificant amount of ore. Add more platforms or upgrade your Mining Ministry.');
-            } else if (capacity > 100) {
+            }
+            else if (capacity > 100) {
                 output.push('You are producing more than your ships can handle. Add more ship to bring the value closer to 100.');
-            } else if (capacity < 100) {
+            }
+            else if (capacity < 100) {
                 output.push('Your ships have more capacity than the platforms are producing. You may remove ships or add platforms to get closer to 100.');
-            } else if (capacity === 100) {
+            }
+            else if (capacity === 100) {
                 output.push('Your shipping capacity and production values are exactly in sync.');
             }
             return output.join('');
         },
-        platformClick: function () {
+        platformClick: function() {
             Game.StarJump(this);
         },
-        MiningMinistryPlatforms: function () {
+        MiningMinistryPlatforms: function() {
             var platforms = this.platforms.platforms,
                 details = Dom.get("platformDetails");
             if (details) {
@@ -130,7 +136,7 @@ YAHOO.namespace("lacuna.buildings");
                         for (var ore_i in ores) {
                             var ore = ores[ore_i];
                             if (obj[ore + '_hour'] > 0) {
-                                outOre.push('<li><label>' + ore.replace(/^\w/, function (c) {
+                                outOre.push('<li><label>' + ore.replace(/^\w/, function(c) {
                                     return c.toUpperCase();
                                 }) + ':</label> ');
                                 outOre.push(obj[ore + '_hour']);
@@ -172,7 +178,7 @@ YAHOO.namespace("lacuna.buildings");
                     for (var ore_i in ores) {
                         var ore = ores[ore_i];
                         if (totals[ore_i] > 0) {
-                            outOre.push('<li><label>' + ore.replace(/^\w/, function (c) {
+                            outOre.push('<li><label>' + ore.replace(/^\w/, function(c) {
                                 return c.toUpperCase()
                             }) + ':</label> ');
                             outOre.push(totals[ore_i]);
@@ -185,7 +191,7 @@ YAHOO.namespace("lacuna.buildings");
                     details.insertBefore(nUl, details.firstChild);
                 }
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 210;
                     if (Ht > 280) {
@@ -196,7 +202,7 @@ YAHOO.namespace("lacuna.buildings");
                 }, 10);
             }
         },
-        MiningMinistryPlatformAbandon: function () {
+        MiningMinistryPlatformAbandon: function() {
             if (confirm(["Are you sure you want to Abandon the mining platform at  ", this.Platform.asteroid.name, "?"].join(''))) {
                 Lacuna.Pulser.Show();
                 this.Self.service.abandon_platform({
@@ -204,7 +210,7 @@ YAHOO.namespace("lacuna.buildings");
                     building_id: this.Self.building.id,
                     platform_id: this.Platform.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "MiningMinistry.MiningMinistryPlatformAbandon.success");
                         Lacuna.Pulser.Hide();
                         this.Self.rpcSuccess(o);
@@ -221,13 +227,13 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        MiningMinistryShipsView: function () {
+        MiningMinistryShipsView: function() {
             Lacuna.Pulser.Show();
             this.service.view_ships({
                 session_id: Game.GetSession(),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "MiningMinistry.MiningMinistryShipsView.success");
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
@@ -237,7 +243,7 @@ YAHOO.namespace("lacuna.buildings");
                 scope: this
             });
         },
-        MiningMinistryShipsPopulate: function () {
+        MiningMinistryShipsPopulate: function() {
             var ships = this.ships,
                 details = Dom.get("shipsDetails");
             if (details) {
@@ -253,7 +259,8 @@ YAHOO.namespace("lacuna.buildings");
                         nLi = li.cloneNode(false);
                     if (ship.task === "Docked") {
                         availShips.push(ship);
-                    } else {
+                    }
+                    else {
                         workingShips.push(ship);
                     }
                     nUl.Ship = ship;
@@ -287,7 +294,8 @@ YAHOO.namespace("lacuna.buildings");
                             Self: this,
                             Ship: ship
                         }, true);
-                    } else {
+                    }
+                    else {
                         Event.on(bbtn, "click", this.MiningMinistryShipsRemove, {
                             Self: this,
                             Ship: ship
@@ -296,7 +304,7 @@ YAHOO.namespace("lacuna.buildings");
                     details.appendChild(nUl);
                 }
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 175;
                     if (Ht > 300) {
@@ -307,14 +315,14 @@ YAHOO.namespace("lacuna.buildings");
                 }, 10);
             }
         },
-        MiningMinistryShipsAdd: function () {
+        MiningMinistryShipsAdd: function() {
             Lacuna.Pulser.Show();
             this.Self.service.add_cargo_ship_to_fleet({
                 session_id: Game.GetSession(),
                 building_id: this.Self.building.id,
                 ship_id: this.Ship.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "MiningMinistry.MiningMinistryShipsAdd.success");
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
@@ -324,14 +332,14 @@ YAHOO.namespace("lacuna.buildings");
                 scope: this.Self
             });
         },
-        MiningMinistryShipsRemove: function () {
+        MiningMinistryShipsRemove: function() {
             Lacuna.Pulser.Show();
             this.Self.service.remove_cargo_ship_from_fleet({
                 session_id: Game.GetSession(),
                 building_id: this.Self.building.id,
                 ship_id: this.Ship.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "MiningMinistry.MiningMinistryShipsRemove.success");
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);

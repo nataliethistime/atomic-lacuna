@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -35,15 +35,15 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> TheDillonForge = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+    <span class="hljs-keyword">var</span> TheDillonForge = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> {</span>
         TheDillonForge.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
         <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.TheDillonForge;
     };
     Lang.extend(TheDillonForge, Lacuna.buildings.Building, {
-        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getForgeTab()];
         },
-        _getForgeTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getForgeTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.splitTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Forge"</span>,
                 content: [<span class="hljs-string">'&lt;div id="forgeSplitPlan"&gt;'</span>, <span class="hljs-string">'  &lt;div&gt;&lt;b&gt;Split a plan into glyphs.&lt;/b&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;div id="forgeSplitPlanForm"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;hr/&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div id="forgeMakePlan"&gt;'</span>, <span class="hljs-string">'  &lt;div&gt;&lt;b&gt;Combine level 1 plans into a higher level plan.&lt;/b&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;div id="forgeMakePlanForm"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div id="forgeSubsidize"&gt;'</span>, <span class="hljs-string">'  &lt;div&gt;&lt;b&gt;Subsidize current task.&lt;/b&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'  &lt;div id="forgeSubsidizeForm"&gt;&lt;div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
@@ -51,21 +51,22 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             <span class="hljs-keyword">this</span>.splitTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.viewForgeTab, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.splitTab;
         },
-        viewForgeTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        viewForgeTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.result.tasks.can === <span class="hljs-number">1</span>) {
                 Dom.setStyle(<span class="hljs-string">"forgeMakePlan"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
                 Dom.setStyle(<span class="hljs-string">"forgeSplitPlan"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
                 Dom.setStyle(<span class="hljs-string">"forgeSubsidize"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                 <span class="hljs-keyword">this</span>.viewForgeMakePlan();
                 <span class="hljs-keyword">this</span>.viewForgeSplitPlan();
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Dom.setStyle(<span class="hljs-string">"forgeMakePlan"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                 Dom.setStyle(<span class="hljs-string">"forgeSplitPlan"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                 Dom.setStyle(<span class="hljs-string">"forgeSubsidize"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
                 <span class="hljs-keyword">this</span>.viewForgeSubsidize();
             }
         },
-        viewForgeMakePlan: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        viewForgeMakePlan: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> make_plan = <span class="hljs-keyword">this</span>.result.tasks.make_plan,
                 make_form = Dom.get(<span class="hljs-string">"forgeMakePlanForm"</span>);
             <span class="hljs-keyword">if</span> (make_plan.length === <span class="hljs-number">0</span>) {
@@ -80,27 +81,35 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             emptyFirst.setAttribute(<span class="hljs-string">"value"</span>, <span class="hljs-string">""</span>);
             emptyFirst.innerHTML = <span class="hljs-string">"Select plan (maximum level) &amp;#91;time to make&amp;#93;"</span>;
             select.appendChild(emptyFirst);
-            make_plan.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span>
+            make_plan.sort(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(a, b)</span> {</span>
                 <span class="hljs-keyword">if</span> (a[<span class="hljs-string">"class"</span>] &gt; b[<span class="hljs-string">"class"</span>]) {
                     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a[<span class="hljs-string">"class"</span>] &lt; b[<span class="hljs-string">"class"</span>]) {
+                }
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a[<span class="hljs-string">"class"</span>] &lt; b[<span class="hljs-string">"class"</span>]) {
                     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">if</span> (a.name &gt; b.name) {
                         <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
-                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.name &lt; b.name) {
+                    }
+                    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.name &lt; b.name) {
                         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         <span class="hljs-keyword">if</span> (a.level &gt; b.level) {
                             <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.level &lt; b.level) {
+                        }
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.level &lt; b.level) {
                             <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
-                        } <span class="hljs-keyword">else</span> {
+                        }
+                        <span class="hljs-keyword">else</span> {
                             <span class="hljs-keyword">if</span> (a.extra_build_level &gt; b.extra_build_level) {
                                 <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
-                            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.extra_build_level &lt; b.extra_build_level) {
+                            }
+                            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.extra_build_level &lt; b.extra_build_level) {
                                 <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
-                            } <span class="hljs-keyword">else</span> {
+                            }
+                            <span class="hljs-keyword">else</span> {
                                 <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
                             }
                         }
@@ -133,7 +142,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 Self: <span class="hljs-keyword">this</span>
             }, <span class="hljs-literal">true</span>);
         },
-        MakePlan: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        MakePlan: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> plan_class = Lib.getSelectedOptionValue(<span class="hljs-string">"forgeMakePlanSelect"</span>),
                 level = Dom.get(<span class="hljs-string">"forgeMakePlanLevel"</span>)
                     .value;
@@ -152,7 +161,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 plan_class: plan_class,
                 level: level
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"TheDillonForge.MakePlan.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
@@ -162,7 +171,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        viewForgeSplitPlan: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        viewForgeSplitPlan: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> split_plan = <span class="hljs-keyword">this</span>.result.tasks.split_plan,
                 split_form = Dom.get(<span class="hljs-string">"forgeSplitPlanForm"</span>);
             <span class="hljs-keyword">if</span> (split_plan.length === <span class="hljs-number">0</span>) {
@@ -177,22 +186,28 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             emptyFirst.setAttribute(<span class="hljs-string">"value"</span>, <span class="hljs-string">""</span>);
             emptyFirst.innerHTML = <span class="hljs-string">"Select plan (levels) &amp;#91;time to split&amp;#93;"</span>;
             select.appendChild(emptyFirst);
-            split_plan.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span>
+            split_plan.sort(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(a, b)</span> {</span>
                 <span class="hljs-keyword">if</span> (a.name &gt; b.name) {
                     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.name &lt; b.name) {
+                }
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.name &lt; b.name) {
                     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">if</span> (a.level &gt; b.level) {
                         <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
-                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.level &lt; b.level) {
+                    }
+                    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.level &lt; b.level) {
                         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         <span class="hljs-keyword">if</span> (a.extra_build_level &gt; b.extra_build_level) {
                             <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.extra_build_level &lt; b.extra_build_level) {
+                        }
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a.extra_build_level &lt; b.extra_build_level) {
                             <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
-                        } <span class="hljs-keyword">else</span> {
+                        }
+                        <span class="hljs-keyword">else</span> {
                             <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
                         }
                     }
@@ -231,7 +246,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 Self: <span class="hljs-keyword">this</span>
             }, <span class="hljs-literal">true</span>);
         },
-        SplitPlan: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        SplitPlan: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> selected = Lib.getSelectedOptionValue(<span class="hljs-string">"forgeSplitPlanSelect"</span>),
                 quantity = Dom.get(<span class="hljs-string">"forgeSplitPlanQuantity"</span>)
                     .value;
@@ -253,7 +268,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     extra_build_level: selected[<span class="hljs-number">2</span>],
                     quantity: quantity,
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"TheDillonForge.SplitPlan.success"</span>);
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
@@ -264,7 +279,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
             }
         },
-        viewForgeSubsidize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        viewForgeSubsidize: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> form = Dom.get(<span class="hljs-string">"forgeSubsidizeForm"</span>),
                 cost = <span class="hljs-keyword">this</span>.result.tasks.subsidy_cost,
                 work = <span class="hljs-keyword">this</span>.result.tasks.working,
@@ -277,13 +292,13 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 Self: <span class="hljs-keyword">this</span>
             }, <span class="hljs-literal">true</span>);
         },
-        Subsidize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        Subsidize: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.Self.service.subsidize({
                 session_id: Game.GetSession(),
                 building_id: <span class="hljs-keyword">this</span>.Self.building.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"TheDillonForge.Subsidize.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);

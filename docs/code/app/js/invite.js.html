@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -35,7 +35,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> Invite = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Invite = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
         <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onRpc"</span>);
         <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"invite"</span>;
         <span class="hljs-keyword">var</span> container = document.createElement(<span class="hljs-string">"div"</span>);
@@ -56,14 +56,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             width: <span class="hljs-string">"450px"</span>,
             zIndex: <span class="hljs-number">9999</span>
         });
-        <span class="hljs-keyword">this</span>.Dialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.Dialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.elFriendEmail = Dom.get(<span class="hljs-string">"inviteFriendEmail"</span>);
             <span class="hljs-keyword">this</span>.elMessage = Dom.get(<span class="hljs-string">"inviteMessage"</span>);
             Dom.removeClass(<span class="hljs-keyword">this</span>.id, Lib.Styles.HIDDEN);
             Event.on(<span class="hljs-string">"inviteButton"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.handleInvite, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">this</span>.inviteGenerate = Dom.get(<span class="hljs-string">"inviteGenerate"</span>);
             Event.on(<span class="hljs-keyword">this</span>.inviteGenerate, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.handleGenerate, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-            Event.on(<span class="hljs-string">"inviteGenerateLink"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Event.on(<span class="hljs-string">"inviteGenerateLink"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">this</span>.select();
             });
         }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
@@ -71,19 +71,19 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         Game.OverlayManager.register(<span class="hljs-keyword">this</span>.Dialog);
     };
     Invite.prototype = {
-        _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getHtml: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-string">'    &lt;div class="hd"&gt;Invite a Friend&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="bd"&gt;'</span>, <span class="hljs-string">'        &lt;form name="inviteForm"&gt;'</span>, <span class="hljs-string">'            &lt;ul&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label for="inviteFriendEmail"&gt;EMail:&lt;/label&gt;&lt;input type="text" id="inviteFriendEmail"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;label for="inviteMessage"&gt;Message:&lt;/label&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li&gt;&lt;textarea id="inviteMessage"&gt;&lt;/textarea&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'                &lt;li style="text-align:right;"&gt;&lt;button id="inviteButton" type="button"&gt;Invite&lt;/button&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'            &lt;/ul&gt;'</span>, <span class="hljs-string">'        &lt;/form&gt;'</span>, <span class="hljs-string">'        &lt;hr /&gt;'</span>, <span class="hljs-string">'        &lt;p id="inviteGenerateDesc"&gt;You can also generate a URL you can post to your blog or email to your friends.&lt;/p&gt;'</span>, <span class="hljs-string">'        &lt;button id="inviteGenerate" type="button"&gt;Generate URL&lt;/button&gt;'</span>, <span class="hljs-string">'        &lt;input id="inviteGenerateLink" type="text" readonly="readonly" style="display: none" /&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
         },
-        show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        show: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-comment">//this is called out of scope so make sure to pass the correct scope in</span>
             Lacuna.Invite.elFriendEmail.value = <span class="hljs-string">''</span>;
             Lacuna.Invite.elMessage.value = <span class="hljs-string">"I'm having a great time with this new game called Lacuna Expanse. Come play with me."</span>;
             Lacuna.Invite.Dialog.show();
         },
-        hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        hide: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.Dialog.hide();
         },
-        handleInvite: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        handleInvite: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">var</span> email = <span class="hljs-keyword">this</span>.elFriendEmail.value;
             email = email.split(<span class="hljs-regexp">/\s*[,;]\s*/</span>)
@@ -93,7 +93,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 email: email,
                 message: <span class="hljs-keyword">this</span>.elMessage.value
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"InviteFriend.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">var</span> not_sent = o.result.not_sent;
@@ -106,7 +106,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                         }
                         <span class="hljs-keyword">this</span>.elFriendEmail.value = errorEmails.join(<span class="hljs-string">', '</span>);
                         alert(errorMessage.join(<span class="hljs-string">"\n"</span>));
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         <span class="hljs-keyword">this</span>.hide();
                     }
                     <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">'onRpc'</span>, o);
@@ -114,13 +115,13 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        handleGenerate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        handleGenerate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">this</span>.inviteGenerate.disabled = <span class="hljs-literal">true</span>;
             Lacuna.Pulser.Show();
             Game.Services.Empire.get_invite_friend_url({
                 session_id: Game.GetSession(<span class="hljs-string">""</span>)
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"handleGenerate.success"</span>);
                     Lacuna.Pulser.Hide();
                     Dom.setStyle(<span class="hljs-keyword">this</span>.inviteGenerate, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
@@ -131,7 +132,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                         .value = o.result.referral_url;
                     <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">'onRpc'</span>, o);
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.inviteGenerate.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>

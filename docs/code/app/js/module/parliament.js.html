@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -36,26 +36,27 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> Parliament = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result, locationId)</span> {</span>
+    <span class="hljs-keyword">var</span> Parliament = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result, locationId)</span> {</span>
         Parliament.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
         <span class="hljs-keyword">this</span>.locationId = locationId;
         <span class="hljs-keyword">this</span>.service = Game.Services.Modules.Parliament;
         <span class="hljs-keyword">this</span>.canRepealLaw = <span class="hljs-keyword">this</span>.building.level &gt;= <span class="hljs-number">5</span>;
     };
     Lang.extend(Parliament, Lacuna.buildings.Building, {
-        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.building.level &gt;= <span class="hljs-number">4</span>) {
                 <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getCreateTab(), <span class="hljs-keyword">this</span>._getLawsTab(), <span class="hljs-keyword">this</span>._getPropsTab()];
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getLawsTab(), <span class="hljs-keyword">this</span>._getPropsTab()];
             }
         },
-        _getLawsTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getLawsTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> tab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Laws"</span>,
                 content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;div style="overflow:auto;"&gt;&lt;ul id="lawsDetails"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
             });
-            tab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            tab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                 <span class="hljs-keyword">if</span> (e.newValue) {
                     <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.laws) {
                         Lacuna.Pulser.Show();
@@ -63,7 +64,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
                             session_id: Game.GetSession(),
                             body_id: <span class="hljs-keyword">this</span>.locationId
                         }, {
-                            success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                            success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                                 Lacuna.Pulser.Hide();
                                 <span class="hljs-keyword">this</span>.rpcSuccess(o);
                                 <span class="hljs-keyword">this</span>.laws = o.result.laws;
@@ -81,12 +82,12 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
             Event.delegate(<span class="hljs-string">"lawsDetails"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.handleAllianceLink, <span class="hljs-string">"a.alliance_link"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> tab;
         },
-        _getPropsTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getPropsTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> tab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Propositions"</span>,
                 content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;div style="overflow:auto;"&gt;&lt;ul id="propsDetails"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
             });
-            tab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            tab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                 <span class="hljs-keyword">if</span> (e.newValue) {
                     <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.props) {
                         Lacuna.Pulser.Show();
@@ -94,7 +95,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
                             session_id: Game.GetSession(),
                             building_id: <span class="hljs-keyword">this</span>.building.id
                         }, {
-                            success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                            success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                                 Lacuna.Pulser.Hide();
                                 <span class="hljs-keyword">this</span>.rpcSuccess(o);
                                 <span class="hljs-keyword">this</span>.props = o.result.propositions;
@@ -112,7 +113,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
             Event.delegate(<span class="hljs-string">"propsDetails"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.handleAllianceLink, <span class="hljs-string">"a.alliance_link"</span>, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> tab;
         },
-        _getCreateTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getCreateTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.createEvent(<span class="hljs-string">"onAllianceMembers"</span>);
             <span class="hljs-keyword">var</span> opts = [<span class="hljs-string">'&lt;option value="proposeWrit" selected&gt;Writ&lt;/option&gt;'</span>],
                 dis = [],
@@ -121,8 +122,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
                 opts[opts.length] = <span class="hljs-string">'&lt;option value="proposeTransfer"&gt;Transfer Station Ownership&lt;/option&gt;'</span>;
                 dis[dis.length] = [<span class="hljs-string">'    &lt;div id="proposeTransfer" class="proposeOption" style="display:none;"&gt;'</span>, <span class="hljs-string">'        &lt;label&gt;Empire:&lt;/label&gt;&lt;select id="proposeTransferTo"&gt;&lt;/select&gt;&lt;br /&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="proposeTransferSubmit"&gt;Propose Transfer&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
                 getAllianceMembers = <span class="hljs-literal">true</span>;
-                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                    <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onAllianceMembers"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onAllianceMembers"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                         <span class="hljs-keyword">var</span> sel = Dom.get(<span class="hljs-string">"proposeTransferTo"</span>),
                             opts = [];
                         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; <span class="hljs-keyword">this</span>.allianceMembers.length; n++) {
@@ -140,7 +141,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.building.level &gt;= <span class="hljs-number">7</span>) {
                 opts[opts.length] = <span class="hljs-string">'&lt;option value="proposeSeizeStar"&gt;Seize Star&lt;/option&gt;'</span>;
                 dis[dis.length] = [<span class="hljs-string">'    &lt;div id="proposeSeizeStar" class="proposeOption" style="display:none;"&gt;'</span>, <span class="hljs-string">'        &lt;label&gt;Star:&lt;/label&gt;&lt;input type="text" id="proposeSeizeStarFind" /&gt;&lt;br /&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="proposeSeizeStarSubmit"&gt;Propose Seize Star&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
-                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">this</span>.seizeStarTextboxList = <span class="hljs-keyword">this</span>.CreateStarSearch(<span class="hljs-string">"proposeSeizeStarFind"</span>);
                     Event.on(<span class="hljs-string">"proposeSeizeStarSubmit"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.SeizeStar, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
                 }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
@@ -148,12 +149,12 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.building.level &gt;= <span class="hljs-number">8</span>) {
                 opts[opts.length] = <span class="hljs-string">'&lt;option value="proposeRenameStar"&gt;Rename Star&lt;/option&gt;'</span>;
                 dis[dis.length] = [<span class="hljs-string">'    &lt;div id="proposeRenameStar" class="proposeOption" style="display:none;"&gt;'</span>, <span class="hljs-string">'        &lt;ul&gt;&lt;li&gt;&lt;label&gt;Star:&lt;/label&gt;&lt;select id="proposeRenameStarSelect"&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;New Name:&lt;/label&gt;&lt;input type="text" id="proposeRenameStarName" /&gt;&lt;/li&gt;&lt;/ul&gt;&lt;br /&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="proposeRenameStarSubmit"&gt;Propose Rename Star&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
-                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">this</span>.service.get_stars_in_jurisdiction({
                         session_id: Game.GetSession(<span class="hljs-string">""</span>),
                         building_id: <span class="hljs-keyword">this</span>.building.id
                     }, {
-                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             <span class="hljs-keyword">var</span> el = Dom.get(<span class="hljs-string">'proposeRenameStarSelect'</span>);
                             <span class="hljs-keyword">if</span> (el) {
                                 <span class="hljs-keyword">var</span> stars = o.result.stars;
@@ -174,7 +175,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.building.level &gt;= <span class="hljs-number">9</span>) {
                 opts[opts.length] = <span class="hljs-string">'&lt;option value="proposeBroadcast"&gt;Broadcast on Net19&lt;/option&gt;'</span>;
                 dis[dis.length] = [<span class="hljs-string">'    &lt;div id="proposeBroadcast" class="proposeOption" style="display:none;"&gt;'</span>, <span class="hljs-string">'        &lt;label&gt;Message:&lt;/label&gt;&lt;input type="text" id="proposeBroadcastMessage" maxlength="100" size="50" /&gt;&lt;br /&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="proposeBroadcastSubmit"&gt;Propose Broadcast&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
-                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     Event.on(<span class="hljs-string">"proposeBroadcastSubmit"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Broadcast, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
                 }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             }
@@ -183,10 +184,10 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
                 opts[opts.length] = <span class="hljs-string">'&lt;option value="proposeExpel"&gt;Expel Member&lt;/option&gt;'</span>;
                 dis[dis.length] = [<span class="hljs-string">'    &lt;div id="proposeInduct" class="proposeOption" style="display:none;"&gt;'</span>, <span class="hljs-string">'        &lt;ul&gt;&lt;li&gt;&lt;label&gt;Empire:&lt;/label&gt;&lt;input type="text" id="proposeInductMember" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Message:&lt;/label&gt;&lt;textarea id="proposeInductMessage" rows="4" cols="80"&gt;&lt;/textarea&gt;&lt;/li&gt;&lt;/ul&gt;&lt;br /&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="proposeInductSubmit"&gt;Propose Induct Member&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div id="proposeExpel" class="proposeOption" style="display:none;"&gt;'</span>, <span class="hljs-string">'        &lt;ul&gt;&lt;li&gt;&lt;label&gt;Empire:&lt;/label&gt;&lt;select id="proposeExpelMember"&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Reason:&lt;/label&gt;&lt;textarea id="proposeExpelReason" rows="4" cols="80"&gt;&lt;/textarea&gt;&lt;/li&gt;&lt;/ul&gt;&lt;br /&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="proposeExpelSubmit"&gt;Propose Expel Member&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
                 getAllianceMembers = <span class="hljs-literal">true</span>;
-                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">this</span>.inductMemberTextboxList = <span class="hljs-keyword">this</span>.CreateEmpireSearch(<span class="hljs-string">"proposeInductMember"</span>);
                     Event.on(<span class="hljs-string">"proposeInductSubmit"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.MemberInduct, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                    <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onAllianceMembers"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onAllianceMembers"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                         <span class="hljs-keyword">var</span> sel = Dom.get(<span class="hljs-string">"proposeExpelMember"</span>),
                             opts = [];
                         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; <span class="hljs-keyword">this</span>.allianceMembers.length; n++) {
@@ -205,8 +206,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
                 opts[opts.length] = <span class="hljs-string">'&lt;option value="proposeElectLeader"&gt;Elect New Leader&lt;/option&gt;'</span>;
                 dis[dis.length] = [<span class="hljs-string">'    &lt;div id="proposeElectLeader" class="proposeOption" style="display:none;"&gt;'</span>, <span class="hljs-string">'        &lt;label&gt;Empire:&lt;/label&gt;&lt;select id="proposeElectLeaderMember"&gt;&lt;/select&gt;&lt;br /&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="proposeElectLeaderSubmit"&gt;Propose as New Leader&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
                 getAllianceMembers = <span class="hljs-literal">true</span>;
-                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                    <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onAllianceMembers"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+                    <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onAllianceMembers"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                         <span class="hljs-keyword">var</span> sel = Dom.get(<span class="hljs-string">"proposeElectLeaderMember"</span>),
                             opts = [];
                         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; <span class="hljs-keyword">this</span>.allianceMembers.length; n++) {
@@ -224,12 +225,12 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.building.level &gt;= <span class="hljs-number">12</span>) {
                 opts[opts.length] = <span class="hljs-string">'&lt;option value="proposeRenameAsteroid"&gt;Rename Asteroid&lt;/option&gt;'</span>;
                 dis[dis.length] = [<span class="hljs-string">'    &lt;div id="proposeRenameAsteroid" class="proposeOption" style="display:none;"&gt;'</span>, <span class="hljs-string">'		&lt;ul&gt;&lt;li&gt;&lt;label&gt;Star:&lt;/label&gt;&lt;select id="proposeRenameAsteroidStar"&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Asteroid:&lt;/label&gt;&lt;select id="proposeRenameAsteroidName"&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Name:&lt;/label&gt;&lt;input type="text" id="proposeRenameAsteroidNewName" /&gt;&lt;/li&gt;&lt;/ul&gt;&lt;br /&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="proposeRenameAsteroidSubmit"&gt;Propose Rename Asteroid&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
-                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">this</span>.service.get_stars_in_jurisdiction({
                         session_id: Game.GetSession(),
                         building_id: <span class="hljs-keyword">this</span>.building.id,
                     }, {
-                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             <span class="hljs-keyword">var</span> el = Dom.get(<span class="hljs-string">'proposeRenameAsteroidStar'</span>);
                             <span class="hljs-keyword">if</span> (el) {
                                 <span class="hljs-keyword">var</span> stars = o.result.stars;
@@ -261,12 +262,12 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.building.level &gt;= <span class="hljs-number">14</span>) {
                 opts[opts.length] = <span class="hljs-string">'&lt;option value="proposeEvictMining"&gt;Evict Mining Platform&lt;/option&gt;'</span>;
                 dis[dis.length] = [<span class="hljs-string">'    &lt;div id="proposeEvictMining" class="proposeOption" style="display:none;"&gt;'</span>, <span class="hljs-string">'		&lt;ul&gt;&lt;li&gt;&lt;label&gt;Star:&lt;/label&gt;&lt;select id="proposeEvictMiningStar"&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'		 &lt;li&gt;&lt;label&gt;Body:&lt;/label&gt;&lt;select id="proposeEvictMiningBody"&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Empire Mining:&lt;/label&gt;&lt;select id="proposeEvictMiningId"&gt;&lt;/select&gt;&lt;/li&gt;&lt;br /&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="proposeEvictMiningSubmit"&gt;Propose Eviction&lt;/button&gt;&lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
-                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">this</span>.service.get_stars_in_jurisdiction({
                         session_id: Game.GetSession(),
                         building_id: <span class="hljs-keyword">this</span>.building.id,
                     }, {
-                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             <span class="hljs-keyword">var</span> el = Dom.get(<span class="hljs-string">'proposeEvictMiningStar'</span>);
                             <span class="hljs-keyword">if</span> (el) {
                                 <span class="hljs-keyword">var</span> stars = o.result.stars;
@@ -294,12 +295,12 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.modules"</span>);
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.building.level &gt;= <span class="hljs-number">17</span>) {
                 opts[opts.length] = <span class="hljs-string">'&lt;option value="proposeRenameUninhabited"&gt;Rename Uninhabited&lt;/option&gt;'</span>;
                 dis[dis.length] = [<span class="hljs-string">'    &lt;div id="proposeRenameUninhabited" class="proposeOption" style="display:none;"&gt;'</span>, <span class="hljs-string">'		&lt;ul&gt;&lt;li&gt;&lt;label&gt;Star:&lt;/label&gt;&lt;select id="proposeRenameUninhabitedStar"&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Planet:&lt;/label&gt;&lt;select id="proposeRenameUninhabitedName"&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Name:&lt;/label&gt;&lt;input type="text" id="proposeRenameUninhabitedNewName" /&gt;&lt;/li&gt;&lt;/ul&gt;&lt;br /&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="proposeRenameUninhabitedSubmit"&gt;Propose Rename Uninhabited&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
-                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">this</span>.service.get_stars_in_jurisdiction({
                         session_id: Game.GetSession(),
                         building_id: <span class="hljs-keyword">this</span>.building.id,
                     }, {
-                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             <span class="hljs-keyword">var</span> el = Dom.get(<span class="hljs-string">'proposeRenameUninhabitedStar'</span>);
                             <span class="hljs-keyword">if</span> (el) {
                                 <span class="hljs-keyword">var</span> stars = o.result.stars;
@@ -382,12 +383,12 @@ scope: <span class="hljs-keyword">this</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.building.level &gt;= <span class="hljs-number">25</span>) {
                 opts[opts.length] = <span class="hljs-string">'&lt;option value="proposeFireBfg"&gt;Fire BFG&lt;/option&gt;'</span>;
                 dis[dis.length] = [<span class="hljs-string">'    &lt;div id="proposeFireBfg" class="proposeOption" style="display:none;"&gt;'</span>, <span class="hljs-string">'		&lt;ul&gt;&lt;li&gt;&lt;label&gt;Star:&lt;/label&gt;&lt;select id="proposeFireBfgStars"&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Body:&lt;/label&gt;&lt;select id="proposeFireBfgBody"&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li&gt;&lt;label&gt;Reason:&lt;/label&gt;&lt;textarea id="proposeFireBfgReason" rows="4" cols="80"&gt;&lt;/textarea&gt;&lt;/li&gt;&lt;/ul&gt;&lt;br /&gt;'</span>, <span class="hljs-string">'        &lt;button type="button" id="proposeFireBfgSubmit"&gt;Propose to Fire BFG!&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
-                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">this</span>.service.get_stars_in_jurisdiction({
                         session_id: Game.GetSession(),
                         building_id: <span class="hljs-keyword">this</span>.building.id,
                     }, {
-                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             <span class="hljs-keyword">var</span> el = Dom.get(<span class="hljs-string">'proposeFireBfgStars'</span>);
                             <span class="hljs-keyword">if</span> (el) {
                                 <span class="hljs-keyword">var</span> stars = o.result.stars;
@@ -416,7 +417,7 @@ scope: <span class="hljs-keyword">this</span>
                     alliance_id: Game.GetCurrentPlanet()
                         .alliance.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-keyword">var</span> el = Dom.get(<span class="hljs-string">'proposeTransferTo'</span>);
                         <span class="hljs-keyword">if</span> (el) {
                             <span class="hljs-keyword">var</span> profile = o.result.profile;
@@ -440,10 +441,10 @@ scope: <span class="hljs-keyword">this</span>
                     dis.join(<span class="hljs-string">''</span>), <span class="hljs-string">'&lt;/div&gt;'</span>
                 ].join(<span class="hljs-string">''</span>)
             });
-            <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">this</span>.proposeOptions = Sel.query(<span class="hljs-string">"div.proposeOption"</span>, <span class="hljs-string">"proposeContainer"</span>);
                 <span class="hljs-keyword">this</span>.proposeMessage = Dom.get(<span class="hljs-string">"proposeMessage"</span>);
-                Event.on(<span class="hljs-string">"proposeSelect"</span>, <span class="hljs-string">"change"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                Event.on(<span class="hljs-string">"proposeSelect"</span>, <span class="hljs-string">"change"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                     Dom.setStyle(<span class="hljs-keyword">this</span>.proposeOptions, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                     Dom.setStyle(Lib.getSelectedOptionValue(<span class="hljs-string">"proposeSelect"</span>), <span class="hljs-string">"display"</span>, <span class="hljs-string">""</span>);
                 }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
@@ -469,7 +470,7 @@ scope: <span class="hljs-keyword">this</span>
             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> tab;
         },
-        ProposeWritTemplateChange: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        ProposeWritTemplateChange: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> opt = Game.Resources.writ_templates[Lib.getSelectedOption(<span class="hljs-string">"proposeWritTemplates"</span>)
                 .value];
             Dom.get(<span class="hljs-string">"proposeTitle"</span>)
@@ -477,7 +478,7 @@ scope: <span class="hljs-keyword">this</span>
             Dom.get(<span class="hljs-string">"proposeDesc"</span>)
                 .value = opt.description;
         },
-        CreateStarSearch: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> {</span>
+        CreateStarSearch: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id)</span> {</span>
             <span class="hljs-keyword">var</span> dataSource = <span class="hljs-keyword">new</span> Util.XHRDataSource(<span class="hljs-string">"/map"</span>);
             dataSource.connMethodPost = <span class="hljs-string">"POST"</span>;
             dataSource.maxCacheEntries = <span class="hljs-number">2</span>;
@@ -493,10 +494,10 @@ scope: <span class="hljs-keyword">this</span>
                 forceSelection: <span class="hljs-literal">false</span>,
                 useIndicator: <span class="hljs-literal">true</span>
             });
-            oTextboxList.formatResult = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oResultData, sQuery, sResultMatch)</span> {</span>
+            oTextboxList.formatResult = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oResultData, sQuery, sResultMatch)</span> {</span>
                 <span class="hljs-keyword">return</span> [<span class="hljs-string">'&lt;div class="yui-gf"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first" style="background-color:black;"&gt;'</span>, <span class="hljs-string">'        &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'star_map/'</span>, oResultData.color, <span class="hljs-string">'.png" alt="'</span>, oResultData, name, <span class="hljs-string">'" style="width:50px;height:50px;" /&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;'</span>, oResultData.name, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;'</span>, oResultData.x, <span class="hljs-string">' : '</span>, oResultData.y, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">""</span>);
             };
-            oTextboxList.generateRequest = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sQuery)</span> {</span>
+            oTextboxList.generateRequest = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(sQuery)</span> {</span>
                 <span class="hljs-keyword">var</span> s = Lang.JSON.stringify({
                     <span class="hljs-string">"id"</span>: YAHOO.rpc.Service._requestId++,
                     <span class="hljs-string">"method"</span>: <span class="hljs-string">"search_stars"</span>,
@@ -510,7 +511,7 @@ scope: <span class="hljs-keyword">this</span>
             };
             <span class="hljs-keyword">return</span> oTextboxList;
         },
-        CreateEmpireSearch: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> {</span>
+        CreateEmpireSearch: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id)</span> {</span>
             <span class="hljs-keyword">var</span> dataSource = <span class="hljs-keyword">new</span> Util.XHRDataSource(<span class="hljs-string">"/empire"</span>);
             dataSource.connMethodPost = <span class="hljs-string">"POST"</span>;
             dataSource.maxCacheEntries = <span class="hljs-number">2</span>;
@@ -528,7 +529,7 @@ scope: <span class="hljs-keyword">this</span>
                 formatResultColumnKeys: [<span class="hljs-string">"name"</span>],
                 useIndicator: <span class="hljs-literal">true</span>
             });
-            oTextboxList.generateRequest = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sQuery)</span> {</span>
+            oTextboxList.generateRequest = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(sQuery)</span> {</span>
                 <span class="hljs-keyword">var</span> s = Lang.JSON.stringify({
                     <span class="hljs-string">"id"</span>: YAHOO.rpc.Service._requestId++,
                     <span class="hljs-string">"method"</span>: <span class="hljs-string">"find"</span>,
@@ -542,7 +543,7 @@ scope: <span class="hljs-keyword">this</span>
             };
             <span class="hljs-keyword">return</span> oTextboxList;
         },
-        Broadcast: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        Broadcast: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
             btn.disabled = <span class="hljs-literal">true</span>;
             <span class="hljs-keyword">this</span>.service.propose_broadcast_on_network19({
@@ -551,7 +552,7 @@ scope: <span class="hljs-keyword">this</span>
                 message: Dom.get(<span class="hljs-string">"proposeBroadcastMessage"</span>)
                     .value
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal of Broadcast successful."</span>;
                     Lib.fadeOutElm(<span class="hljs-keyword">this</span>.proposeMessage);
@@ -559,32 +560,32 @@ scope: <span class="hljs-keyword">this</span>
                         .value = <span class="hljs-string">""</span>;
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        ColonizeOnly: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        ColonizeOnly: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
             btn.disabled = <span class="hljs-literal">true</span>;
             <span class="hljs-keyword">this</span>.service.propose_members_only_colonization({
                 session_id: Game.GetSession(<span class="hljs-string">''</span>),
                 building_id: <span class="hljs-keyword">this</span>.building.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal for Members Only Colonization successful."</span>;
                     Lib.fadeOutElm(<span class="hljs-keyword">this</span>.proposeMessage);
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        EvictMining: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        EvictMining: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> button = Event.getTarget(e),
                 platform = Lib.getSelectedOptionValue(<span class="hljs-string">'proposeEvictMiningId'</span>);
             button.disabled = <span class="hljs-literal">true</span>;
@@ -595,24 +596,25 @@ scope: <span class="hljs-keyword">this</span>
                     building_id: <span class="hljs-keyword">this</span>.building.id,
                     platform_id: platform
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         Lacuna.Pulsar.Hide();
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal for Eviction of Mining Platform successful."</span>;
                         Lib.fadeOutElm(<span class="hljs-keyword">this</span>.proposeMessage);
                         button.disabled = <span class="hljs-literal">false</span>;
                     },
-                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         button.disabled = <span class="hljs-literal">false</span>;
                     },
                     scope: <span class="hljs-keyword">this</span>
                 });
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 alert(<span class="hljs-string">'Must selected a Mining Platform to Evict.'</span>);
                 button.disabled = <span class="hljs-literal">false</span>;
             }
         },
-        FireBFG: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        FireBFG: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> button = Event.getTarget(e),
                 body = Lib.getSelectedOptionValue(<span class="hljs-string">'proposeFireBfgBody'</span>),
                 reason = Dom.get(<span class="hljs-string">'proposeFireBfgReason'</span>)
@@ -627,24 +629,25 @@ scope: <span class="hljs-keyword">this</span>
                         body_id: body,
                         reason: reason
                     }, {
-                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             Lacuna.Pulser.Hide();
                             <span class="hljs-keyword">this</span>.rpcSuccess(o);
                             <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal to Fire BFG successful."</span>;
                             Lib.fadeOutElm(<span class="hljs-keyword">this</span>.proposeMessage);
                             button.disabled = <span class="hljs-literal">false</span>;
                         },
-                        failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             button.disabled = <span class="hljs-literal">false</span>;
                         },
                         scope: <span class="hljs-keyword">this</span>
                     });
                 }
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 alert(<span class="hljs-string">'Must provide a body and a reason!'</span>);
             }
         },
-        LoadMining: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        LoadMining: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> bodyId = Lib.getSelectedOptionValue(<span class="hljs-string">'proposeEvictMiningBody'</span>),
                 miningIdElem = Dom.get(<span class="hljs-string">'proposeEvictMiningId'</span>);
             <span class="hljs-keyword">if</span> (bodyId) {
@@ -654,7 +657,7 @@ scope: <span class="hljs-keyword">this</span>
                     building_id: <span class="hljs-keyword">this</span>.building.id,
                     asteroid_id: bodyId
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">var</span> optionValues = [];
                         <span class="hljs-keyword">var</span> platforms = o.result.platforms;
@@ -710,26 +713,26 @@ scope: <span class="hljs-keyword">this</span>
         </div>
       
       
-        <div class="code"><pre class="wrapper">        NeutralizeBHG: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        <div class="code"><pre class="wrapper">        NeutralizeBHG: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
             btn.disabled = <span class="hljs-literal">true</span>;
             <span class="hljs-keyword">this</span>.service.propose_neutralize_bhg({
                 session_id: Game.GetSession(<span class="hljs-string">''</span>),
                 building_id: <span class="hljs-keyword">this</span>.building.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal for Neutralize Black Hold Generators successful."</span>;
                     Lib.fadeOutElm(<span class="hljs-keyword">this</span>.proposeMessage);
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        MemberExpel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        MemberExpel: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
             btn.disabled = <span class="hljs-literal">true</span>;
             <span class="hljs-keyword">this</span>.service.propose_expel_member({
@@ -739,7 +742,7 @@ scope: <span class="hljs-keyword">this</span>
                 message: Dom.get(<span class="hljs-string">'proposeExpelReason'</span>)
                     .value
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal to Expel Member successful."</span>;
                     Lib.fadeOutElm(<span class="hljs-keyword">this</span>.proposeMessage);
@@ -749,13 +752,13 @@ scope: <span class="hljs-keyword">this</span>
                         .value = <span class="hljs-string">""</span>;
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        MemberInduct: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        MemberInduct: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.inductMemberTextboxList._oTblSingleSelection) {
                 <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
                 btn.disabled = <span class="hljs-literal">true</span>;
@@ -767,7 +770,7 @@ scope: <span class="hljs-keyword">this</span>
                     message: Dom.get(<span class="hljs-string">'proposeInductMessage'</span>)
                         .value
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal to Induct Member successful."</span>;
                         Lib.fadeOutElm(<span class="hljs-keyword">this</span>.proposeMessage);
@@ -776,14 +779,14 @@ scope: <span class="hljs-keyword">this</span>
                             .value = <span class="hljs-string">""</span>;
                         btn.disabled = <span class="hljs-literal">false</span>;
                     },
-                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         btn.disabled = <span class="hljs-literal">false</span>;
                     },
                     scope: <span class="hljs-keyword">this</span>
                 });
             }
         },
-        MemberNewLeader: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        MemberNewLeader: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
             btn.disabled = <span class="hljs-literal">true</span>;
             <span class="hljs-keyword">this</span>.service.propose_elect_new_leader({
@@ -791,7 +794,7 @@ scope: <span class="hljs-keyword">this</span>
                 building_id: <span class="hljs-keyword">this</span>.building.id,
                 to_empire_id: Lib.getSelectedOptionValue(<span class="hljs-string">"proposeElectLeaderMember"</span>)
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal to Elect New Leader successful."</span>;
                     Lib.fadeOutElm(<span class="hljs-keyword">this</span>.proposeMessage);
@@ -799,51 +802,51 @@ scope: <span class="hljs-keyword">this</span>
                         .selectedIndex = -<span class="hljs-number">1</span>;
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        MiningOnly: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        MiningOnly: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
             btn.disabled = <span class="hljs-literal">true</span>;
             <span class="hljs-keyword">this</span>.service.propose_members_only_mining_rights({
                 session_id: Game.GetSession(<span class="hljs-string">''</span>),
                 building_id: <span class="hljs-keyword">this</span>.building.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal for Members Only Mining Rights successful."</span>;
                     Lib.fadeOutElm(<span class="hljs-keyword">this</span>.proposeMessage);
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        ExcavationOnly: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        ExcavationOnly: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
             btn.disabled = <span class="hljs-literal">true</span>;
             <span class="hljs-keyword">this</span>.service.propose_members_only_excavation({
                 session_id: Game.GetSession(<span class="hljs-string">''</span>),
                 building_id: <span class="hljs-keyword">this</span>.building.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal for Members Only Excavation successful."</span>;
                     Lib.fadeOutElm(<span class="hljs-keyword">this</span>.proposeMessage);
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        PopulateBodiesForStar: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        PopulateBodiesForStar: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> starId = Lib.getSelectedOptionValue(<span class="hljs-keyword">this</span>.starElement),
                 bodyList = Dom.get(<span class="hljs-keyword">this</span>.bodyElement);
             Lacuna.Pulser.Show();
@@ -852,7 +855,7 @@ scope: <span class="hljs-keyword">this</span>
                 building_id: <span class="hljs-keyword">this</span>.Self.building.id,
                 star_id: starId
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
                     <span class="hljs-keyword">if</span> (bodyList) {
@@ -864,7 +867,8 @@ scope: <span class="hljs-keyword">this</span>
                                 <span class="hljs-keyword">if</span> (obj.type === <span class="hljs-keyword">this</span>.type) {
                                     opts[opts.length] = <span class="hljs-string">'&lt;option value="'</span> + obj.id + <span class="hljs-string">'"&gt;'</span> + obj.name + <span class="hljs-string">'&lt;/option&gt;'</span>;
                                 }
-                            } <span class="hljs-keyword">else</span> {
+                            }
+                            <span class="hljs-keyword">else</span> {
                                 opts[opts.length] = <span class="hljs-string">'&lt;option value="'</span> + obj.id + <span class="hljs-string">'"&gt;'</span> + obj.name + <span class="hljs-string">'&lt;/option&gt;'</span>;
                             }
                         }
@@ -875,7 +879,7 @@ scope: <span class="hljs-keyword">this</span>
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        ProposeWrit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        ProposeWrit: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
             btn.disabled = <span class="hljs-literal">true</span>;
             <span class="hljs-keyword">this</span>.service.propose_writ({
@@ -886,20 +890,20 @@ scope: <span class="hljs-keyword">this</span>
                 description: Dom.get(<span class="hljs-string">"proposeDesc"</span>)
                     .value
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal of Writ successful."</span>;
                     Lib.fadeOutElm(<span class="hljs-keyword">this</span>.proposeMessage);
                     <span class="hljs-keyword">this</span>.ProposeWritTemplateChange();
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        RenameAsteroid: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        RenameAsteroid: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> button = Event.getTarget(e),
                 body = Lib.getSelectedOptionValue(<span class="hljs-string">'proposeRenameAsteroidName'</span>),
                 newName = Dom.get(<span class="hljs-string">'proposeRenameAsteroidNewName'</span>)
@@ -913,7 +917,7 @@ scope: <span class="hljs-keyword">this</span>
                     planet_id: body,
                     name: newName
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal to Rename asteroid successful."</span>;
@@ -924,17 +928,18 @@ scope: <span class="hljs-keyword">this</span>
                         Dom.get(<span class="hljs-string">'proposeRenameAsteroidName'</span>)
                             .selectedIndex = -<span class="hljs-number">1</span>;
                     },
-                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         button.disabled = <span class="hljs-literal">false</span>;
                     },
                     scope: <span class="hljs-keyword">this</span>
                 });
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 alert(<span class="hljs-string">'Must select a body and chose a new name!'</span>);
                 button.disabled = <span class="hljs-literal">false</span>;
             }
         },
-        RenameStar: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        RenameStar: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
             btn.disabled = <span class="hljs-literal">true</span>;
             <span class="hljs-keyword">this</span>.service.propose_rename_star({
@@ -944,7 +949,7 @@ scope: <span class="hljs-keyword">this</span>
                 name: Dom.get(<span class="hljs-string">"proposeRenameStarName"</span>)
                     .value
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal to Rename star successful."</span>;
                     Lib.fadeOutElm(<span class="hljs-keyword">this</span>.proposeMessage);
@@ -952,13 +957,13 @@ scope: <span class="hljs-keyword">this</span>
                         .selectedIndex = -<span class="hljs-number">1</span>;
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        RenameUninhabited: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        RenameUninhabited: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> button = Event.getTarget(e),
                 body = Lib.getSelectedOptionValue(<span class="hljs-string">'proposeRenameUninhabitedName'</span>),
                 newName = Dom.get(<span class="hljs-string">'proposeRenameUninhabitedNewName'</span>)
@@ -972,7 +977,7 @@ scope: <span class="hljs-keyword">this</span>
                     planet_id: body,
                     name: newName
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal to Rename uninhabited successful."</span>;
@@ -983,17 +988,18 @@ scope: <span class="hljs-keyword">this</span>
                         Dom.get(<span class="hljs-string">'proposeRenameUninhabitedName'</span>)
                             .selectedIndex = -<span class="hljs-number">1</span>;
                     },
-                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         button.disabled = <span class="hljs-literal">false</span>;
                     },
                     scope: <span class="hljs-keyword">this</span>
                 });
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 alert(<span class="hljs-string">'Must select a body and chose a new name!'</span>);
                 button.disabled = <span class="hljs-literal">false</span>;
             }
         },
-        SeizeStar: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        SeizeStar: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.seizeStarTextboxList._oTblSingleSelection) {
                 <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
                 btn.disabled = <span class="hljs-literal">true</span>;
@@ -1003,21 +1009,21 @@ scope: <span class="hljs-keyword">this</span>
                     building_id: <span class="hljs-keyword">this</span>.building.id,
                     star_id: selObj.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal to Seize star successful."</span>;
                         Lib.fadeOutElm(<span class="hljs-keyword">this</span>.proposeMessage);
                         <span class="hljs-keyword">this</span>.seizeStarTextboxList.ResetSelections();
                         btn.disabled = <span class="hljs-literal">false</span>;
                     },
-                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         btn.disabled = <span class="hljs-literal">false</span>;
                     },
                     scope: <span class="hljs-keyword">this</span>
                 });
             }
         },
-        TransferOwner: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        TransferOwner: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
             btn.disabled = <span class="hljs-literal">true</span>;
             <span class="hljs-keyword">this</span>.service.propose_transfer_station_ownership({
@@ -1025,7 +1031,7 @@ scope: <span class="hljs-keyword">this</span>
                 building_id: <span class="hljs-keyword">this</span>.building.id,
                 to_empire_id: Lib.getSelectedOptionValue(<span class="hljs-string">"proposeTransferTo"</span>)
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">this</span>.proposeMessage.innerHTML = <span class="hljs-string">"Proposal to Transfer Ownership successful."</span>;
                     Lib.fadeOutElm(<span class="hljs-keyword">this</span>.proposeMessage);
@@ -1033,13 +1039,13 @@ scope: <span class="hljs-keyword">this</span>
                         .selectedIndex = -<span class="hljs-number">1</span>;
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        LawsPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        LawsPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"lawsDetails"</span>);
             <span class="hljs-keyword">if</span> (details) {
                 <span class="hljs-keyword">var</span> laws = <span class="hljs-keyword">this</span>.laws,
@@ -1058,7 +1064,7 @@ scope: <span class="hljs-keyword">this</span>
                 <span class="hljs-comment">//add child back in</span>
                 parentEl.appendChild(details);
                 <span class="hljs-comment">//wait for tab to display first</span>
-                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">var</span> Ht = Game.GetSize()
                         .h - <span class="hljs-number">230</span>;
                     <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
@@ -1070,7 +1076,7 @@ scope: <span class="hljs-keyword">this</span>
                 }, <span class="hljs-number">10</span>);
             }
         },
-        LawClick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+        LawClick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, matchedEl, container)</span> {</span>
             <span class="hljs-keyword">if</span> (matchedEl.innerHTML === <span class="hljs-string">"Repeal"</span>) {
                 matchedEl.disabled = <span class="hljs-literal">true</span>;
                 <span class="hljs-keyword">var</span> el = Dom.getAncestorByTagName(matchedEl, <span class="hljs-string">"li"</span>);
@@ -1080,11 +1086,11 @@ scope: <span class="hljs-keyword">this</span>
                         building_id: <span class="hljs-keyword">this</span>.building.id,
                         law_id: el.Law.id
                     }, {
-                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.props;
                             matchedEl.parentNode.removeChild(matchedEl);
                         },
-                        failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                        failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                             matchedEl.disabled = <span class="hljs-literal">false</span>;
                         },
                         scope: <span class="hljs-keyword">this</span>
@@ -1092,7 +1098,7 @@ scope: <span class="hljs-keyword">this</span>
                 }
             }
         },
-        PropsPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        PropsPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"propsDetails"</span>);
             <span class="hljs-keyword">if</span> (details) {
                 <span class="hljs-keyword">var</span> props = <span class="hljs-keyword">this</span>.props,
@@ -1114,7 +1120,7 @@ scope: <span class="hljs-keyword">this</span>
                 <span class="hljs-comment">//add child back in</span>
                 parentEl.appendChild(details);
                 <span class="hljs-comment">//wait for tab to display first</span>
-                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">var</span> Ht = Game.GetSize()
                         .h - <span class="hljs-number">230</span>;
                     <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
@@ -1126,35 +1132,39 @@ scope: <span class="hljs-keyword">this</span>
                 }, <span class="hljs-number">10</span>);
             }
         },
-        PropLineDetails: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, sec)</span> {</span>
+        PropLineDetails: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(prop, sec)</span> {</span>
             <span class="hljs-keyword">if</span> (prop.status === <span class="hljs-string">"Passed"</span> || prop.status === <span class="hljs-string">"Failed"</span>) {
                 <span class="hljs-keyword">return</span> [<span class="hljs-string">'&lt;div style="margin-bottom:2px;"&gt;'</span>, <span class="hljs-string">'&lt;div class="yui-gb"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;&lt;label&gt;'</span>, prop.name, <span class="hljs-string">'&lt;/label&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;Proposed by &lt;a class="profile_link" href="#'</span>, prop.proposed_by.id, <span class="hljs-string">'"&gt;'</span>, prop.proposed_by.name, <span class="hljs-string">'&lt;/a&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;&lt;label&gt;'</span>, prop.status, <span class="hljs-string">'&lt;/label&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="yui-gc"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;&lt;div class="propDesc"&gt;'</span>, <span class="hljs-keyword">this</span>.formatBody(prop.description), <span class="hljs-string">'&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;&lt;div class="propMyVote"&gt;'</span>, <span class="hljs-keyword">this</span>.PropVoteDetails(prop), <span class="hljs-string">'&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;table style="width:100%"&gt;&lt;col style="width:25%;text-align:center;"&gt;&lt;col style="width:25%;text-align:center;"&gt;&lt;col style="width:25%;text-align:center;"&gt;'</span>, <span class="hljs-string">'&lt;tr&gt;&lt;th&gt;Needed&lt;/th&gt;&lt;th&gt;Yes&lt;/th&gt;&lt;th&gt;No&lt;/th&gt;&lt;/tr&gt;'</span>, <span class="hljs-string">'&lt;tr&gt;&lt;td&gt;'</span>, prop.votes_needed, <span class="hljs-string">'&lt;/td&gt;&lt;td&gt;'</span>, prop.votes_yes, <span class="hljs-string">'&lt;/td&gt;&lt;td&gt;'</span>, prop.votes_no, <span class="hljs-string">'&lt;/td&gt;&lt;/tr&gt;'</span>, <span class="hljs-string">'&lt;/table&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">return</span> [<span class="hljs-string">'&lt;div style="margin-bottom:2px;"&gt;'</span>, <span class="hljs-string">'&lt;div class="yui-gb"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;&lt;label&gt;'</span>, prop.name, <span class="hljs-string">'&lt;/label&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;Proposed by &lt;a class="profile_link" href="#'</span>, prop.proposed_by.id, <span class="hljs-string">'"&gt;'</span>, prop.proposed_by.name, <span class="hljs-string">'&lt;/a&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;'</span>, prop.status, <span class="hljs-string">': &lt;span class="propTime"&gt;'</span>, Lib.formatTime(sec), <span class="hljs-string">'&lt;/span&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="yui-gc"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;&lt;div class="propDesc"&gt;'</span>, <span class="hljs-keyword">this</span>.formatBody(prop.description), <span class="hljs-string">'&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;&lt;div class="propMyVote"&gt;'</span>, <span class="hljs-keyword">this</span>.PropVoteDetails(prop), <span class="hljs-string">'&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;table style="width:100%"&gt;&lt;col style="width:25%;text-align:center;"&gt;&lt;col style="width:25%;text-align:center;"&gt;&lt;col style="width:25%;text-align:center;"&gt;'</span>, <span class="hljs-string">'&lt;tr&gt;&lt;th&gt;Needed&lt;/th&gt;&lt;th&gt;Yes&lt;/th&gt;&lt;th&gt;No&lt;/th&gt;&lt;/tr&gt;'</span>, <span class="hljs-string">'&lt;tr&gt;&lt;td&gt;'</span>, prop.votes_needed, <span class="hljs-string">'&lt;/td&gt;&lt;td&gt;'</span>, prop.votes_yes, <span class="hljs-string">'&lt;/td&gt;&lt;td&gt;'</span>, prop.votes_no, <span class="hljs-string">'&lt;/td&gt;&lt;/tr&gt;'</span>, <span class="hljs-string">'&lt;/table&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
             }
         },
-        PropVoteDetails: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop)</span> {</span>
+        PropVoteDetails: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(prop)</span> {</span>
             <span class="hljs-keyword">if</span> (prop.my_vote !== <span class="hljs-literal">undefined</span>) {
                 <span class="hljs-keyword">return</span> <span class="hljs-string">'&lt;label&gt;Voted '</span> + (prop.my_vote * <span class="hljs-number">1</span> === <span class="hljs-number">1</span> ? <span class="hljs-string">'Yes'</span> : <span class="hljs-string">'No'</span>) + <span class="hljs-string">'&lt;/label&gt;'</span>;
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">return</span> <span class="hljs-string">'&lt;button type="button"&gt;Yes&lt;/button&gt;&lt;button type="button"&gt;No&lt;/button&gt;'</span>;
             }
         },
-        PropQueue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(remaining, elLine)</span> {</span>
+        PropQueue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(remaining, elLine)</span> {</span>
             <span class="hljs-keyword">var</span> arrTime;
             <span class="hljs-keyword">if</span> (remaining &lt;= <span class="hljs-number">0</span>) {
                 arrTime = <span class="hljs-string">'Overdue '</span> + Lib.formatTime(<span class="hljs-built_in">Math</span>.round(-remaining));
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 arrTime = Lib.formatTime(<span class="hljs-built_in">Math</span>.round(remaining));
             }
             <span class="hljs-keyword">var</span> el = Sel.query(<span class="hljs-string">"span.propTime"</span>, elLine, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">if</span> (el) {
                 el.innerHTML = arrTime;
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
             }
         },
-        PropClick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+        PropClick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, matchedEl, container)</span> {</span>
             <span class="hljs-keyword">var</span> type = matchedEl.innerHTML;
             <span class="hljs-keyword">if</span> (type === <span class="hljs-string">"Yes"</span> || type === <span class="hljs-string">"No"</span>) {
                 <span class="hljs-keyword">var</span> el = Dom.getAncestorByTagName(matchedEl, <span class="hljs-string">"li"</span>),
@@ -1164,7 +1174,7 @@ scope: <span class="hljs-keyword">this</span>
                 }
             }
         },
-        PropVoteYes: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, line)</span> {</span>
+        PropVoteYes: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(prop, line)</span> {</span>
             <span class="hljs-keyword">this</span>.service.cast_vote({
                 session_id: Game.GetSession(<span class="hljs-string">""</span>),
                 building_id: <span class="hljs-keyword">this</span>.building.id,
@@ -1178,7 +1188,7 @@ scope: <span class="hljs-keyword">this</span>
                 }
             });
         },
-        PropVoteNo: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, line)</span> {</span>
+        PropVoteNo: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(prop, line)</span> {</span>
             <span class="hljs-keyword">this</span>.service.cast_vote({
                 session_id: Game.GetSession(<span class="hljs-string">""</span>),
                 building_id: <span class="hljs-keyword">this</span>.building.id,
@@ -1192,7 +1202,7 @@ scope: <span class="hljs-keyword">this</span>
                 }
             });
         },
-        PropVoteSuccess: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+        PropVoteSuccess: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
             <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
             <span class="hljs-keyword">var</span> newProp = o.result.proposition;
             <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">this</span>.Self.props.length; i++) {
@@ -1204,13 +1214,13 @@ scope: <span class="hljs-keyword">this</span>
             <span class="hljs-keyword">this</span>.Line.Prop = newProp;
             <span class="hljs-keyword">this</span>.Line.innerHTML = <span class="hljs-keyword">this</span>.Self.PropLineDetails(newProp, <span class="hljs-number">0</span>);
         },
-        formatBody: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(body)</span> {</span>
+        formatBody: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(body)</span> {</span>
             body = body.replace(<span class="hljs-regexp">/&amp;/g</span>, <span class="hljs-string">'&amp;amp;'</span>);
             body = body.replace(<span class="hljs-regexp">/&lt;/g</span>, <span class="hljs-string">'&amp;lt;'</span>);
             body = body.replace(<span class="hljs-regexp">/&gt;/g</span>, <span class="hljs-string">'&amp;gt;'</span>);
             body = body.replace(<span class="hljs-regexp">/\n/g</span>, <span class="hljs-string">'&lt;br /&gt;'</span>);
             body = body.replace(<span class="hljs-regexp">/\*([^*]+)\*/gi</span>, <span class="hljs-string">'&lt;b&gt;$1&lt;/b&gt;'</span>);
-            body = body.replace(<span class="hljs-regexp">/\{(food|water|ore|energy|waste|happiness|time|essentia|plots|build)\}/gi</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str, icon)</span> {</span>
+            body = body.replace(<span class="hljs-regexp">/\{(food|water|ore|energy|waste|happiness|time|essentia|plots|build)\}/gi</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str, icon)</span> {</span>
                 <span class="hljs-keyword">var</span> cl = <span class="hljs-string">'small'</span> + icon.substr(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)
                     .toUpperCase() + icon.substr(<span class="hljs-number">1</span>);
                 <span class="hljs-keyword">return</span> <span class="hljs-string">'&lt;img src="'</span> + Lib.AssetUrl + <span class="hljs-string">'ui/s/'</span> + icon + <span class="hljs-string">'.png" class="'</span> + cl + <span class="hljs-string">'" /&gt;'</span>;
@@ -1226,14 +1236,14 @@ scope: <span class="hljs-keyword">this</span>
             <span class="hljs-comment">//body = body.replace(/\{Alliance\s+(\d+)\s+([^\}]+)}/gi,'$2');</span>
             <span class="hljs-keyword">return</span> body;
         },
-        handleProfileLink: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, el)</span> {</span>
+        handleProfileLink: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, el)</span> {</span>
             Event.stopEvent(e);
             <span class="hljs-keyword">var</span> res = el.href.match(<span class="hljs-regexp">/\#(-?\d+)$/</span>);
             <span class="hljs-keyword">if</span> (res) {
                 Lacuna.Info.Empire.Load(res[<span class="hljs-number">1</span>]);
             }
         },
-        handleStarmapLink: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, el)</span> {</span>
+        handleStarmapLink: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, el)</span> {</span>
             Event.stopEvent(e);
             <span class="hljs-keyword">var</span> res = el.href.match(<span class="hljs-regexp">/\#(-?\d+)x(-?\d+)$/</span>);
             Game.StarJump({
@@ -1241,14 +1251,14 @@ scope: <span class="hljs-keyword">this</span>
                 y: res[<span class="hljs-number">2</span>]
             });
         },
-        handlePlanetLink: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, el)</span> {</span>
+        handlePlanetLink: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, el)</span> {</span>
             Event.stopEvent(e);
             <span class="hljs-keyword">var</span> res = el.href.match(<span class="hljs-regexp">/\#(-?\d+)$/</span>);
             <span class="hljs-keyword">this</span>.hide();
             <span class="hljs-keyword">var</span> planet = Game.EmpireData.planets[res[<span class="hljs-number">1</span>]];
             Game.PlanetJump(planet);
         },
-        handleAllianceLink: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, el)</span> {</span>
+        handleAllianceLink: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, el)</span> {</span>
             Event.stopEvent(e);
             <span class="hljs-keyword">var</span> res = el.href.match(<span class="hljs-regexp">/\#(-?\d+)$/</span>);
             Lacuna.Info.Alliance.Load(res[<span class="hljs-number">1</span>]);

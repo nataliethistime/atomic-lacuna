@@ -1,21 +1,21 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Util = YAHOO.util,
         Dom = Util.Dom,
         Event = Util.Event,
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var Capitol = function (result) {
+    var Capitol = function(result) {
         Capitol.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.Capitol;
     };
     YAHOO.lang.extend(Capitol, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getRenameTab()];
         },
-        _getRenameTab: function () {
+        _getRenameTab: function() {
             var div = document.createElement("div");
             Dom.addClass(div, 'capitolEmpireRenameTab');
             div.innerHTML = ['<p>', '    Current empire name: <span id="capitolCurrentEmpireName">', Game.EmpireData.name, '</span>', '</p>', '<fieldset style="text-align: center">', '    <legend>Change Empire Name</legend>', '    <div><label>Cost to change:<span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" title="Essentia" /></span>', this.result.rename_empire_cost, '</label></div>', '    <div><label>New empire name: <input type="text" id="capitolNewEmpireName"></input></label></div>', '    <div><button id="capitolChangeEmpireName">Change Name</button></div>', '</fieldset>'].join('');
@@ -26,7 +26,7 @@ YAHOO.namespace("lacuna.buildings");
             });
             return tab;
         },
-        RenameEmpire: function (e) {
+        RenameEmpire: function(e) {
             Event.stopEvent(e);
             var btn = Event.getTarget(e);
             var newName = Dom.get('capitolNewEmpireName')
@@ -38,7 +38,7 @@ YAHOO.namespace("lacuna.buildings");
                 building_id: this.building.id,
                 name: newName
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Capitol.rename_empire.success");
                     btn.disabled = false;
                     Dom.get('capitolNewEmpireName')
@@ -49,7 +49,7 @@ YAHOO.namespace("lacuna.buildings");
                     this.rpcSuccess(o);
                     alert('Your empire name has been changed!');
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this

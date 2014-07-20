@@ -1,13 +1,13 @@
 'use strict';
 YAHOO.namespace("lacuna");
-(function () {
+(function() {
     var Util = YAHOO.util,
         Dom = Util.Dom,
         Event = Util.Event,
         Lang = YAHOO.lang,
         Lib = YAHOO.lacuna.Library,
         CSS_PREFIX = "TextboxList";
-    var TBL = function (elInput, oDataSource, oConfigs) {
+    var TBL = function(elInput, oDataSource, oConfigs) {
         if (!oConfigs) {
             oConfigs = {};
         }
@@ -25,10 +25,12 @@ YAHOO.namespace("lacuna");
             if (YAHOO.lang.isString(elInput)) {
                 idPrefix = elInput;
                 elInput = document.getElementById(elInput); //get dom object
-            } else {
+            }
+            else {
                 idPrefix = elInput.id;
             }
-        } else {
+        }
+        else {
             return;
         }
         //setup dom structure
@@ -61,7 +63,8 @@ YAHOO.namespace("lacuna");
             Dom.addClass(tblListInputLine, CSS_PREFIX + "Bit"); //add the control class to the LI
             tblInput = tblListInputLine.appendChild(tblInput); //append our input to the LI
             Dom.addClass(tblInput, CSS_PREFIX + "Input"); //add the control class to the Input
-        } else {
+        }
+        else {
             tblInput = tblContainer.appendChild(tblInput); //append our input to the LI
             Dom.addClass(tblInput, CSS_PREFIX + "InputSingle"); //add the control class to the Input
         }
@@ -78,7 +81,8 @@ YAHOO.namespace("lacuna");
             Dom.addClass(tblIndicator, CSS_PREFIX + "Indicator");
             if (oConfigs.multiSelect) {
                 tblIndicator = Dom.insertAfter(tblIndicator, tblInput);
-            } else {
+            }
+            else {
                 Dom.addClass(tblIndicator, CSS_PREFIX + "IndicatorSingle");
                 tblIndicator = Dom.insertBefore(tblIndicator, tblInput);
             }
@@ -111,10 +115,10 @@ YAHOO.namespace("lacuna");
             Event.addListener(tblInput, "click", oSelf._onListTextboxClick, oSelf);
         }
         //correctly hide the container when mousing out
-        var mouseEnter = function () {
+        var mouseEnter = function() {
             Event.on(this._elContent, "mouseleave", mouseLeave, this, true);
         },
-            mouseLeave = function () {
+            mouseLeave = function() {
                 Event.removeListener(this._elContent, "mouseleave", mouseLeave);
                 this._toggleContainer(false);
             };
@@ -123,13 +127,13 @@ YAHOO.namespace("lacuna");
         Event.addListener(tblListContainer, "click", oSelf._onListContainerClick, oSelf);
         //if we're using indicator add events to hide and show it
         if (this.useIndicator) {
-            this.dataRequestEvent.subscribe(function (oSelf, sQuery, oRequest) {
+            this.dataRequestEvent.subscribe(function(oSelf, sQuery, oRequest) {
                 this.showIndicator();
             });
-            this.dataErrorEvent.subscribe(function (oSelf, sQuery) {
+            this.dataErrorEvent.subscribe(function(oSelf, sQuery) {
                 this.hideIndicator();
             });
-            this.dataReturnEvent.subscribe(function (oSelf, sQuery, oRequest) {
+            this.dataReturnEvent.subscribe(function(oSelf, sQuery, oRequest) {
                 this.hideIndicator();
             });
         }
@@ -137,7 +141,7 @@ YAHOO.namespace("lacuna");
     // now we are actually doing the inheritance part.
     Lang.extend(TBL, YAHOO.widget.AutoComplete, {
         // the third argument to extend are extra prototypes for the new function
-        formatResult: function (oResultData, sQuery, sResultMatch) {
+        formatResult: function(oResultData, sQuery, sResultMatch) {
             var sKey = sResultMatch,
                 // the entire result key which is the "name" param in the result set
                 sKeyQuery = sKey.substr(0, sQuery.length),
@@ -164,7 +168,7 @@ YAHOO.namespace("lacuna");
             }
             return (aMarkup.join(""));
         },
-        doBeforeExpandContainer: function (oTextbox, oContainer, sQuery, aResults) {
+        doBeforeExpandContainer: function(oTextbox, oContainer, sQuery, aResults) {
             var pos = Dom.getXY(oTextbox);
             pos[1] += Dom.get(oTextbox)
                 .offsetHeight + 2;
@@ -174,7 +178,7 @@ YAHOO.namespace("lacuna");
         /**
          * Overload destroy to get ride of our dirtyEvent
          */
-        destroy: function () {
+        destroy: function() {
             // call the AutoComplete destroy
             TBL.superclass.destroy.call(this);
             this.dirtyEvent.unsubscribeAll();
@@ -184,7 +188,7 @@ YAHOO.namespace("lacuna");
          * Return key/value pairs of selected items, if multi-selct.  "key" will be the selected item formatResultLabelKey.  value will be a "bit"
          * For single select will return single data item
          */
-        Selections: function () {
+        Selections: function() {
             if (this.multiSelect) {
                 var arr = [];
                 for (var key in this._oTblSelections) {
@@ -193,14 +197,15 @@ YAHOO.namespace("lacuna");
                     }
                 }
                 return arr;
-            } else {
+            }
+            else {
                 return this._oTblSingleSelection.Value;
             }
         },
         /**
          * items should be an array of objects with the same schema as the datasource.
          */
-        SelectItems: function (items) {
+        SelectItems: function(items) {
             //clear prior selections
             this._sPastSelections = "";
             this.ResetSelections();
@@ -221,7 +226,7 @@ YAHOO.namespace("lacuna");
         /**
          * Reset selections
          */
-        ResetSelections: function () {
+        ResetSelections: function() {
             if (this.multiSelect) {
                 this._oTblSelections = {};
                 this._aOrigSelections = [];
@@ -231,11 +236,13 @@ YAHOO.namespace("lacuna");
                     //if it doesn't have the bitbox class it's the input field so break out of the while loop because we're done
                     if (!Dom.hasClass(list.firstChild, CSS_PREFIX + "BitBox")) {
                         break;
-                    } else {
+                    }
+                    else {
                         list.removeChild(list.firstChild);
                     }
                 }
-            } else {
+            }
+            else {
                 this._oTblSingleSelection = null;
                 this._sOrigSingleSelection = "";
                 this._elTextbox.value = "";
@@ -244,10 +251,10 @@ YAHOO.namespace("lacuna");
         /**
          * _singleRequest getter
          */
-        IsSingleRequest: function () {
+        IsSingleRequest: function() {
             return this._singleRequest;
         },
-        handleResponseSingle: function (sQuery, oResponse, oPayload) {
+        handleResponseSingle: function(sQuery, oResponse, oPayload) {
             if ((this instanceof YAHOO.widget.AutoComplete) && this._sName) {
                 //focus textbox
                 this._focus();
@@ -263,7 +270,8 @@ YAHOO.namespace("lacuna");
                             this._selectItem(elListItem);
                         }
                     }
-                } else {
+                }
+                else {
                     //get first
                     elListItem = allListItemEls[0];
                     //select it
@@ -283,7 +291,7 @@ YAHOO.namespace("lacuna");
         /**
          * Selects single value.  Must override generateRequest to properly handle key unless the key is the what is the normally queried text
          */
-        Select: function (key) {
+        Select: function(key) {
             if (key) {
                 // Reset focus for a new interaction
                 this._bFocused = null;
@@ -307,7 +315,7 @@ YAHOO.namespace("lacuna");
                 });
             }
         },
-        Queue: function (keys) {
+        Queue: function(keys) {
             if (Lang.isArray(keys) && keys.length > 0) {
                 // Reset focus for a new interaction
                 this._bFocused = null;
@@ -335,7 +343,7 @@ YAHOO.namespace("lacuna");
         /**
          * overload populateList to handle single Select and use formatResultLabelKey instead of the first schema field
          */
-        _populateList: function (sQuery, oResponse, oPayload) {
+        _populateList: function(sQuery, oResponse, oPayload) {
             // Clear previous timeout
             if (this._nTypeAheadDelayID !== -1) {
                 clearTimeout(this._nTypeAheadDelayID);
@@ -435,7 +443,8 @@ YAHOO.namespace("lacuna");
                         ok = this.doBeforeExpandContainer(this._elTextbox, this._elContainer, sQuery, allResults);
                         this._toggleContainer(ok);
                     }
-                } else {
+                }
+                else {
                     this._toggleContainer(false);
                 }
                 return;
@@ -448,7 +457,7 @@ YAHOO.namespace("lacuna");
         /**
          * Enabled and disable the field
          */
-        disable: function () {
+        disable: function() {
             this.getInputEl()
                 .disabled = true;
             this.disabled = true;
@@ -463,7 +472,7 @@ YAHOO.namespace("lacuna");
                 Dom.setStyle(this._elTblIcon, "display", "none");
             }
         },
-        enable: function () {
+        enable: function() {
             this.getInputEl()
                 .disabled = false;
             this.disabled = undefined;
@@ -481,36 +490,37 @@ YAHOO.namespace("lacuna");
         /**
          * validity handlers
          **/
-        setValid: function (isValid) {
+        setValid: function(isValid) {
             this._isValid = isValid;
             if (isValid) {
                 Dom.removeClass(this._elTblContainer, CSS_PREFIX + "Error");
-            } else {
+            }
+            else {
                 Dom.addClass(this._elTblContainer, CSS_PREFIX + "Error");
             }
         },
-        isValid: function () {
+        isValid: function() {
             return this._isValid;
         },
         /**
          * show and hide animated indicator gif
          */
-        showIndicator: function () {
+        showIndicator: function() {
             Dom.setStyle(this._elTblIndicator, "display", "");
         },
-        hideIndicator: function () {
+        hideIndicator: function() {
             Dom.setStyle(this._elTblIndicator, "display", "none");
         },
         /**
          * private functions to handle selection update and bit creation for multi select and pass through for single select
          */
-        _createDataObject: function (data) {
+        _createDataObject: function(data) {
             var oData = {};
             oData.Object = data; //store actual data structure for possible later use
             oData.Value = data ? data[this.formatResultLabelKey] : null;
             return oData;
         },
-        _createBit: function (oData) {
+        _createBit: function(oData) {
             var elTblListInputLine = this._elTblListInputLine,
                 oSelf = this;
             var bit;
@@ -534,7 +544,7 @@ YAHOO.namespace("lacuna");
             }
             return bit;
         },
-        _updateValue: function (elListItem) {
+        _updateValue: function(elListItem) {
             if (this.multiSelect) {
                 if (!this.suppressInputUpdate) {
                     var elTextbox = this._elTextbox,
@@ -546,11 +556,12 @@ YAHOO.namespace("lacuna");
                     var bit = this._createBit(oData);
                     return bit;
                 }
-            } else {
+            }
+            else {
                 TBL.superclass._updateValue.call(this, elListItem);
             }
         },
-        _selectItem: function (elListItem) {
+        _selectItem: function(elListItem) {
             if (elListItem && elListItem !== null && elListItem._oResultData) {
                 if (this.multiSelect) {
                     this._bItemSelected = true;
@@ -564,7 +575,8 @@ YAHOO.namespace("lacuna");
                         this.itemSelectEvent.fire(this, elListItem, elListItem._oResultData);
                     }
                     this._toggleContainer(false);
-                } else {
+                }
+                else {
                     var oData = this._createDataObject(elListItem._oResultData);
                     this._oTblSingleSelection = oData;
                     TBL.superclass._selectItem.call(this, elListItem);
@@ -575,23 +587,24 @@ YAHOO.namespace("lacuna");
             }
         },
         //click event catch
-        _onListTextboxClick: function (v, oSelf) {
+        _onListTextboxClick: function(v, oSelf) {
             if (!this.disabled) {
                 Event.stopEvent(v); //stop event from bubbling to container
                 oSelf._sendQuery(""); //must pass empty string as query
             }
         },
-        _onListContainerClick: function (v, oSelf) {
+        _onListContainerClick: function(v, oSelf) {
             if (!this.disabled) {
                 if (oSelf.minQueryLength === 0) {
                     oSelf._elTextbox.focus();
                     oSelf._sendQuery("");
-                } else {
+                }
+                else {
                     oSelf._elTextbox.focus();
                 }
             }
         },
-        _onListRemoveBitClick: function (v, oSelf) {
+        _onListRemoveBitClick: function(v, oSelf) {
             if (oSelf._elTblList && !oSelf.disabled) {
                 var eventTarget = Event.getTarget(v); //stop event from bubbling to container
                 Event.stopEvent(v);
@@ -609,7 +622,7 @@ YAHOO.namespace("lacuna");
                 }
             }
         },
-        _updateDirty: function () {
+        _updateDirty: function() {
             //only update dirty if it's not a select
             if (!this._singleRequest) {
                 var isDirty;
@@ -635,7 +648,8 @@ YAHOO.namespace("lacuna");
                             isDirty = true;
                         }
                     }
-                } else {
+                }
+                else {
                     isDirty = (this._sOrigSingleSelection !== this._oTblSingleSelection.Value);
                 }
                 //if it changes reset validity

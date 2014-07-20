@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -54,13 +54,13 @@ YAHOO.namespace("lacuna");
         "/policestation": Lacuna.modules.PoliceStation,
         "/stationcommand": Lacuna.modules.StationCommand
     };
-    var MapPlanet = function () {
+    var MapPlanet = function() {
         this.createEvent("onMapRpc");
         this._buildDetailsPanel();
         this._buildBuilderPanel();
     };
     MapPlanet.prototype = {
-        _buildDetailsPanel: function () {
+        _buildDetailsPanel: function() {
             var panelId = "buildingDetails";
             var panel = document.createElement("div");
             panel.id = panelId;
@@ -79,7 +79,7 @@ YAHOO.namespace("lacuna");
                 zIndex: 9995,
                 context: ["header", "tl", "bl"]
             });
-            this.buildingDetails.addQueue = function (seconds, queueFn, elm, sc) {
+            this.buildingDetails.addQueue = function(seconds, queueFn, elm, sc) {
                 this.queue = this.queue || [];
                 //check if the queue is empty and store
                 var notStarted = (this.queue.length === 0);
@@ -95,7 +95,7 @@ YAHOO.namespace("lacuna");
                     Game.onTick.subscribe(this.processQueue, this, true);
                 }
             };
-            this.buildingDetails.processQueue = function (e, oArgs) {
+            this.buildingDetails.processQueue = function(e, oArgs) {
                 if (this.queue.length > 0) {
                     var queue = this.queue,
                         diff = oArgs[0] / 1000,
@@ -108,18 +108,19 @@ YAHOO.namespace("lacuna");
                         }
                     }
                     this.queue = newq;
-                } else {
+                }
+                else {
                     Game.onTick.unsubscribe(this.processQueue);
                 }
             };
-            this.buildingDetails.resetQueue = function () {
+            this.buildingDetails.resetQueue = function() {
                 Game.onTick.unsubscribe(this.processQueue);
                 this.queue = [];
             };
-            this.buildingDetails.isVisible = function () {
+            this.buildingDetails.isVisible = function() {
                 return this.cfg.getProperty("visible");
             };
-            this.buildingDetails.resetDisplay = function (oSelf) {
+            this.buildingDetails.resetDisplay = function(oSelf) {
                 this.resetQueue();
                 this.dataStore = {};
                 oSelf.currentBuilding = undefined;
@@ -132,13 +133,13 @@ YAHOO.namespace("lacuna");
                     Util.Connect.abort(oSelf.currentViewConnection);
                 }
             };
-            this.buildingDetails.renderEvent.subscribe(function () {
+            this.buildingDetails.renderEvent.subscribe(function() {
                 this.img = Dom.get("buildingDetailsImg");
                 this.name = Dom.get("buildingDetailsName");
                 this.desc = Dom.get("buildingDetailsDesc");
                 this.timeLeftLi = Dom.get("buildingDetailsTimeLeft");
                 this.tabView = new YAHOO.widget.TabView("buildingDetailTabs");
-                this.tabView.getTabByLabel = function (label) {
+                this.tabView.getTabByLabel = function(label) {
                     var tabs = this.get("tabs");
                     for (var t = 0; t < tabs.length; t++) {
                         var tab = tabs[t];
@@ -151,13 +152,13 @@ YAHOO.namespace("lacuna");
                 this.queue = [];
                 this.dataStore = {};
             });
-            this.buildingDetails.hideEvent.subscribe(function () {
+            this.buildingDetails.hideEvent.subscribe(function() {
                 this.buildingDetails.resetDisplay(this);
             }, this, true);
             this.buildingDetails.render();
             Game.OverlayManager.register(this.buildingDetails);
         },
-        _buildBuilderPanel: function () {
+        _buildBuilderPanel: function() {
             var panelId = "buildingBuilder";
             var panel = document.createElement("div");
             panel.id = panelId;
@@ -176,7 +177,7 @@ YAHOO.namespace("lacuna");
                 zIndex: 9996,
                 context: ["header", "tr", "br"]
             });
-            this.buildingBuilder.renderEvent.subscribe(function () {
+            this.buildingBuilder.renderEvent.subscribe(function() {
                 this.X = Dom.get("builderX");
                 this.Y = Dom.get("builderY");
                 this.menuView = Dom.get("builderMenu");
@@ -185,7 +186,7 @@ YAHOO.namespace("lacuna");
                 this.timeFilter = Dom.get("builderTimeFilter");
                 this.filterTrail = Dom.get("builderFilterTrail");
                 Event.on("builderTimeFilter", "change", this.updateDisplay, this, true);
-                Event.on("builderBuildLink", "click", function (e) {
+                Event.on("builderBuildLink", "click", function(e) {
                     Event.preventDefault(e);
                     this.buildingList.innerHTML = "";
                     Dom.setStyle(this.listView, 'display', 'none');
@@ -196,10 +197,10 @@ YAHOO.namespace("lacuna");
                 Event.delegate(this.buildingList, "click", this.build, "button", this, true);
                 Event.delegate(this.buildingList, "click", this.build, "img.buildingImage", this, true);
             });
-            this.buildingBuilder.hideEvent.subscribe(function () {
+            this.buildingBuilder.hideEvent.subscribe(function() {
                 this.buildingBuilder.resetDisplay(this);
             }, this, true);
-            this.buildingBuilder.clickBuildMenu = function (e, matchedEl, container) {
+            this.buildingBuilder.clickBuildMenu = function(e, matchedEl, container) {
                 Event.preventDefault(e);
                 var frag = matchedEl.href.split("#")[1];
                 var tags = frag.split("/");
@@ -207,7 +208,7 @@ YAHOO.namespace("lacuna");
                 var subTag = tags[1];
                 this.viewBuildings(mainTag, subTag);
             };
-            this.buildingBuilder.viewBuildings = function (mainTag, subTag) {
+            this.buildingBuilder.viewBuildings = function(mainTag, subTag) {
                 this.mainTag = mainTag;
                 this.subTag = subTag;
                 Dom.setStyle(this.listView, 'display', 'block');
@@ -216,7 +217,8 @@ YAHOO.namespace("lacuna");
                 var displayTag = mainTag ? mainTag : "All";
                 if (subTag) {
                     this.filterTrail.innerHTML = ' &gt; <a class="buildMenuLink" href="#' + mainTag + '">' + displayTag + '</a> &gt; <span class="buildMenuLink">' + subTag + '</span>';
-                } else {
+                }
+                else {
                     this.filterTrail.innerHTML = ' &gt; <span class="buildMenuLink">' + displayTag + '</span>';
                 }
                 var filterTag = subTag ? subTag : mainTag;
@@ -228,27 +230,28 @@ YAHOO.namespace("lacuna");
                         y: this.currentTile.y,
                         tag: filterTag
                     });
-                } else {
+                }
+                else {
                     this.updateDisplay();
                 }
             };
-            this.buildingBuilder.isVisible = function () {
+            this.buildingBuilder.isVisible = function() {
                 return this.cfg.getProperty("visible");
             };
-            this.buildingBuilder.setTile = function (tile) {
+            this.buildingBuilder.setTile = function(tile) {
                 this.currentTile = tile;
                 this.X.innerHTML = tile.x;
                 this.Y.innerHTML = tile.y;
             };
-            this.buildingBuilder.load = function (b, q, request) {
+            this.buildingBuilder.load = function(b, q, request) {
                 this.buildable[request.tag] = b; //store
                 this.queue_status = q;
                 this.updateDisplay();
             };
-            this.buildingBuilder.build = function (e, matchedEl, container) {
+            this.buildingBuilder.build = function(e, matchedEl, container) {
                 Lacuna.MapPlanet.Build(matchedEl.building, this.currentTile.x, this.currentTile.y);
             };
-            this.buildingBuilder.resetDisplay = function (oSelf) {
+            this.buildingBuilder.resetDisplay = function(oSelf) {
                 if (oSelf.currentBuildConnection) {
                     Lacuna.Pulser.Hide();
                     Util.Connect.abort(oSelf.currentBuildConnection);
@@ -258,10 +261,10 @@ YAHOO.namespace("lacuna");
                 Dom.setStyle(this.menuView, 'display', 'block');
                 Dom.setStyle(this.listView, 'display', 'none');
             };
-            this.buildingBuilder.resetFilter = function () {
+            this.buildingBuilder.resetFilter = function() {
                 this.timeFilter.options[1].selected = 1;
             };
-            this.buildingBuilder.updateDisplay = function () {
+            this.buildingBuilder.updateDisplay = function() {
                 var mainTag = this.mainTag;
                 var subTag = this.subTag;
                 var b = this.buildable[mainTag] || this.buildable[subTag];
@@ -319,17 +322,21 @@ YAHOO.namespace("lacuna");
                     bd.name = names[i];
                     if (bd.build.reason) {
                         reason = bd.build.reason[1];
-                    } else {
+                    }
+                    else {
                         reason = undefined;
                         if (isQueueFull) {
                             reason = "Build queue is full.";
-                        } else if (noPlots) {
+                        }
+                        else if (noPlots) {
                             reason = "No plots available.";
-                        } else if (isPlan) {
+                        }
+                        else if (isPlan) {
                             var extra_level = bd.build.extra_level * 1;
                             if (extra_level) {
                                 reason = "Will build to level " + (extra_level + 1) + " for free with plan.";
-                            } else {
+                            }
+                            else {
                                 reason = "Will build for free with plan.";
                             }
                         }
@@ -353,37 +360,37 @@ YAHOO.namespace("lacuna");
             this.buildingBuilder.render();
             Game.OverlayManager.register(this.buildingBuilder);
         },
-        _fireRpcSuccess: function (result) {
+        _fireRpcSuccess: function(result) {
             this.fireEvent("onMapRpc", result);
         },
-        _fireQueueAdd: function (obj) {
+        _fireQueueAdd: function(obj) {
             if (this.buildingDetails.isVisible()) {
                 this.buildingDetails.addQueue(obj.seconds, obj.fn, obj.el, obj.scope);
             }
         },
-        _fireBuildingReload: function (building) {
+        _fireBuildingReload: function(building) {
             this.ReloadBuilding(building);
         },
-        _fireQueueReset: function () {
+        _fireQueueReset: function() {
             this.buildingDetails.resetQueue();
         },
-        _fireAddTab: function (tab) {
+        _fireAddTab: function(tab) {
             if (this.buildingDetails.isVisible()) {
                 this.buildingDetails.tabView.addTab(tab);
             }
         },
-        _fireRemoveTab: function (tab) {
+        _fireRemoveTab: function(tab) {
             if (this.buildingDetails.isVisible()) {
                 this.buildingDetails.tabView.selectTab(0);
                 this.buildingDetails.tabView.removeTab(tab);
             }
         },
-        _fireSelectTab: function (tabIndex) {
+        _fireSelectTab: function(tabIndex) {
             if (this.buildingDetails.isVisible()) {
                 this.buildingDetails.tabView.selectTab(tabIndex);
             }
         },
-        _fireReloadTabs: function () {
+        _fireReloadTabs: function() {
             if (this.currentBuildingObj) {
                 var panel = this.buildingDetails;
                 //remove any tabs
@@ -402,27 +409,27 @@ YAHOO.namespace("lacuna");
                 panel.tabView.selectTab(0);
             }
         },
-        _fireUpdateTile: function (building) {
+        _fireUpdateTile: function(building) {
             if (building && building.id && building.name) {
                 this.ReloadBuilding(building);
             }
         },
-        _fireUpdateMap: function () {
+        _fireUpdateMap: function() {
             this.Refresh();
         },
-        _fireRemoveTile: function (building) {
+        _fireRemoveTile: function(building) {
             if (building && building.id) {
                 delete this.buildings[building.id];
                 this._map.removeTile(building.x, building.y);
             }
         },
-        _fireHide: function () {
+        _fireHide: function() {
             this.buildingDetails.hide();
         },
-        IsVisible: function () {
+        IsVisible: function() {
             return this._isVisible;
         },
-        MapVisible: function (visible) {
+        MapVisible: function(visible) {
             if (this._isVisible !== visible) {
                 if (this._elGrid) {
                     this._isVisible = visible;
@@ -433,7 +440,8 @@ YAHOO.namespace("lacuna");
                                 .appendChild(this._elGrid);
                         }
                         //Dom.setStyle(this._elGrid, "display", visible ? "" : "none");
-                    } else {
+                    }
+                    else {
                         this._elGrid = this._elGrid.parentNode.removeChild(this._elGrid);
                     }
                     if (visible && this._map) {
@@ -446,7 +454,7 @@ YAHOO.namespace("lacuna");
                 }
             }
         },
-        Mapper: function (oArgs) {
+        Mapper: function(oArgs) {
             //YAHOO.log(oArgs.buildings, "debug", "Mapper");
             this.buildings = oArgs.buildings;
             this.surfaceUrl = [Lib.AssetUrl, 'planet_side/', oArgs.body.surface_image, '.jpg'].join('');
@@ -478,13 +486,14 @@ YAHOO.namespace("lacuna");
                 map.setCenterToCommand();
                 this._map = map;
                 this._gridCreated = true;
-                Event.delegate(this._map.mapDiv, "click", function (e, matchedEl, container) {
+                Event.delegate(this._map.mapDiv, "click", function(e, matchedEl, container) {
                     var planet = Game.GetCurrentPlanet();
                     if (!this._map.controller.isDragging()) {
                         var tile = this._map.tileLayer.findTileById(matchedEl.parentNode.id);
                         if (tile && tile.data) {
                             this.DetailsView(tile);
-                        } else { //if(planet.size*1 > planet.building_count*1) {
+                        }
+                        else { //if(planet.size*1 > planet.building_count*1) {
                             this.BuilderView(tile);
                         }
                         /*else {
@@ -492,7 +501,8 @@ YAHOO.namespace("lacuna");
                     }*/
                     }
                 }, "div.planetMapTileActionContainer", this, true); //"button.planetMapTileActionButton"
-            } else {
+            }
+            else {
                 this.MapVisible(true); //needs to be visible before we set sizing and  map
                 if (!this._elGrid.parentNode) {
                     document.getElementById("content")
@@ -506,17 +516,18 @@ YAHOO.namespace("lacuna");
             }
             Lacuna.Pulser.Hide();
         },
-        Load: function (planetId, showNotify, silent) {
+        Load: function(planetId, showNotify, silent) {
             Lacuna.Pulser.Show();
             if (showNotify) {
                 Lacuna.Notify.Show(planetId);
-            } else {
+            }
+            else {
                 Lacuna.Notify.Hide();
             }
             this.locationId = planetId;
             this.ReLoad(silent);
         },
-        Refresh: function () {
+        Refresh: function() {
             if (this.locationId) {
                 var BodyServ = Game.Services.Body,
                     data = {
@@ -524,7 +535,7 @@ YAHOO.namespace("lacuna");
                         body_id: this.locationId
                     };
                 BodyServ.get_buildings(data, {
-                    success: function (o) {
+                    success: function(o) {
                         //YAHOO.log(o, "info", "MapPlanet.Refresh");
                         this.fireEvent("onMapRpc", o.result);
                         var planet = Game.GetCurrentPlanet();
@@ -536,7 +547,7 @@ YAHOO.namespace("lacuna");
                 });
             }
         },
-        ReLoad: function (silent) {
+        ReLoad: function(silent) {
             if (this.locationId) {
                 var BodyServ = Game.Services.Body,
                     data = {
@@ -544,12 +555,13 @@ YAHOO.namespace("lacuna");
                         body_id: this.locationId
                     };
                 BodyServ.get_buildings(data, {
-                    success: function (o) {
+                    success: function(o) {
                         //YAHOO.log(o, "info", "MapPlanet.ReLoad");
                         this.fireEvent("onMapRpc", o.result);
                         if (silent) {
                             Lacuna.Pulser.Hide();
-                        } else {
+                        }
+                        else {
                             this.Mapper(o.result);
                         }
                     },
@@ -557,7 +569,7 @@ YAHOO.namespace("lacuna");
                 });
             }
         },
-        ReLoadTile: function (id) {
+        ReLoadTile: function(id) {
             //YAHOO.log(this._isVisible, "info", "MapPlanet.ReLoadTile._isVisible");
             if (this._isVisible && id) {
                 //YAHOO.log(id, "info", "MapPlanet.ReLoadTile.id");
@@ -570,16 +582,16 @@ YAHOO.namespace("lacuna");
                 }
             }
         },
-        SetSize: function () {
+        SetSize: function() {
             var size = Game.GetSize();
             Dom.setStyle(this._elGrid, "width", size.w + "px");
             Dom.setStyle(this._elGrid, "height", size.h + "px");
         },
-        Resize: function () {
+        Resize: function() {
             this.SetSize();
             this._map.resize();
         },
-        Reset: function () {
+        Reset: function() {
             delete this.locationId;
             if (this._map) {
                 this._map.reset();
@@ -588,7 +600,7 @@ YAHOO.namespace("lacuna");
             this.buildingBuilder.resetFilter();
             this.MapVisible(false);
         },
-        BuilderView: function (tile) {
+        BuilderView: function(tile) {
             //YAHOO.log(tile, "info", "BuilderView");
             Game.OverlayManager.hideAllBut(this.buildingBuilder.id);
             this.buildingBuilder.resetDisplay(this);
@@ -603,22 +615,22 @@ YAHOO.namespace("lacuna");
             Dom.setStyle(Dom.get('builderList')
                 .parentNode, 'height', Ht + 'px');
         },
-        BuilderGet: function (data) {
+        BuilderGet: function(data) {
             Lacuna.Pulser.Show();
             this.currentBuildConnection = Game.Services.Body.get_buildable(data, {
-                success: function (o) {
+                success: function(o) {
                     delete this.currentBuildConnection;
                     //YAHOO.log(o, "info", "MapPlanet.BuilderGet.success");
                     this.fireEvent("onMapRpc", o.result);
                     this.BuilderProcess(o.result, data);
                 },
-                failure: function (o) {
+                failure: function(o) {
                     delete this.currentBuildConnection;
                 },
                 scope: this
             });
         },
-        BuilderProcess: function (oResults, request) {
+        BuilderProcess: function(oResults, request) {
             if (this.buildingBuilder.isVisible() && oResults) {
                 var b = oResults.buildable;
                 var q = oResults.build_queue;
@@ -628,16 +640,17 @@ YAHOO.namespace("lacuna");
             }
             Lacuna.Pulser.Hide();
         },
-        NotIsolationist: function (building) {
+        NotIsolationist: function(building) {
             if (Game.EmpireData.is_isolationist === "1") {
                 if (building.url === "/espionage" && !confirm("If you build an Espionage Ministry you will no longer be considered an Isolationist and you will be open to attack.  Are you sure you want to do this?")) {
                     return true;
-                } else if (building.url === "/munitionslab" && !confirm("If you build a Munitions Lab you will no longer be considered an Isolationist and you will be open to attack.  Are you sure you want to do this?")) {
+                }
+                else if (building.url === "/munitionslab" && !confirm("If you build a Munitions Lab you will no longer be considered an Isolationist and you will be open to attack.  Are you sure you want to do this?")) {
                     return true;
                 }
             }
         },
-        Build: function (building, x, y) {
+        Build: function(building, x, y) {
             if (this.NotIsolationist(building)) {
                 return;
             }
@@ -650,7 +663,7 @@ YAHOO.namespace("lacuna");
                     y: y
                 };
             BuildingServ.build(data, {
-                success: function (o) {
+                success: function(o) {
                     //YAHOO.log(o, "info", "MapPlanet.Build.success");
                     Lacuna.Pulser.Hide();
                     this.fireEvent("onMapRpc", o.result);
@@ -665,21 +678,21 @@ YAHOO.namespace("lacuna");
                     //this.UpdateCost(b.build.cost);
                     this.ReloadBuilding(b);
                 },
-                failure: function (o) {
+                failure: function(o) {
                     this.buildingBuilder.hide();
                 },
                 scope: this,
                 target: building.url
             });
         },
-        ViewData: function (id, url, callback, x, y) {
+        ViewData: function(id, url, callback, x, y) {
             var BuildingServ = Game.Services.Buildings.Generic,
                 data = {
                     session_id: Game.GetSession(""),
                     building_id: id
                 };
             return BuildingServ.view(data, {
-                success: function (o) {
+                success: function(o) {
                     //YAHOO.log(o, "info", "MapPlanet.ViewData.success");
                     this.fireEvent("onMapRpc", o.result);
                     var newB = o.result.building;
@@ -693,7 +706,7 @@ YAHOO.namespace("lacuna");
                     }
                     Lacuna.Pulser.Hide();
                 },
-                failure: function (o) {
+                failure: function(o) {
                     if (callback && callback.failure) {
                         callback.failure.call(this, o, callback.url, x, y);
                         return true;
@@ -703,7 +716,7 @@ YAHOO.namespace("lacuna");
                 target: url
             });
         },
-        DetailsView: function (tile) {
+        DetailsView: function(tile) {
             //YAHOO.log(tile, "info", "DetailsView");
             Lacuna.Pulser.Show();
             var panel = this.buildingDetails;
@@ -733,17 +746,17 @@ YAHOO.namespace("lacuna");
             }
             this.buildingDetails.show(); //show before we get data so it looks like we're doing something
             this.currentViewConnection = this.ViewData(tile.data.id, tile.data.url, {
-                success: function (oResults, url, x, y) {
+                success: function(oResults, url, x, y) {
                     delete this.currentViewConnection;
                     this.DetailsProcess(oResults, url, x, y);
                 },
-                failure: function (o) {
+                failure: function(o) {
                     delete this.currentViewConnection;
                 },
                 url: tile.data.url
             }, tile.x, tile.y);
         },
-        BuildingFactory: function (result) {
+        BuildingFactory: function(result) {
             var ClassConstructor = FactoryMap[result.building.url] || Lacuna.buildings.Building,
                 classObj = new ClassConstructor(result, this.locationId);
             if (classObj) {
@@ -761,7 +774,7 @@ YAHOO.namespace("lacuna");
             }
             return classObj;
         },
-        DetailsProcess: function (oResults, url, x, y) {
+        DetailsProcess: function(oResults, url, x, y) {
             var building = oResults.building,
                 panel = this.buildingDetails,
                 currBuildingId = this.currentBuilding ? this.currentBuilding.building.id : undefined;
@@ -781,7 +794,7 @@ YAHOO.namespace("lacuna");
                 if (building.pending_build) {
                     panel.timeLeftLi.innerHTML = "<label>Build Time Remaining:</label>" + Lib.formatTime(building.pending_build.seconds_remaining);
                     if (building.pending_build.seconds_remaining > 0) {
-                        panel.addQueue(building.pending_build.seconds_remaining, function (remaining, elm) {
+                        panel.addQueue(building.pending_build.seconds_remaining, function(remaining, elm) {
                             var rf = Math.round(remaining);
                             if (rf <= 0) {
                                 elm.innerHTML = "";
@@ -794,12 +807,14 @@ YAHOO.namespace("lacuna");
                                     x: building.x,
                                     y: building.y
                                 });
-                            } else {
+                            }
+                            else {
                                 elm.innerHTML = "<label>Build Time Remaining:</label>" + Lib.formatTime(rf);
                             }
                         }, panel.timeLeftLi, this);
                     }
-                } else {
+                }
+                else {
                     panel.timeLeftLi.innerHTML = "";
                 }
                 var output, stored, bq, ul, li, div;
@@ -825,7 +840,7 @@ YAHOO.namespace("lacuna");
                 panel.focusFirst();
             }
         },
-        CleanBuilding: function (building) {
+        CleanBuilding: function(building) {
             building.efficiency = (building.efficiency || 100) * 1;
             if (building.repair_costs && building.efficiency === 100) {
                 delete building.repair_costs;
@@ -838,7 +853,7 @@ YAHOO.namespace("lacuna");
             }
             return building;
         },
-        ReloadBuilding: function (building) {
+        ReloadBuilding: function(building) {
             //YAHOO.log(building, "debug", "ReloadBuilding");
             building = this.CleanBuilding(building);
             this.buildings[building.id] = building;

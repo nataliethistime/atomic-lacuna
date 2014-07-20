@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna");
-(function () {
+(function() {
     var Util = YAHOO.util,
         Dom = Util.Dom,
         Event = Util.Event,
@@ -9,10 +9,11 @@ YAHOO.namespace("lacuna");
         Game = Lacuna.Game,
         Slider = YAHOO.widget.Slider,
         Lib = Lacuna.Library;
-    var SpeciesDesigner = function (config) {
+    var SpeciesDesigner = function(config) {
         if ((typeof config !== 'undefined') && (typeof config.templates !== 'undefined') && !config.templates) {
             this.speciesTemplates = [];
-        } else {
+        }
+        else {
             this.speciesTemplates = [{
                 name: 'Average',
                 description: 'Not specializing in any area, but without any particular weaknesses.',
@@ -97,7 +98,7 @@ YAHOO.namespace("lacuna");
         }
     };
     SpeciesDesigner.prototype = {
-        render: function (el) {
+        render: function(el) {
             el = Dom.get(el);
             var container = document.createElement('div');
             this.container = container;
@@ -107,7 +108,7 @@ YAHOO.namespace("lacuna");
             this.elDesc = Sel.query(".speciesDesc", container, true);
             this.elTemplates = Sel.query(".speciesTemplates", container, true);
             if (this.speciesTemplates.length > 0) {
-                Event.delegate(this.elTemplates, 'click', function (e, matchedEl) {
+                Event.delegate(this.elTemplates, 'click', function(e, matchedEl) {
                     Event.stopEvent(e);
                     this.selectTemplate(matchedEl.TemplateIndex);
                 }, '.speciesTemplate', this, true);
@@ -120,7 +121,8 @@ YAHOO.namespace("lacuna");
                     Dom.addClass(tButton, 'speciesTemplate');
                     this.elTemplates.appendChild(tButton);
                 }
-            } else {
+            }
+            else {
                 Dom.setStyle(Sel.query(".speciesButtons", container, true), 'display', 'none');
             }
             el.appendChild(container);
@@ -130,7 +132,7 @@ YAHOO.namespace("lacuna");
                 this.selectTemplate(0);
             }
         },
-        _createSliders: function () {
+        _createSliders: function() {
             this.speciesHO = this._createHabitableOrbits();
             this.speciesConst = this._createHorizSingle("speciesConst", "speciesConst_thumb", "speciesConst_num");
             this.speciesDecep = this._createHorizSingle("speciesDecep", "speciesDecep_thumb", "speciesDecep_num");
@@ -146,7 +148,7 @@ YAHOO.namespace("lacuna");
             this.elTotal = Sel.query(".speciesPointTotal", this.container, true);
             this.elTotal.innerHTML = 45;
             this.elTotalLine = Sel.query(".speciesPointLine", this.container, true);
-            var updateTotal = function () {
+            var updateTotal = function() {
                 var total = this.getSpeciesData()
                     .affinity_total;
                 this.elTotal.innerHTML = total;
@@ -154,11 +156,13 @@ YAHOO.namespace("lacuna");
                     Dom.removeClass(this.elTotalLine, "speciesPointsValid");
                     Dom.removeClass(this.elTotalLine, "speciesPointsLow");
                     Dom.addClass(this.elTotalLine, "speciesPointsInvalid");
-                } else if (total === 45) {
+                }
+                else if (total === 45) {
                     Dom.addClass(this.elTotalLine, "speciesPointsValid");
                     Dom.removeClass(this.elTotalLine, "speciesPointsLow");
                     Dom.removeClass(this.elTotalLine, "speciesPointsInvalid");
-                } else {
+                }
+                else {
                     Dom.removeClass(this.elTotalLine, "speciesPointsValid");
                     Dom.addClass(this.elTotalLine, "speciesPointsLow");
                     Dom.removeClass(this.elTotalLine, "speciesPointsInvalid");
@@ -177,7 +181,7 @@ YAHOO.namespace("lacuna");
             this.speciesTrade.subscribe('change', updateTotal, this, true);
             this.speciesGrowth.subscribe('change', updateTotal, this, true);
         },
-        _createTooltips: function () {
+        _createTooltips: function() {
             this._affinityTooltip = new YAHOO.widget.Tooltip(Dom.generateId(), {
                 //iframe:true,
                 zIndex: 1,
@@ -186,7 +190,7 @@ YAHOO.namespace("lacuna");
                 context: Sel.query('.speciesAffinities label', this.container)
             });
         },
-        _createHabitableOrbits: function () {
+        _createHabitableOrbits: function() {
             var range = 180,
                 tickSize = 30,
                 from = Sel.query(".speciesHO_from", this.container, true),
@@ -209,19 +213,21 @@ YAHOO.namespace("lacuna");
             var maxs = new YW.Slider(elSlider.id, elSlider.id, maxt, "horiz");
             var slider = new YW.DualSlider(mins, maxs, range, [90, 90]);
             var mintSetX = mint.setXConstraint;
-            mint.setXConstraint = function (iLeft, iRight, iTickSize) {
+            mint.setXConstraint = function(iLeft, iRight, iTickSize) {
                 if (slider.minLock) {
                     iRight = (slider.minLock - 1) * iTickSize;
-                } else {
+                }
+                else {
                     iRight += iTickSize * 1.5;
                 }
                 mintSetX.apply(mint, [iLeft, iRight, iTickSize]);
             };
             var maxtSetX = maxt.setXConstraint;
-            maxt.setXConstraint = function (iLeft, iRight, iTickSize) {
+            maxt.setXConstraint = function(iLeft, iRight, iTickSize) {
                 if (slider.maxLock) {
                     iLeft = (1 - slider.maxLock) * iTickSize;
-                } else {
+                }
+                else {
                     iLeft += iTickSize;
                 }
                 maxtSetX.apply(maxt, [iLeft, iRight, iTickSize]);
@@ -230,7 +236,7 @@ YAHOO.namespace("lacuna");
             // Decorate the DualSlider instance with some new properties and
             // methods to maintain the highlight element
             YAHOO.lang.augmentObject(slider, {
-                setLocks: function (min, max) {
+                setLocks: function(min, max) {
                     this.minLock = min;
                     this.maxLock = max;
                     var delta = max - min;
@@ -244,28 +250,28 @@ YAHOO.namespace("lacuna");
                 // The highlight element
                 _highlight: Sel.query('.speciesHO_highlight', this.container, true),
                 // A method to update the status and update the highlight
-                updateHighlight: function () {
+                updateHighlight: function() {
                     var delta = this.maxVal - this.minVal;
                     Dom.setStyle(this._highlight, 'left', (this.minVal - 5) + 'px');
                     Dom.setStyle(this._highlight, 'width', Math.max(delta + 27, 0) + 'px');
                 },
-                getMinOrbit: function () {
+                getMinOrbit: function() {
                     return Math.round((this.minVal - 14) / tickSize) + 1;
                 },
-                getMaxOrbit: function () {
+                getMaxOrbit: function() {
                     return Math.round((this.maxVal + 14) / tickSize) + 1;
                 },
-                setMinOrbit: function (orbit, skipAnim, force, silent) {
+                setMinOrbit: function(orbit, skipAnim, force, silent) {
                     var value = (orbit - 1) * tickSize + 14;
                     this.setMinValue(value, skipAnim, force, silent);
                     return orbit;
                 },
-                setMaxOrbit: function (orbit, skipAnim, force, silent) {
+                setMaxOrbit: function(orbit, skipAnim, force, silent) {
                     var value = (orbit - 1) * tickSize - 14;
                     this.setMaxValue(value, skipAnim, force, silent);
                     return orbit;
                 },
-                setOrbits: function (minOrbit, maxOrbit, skipAnim, force, silent) {
+                setOrbits: function(minOrbit, maxOrbit, skipAnim, force, silent) {
                     var min = (minOrbit - 1) * tickSize + 14;
                     var max = (maxOrbit - 1) * tickSize - 14;
                     this.setValues(min, max, skipAnim, force, silent);
@@ -275,7 +281,7 @@ YAHOO.namespace("lacuna");
             slider.subscribe('change', slider.updateHighlight, slider, true);
             //this.Dialog.showEvent.subscribe(slider.updateHighlight,slider,true);
             slider.updateHighlight();
-            var updateUI = function () {
+            var updateUI = function() {
                 from.innerHTML = this.getMinOrbit();
                 to.innerHTML = this.getMaxOrbit();
             };
@@ -283,7 +289,7 @@ YAHOO.namespace("lacuna");
             slider.subscribe('change', updateUI);
             return slider;
         },
-        _createHorizSingle: function (container, thumb, num) {
+        _createHorizSingle: function(container, thumb, num) {
             var range = 180,
                 tickSize = 30,
                 elNum = Sel.query('.' + num, this.container, true);
@@ -295,31 +301,31 @@ YAHOO.namespace("lacuna");
             var slider = Slider.getHorizSlider(container.id, thumb.id, 0, range, tickSize);
             slider.key = container.id;
             YAHOO.lang.augmentObject(slider, {
-                setLock: function (min) {
+                setLock: function(min) {
                     Dom.setStyle(this._lock, 'display', 'block');
                     Dom.setStyle(this._lock, 'left', '0px');
                     Dom.setStyle(this._lock, 'width', ((min - 1) * tickSize + 8) + 'px');
                     this.thumb.setXConstraint((1 - min) * tickSize, range, tickSize);
                 },
                 _lock: Sel.query('.speciesSlider_lock', container, true),
-                getAffinity: function () {
+                getAffinity: function() {
                     return Math.round(this.getValue() / tickSize + 1);
                 },
-                setAffinity: function (affinity, skipAnim, force, silent) {
+                setAffinity: function(affinity, skipAnim, force, silent) {
                     var value = (affinity - 1) * tickSize;
                     this.setValue(value, skipAnim, force, silent);
                     return affinity;
                 }
             }, true);
             slider.setAffinity(4);
-            var updateUI = function () {
+            var updateUI = function() {
                 elNum.innerHTML = this.getAffinity();
             };
             slider.subscribe('ready', updateUI);
             slider.subscribe('change', updateUI);
             return slider;
         },
-        getSpeciesData: function () {
+        getSpeciesData: function() {
             var data = {
                 name: this.elName.value,
                 description: this.elDesc.value.substr(0, 1024),
@@ -340,7 +346,7 @@ YAHOO.namespace("lacuna");
             data.affinity_total = data.max_orbit - data.min_orbit + 1 + data.manufacturing_affinity + data.deception_affinity + data.research_affinity + data.management_affinity + data.farming_affinity + data.mining_affinity + data.science_affinity + data.environmental_affinity + data.political_affinity + data.trade_affinity + data.growth_affinity;
             return data;
         },
-        setSpeciesData: function (data) {
+        setSpeciesData: function(data) {
             this.elName.value = data.name;
             this.elDesc.value = data.description;
             this.speciesHO.setOrbits(data.min_orbit, data.max_orbit, true, true);
@@ -356,41 +362,44 @@ YAHOO.namespace("lacuna");
             this.speciesTrade.setAffinity(data.trade_affinity, true, true);
             this.speciesGrowth.setAffinity(data.growth_affinity, true, true);
         },
-        setSpeciesLocks: function (data) {
+        setSpeciesLocks: function(data) {
             this.speciesHO.setLocks(data.min_orbit, data.max_orbit);
             this.speciesGrowth.setLock(data.min_growth);
         },
-        compareSpeciesData: function (species1, species2) {
+        compareSpeciesData: function(species1, species2) {
             return (species1.manufacturing_affinity === species2.manufacturing_affinity && species1.deception_affinity === species2.deception_affinity && species1.research_affinity === species2.research_affinity && species1.management_affinity === species2.management_affinity && species1.farming_affinity === species2.farming_affinity && species1.mining_affinity === species2.mining_affinity && species1.science_affinity === species2.science_affinity && species1.environmental_affinity === species2.environmental_affinity && species1.political_affinity === species2.political_affinity && species1.trade_affinity === species2.trade_affinity && species1.growth_affinity === species2.growth_affinity);
         },
-        setExpert: function () {
+        setExpert: function() {
             this._expert = true;
         },
-        clearExpert: function () {
+        clearExpert: function() {
             delete this._expert;
         },
-        needsExpert: function (data) {
+        needsExpert: function(data) {
             return (data.manufacturing_affinity === 1 || data.deception_affinity === 1 || data.research_affinity === 1 || data.management_affinity === 1 || data.farming_affinity === 1 || data.mining_affinity === 1 || data.science_affinity === 1 || data.environmental_affinity === 1 || data.political_affinity === 1 || data.trade_affinity === 1 || data.growth_affinity === 1);
         },
-        selectTemplate: function (index) {
+        selectTemplate: function(index) {
             var data = this.speciesTemplates[index];
             this.setSpeciesData(data);
         },
-        validateSpecies: function (data) {
+        validateSpecies: function(data) {
             if (data.affinity_total > 45) {
                 throw "You can only have a maximum of 45 points.";
-            } else if (data.affinity_total < 45) {
+            }
+            else if (data.affinity_total < 45) {
                 throw "You must use exactly 45 points.";
-            } else if (!this._expert && this.needsExpert(data)) {
+            }
+            else if (!this._expert && this.needsExpert(data)) {
                 if (confirm("Setting an affinity to 1 is an expert setting, and is not recommended unless you're absolutely sure you know what you're doing.  Are you sure you want to continue?")) {
                     this._expert = true;
-                } else {
+                }
+                else {
                     return false;
                 }
             }
             return true;
         },
-        _getHtml: function () {
+        _getHtml: function() {
             var nameId = Dom.generateId();
             var descId = Dom.generateId();
             return ['<div class="speciesButtons">', '    Presets: ', '    <span class="speciesTemplates">', '    </span>', '</div>', '<div class="speciesCreate">', '    <ul>', '        <li style="margin-bottom:3px;"><label for="', nameId, '">Species Name</label><input id="', nameId, '" type="text" class="speciesName" maxlength="30" size="30" /></label></li>', '        <li><label for="', descId, '">Description</label><textarea id="', descId, '" class="speciesDesc" cols="40" rows="4"></textarea></li>', '        <li style="margin: 10px 0;"><span class="affinitiesLabel">Affinities:</span><span class="speciesPointLine speciesPointsValid"><label>Points</label><span class="speciesPointTotal">0</span>/45</span></li>', '    </ul>', '    <div class="yui-g speciesAffinities">', '        <div class="yui-u first">', '            <ul>', '                <li><label title="Determines the orbits your species can inhabit. Orbits 2-5 have the most abundant food. Orbits 1,6 and 7 have less competition from other players.">Habitable Orbits</label>', '                    <div class="speciesHO speciesSlider_bg" title="Habitable Orbits Selector">', '                        <span class="speciesHO_highlight"></span>', '                        <span class="speciesSlider_lock"><span class="speciesSlider_lock_bg"></span></span>', '                        <div class="speciesHO_min">', '                                 <div class="speciesHO_min_thumb speciesSliderThumb"><span class="speciesHO_from thumbDisplay">1</span><img src="', Lib.AssetUrl, 'ui/web/slider-thumb-half-left.png" /></div>', '                        </div>', '                        <div class="speciesHO_max">', '                            <div class="speciesHO_max_thumb speciesSliderThumb"><span class="speciesHO_to thumbDisplay">1</span><img src="', Lib.AssetUrl, 'ui/web/slider-thumb-half-right.png" /></div>', '                        </div>', '                    </div>', '                </li>', '                <li><label title="Increases the output of buildings that convert one resource into another.">Manufacturing</label>', '                    <div class="speciesConst speciesSlider_bg" title="Manufacturing Selector">', '                        <span class="speciesSlider_lock"><span class="speciesSlider_lock_bg"></span></span>', '                        <div class="speciesConst_thumb speciesSliderThumb"><span class="speciesConst_num thumbDisplay">1</span><img src="', Lib.AssetUrl, 'ui/web/slider-thumb.png" /></div>', '                    </div>', '                </li>', '                <li><label title="Determines how skilled your spies are naturally.">Deception</label>', '                    <div class="speciesDecep speciesSlider_bg" title="Deception Selector">', '                        <span class="speciesSlider_lock"><span class="speciesSlider_lock_bg"></span></span>', '                        <div class="speciesDecep_thumb speciesSliderThumb"><span class="speciesDecep_num thumbDisplay">1</span><img src="', Lib.AssetUrl, 'ui/web/slider-thumb.png" /></div>', '                    </div>', '                </li>', '                <li><label title="Decreases the amount of resources it takes to upgrade buildings.">Research</label>', '                    <div class="speciesResearch speciesSlider_bg" title="Research Selector">', '                        <span class="speciesSlider_lock"><span class="speciesSlider_lock_bg"></span></span>', '                        <div class="speciesResearch_thumb speciesSliderThumb"><span class="speciesResearch_num thumbDisplay">1</span><img src="', Lib.AssetUrl, 'ui/web/slider-thumb.png" /></div>', '                    </div>', '                </li>', '                <li><label title="Decreases the amount of time it takes to build and process everything.">Management</label>', '                    <div class="speciesManagement speciesSlider_bg" title="Management Selector">', '                        <span class="speciesSlider_lock"><span class="speciesSlider_lock_bg"></span></span>', '                        <div class="speciesManagement_thumb speciesSliderThumb"><span class="speciesManagement_num thumbDisplay">1</span><img src="', Lib.AssetUrl, 'ui/web/slider-thumb.png" /></div>', '                    </div>', '                </li>', '                <li><label title="Increases your production of food.">Farming</label>', '                    <div class="speciesFarming speciesSlider_bg" title="Farming Selector">', '                        <span class="speciesSlider_lock"><span class="speciesSlider_lock_bg"></span></span>', '                        <div class="speciesFarming_thumb speciesSliderThumb"><span class="speciesFarming_num thumbDisplay">1</span><img src="', Lib.AssetUrl, 'ui/web/slider-thumb.png" /></div>', '                    </div>', '                </li>', '            </ul>', '        </div>', '        <div class="yui-u">', '            <ul>', '                <li><label title="Increases your production of ore.">Mining</label>', '                    <div class="speciesMining speciesSlider_bg" title="Mining Selector">', '                        <span class="speciesSlider_lock"><span class="speciesSlider_lock_bg"></span></span>', '                        <div class="speciesMining_thumb speciesSliderThumb"><span class="speciesMining_num thumbDisplay">1</span><img src="', Lib.AssetUrl, 'ui/web/slider-thumb.png" /></div>', '                    </div>', '                </li>', '                <li><label title="Increases production from power plants, and technological upgrades such as the Propulsion Factory.">Science</label>', '                    <div class="speciesScience speciesSlider_bg" title="Science Selector">', '                        <span class="speciesSlider_lock"><span class="speciesSlider_lock_bg"></span></span>', '                        <div class="speciesScience_thumb speciesSliderThumb"><span class="speciesScience_num thumbDisplay">1</span><img src="', Lib.AssetUrl, 'ui/web/slider-thumb.png" /></div>', '                    </div>', '                </li>', '                <li><label title="Increases your production of water, and decreases your production of waste.">Environmental</label>', '                    <div class="speciesEnviro speciesSlider_bg" title="Environmental Selector">', '                        <span class="speciesSlider_lock"><span class="speciesSlider_lock_bg"></span></span>', '                        <div class="speciesEnviro_thumb speciesSliderThumb"><span class="speciesEnviro_num thumbDisplay">1</span><img src="', Lib.AssetUrl, 'ui/web/slider-thumb.png" /></div>', '                    </div>', '                </li>', '                <li><label title="Increases happiness production, and lowers the cost of settling new colonies.">Political</label>', '                    <div class="speciesPolitical speciesSlider_bg" title="Political Selector">', '                        <span class="speciesSlider_lock"><span class="speciesSlider_lock_bg"></span></span>', '                        <div class="speciesPolitical_thumb speciesSliderThumb"><span class="speciesPolitical_num thumbDisplay">1</span><img src="', Lib.AssetUrl, 'ui/web/slider-thumb.png" /></div>', '                    </div>', '                </li>', '                <li><label title="Increases the amount of goods that can be hauled on cargo ships and transported through Subspace Transporters, and gives you some advantages trading with Lacuna Expanse Corp.">Trade</label>', '                    <div class="speciesTrade speciesSlider_bg" title="Trade Selector">', '                        <span class="speciesSlider_lock"><span class="speciesSlider_lock_bg"></span></span>', '                        <div class="speciesTrade_thumb speciesSliderThumb"><span class="speciesTrade_num thumbDisplay">1</span><img src="', Lib.AssetUrl, 'ui/web/slider-thumb.png" /></div>', '                    </div>', '                </li>', '                <li><label title="Sets the starting size of your Planetary Command Center on each colony you create, which gives you more starting production and storage.">Growth</label>', '                    <div class="speciesGrowth speciesSlider_bg" title="Growth Selector">', '                        <span class="speciesSlider_lock"><span class="speciesSlider_lock_bg"></span></span>', '                        <div class="speciesGrowth_thumb speciesSliderThumb"><span class="speciesGrowth_num thumbDisplay">1</span><img src="', Lib.AssetUrl, 'ui/web/slider-thumb.png" /></div>', '                    </div>', '                </li>', '            </ul>', '        </div>', '    </div>', '</div>'].join('');

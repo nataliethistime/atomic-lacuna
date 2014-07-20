@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -37,7 +37,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> Transporter = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+    <span class="hljs-keyword">var</span> Transporter = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> {</span>
         Transporter.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
         <span class="hljs-keyword">this</span>.transport = result.transport;
         <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.Transporter;
@@ -71,50 +71,55 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             Dom.setStyle(p, <span class="hljs-string">"font-style"</span>, <span class="hljs-string">"italic"</span>);
             Dom.get(<span class="hljs-string">"buildingDetailsDesc"</span>)
                 .appendChild(p);
-            <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">this</span>.getStoredResources();
                 <span class="hljs-keyword">this</span>.mine.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.getMine, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
                 <span class="hljs-keyword">this</span>.avail.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.getAvailable, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.push.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                <span class="hljs-keyword">this</span>.push.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                     <span class="hljs-keyword">if</span> (e.newValue) {
                         <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.tradePushSubbed) {
-                            Event.on(<span class="hljs-string">"tradePushResources"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                            Event.on(<span class="hljs-string">"tradePushResources"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                                 <span class="hljs-keyword">if</span> (Dom.getStyle(<span class="hljs-string">"tradePushResourceName"</span>, <span class="hljs-string">"display"</span>) === <span class="hljs-string">"none"</span>) {
                                     Dom.setStyle(<span class="hljs-string">"tradePushResourceName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"block"</span>);
                                     <span class="hljs-keyword">this</span>.getStoredResources();
-                                } <span class="hljs-keyword">else</span> {
+                                }
+                                <span class="hljs-keyword">else</span> {
                                     Dom.setStyle(<span class="hljs-string">"tradePushResourceName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                                 }
                             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                            Event.on(<span class="hljs-string">"tradePushGlyphs"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                            Event.on(<span class="hljs-string">"tradePushGlyphs"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                                 <span class="hljs-keyword">if</span> (Dom.getStyle(<span class="hljs-string">"tradePushGlyphName"</span>, <span class="hljs-string">"display"</span>) === <span class="hljs-string">"none"</span>) {
                                     Dom.setStyle(<span class="hljs-string">"tradePushGlyphName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"block"</span>);
                                     <span class="hljs-keyword">this</span>.getGlyphs();
-                                } <span class="hljs-keyword">else</span> {
+                                }
+                                <span class="hljs-keyword">else</span> {
                                     Dom.setStyle(<span class="hljs-string">"tradePushGlyphName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                                 }
                             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                            Event.on(<span class="hljs-string">"tradePushPlans"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                            Event.on(<span class="hljs-string">"tradePushPlans"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                                 <span class="hljs-keyword">if</span> (Dom.getStyle(<span class="hljs-string">"tradePushPlanName"</span>, <span class="hljs-string">"display"</span>) === <span class="hljs-string">"none"</span>) {
                                     Dom.setStyle(<span class="hljs-string">"tradePushPlanName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"block"</span>);
                                     <span class="hljs-keyword">this</span>.getPlans();
-                                } <span class="hljs-keyword">else</span> {
+                                }
+                                <span class="hljs-keyword">else</span> {
                                     Dom.setStyle(<span class="hljs-string">"tradePushPlanName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                                 }
                             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                            Event.on(<span class="hljs-string">"tradePushShips"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                            Event.on(<span class="hljs-string">"tradePushShips"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                                 <span class="hljs-keyword">if</span> (Dom.getStyle(<span class="hljs-string">"tradePushShipName"</span>, <span class="hljs-string">"display"</span>) === <span class="hljs-string">"none"</span>) {
                                     Dom.setStyle(<span class="hljs-string">"tradePushShipName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"block"</span>);
                                     <span class="hljs-keyword">this</span>.getShips();
-                                } <span class="hljs-keyword">else</span> {
+                                }
+                                <span class="hljs-keyword">else</span> {
                                     Dom.setStyle(<span class="hljs-string">"tradePushShipName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                                 }
                             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                            Event.on(<span class="hljs-string">"tradePushPrisoners"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                            Event.on(<span class="hljs-string">"tradePushPrisoners"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                                 <span class="hljs-keyword">if</span> (Dom.getStyle(<span class="hljs-string">"tradePushPrisonerName"</span>, <span class="hljs-string">"display"</span>) === <span class="hljs-string">"none"</span>) {
                                     Dom.setStyle(<span class="hljs-string">"tradePushPrisonerName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"block"</span>);
                                     <span class="hljs-keyword">this</span>.getPrisoners();
-                                } <span class="hljs-keyword">else</span> {
+                                }
+                                <span class="hljs-keyword">else</span> {
                                     Dom.setStyle(<span class="hljs-string">"tradePushPrisonerName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                                 }
                             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
@@ -122,46 +127,51 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         <span class="hljs-keyword">this</span>.tradePushSubbed = <span class="hljs-number">1</span>;
                     }
                 }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                <span class="hljs-keyword">this</span>.add.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                <span class="hljs-keyword">this</span>.add.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                     <span class="hljs-keyword">if</span> (e.newValue) {
                         <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.tradeAddSubbed) {
-                            Event.on(<span class="hljs-string">"tradeAddResources"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                            Event.on(<span class="hljs-string">"tradeAddResources"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                                 <span class="hljs-keyword">if</span> (Dom.getStyle(<span class="hljs-string">"tradeAddResourceName"</span>, <span class="hljs-string">"display"</span>) === <span class="hljs-string">"none"</span>) {
                                     Dom.setStyle(<span class="hljs-string">"tradeAddResourceName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"block"</span>);
                                     <span class="hljs-keyword">this</span>.getStoredResources();
-                                } <span class="hljs-keyword">else</span> {
+                                }
+                                <span class="hljs-keyword">else</span> {
                                     Dom.setStyle(<span class="hljs-string">"tradeAddResourceName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                                 }
                             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                            Event.on(<span class="hljs-string">"tradeAddGlyphs"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                            Event.on(<span class="hljs-string">"tradeAddGlyphs"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                                 <span class="hljs-keyword">if</span> (Dom.getStyle(<span class="hljs-string">"tradeAddGlyphName"</span>, <span class="hljs-string">"display"</span>) === <span class="hljs-string">"none"</span>) {
                                     Dom.setStyle(<span class="hljs-string">"tradeAddGlyphName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"block"</span>);
                                     <span class="hljs-keyword">this</span>.getGlyphs();
-                                } <span class="hljs-keyword">else</span> {
+                                }
+                                <span class="hljs-keyword">else</span> {
                                     Dom.setStyle(<span class="hljs-string">"tradeAddGlyphName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                                 }
                             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                            Event.on(<span class="hljs-string">"tradeAddPlans"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                            Event.on(<span class="hljs-string">"tradeAddPlans"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                                 <span class="hljs-keyword">if</span> (Dom.getStyle(<span class="hljs-string">"tradeAddPlanName"</span>, <span class="hljs-string">"display"</span>) === <span class="hljs-string">"none"</span>) {
                                     Dom.setStyle(<span class="hljs-string">"tradeAddPlanName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"block"</span>);
                                     <span class="hljs-keyword">this</span>.getPlans();
-                                } <span class="hljs-keyword">else</span> {
+                                }
+                                <span class="hljs-keyword">else</span> {
                                     Dom.setStyle(<span class="hljs-string">"tradeAddPlanName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                                 }
                             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                            Event.on(<span class="hljs-string">"tradeAddShips"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                            Event.on(<span class="hljs-string">"tradeAddShips"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                                 <span class="hljs-keyword">if</span> (Dom.getStyle(<span class="hljs-string">"tradeAddShipName"</span>, <span class="hljs-string">"display"</span>) === <span class="hljs-string">"none"</span>) {
                                     Dom.setStyle(<span class="hljs-string">"tradeAddShipName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"block"</span>);
                                     <span class="hljs-keyword">this</span>.getShips();
-                                } <span class="hljs-keyword">else</span> {
+                                }
+                                <span class="hljs-keyword">else</span> {
                                     Dom.setStyle(<span class="hljs-string">"tradeAddShipName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                                 }
                             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-                            Event.on(<span class="hljs-string">"tradeAddPrisoners"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                            Event.on(<span class="hljs-string">"tradeAddPrisoners"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                                 <span class="hljs-keyword">if</span> (Dom.getStyle(<span class="hljs-string">"tradeAddPrisonerName"</span>, <span class="hljs-string">"display"</span>) === <span class="hljs-string">"none"</span>) {
                                     Dom.setStyle(<span class="hljs-string">"tradeAddPrisonerName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"block"</span>);
                                     <span class="hljs-keyword">this</span>.getPrisoners();
-                                } <span class="hljs-keyword">else</span> {
+                                }
+                                <span class="hljs-keyword">else</span> {
                                     Dom.setStyle(<span class="hljs-string">"tradeAddPrisonerName"</span>, <span class="hljs-string">"display"</span>, <span class="hljs-string">"none"</span>);
                                 }
                             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
@@ -173,7 +183,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
         }
     };
     Lang.extend(Transporter, Lacuna.buildings.Building, {
-        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.availablePager) {
                 <span class="hljs-keyword">this</span>.availablePager.destroy();
             }
@@ -182,17 +192,17 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             }
             Transporter.superclass.destroy.call(<span class="hljs-keyword">this</span>);
         },
-        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.mineTabIndex = <span class="hljs-number">4</span>; <span class="hljs-comment">//array location plus 1 since Production tab is always first</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getOneForOneTab(), <span class="hljs-keyword">this</span>._getPushTab(), <span class="hljs-keyword">this</span>._getAvailTab(), <span class="hljs-keyword">this</span>._getMineTab(), <span class="hljs-keyword">this</span>._getAddTab()];
         },
-        _getOneForOneTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getOneForOneTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.oneForOne = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"One For One"</span>,
                 content: [<span class="hljs-string">'&lt;div class="transporterOneForOne"&gt;'</span>, <span class="hljs-string">'&lt;div&gt;You may trade one-for-one with Lacuna Corp for 3&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia smallImg" /&gt; per transaction.&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;ul&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Want:&lt;/label&gt;&lt;select id="transporterOneForOneWant"&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Have:&lt;/label&gt;&lt;select id="transporterOneForOneHave"&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;label&gt;Quantity:&lt;/label&gt;&lt;input type="text" id="transporterOneForOneQuantity" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li id="transporterOneForOneMessage" class="alert"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li&gt;&lt;button id="transporterOneForOneTrade"&gt;Submit Trade for 3 Essentia&lt;/button&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
             });
             <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoadResources"</span>, <span class="hljs-keyword">this</span>.populateOneForOneHave, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-            Event.onAvailable(<span class="hljs-string">"transporterOneForOneWant"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            Event.onAvailable(<span class="hljs-string">"transporterOneForOneWant"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                 <span class="hljs-keyword">var</span> elm = Dom.get(<span class="hljs-string">"transporterOneForOneWant"</span>),
                     opt = document.createElement(<span class="hljs-string">"option"</span>),
                     nOpt, optGroup;
@@ -209,7 +219,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                                 optGroup.appendChild(nOpt);
                             }
                             elm.appendChild(optGroup);
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (resource) {
+                        }
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (resource) {
                             nOpt = opt.cloneNode(<span class="hljs-literal">false</span>);
                             nOpt.value = r;
                             nOpt.innerHTML = r.titleCaps();
@@ -221,7 +232,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             Event.on(<span class="hljs-string">"transporterOneForOneTrade"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Trade, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.oneForOne;
         },
-        _getPushTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getPushTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.push = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Push"</span>,
                 content: [<span class="hljs-string">'&lt;div id="pHt"&gt;&lt;div class="tradeStash yui-g"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'        &lt;legend&gt;On Planet&lt;/legend&gt;'</span>, <span class="hljs-string">'        &lt;div class="tradeContainers"&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div id="tradePushResources" class="accordian"&gt;Resources&lt;/div&gt;&lt;ul id="tradePushResourceName"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div id="tradePushGlyphs" class="accordian"&gt;Glyphs&lt;/div&gt;&lt;ul id="tradePushGlyphName" style="display:none;"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div id="tradePushPlans" class="accordian"&gt;Plans&lt;/div&gt;&lt;ul id="tradePushPlanName" style="display:none;"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div id="tradePushShips" class="accordian"&gt;Ships&lt;/div&gt;&lt;ul id="tradePushShipName" style="display:none;"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div id="tradePushPrisoners" class="accordian"&gt;Prisoners&lt;/div&gt;&lt;ul id="tradePushPrisonerName" style="display:none;"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'        &lt;legend&gt;To Push&lt;/legend&gt;'</span>, <span class="hljs-string">'        &lt;div class="tradeContainers"&gt;&lt;ul id="tradePushItems"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;ul style="margin-top:5px;"&gt;'</span>, <span class="hljs-string">'    &lt;li style=""&gt;&lt;label&gt;Total Cargo:&lt;/label&gt;&lt;span id="tradePushCargo"&gt;0&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li style="margin-bottom:5px;"&gt;&lt;label&gt;To Colony:&lt;/label&gt;&lt;select id="tradePushColony"&gt;&lt;option value="" selected&gt;&lt;/option&gt;&lt;/select&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li id="tradePushMessage" class="alert"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;/ul&gt;&lt;/div&gt;&lt;button id="tradePushSend"&gt;'</span>, <span class="hljs-keyword">this</span>.pushTradeText, <span class="hljs-string">'&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>)
@@ -231,7 +242,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoadPlans"</span>, <span class="hljs-keyword">this</span>.populatePushPlanName, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoadShips"</span>, <span class="hljs-keyword">this</span>.populatePushShipName, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoadPrisoners"</span>, <span class="hljs-keyword">this</span>.populatePushPrisonerName, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
-            Event.onAvailable(<span class="hljs-string">"tradePushColony"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Event.onAvailable(<span class="hljs-string">"tradePushColony"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> opt = document.createElement(<span class="hljs-string">"option"</span>),
                     planets = Lib.planetarySort(Game.EmpireData.planets),
                     cp = Game.GetCurrentPlanet(),
@@ -254,26 +265,26 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             Event.on(<span class="hljs-string">"tradePushSend"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Push, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.push;
         },
-        _getAvailTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getAvailTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.avail = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Available Trades"</span>,
                 content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;div style="border-bottom: 1px solid #52ACFF; padding-bottom: 5px; margin-bottom: 5px;"&gt;&lt;label&gt;Filter:&lt;/label&gt;&lt;select id="tradeFilter"&gt;&lt;option value=""&gt;All&lt;/option&gt;&lt;option value="energy"&gt;Energy&lt;/option&gt;&lt;option value="food"&gt;Food&lt;/option&gt;&lt;option value="ore"&gt;Ore&lt;/option&gt;'</span>, <span class="hljs-string">'    &lt;option value="water"&gt;Water&lt;/option&gt;&lt;option value="waste"&gt;Waste&lt;/option&gt;&lt;option value="glyph"&gt;Glyph&lt;/option&gt;&lt;option value="prisoner"&gt;Prisoner&lt;/option&gt;'</span>, <span class="hljs-string">'    &lt;option value="ship"&gt;Ship&lt;/option&gt;&lt;option value="plan"&gt;Plan&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;ul class="tradeHeader tradeInfo clearafter"&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeEmpire"&gt;Empire&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeOfferedDate"&gt;Offered Date&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeAsking"&gt;Cost&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeOffer"&gt;Offering&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeAction"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeAction"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;&lt;div id="tradeAvailableDetails"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div id="tradeAvailablePaginator"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
             });
-            Event.on(<span class="hljs-string">"tradeFilter"</span>, <span class="hljs-string">"change"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            Event.on(<span class="hljs-string">"tradeFilter"</span>, <span class="hljs-string">"change"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                 <span class="hljs-keyword">this</span>.getAvailable({
                     newValue: <span class="hljs-literal">true</span>
                 });
             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.avail;
         },
-        _getMineTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getMineTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.mine = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"My Trades"</span>,
                 content: [<span class="hljs-string">'&lt;div class="myTrades"&gt;'</span>, <span class="hljs-string">'    &lt;ul class="tradeHeader tradeInfo clearafter"&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeOfferedDate"&gt;Offered Date&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeAsking"&gt;Cost&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeOffer"&gt;Offering&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="tradeAction"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;&lt;div id="tradeMineDetails"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div id="tradeMinePaginator"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
             });
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.mine;
         },
-        _getAddTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getAddTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.add = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Add Trade"</span>,
                 content: [<span class="hljs-string">'&lt;div id="aHt"&gt;&lt;div class="tradeStash yui-g"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first"&gt;'</span>, <span class="hljs-string">'        &lt;legend&gt;On Planet&lt;/legend&gt;'</span>, <span class="hljs-string">'        &lt;div class="tradeContainers"&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div id="tradeAddResources" class="accordian"&gt;Resources&lt;/div&gt;&lt;ul id="tradeAddResourceName"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div id="tradeAddGlyphs" class="accordian"&gt;Glyphs&lt;/div&gt;&lt;ul id="tradeAddGlyphName" style="display:none;"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div id="tradeAddPlans" class="accordian"&gt;Plans&lt;/div&gt;&lt;ul id="tradeAddPlanName" style="display:none;"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div id="tradeAddShips" class="accordian"&gt;Ships&lt;/div&gt;&lt;ul id="tradeAddShipName" style="display:none;"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'            &lt;div&gt;&lt;div id="tradeAddPrisoners" class="accordian"&gt;Prisoners&lt;/div&gt;&lt;ul id="tradeAddPrisonerName" style="display:none;"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'        &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;'</span>, <span class="hljs-string">'        &lt;legend&gt;To Offer&lt;/legend&gt;'</span>, <span class="hljs-string">'        &lt;div class="tradeContainers"&gt;&lt;ul id="tradeAddItems"&gt;&lt;/ul&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;ul style="margin-top:5px;"&gt;'</span>, <span class="hljs-string">'    &lt;li style=""&gt;&lt;label&gt;Total Cargo:&lt;/label&gt;&lt;span id="tradeAddCargo"&gt;0&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li style="margin: 5px 0;"&gt;&lt;label style="font-weight:bold"&gt;Asking Essentia:&lt;/label&gt;&lt;input type="text" id="tradeAddAskingQuantity" /&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;li id="tradeAddMessage" class="alert"&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;/ul&gt;&lt;/div&gt;&lt;button id="tradeAdd"&gt;'</span>, <span class="hljs-keyword">this</span>.addTradeText, <span class="hljs-string">'&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>)
@@ -292,7 +303,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             Event.on(<span class="hljs-string">"tradeAdd"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.AddTrade, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.add;
         },
-        populateOneForOneHave: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        populateOneForOneHave: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> elm = Dom.get(<span class="hljs-string">"transporterOneForOneHave"</span>),
                 opt = document.createElement(<span class="hljs-string">"option"</span>),
                 nOpt, optGroup;
@@ -314,7 +325,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                                 }
                             }
                             elm.appendChild(optGroup);
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.resources[r] &amp;&amp; resource) {
+                        }
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.resources[r] &amp;&amp; resource) {
                             nOpt = opt.cloneNode(<span class="hljs-literal">false</span>);
                             nOpt.value = r;
                             nOpt.innerHTML = [r.titleCaps(), <span class="hljs-string">' ('</span>, <span class="hljs-keyword">this</span>.resources[r], <span class="hljs-string">')'</span>].join(<span class="hljs-string">''</span>);
@@ -324,7 +336,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
         },
-        Trade: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        Trade: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> data = {
                 session_id: Game.GetSession(<span class="hljs-string">""</span>),
                 building_id: <span class="hljs-keyword">this</span>.building.id,
@@ -337,13 +349,15 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 Dom.get(<span class="hljs-string">"transporterOneForOneMessage"</span>)
                     .innerHTML = [<span class="hljs-string">"Quantity must be less than "</span>, <span class="hljs-keyword">this</span>.transport.max, <span class="hljs-string">", which is the maximum for this level transporter."</span>].join(<span class="hljs-string">''</span>);
                 Lib.fadeOutElm(<span class="hljs-string">"transporterOneForOneMessage"</span>);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (data.quantity &lt; <span class="hljs-number">0</span> || data.quantity &gt; <span class="hljs-keyword">this</span>.resources[data.have] * <span class="hljs-number">1</span>) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (data.quantity &lt; <span class="hljs-number">0</span> || data.quantity &gt; <span class="hljs-keyword">this</span>.resources[data.have] * <span class="hljs-number">1</span>) {
                 Dom.get(<span class="hljs-string">"transporterOneForOneMessage"</span>)
                     .innerHTML = <span class="hljs-string">"Quantity must be greater than 0 and less than or equal to the resources you have on hand."</span>;
                 Lib.fadeOutElm(<span class="hljs-string">"transporterOneForOneMessage"</span>);
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">this</span>.service.trade_one_for_one(data, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Transporter.Trade.success"</span>);
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         Dom.get(<span class="hljs-string">"transporterOneForOneHave"</span>)
@@ -359,14 +373,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
             }
         },
-        getGlyphs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(force)</span> {</span>
+        getGlyphs: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(force)</span> {</span>
             <span class="hljs-keyword">if</span> (force || !<span class="hljs-keyword">this</span>.glyphs) {
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">this</span>.service.get_glyph_summary({
                     session_id: Game.GetSession(<span class="hljs-string">""</span>),
                     building_id: <span class="hljs-keyword">this</span>.building.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">this</span>.glyphs = o.result.glyphs;
                         <span class="hljs-keyword">this</span>.glyphSize = o.result.cargo_space_used_each;
@@ -377,14 +391,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
             }
         },
-        getPlans: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(force)</span> {</span>
+        getPlans: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(force)</span> {</span>
             <span class="hljs-keyword">if</span> (force || !<span class="hljs-keyword">this</span>.plans) {
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">this</span>.service.get_plan_summary({
                     session_id: Game.GetSession(<span class="hljs-string">""</span>),
                     building_id: <span class="hljs-keyword">this</span>.building.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">this</span>.plans = o.result.plans;
                         <span class="hljs-keyword">this</span>.planSize = o.result.cargo_space_used_each;
@@ -395,14 +409,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
             }
         },
-        getPrisoners: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(force)</span> {</span>
+        getPrisoners: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(force)</span> {</span>
             <span class="hljs-keyword">if</span> (force || !<span class="hljs-keyword">this</span>.prisoners) {
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">this</span>.service.get_prisoners({
                     session_id: Game.GetSession(<span class="hljs-string">""</span>),
                     building_id: <span class="hljs-keyword">this</span>.building.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">this</span>.prisoners = o.result.prisoners;
                         <span class="hljs-keyword">this</span>.spySize = o.result.cargo_space_used_each;
@@ -413,14 +427,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
             }
         },
-        getShips: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(force)</span> {</span>
+        getShips: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(force)</span> {</span>
             <span class="hljs-keyword">if</span> (force || !<span class="hljs-keyword">this</span>.ships) {
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">this</span>.service.get_ship_summary({
                     session_id: Game.GetSession(<span class="hljs-string">""</span>),
                     building_id: <span class="hljs-keyword">this</span>.building.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">this</span>.ships = o.result.ships;
                         <span class="hljs-keyword">this</span>.shipSize = o.result.cargo_space_used_each;
@@ -431,14 +445,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
             }
         },
-        getStoredResources: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(force)</span> {</span>
+        getStoredResources: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(force)</span> {</span>
             <span class="hljs-keyword">if</span> (force || !<span class="hljs-keyword">this</span>.resources) {
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">this</span>.service.get_stored_resources({
                     session_id: Game.GetSession(<span class="hljs-string">""</span>),
                     building_id: <span class="hljs-keyword">this</span>.building.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">this</span>.resources = o.result.resources;
                         <span class="hljs-keyword">this</span>.fireEvent(<span class="hljs-string">"onLoadResources"</span>);
@@ -448,7 +462,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
             }
         },
-        getAvailable: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        getAvailable: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">if</span> (e.newValue) {
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">var</span> data = {
@@ -461,7 +475,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     data.filter = selVal;
                 }
                 <span class="hljs-keyword">this</span>.service.view_market(data, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Trade.view_available_trades.success"</span>);
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
@@ -482,7 +496,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
             }
         },
-        AvailablePopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        AvailablePopulate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"tradeAvailableDetails"</span>);
             <span class="hljs-keyword">if</span> (details) {
                 <span class="hljs-keyword">var</span> trades = <span class="hljs-keyword">this</span>.availableTrades.trades,
@@ -542,7 +556,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     details.appendChild(nUl);
                 }
                 <span class="hljs-comment">//wait for tab to display first</span>
-                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">var</span> Ht = Game.GetSize()
                         .h - <span class="hljs-number">240</span>;
                     <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
@@ -554,7 +568,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }, <span class="hljs-number">10</span>);
             }
         },
-        AvailableHandlePagination: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newState)</span> {</span>
+        AvailableHandlePagination: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newState)</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">var</span> data = {
                 session_id: Game.GetSession(),
@@ -566,7 +580,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 data.filter = selVal;
             }
             <span class="hljs-keyword">this</span>.service.view_market(data, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Trade.view_available_trades.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
@@ -589,14 +603,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
       
         <div class="code"><pre class="wrapper">            <span class="hljs-keyword">this</span>.availablePager.setState(newState);
         },
-        AvailableAccept: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        AvailableAccept: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.Self.service.accept_from_market({
                 session_id: Game.GetSession(<span class="hljs-string">""</span>),
                 building_id: <span class="hljs-keyword">this</span>.Self.building.id,
                 trade_id: <span class="hljs-keyword">this</span>.Trade.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Trade.accept_trade.success"</span>);
                     <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
                     <span class="hljs-comment">//force get the new availabe list after accepting so we get a new captcha</span>
@@ -608,14 +622,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        AvailableReport: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        AvailableReport: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.Self.service.report_abuse({
                 session_id: Game.GetSession(<span class="hljs-string">""</span>),
                 building_id: <span class="hljs-keyword">this</span>.Self.building.id,
                 trade_id: <span class="hljs-keyword">this</span>.Trade.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">var</span> btn = Sel.query(<span class="hljs-string">".reportAbuse"</span>, <span class="hljs-keyword">this</span>.Line, <span class="hljs-literal">true</span>);
                     <span class="hljs-keyword">if</span> (btn) {
                         Event.purgeElement(btn);
@@ -627,11 +641,11 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        EmpireProfile: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, empire)</span> {</span>
+        EmpireProfile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, empire)</span> {</span>
             Lacuna.Info.Empire.Load(empire.id);
         },
         <span class="hljs-comment">//View Mine</span>
-        getMine: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        getMine: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">if</span> (e.newValue) {
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">this</span>.service.view_my_market({
@@ -639,7 +653,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     building_id: <span class="hljs-keyword">this</span>.building.id,
                     page_number: <span class="hljs-number">1</span>
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Trade.view_my_trades.success"</span>);
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
@@ -660,7 +674,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
             }
         },
-        MinePopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        MinePopulate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"tradeMineDetails"</span>);
             <span class="hljs-keyword">if</span> (details) {
                 <span class="hljs-keyword">var</span> trades = <span class="hljs-keyword">this</span>.mineTrades.trades,
@@ -702,7 +716,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     details.appendChild(nUl);
                 }
                 <span class="hljs-comment">//wait for tab to display first</span>
-                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">var</span> Ht = Game.GetSize()
                         .h - <span class="hljs-number">185</span>;
                     <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
@@ -714,14 +728,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }, <span class="hljs-number">10</span>);
             }
         },
-        MineHandlePagination: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newState)</span> {</span>
+        MineHandlePagination: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newState)</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.service.view_my_market({
                 session_id: Game.GetSession(),
                 building_id: <span class="hljs-keyword">this</span>.building.id,
                 page_number: newState.page
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Trade.view_available_trades.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
@@ -744,7 +758,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
       
         <div class="code"><pre class="wrapper">            <span class="hljs-keyword">this</span>.minePage.setState(newState);
         },
-        MineWithdraw: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        MineWithdraw: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">'Are you sure you want to withdraw the trade asking for '</span>, <span class="hljs-keyword">this</span>.Trade.ask, <span class="hljs-string">' essentia and offering '</span>, <span class="hljs-keyword">this</span>.Trade.offer.join(<span class="hljs-string">', '</span>), <span class="hljs-string">'?'</span>].join(<span class="hljs-string">''</span>))) {
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">this</span>.Self.service.withdraw_from_market({
@@ -752,7 +766,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     building_id: <span class="hljs-keyword">this</span>.Self.building.id,
                     trade_id: <span class="hljs-keyword">this</span>.Trade.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Trade.withdraw_trade.success"</span>);
                         <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
                         <span class="hljs-keyword">var</span> trades = <span class="hljs-keyword">this</span>.Self.mineTrades.trades;
@@ -775,7 +789,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             }
         },
         <span class="hljs-comment">//Add trade</span>
-        populateAddResourceName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        populateAddResourceName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> elm = Dom.get(<span class="hljs-string">"tradeAddResourceName"</span>),
                 li = document.createElement(<span class="hljs-string">"li"</span>),
                 nLi, x, r, name, resource;
@@ -797,7 +811,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                                     elm.appendChild(nLi);
                                 }
                             }
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.resources[r] &amp;&amp; resource) {
+                        }
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.resources[r] &amp;&amp; resource) {
                             nLi = li.cloneNode(<span class="hljs-literal">false</span>);
                             nLi.Resource = {
                                 type: r,
@@ -810,7 +825,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
             <span class="hljs-comment">//wait for tab to display first</span>
-            setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> Ht = Game.GetSize()
                     .h - <span class="hljs-number">180</span>;
                 <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
@@ -821,7 +836,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 Dom.setStyle(aHt, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
             }, <span class="hljs-number">10</span>);
         },
-        populateAddGlyphName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        populateAddGlyphName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> elm = Dom.get(<span class="hljs-string">"tradeAddGlyphName"</span>),
                 li = document.createElement(<span class="hljs-string">"li"</span>),
                 nLi;
@@ -835,14 +850,15 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         nLi.innerHTML = [<span class="hljs-string">'&lt;span class="tradeResourceName"&gt;'</span>, obj.name.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, obj.quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" /&gt;&lt;button type="button"&gt;+&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
                         elm.appendChild(nLi);
                     }
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     nLi = li.cloneNode(<span class="hljs-literal">false</span>);
                     nLi.innerHTML = <span class="hljs-string">"No Glyphs Available"</span>;
                     elm.appendChild(nLi);
                 }
             }
         },
-        populateAddPlanName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        populateAddPlanName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> elm = Dom.get(<span class="hljs-string">"tradeAddPlanName"</span>),
                 li = document.createElement(<span class="hljs-string">"li"</span>),
                 nLi;
@@ -855,19 +871,21 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         nLi.Plan = obj;
                         <span class="hljs-keyword">if</span> (obj.extra_build_level &gt; <span class="hljs-number">0</span>) {
                             nLi.innerHTML = [<span class="hljs-string">'&lt;span class="tradeResourceName"&gt;'</span>, obj.name, <span class="hljs-string">' '</span>, obj.level, <span class="hljs-string">'+'</span>, obj.extra_build_level, <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, obj.quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" /&gt;&lt;button type="button"&gt;+&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
-                        } <span class="hljs-keyword">else</span> {
+                        }
+                        <span class="hljs-keyword">else</span> {
                             nLi.innerHTML = [<span class="hljs-string">'&lt;span class="tradeResourceName"&gt;'</span>, obj.name, <span class="hljs-string">' '</span>, obj.level, <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, obj.quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" /&gt;&lt;button type="button"&gt;+&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
                         }
                         elm.appendChild(nLi);
                     }
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     nLi = li.cloneNode(<span class="hljs-literal">false</span>);
                     nLi.innerHTML = <span class="hljs-string">"No Plans Available"</span>;
                     elm.appendChild(nLi);
                 }
             }
         },
-        populateAddShipName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        populateAddShipName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> elm = Dom.get(<span class="hljs-string">"tradeAddShipName"</span>),
                 li = document.createElement(<span class="hljs-string">"li"</span>),
                 nLi;
@@ -885,14 +903,15 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         ].join(<span class="hljs-string">''</span>);
                         elm.appendChild(nLi);
                     }
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     nLi = li.cloneNode(<span class="hljs-literal">false</span>);
                     nLi.innerHTML = <span class="hljs-string">"No Ships Available"</span>;
                     elm.appendChild(nLi);
                 }
             }
         },
-        populateAddPrisonerName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        populateAddPrisonerName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> elm = Dom.get(<span class="hljs-string">"tradeAddPrisonerName"</span>),
                 li = document.createElement(<span class="hljs-string">"li"</span>),
                 nLi;
@@ -906,19 +925,20 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         nLi.innerHTML = [<span class="hljs-string">'&lt;span class="tradeName"&gt;'</span>, obj.name, <span class="hljs-string">' '</span>, obj.level, <span class="hljs-string">'&lt;/span&gt; &lt;button type="button"&gt;+&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
                         elm.appendChild(nLi);
                     }
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     nLi = li.cloneNode(<span class="hljs-literal">false</span>);
                     nLi.innerHTML = <span class="hljs-string">"No Prisoners Available"</span>;
                     elm.appendChild(nLi);
                 }
             }
         },
-        updateAddCargo: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(byVal)</span> {</span>
+        updateAddCargo: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(byVal)</span> {</span>
             <span class="hljs-keyword">var</span> c = Dom.get(<span class="hljs-string">"tradeAddCargo"</span>),
                 cv = c.innerHTML * <span class="hljs-number">1</span>;
             c.innerHTML = cv + byVal;
         },
-        AddResource: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+        AddResource: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, matchedEl, container)</span> {</span>
             <span class="hljs-keyword">var</span> quantity = matchedEl.previousSibling.value * <span class="hljs-number">1</span>,
                 li = matchedEl.parentNode,
                 c = Dom.get(<span class="hljs-string">"tradeAddItems"</span>);
@@ -935,7 +955,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     }
                     Dom.addClass(item, <span class="hljs-string">"tradeItem"</span>);
                     Dom.addClass(del, <span class="hljs-string">"tradeDelete"</span>);
-                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                         <span class="hljs-keyword">var</span> ed = Event.getTarget(e),
                             ep = ed.parentNode;
                         <span class="hljs-keyword">this</span>.updateAddCargo(ep.Object.quantity * -<span class="hljs-number">1</span>);
@@ -950,7 +970,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     content.innerHTML = [<span class="hljs-string">'&lt;span class="tradeResourceName"&gt;'</span>, item.Object.type.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" value="'</span>, quantity, <span class="hljs-string">'" /&gt;&lt;button type="button"&gt;-&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
                     c.appendChild(item);
                     <span class="hljs-keyword">this</span>.updateAddCargo(quantity);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">var</span> found = exists[<span class="hljs-number">0</span>],
                         newTotal = found.Object.quantity + quantity,
                         diff = quantity,
@@ -976,7 +997,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
         },
-        AddGlyph: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+        AddGlyph: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, matchedEl, container)</span> {</span>
             <span class="hljs-keyword">var</span> quantity = matchedEl.previousSibling.value * <span class="hljs-number">1</span>,
                 li = matchedEl.parentNode,
                 c = Dom.get(<span class="hljs-string">"tradeAddItems"</span>);
@@ -991,7 +1012,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     item.id = id;
                     Dom.addClass(item, <span class="hljs-string">"tradeItem"</span>);
                     Dom.addClass(del, <span class="hljs-string">"tradeDelete"</span>);
-                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                         <span class="hljs-keyword">var</span> ed = Event.getTarget(e),
                             ep = ed.parentNode;
                         <span class="hljs-keyword">this</span>.updateAddCargo(ep.Object.quantity * -<span class="hljs-keyword">this</span>.glyphSize);
@@ -1007,7 +1028,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     content.innerHTML = [<span class="hljs-string">'&lt;span class="tradeResourceName"&gt;'</span>, gName.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" value="'</span>, quantity, <span class="hljs-string">'" /&gt;&lt;button type="button"&gt;-&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
                     c.appendChild(item);
                     <span class="hljs-keyword">this</span>.updateAddCargo(<span class="hljs-keyword">this</span>.glyphSize * quantity);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">var</span> found = exists[<span class="hljs-number">0</span>],
                         newTotal = found.Object.quantity + quantity,
                         diff = quantity,
@@ -1026,7 +1048,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
         },
-        AddPlan: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+        AddPlan: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, matchedEl, container)</span> {</span>
             <span class="hljs-keyword">var</span> quantity = matchedEl.previousSibling.value * <span class="hljs-number">1</span>,
                 li = matchedEl.parentNode,
                 c = Dom.get(<span class="hljs-string">"tradeAddItems"</span>);
@@ -1045,7 +1067,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     item.id = id;
                     Dom.addClass(item, <span class="hljs-string">"tradeItem"</span>);
                     Dom.addClass(del, <span class="hljs-string">"tradeDelete"</span>);
-                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                         <span class="hljs-keyword">var</span> ed = Event.getTarget(e),
                             ep = ed.parentNode;
                         <span class="hljs-keyword">this</span>.updateAddCargo(ep.Object.quantity * -<span class="hljs-keyword">this</span>.planSize);
@@ -1062,12 +1084,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     };
                     <span class="hljs-keyword">if</span> (pExtra &gt; <span class="hljs-number">0</span>) {
                         content.innerHTML = [<span class="hljs-string">'&lt;span class="tradeResourceName"&gt;'</span>, pName, <span class="hljs-string">' '</span>, pLevel, <span class="hljs-string">'+'</span>, pExtra, <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" value="'</span>, quantity, <span class="hljs-string">'" /&gt;&lt;button type="button"&gt;-&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         content.innerHTML = [<span class="hljs-string">'&lt;span class="tradeResourceName"&gt;'</span>, pName, <span class="hljs-string">' '</span>, pLevel, <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" value="'</span>, quantity, <span class="hljs-string">'" /&gt;&lt;button type="button"&gt;-&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
                     }
                     c.appendChild(item);
                     <span class="hljs-keyword">this</span>.updateAddCargo(<span class="hljs-keyword">this</span>.planSize * quantity);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">var</span> found = exists[<span class="hljs-number">0</span>],
                         newTotal = found.Object.quantity + quantity,
                         diff = quantity,
@@ -1086,7 +1110,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
         },
-        AddShip: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+        AddShip: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, matchedEl, container)</span> {</span>
             <span class="hljs-keyword">var</span> quantity = matchedEl.previousSibling.value * <span class="hljs-number">1</span>,
                 li = matchedEl.parentNode,
                 c = Dom.get(<span class="hljs-string">"tradeAddItems"</span>);
@@ -1106,7 +1130,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     item.id = id;
                     Dom.addClass(item, <span class="hljs-string">"tradeItem"</span>);
                     Dom.addClass(del, <span class="hljs-string">"tradeDelete"</span>);
-                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                         <span class="hljs-keyword">var</span> ed = Event.getTarget(e),
                             ep = ed.parentNode;
                         <span class="hljs-keyword">this</span>.updateAddCargo(ep.Object.quantity * -<span class="hljs-keyword">this</span>.shipSize);
@@ -1131,7 +1155,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     ].join(<span class="hljs-string">''</span>);
                     c.appendChild(item);
                     <span class="hljs-keyword">this</span>.updateAddCargo(<span class="hljs-keyword">this</span>.shipSize * quantity);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">var</span> found = exists[<span class="hljs-number">0</span>],
                         newTotal = found.Object.quantity + quantity,
                         diff = quantity,
@@ -1150,7 +1175,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
         },
-        AddPrisoner: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+        AddPrisoner: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, matchedEl, container)</span> {</span>
             <span class="hljs-keyword">var</span> li = matchedEl.parentNode,
                 c = Dom.get(<span class="hljs-string">"tradeAddItems"</span>);
             <span class="hljs-keyword">if</span> (li &amp;&amp; c) {
@@ -1165,7 +1190,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     item.id = id;
                     Dom.addClass(item, <span class="hljs-string">"tradeItem"</span>);
                     Dom.addClass(del, <span class="hljs-string">"tradeDelete"</span>);
-                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                         <span class="hljs-keyword">this</span>.updateAddCargo(<span class="hljs-keyword">this</span>.spySize * -<span class="hljs-number">1</span>);
                         Event.purgeElement(item);
                         item.parentNode.removeChild(item);
@@ -1180,7 +1205,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
         },
-        AddRemove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+        AddRemove: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, matchedEl, container)</span> {</span>
             <span class="hljs-keyword">var</span> quantity = matchedEl.previousSibling.value * <span class="hljs-number">1</span>,
                 li = matchedEl.parentNode.parentNode;
             <span class="hljs-keyword">if</span> (quantity) {
@@ -1195,7 +1220,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     <span class="hljs-keyword">this</span>.updateAddCargo(li.Object.quantity * -<span class="hljs-number">1</span>);
                     Event.purgeElement(li);
                     li.parentNode.removeChild(li);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     lq.innerHTML = newTotal;
                     li.Object.quantity = newTotal;
                     <span class="hljs-keyword">this</span>.updateAddCargo(diff);
@@ -1209,14 +1235,15 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
         },
-        AddTrade: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        AddTrade: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> qVal = Dom.get(<span class="hljs-string">"tradeAddAskingQuantity"</span>)
                 .value * <span class="hljs-number">1</span>;
             <span class="hljs-keyword">if</span> (!Lang.isNumber(qVal) || qVal &lt;= <span class="hljs-number">0</span>) {
                 Dom.get(<span class="hljs-string">"tradeAddMessage"</span>)
                     .innerHTML = <span class="hljs-string">"Quantity of asking essentia must be a number and greater than 0"</span>;
                 <span class="hljs-keyword">return</span>;
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Dom.get(<span class="hljs-string">"tradeAddMessage"</span>)
                     .innerHTML = <span class="hljs-string">""</span>;
             }
@@ -1232,27 +1259,27 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 <span class="hljs-keyword">if</span> (obj) {
                     data.offer[data.offer.length] = obj;
                     <span class="hljs-keyword">switch</span> (obj.type) {
-                    <span class="hljs-keyword">case</span> <span class="hljs-string">"plan"</span>:
-                        hasPlans = <span class="hljs-literal">true</span>;
-                        <span class="hljs-keyword">break</span>;
-                    <span class="hljs-keyword">case</span> <span class="hljs-string">"glyph"</span>:
-                        hasGlyphs = <span class="hljs-literal">true</span>;
-                        <span class="hljs-keyword">break</span>;
-                    <span class="hljs-keyword">case</span> <span class="hljs-string">"prisoner"</span>:
-                        hasPrisoners = <span class="hljs-literal">true</span>;
-                        <span class="hljs-keyword">break</span>;
-                    <span class="hljs-keyword">case</span> <span class="hljs-string">"ship"</span>:
-                        hasShips = <span class="hljs-literal">true</span>;
-                        <span class="hljs-keyword">break</span>;
-                    <span class="hljs-keyword">default</span>:
-                        hasResources = <span class="hljs-literal">true</span>;
-                        <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">case</span> <span class="hljs-string">"plan"</span>:
+                            hasPlans = <span class="hljs-literal">true</span>;
+                            <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">case</span> <span class="hljs-string">"glyph"</span>:
+                            hasGlyphs = <span class="hljs-literal">true</span>;
+                            <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">case</span> <span class="hljs-string">"prisoner"</span>:
+                            hasPrisoners = <span class="hljs-literal">true</span>;
+                            <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">case</span> <span class="hljs-string">"ship"</span>:
+                            hasShips = <span class="hljs-literal">true</span>;
+                            <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">default</span>:
+                            hasResources = <span class="hljs-literal">true</span>;
+                            <span class="hljs-keyword">break</span>;
                     }
                 }
             }
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.service.add_to_market(data, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">if</span> (hasResources) {
                         <span class="hljs-keyword">this</span>.getStoredResources(<span class="hljs-literal">true</span>);
@@ -1286,7 +1313,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             });
         },
         <span class="hljs-comment">//Push Resources</span>
-        populatePushResourceName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        populatePushResourceName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> elm = Dom.get(<span class="hljs-string">"tradePushResourceName"</span>),
                 li = document.createElement(<span class="hljs-string">"li"</span>),
                 nLi, x, r, name, resource;
@@ -1308,7 +1335,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                                     elm.appendChild(nLi);
                                 }
                             }
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.resources[r] &amp;&amp; resource) {
+                        }
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.resources[r] &amp;&amp; resource) {
                             nLi = li.cloneNode(<span class="hljs-literal">false</span>);
                             nLi.Resource = {
                                 type: r,
@@ -1321,7 +1349,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
             <span class="hljs-comment">//wait for tab to display first</span>
-            setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> Ht = Game.GetSize()
                     .h - <span class="hljs-number">180</span>;
                 <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">270</span>) {
@@ -1332,7 +1360,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 Dom.setStyle(pHt, <span class="hljs-string">"overflow-y"</span>, <span class="hljs-string">"auto"</span>);
             }, <span class="hljs-number">10</span>);
         },
-        populatePushGlyphName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        populatePushGlyphName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> elm = Dom.get(<span class="hljs-string">"tradePushGlyphName"</span>),
                 li = document.createElement(<span class="hljs-string">"li"</span>),
                 nLi;
@@ -1346,14 +1374,15 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         nLi.innerHTML = [<span class="hljs-string">'&lt;span class="tradeResourceName"&gt;'</span>, obj.name.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, obj.quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" /&gt;&lt;button type="button"&gt;+&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
                         elm.appendChild(nLi);
                     }
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     nLi = li.cloneNode(<span class="hljs-literal">false</span>);
                     nLi.innerHTML = <span class="hljs-string">"No Glyphs Available"</span>;
                     elm.appendChild(nLi);
                 }
             }
         },
-        populatePushPlanName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        populatePushPlanName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> elm = Dom.get(<span class="hljs-string">"tradePushPlanName"</span>),
                 li = document.createElement(<span class="hljs-string">"li"</span>),
                 nLi;
@@ -1366,19 +1395,21 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         nLi.Plan = obj;
                         <span class="hljs-keyword">if</span> (obj.extra_build_level &gt; <span class="hljs-number">0</span>) {
                             nLi.innerHTML = [<span class="hljs-string">'&lt;span class="tradeResourceName"&gt;'</span>, obj.name, <span class="hljs-string">' '</span>, obj.level, <span class="hljs-string">'+'</span>, obj.extra_build_level, <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, obj.quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" /&gt;&lt;button type="button"&gt;+&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
-                        } <span class="hljs-keyword">else</span> {
+                        }
+                        <span class="hljs-keyword">else</span> {
                             nLi.innerHTML = [<span class="hljs-string">'&lt;span class="tradeResourceName"&gt;'</span>, obj.name, <span class="hljs-string">' '</span>, obj.level, <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, obj.quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" /&gt;&lt;button type="button"&gt;+&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
                         }
                         elm.appendChild(nLi);
                     }
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     nLi = li.cloneNode(<span class="hljs-literal">false</span>);
                     nLi.innerHTML = <span class="hljs-string">"No Plans Available"</span>;
                     elm.appendChild(nLi);
                 }
             }
         },
-        populatePushShipName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        populatePushShipName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> elm = Dom.get(<span class="hljs-string">"tradePushShipName"</span>),
                 li = document.createElement(<span class="hljs-string">"li"</span>),
                 nLi;
@@ -1396,14 +1427,15 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         ].join(<span class="hljs-string">''</span>);
                         elm.appendChild(nLi);
                     }
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     nLi = li.cloneNode(<span class="hljs-literal">false</span>);
                     nLi.innerHTML = <span class="hljs-string">"No Ships Available"</span>;
                     elm.appendChild(nLi);
                 }
             }
         },
-        populatePushPrisonerName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        populatePushPrisonerName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> elm = Dom.get(<span class="hljs-string">"tradePushPrisonerName"</span>),
                 li = document.createElement(<span class="hljs-string">"li"</span>),
                 nLi;
@@ -1417,19 +1449,20 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         nLi.innerHTML = [<span class="hljs-string">'&lt;span class="tradeName"&gt;'</span>, obj.name, <span class="hljs-string">' '</span>, obj.level, <span class="hljs-string">'&lt;/span&gt; &lt;button type="button"&gt;+&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
                         elm.appendChild(nLi);
                     }
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     nLi = li.cloneNode(<span class="hljs-literal">false</span>);
                     nLi.innerHTML = <span class="hljs-string">"No Prisoners Available"</span>;
                     elm.appendChild(nLi);
                 }
             }
         },
-        updatePushCargo: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(byVal)</span> {</span>
+        updatePushCargo: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(byVal)</span> {</span>
             <span class="hljs-keyword">var</span> c = Dom.get(<span class="hljs-string">"tradePushCargo"</span>),
                 cv = c.innerHTML * <span class="hljs-number">1</span>;
             c.innerHTML = cv + byVal;
         },
-        PushAddResource: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+        PushAddResource: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, matchedEl, container)</span> {</span>
             <span class="hljs-keyword">var</span> quantity = matchedEl.previousSibling.value * <span class="hljs-number">1</span>,
                 li = matchedEl.parentNode,
                 c = Dom.get(<span class="hljs-string">"tradePushItems"</span>);
@@ -1446,7 +1479,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     }
                     Dom.addClass(item, <span class="hljs-string">"tradeItem"</span>);
                     Dom.addClass(del, <span class="hljs-string">"tradeDelete"</span>);
-                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                         <span class="hljs-keyword">var</span> ed = Event.getTarget(e),
                             ep = ed.parentNode;
                         <span class="hljs-keyword">this</span>.updatePushCargo(ep.Object.quantity * -<span class="hljs-number">1</span>);
@@ -1460,7 +1493,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     content.innerHTML = [<span class="hljs-string">'&lt;span class="tradeResourceName"&gt;'</span>, item.Object.type.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" value="'</span>, quantity, <span class="hljs-string">'" /&gt;&lt;button type="button"&gt;-&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
                     c.appendChild(item);
                     <span class="hljs-keyword">this</span>.updatePushCargo(quantity);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">var</span> found = exists[<span class="hljs-number">0</span>],
                         newTotal = found.Object.quantity + quantity,
                         diff = quantity,
@@ -1486,7 +1520,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
         },
-        PushAddGlyph: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+        PushAddGlyph: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, matchedEl, container)</span> {</span>
             <span class="hljs-keyword">var</span> quantity = matchedEl.previousSibling.value * <span class="hljs-number">1</span>,
                 li = matchedEl.parentNode,
                 c = Dom.get(<span class="hljs-string">"tradePushItems"</span>);
@@ -1501,7 +1535,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     item.id = id;
                     Dom.addClass(item, <span class="hljs-string">"tradeItem"</span>);
                     Dom.addClass(del, <span class="hljs-string">"tradeDelete"</span>);
-                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                         <span class="hljs-keyword">var</span> ed = Event.getTarget(e),
                             ep = ed.parentNode;
                         <span class="hljs-keyword">this</span>.updatePushCargo(ep.Object.quantity * -<span class="hljs-keyword">this</span>.glyphSize);
@@ -1517,7 +1551,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     content.innerHTML = [<span class="hljs-string">'&lt;span class="tradeResourceName"&gt;'</span>, gName.titleCaps(), <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" value="'</span>, quantity, <span class="hljs-string">'" /&gt;&lt;button type="button"&gt;-&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
                     c.appendChild(item);
                     <span class="hljs-keyword">this</span>.updatePushCargo(<span class="hljs-keyword">this</span>.glyphSize * quantity);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">var</span> found = exists[<span class="hljs-number">0</span>],
                         newTotal = found.Object.quantity + quantity,
                         diff = quantity,
@@ -1536,7 +1571,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
         },
-        PushAddPlan: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+        PushAddPlan: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, matchedEl, container)</span> {</span>
             <span class="hljs-keyword">var</span> quantity = matchedEl.previousSibling.value * <span class="hljs-number">1</span>,
                 li = matchedEl.parentNode,
                 c = Dom.get(<span class="hljs-string">"tradePushItems"</span>);
@@ -1555,7 +1590,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     item.id = id;
                     Dom.addClass(item, <span class="hljs-string">"tradeItem"</span>);
                     Dom.addClass(del, <span class="hljs-string">"tradeDelete"</span>);
-                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                         <span class="hljs-keyword">var</span> ed = Event.getTarget(e),
                             ep = ed.parentNode;
                         <span class="hljs-keyword">this</span>.updatePushCargo(ep.Object.quantity * -<span class="hljs-keyword">this</span>.planSize);
@@ -1572,12 +1607,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     };
                     <span class="hljs-keyword">if</span> (pExtra &gt; <span class="hljs-number">0</span>) {
                         content.innerHTML = [<span class="hljs-string">'&lt;span class="tradeResourceName"&gt;'</span>, pName, <span class="hljs-string">' '</span>, pLevel, <span class="hljs-string">'+'</span>, pExtra, <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" value="'</span>, quantity, <span class="hljs-string">'" /&gt;&lt;button type="button"&gt;-&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         content.innerHTML = [<span class="hljs-string">'&lt;span class="tradeResourceName"&gt;'</span>, pName, <span class="hljs-string">' '</span>, pLevel, <span class="hljs-string">' (&lt;label class="quantity"&gt;'</span>, quantity, <span class="hljs-string">'&lt;/label&gt;)&lt;/span&gt; &lt;input type="text" style="width:75px;" value="'</span>, quantity, <span class="hljs-string">'" /&gt;&lt;button type="button"&gt;-&lt;/button&gt;'</span>].join(<span class="hljs-string">''</span>);
                     }
                     c.appendChild(item);
                     <span class="hljs-keyword">this</span>.updatePushCargo(<span class="hljs-keyword">this</span>.planSize * quantity);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">var</span> found = exists[<span class="hljs-number">0</span>],
                         newTotal = found.Object.quantity + quantity,
                         diff = quantity,
@@ -1596,7 +1633,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
         },
-        PushAddShip: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+        PushAddShip: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, matchedEl, container)</span> {</span>
             <span class="hljs-keyword">var</span> quantity = matchedEl.previousSibling.value * <span class="hljs-number">1</span>,
                 li = matchedEl.parentNode,
                 c = Dom.get(<span class="hljs-string">"tradePushItems"</span>);
@@ -1616,7 +1653,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     item.id = id;
                     Dom.addClass(item, <span class="hljs-string">"tradeItem"</span>);
                     Dom.addClass(del, <span class="hljs-string">"tradeDelete"</span>);
-                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                         <span class="hljs-keyword">var</span> ed = Event.getTarget(e),
                             ep = ed.parentNode;
                         <span class="hljs-keyword">this</span>.updatePushCargo(ep.Object.quantity * -<span class="hljs-keyword">this</span>.shipSize);
@@ -1639,7 +1676,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     ].join(<span class="hljs-string">''</span>);
                     c.appendChild(item);
                     <span class="hljs-keyword">this</span>.updatePushCargo(<span class="hljs-keyword">this</span>.shipSize * quantity);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">var</span> found = exists[<span class="hljs-number">0</span>],
                         newTotal = found.Object.quantity + quantity,
                         diff = quantity,
@@ -1658,7 +1696,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
         },
-        PushAddPrisoner: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+        PushAddPrisoner: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, matchedEl, container)</span> {</span>
             <span class="hljs-keyword">var</span> li = matchedEl.parentNode,
                 c = Dom.get(<span class="hljs-string">"tradePushItems"</span>);
             <span class="hljs-keyword">if</span> (li &amp;&amp; c) {
@@ -1673,7 +1711,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     item.id = id;
                     Dom.addClass(item, <span class="hljs-string">"tradeItem"</span>);
                     Dom.addClass(del, <span class="hljs-string">"tradeDelete"</span>);
-                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    Event.on(del, <span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                         <span class="hljs-keyword">this</span>.updatePushCargo(<span class="hljs-keyword">this</span>.spySize * -<span class="hljs-number">1</span>);
                         Event.purgeElement(item);
                         item.parentNode.removeChild(item);
@@ -1688,7 +1726,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
         },
-        PushRemove: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, matchedEl, container)</span> {</span>
+        PushRemove: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, matchedEl, container)</span> {</span>
             <span class="hljs-keyword">var</span> quantity = matchedEl.previousSibling.value * <span class="hljs-number">1</span>,
                 li = matchedEl.parentNode.parentNode;
             <span class="hljs-keyword">if</span> (quantity) {
@@ -1703,7 +1741,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     <span class="hljs-keyword">this</span>.updatePushCargo(li.Object.quantity * -<span class="hljs-number">1</span>);
                     Event.purgeElement(li);
                     li.parentNode.removeChild(li);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     lq.innerHTML = newTotal;
                     li.Object.quantity = newTotal;
                     <span class="hljs-keyword">this</span>.updatePushCargo(diff);
@@ -1717,7 +1756,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }
             }
         },
-        Push: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        Push: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> data = {
                 session_id: Game.GetSession(<span class="hljs-string">""</span>),
                 building_id: <span class="hljs-keyword">this</span>.building.id,
@@ -1730,21 +1769,21 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 <span class="hljs-keyword">if</span> (lis[n].Object) {
                     items[n] = lis[n].Object;
                     <span class="hljs-keyword">switch</span> (items[n].type) {
-                    <span class="hljs-keyword">case</span> <span class="hljs-string">"plan"</span>:
-                        hasPlans = <span class="hljs-literal">true</span>;
-                        <span class="hljs-keyword">break</span>;
-                    <span class="hljs-keyword">case</span> <span class="hljs-string">"glyph"</span>:
-                        hasGlyphs = <span class="hljs-literal">true</span>;
-                        <span class="hljs-keyword">break</span>;
-                    <span class="hljs-keyword">case</span> <span class="hljs-string">"prisoner"</span>:
-                        hasPrisoners = <span class="hljs-literal">true</span>;
-                        <span class="hljs-keyword">break</span>;
-                    <span class="hljs-keyword">case</span> <span class="hljs-string">"ship"</span>:
-                        hasShips = <span class="hljs-literal">true</span>;
-                        <span class="hljs-keyword">break</span>;
-                    <span class="hljs-keyword">default</span>:
-                        hasResources = <span class="hljs-literal">true</span>;
-                        <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">case</span> <span class="hljs-string">"plan"</span>:
+                            hasPlans = <span class="hljs-literal">true</span>;
+                            <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">case</span> <span class="hljs-string">"glyph"</span>:
+                            hasGlyphs = <span class="hljs-literal">true</span>;
+                            <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">case</span> <span class="hljs-string">"prisoner"</span>:
+                            hasPrisoners = <span class="hljs-literal">true</span>;
+                            <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">case</span> <span class="hljs-string">"ship"</span>:
+                            hasShips = <span class="hljs-literal">true</span>;
+                            <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">default</span>:
+                            hasResources = <span class="hljs-literal">true</span>;
+                            <span class="hljs-keyword">break</span>;
                     }
                 }
             }
@@ -1752,12 +1791,13 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             <span class="hljs-keyword">if</span> (data.items.length === <span class="hljs-number">0</span>) {
                 Dom.get(<span class="hljs-string">"tradePushMessage"</span>)
                     .innerHTML = <span class="hljs-string">"Must add items to send to colony."</span>;
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Dom.get(<span class="hljs-string">"tradePushMessage"</span>)
                     .innerHTML = <span class="hljs-string">""</span>;
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">this</span>.service.push_items(data, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-keyword">this</span>.rpcSuccess(o);
                         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; lis.length; i++) {
                             <span class="hljs-keyword">if</span> (lis[i].Object) {

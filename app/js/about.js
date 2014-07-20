@@ -1,11 +1,11 @@
 'use strict';
 YAHOO.namespace("lacuna");
 var Templates = require('js/templates');
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game;
-    var About = function () {
+    var About = function() {
         this.id = "about";
         this.createEvent("onShow");
         var container = $('<div></div>')
@@ -31,10 +31,10 @@ var Templates = require('js/templates');
     };
     About.prototype = {
         template: Templates.get('menu.about'),
-        show: function () {
+        show: function() {
             if (!this.hasCredits) {
                 Game.Services.Stats.credits({}, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Stats");
                         this.render(o);
                         this.hasCredits = true;
@@ -42,19 +42,20 @@ var Templates = require('js/templates');
                     },
                     scope: this
                 });
-            } else {
+            }
+            else {
                 this.open();
             }
         },
-        open: function () {
+        open: function() {
             Game.OverlayManager.hideAll();
             this.panel.show();
             this.panel.center();
         },
-        hide: function () {
+        hide: function() {
             this.panel.hide();
         },
-        render: function (o) {
+        render: function(o) {
             this.panel.setBody(this.template(o));
             $('#aboutVersion')
                 .html(Game.ServerData.version);

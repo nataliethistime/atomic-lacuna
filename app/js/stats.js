@@ -1,6 +1,6 @@
 YAHOO.namespace("lacuna");
 if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
-    (function () {
+    (function() {
         var Lang = YAHOO.lang,
             Util = YAHOO.util,
             Dom = Util.Dom,
@@ -9,7 +9,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
             Lacuna = YAHOO.lacuna,
             Game = Lacuna.Game,
             Lib = Lacuna.Library;
-        var Stats = function () {
+        var Stats = function() {
             this.id = "stats";
             var container = document.createElement("div");
             container.id = this.id;
@@ -26,37 +26,37 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                 width: "750px",
                 zIndex: 9999
             });
-            this.Panel.renderEvent.subscribe(function () {
+            this.Panel.renderEvent.subscribe(function() {
                 Dom.removeClass(this.id, Lib.Styles.HIDDEN);
                 this.tabView = new YAHOO.widget.TabView("statsTabs");
                 this.tabView.set('activeIndex', 0);
                 //subscribe after adding so active doesn't fire
                 this.tabView.getTab(1)
-                    .subscribe("activeChange", function (e) {
+                    .subscribe("activeChange", function(e) {
                         if (e.newValue) {
                             this.AllianceStats();
                         }
                     }, this, true);
                 this.tabView.getTab(2)
-                    .subscribe("activeChange", function (e) {
+                    .subscribe("activeChange", function(e) {
                         if (e.newValue) {
                             this.ColonyStats();
                         }
                     }, this, true);
                 this.tabView.getTab(3)
-                    .subscribe("activeChange", function (e) {
+                    .subscribe("activeChange", function(e) {
                         if (e.newValue) {
                             this.SpyStats();
                         }
                     }, this, true);
                 this.tabView.getTab(4)
-                    .subscribe("activeChange", function (e) {
+                    .subscribe("activeChange", function(e) {
                         if (e.newValue) {
                             this.WeeklyMedalStats();
                         }
                     }, this, true);
                 this.tabView.getTab(5)
-                    .subscribe("activeChange", function (e) {
+                    .subscribe("activeChange", function(e) {
                         if (e.newValue) {
                             this.getServerStats();
                         }
@@ -78,26 +78,27 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
             Game.OverlayManager.register(this.Panel);
         };
         Stats.prototype = {
-            _getHtml: function () {
+            _getHtml: function() {
                 return ['    <div class="hd">Universe Stats</div>', '    <div class="bd">', '        <div id="statsTabs" class="yui-navset">', '            <ul class="yui-nav">', '                <li><a href="#statsEmpire"><em>Empires</em></a></li>', '                <li><a href="#statsAlliance"><em>Alliances</em></a></li>', '                <li><a href="#statsColony"><em>Colonies</em></a></li>', '                <li><a href="#statsSpy"><em>Spies</em></a></li>', '                <li><a href="#statsWeeklyMedal"><em>Weekly Medals</em></a></li>', '                <li><a href="#statsGeneral"><em>General</em></a></li>', '            </ul>', '            <div id="oHt" class="yui-content">', '                <div id="statsEmpire"><div><label style="font-weight:bold;display:inline-block;width:50px;">Find:</label><span style="display:inline-block;width:300px;"><input type="text" id="statsEmpireFind" /></span></div><div id="statsEmpireTable"></div><div id="statsEmpirePaginator"></div></div>', '                <div id="statsAlliance"><div><label style="font-weight:bold;display:inline-block;width:50px;">Find:</label><span style="display:inline-block;width:300px;"><input type="text" id="statsAllianceFind" /></span></div><div id="statsAllianceTable"></div><div id="statsAlliancePaginator"></div></div>', '                <div id="statsColony"><div id="statsColonyTable"></div></div>', '                <div id="statsSpy"><div id="statsSpyTable"></div></div>', '                <div id="statsWeeklyMedal"><div id="statsWeeklyMedalTable"></div></div>', '                <div id="statsGeneral">', '                    <div id="statsGeneralTabs" class="yui-navset">', '                        <ul class="yui-nav">', '                            <li><a href="#statsGeneralBodies"><em>Bodies</em></a></li>', '                            <li><a href="#statsGeneralBuildings"><em>Buildings</em></a></li>', '                            <li><a href="#statsGeneralEmpires"><em>Empires</em></a></li>', '                            <li><a href="#statsGeneralOrbits"><em>Orbits</em></a></li>', '                            <li><a href="#statsGeneralShips"><em>Ships</em></a></li>', '                            <li><a href="#statsGeneralSpies"><em>Spies</em></a></li>', '                            <li><a href="#statsGeneralStars"><em>Stars</em></a></li>', '                            <li><a href="#statsGeneralGlyphs"><em>Glyphs</em></a></li>', '                        </ul>', '                        <div id="sHt" class="yui-content" style="overflow:auto;">', '                            <div id="statsGeneralBodies">', '                            </div>', '                            <div id="statsGeneralBuildings">', '                            </div>', '                            <div id="statsGeneralEmpires">', '                            </div>', '                            <div id="statsGeneralOrbits">', '                            </div>', '                            <div id="statsGeneralShips">', '                            </div>', '                            <div id="statsGeneralSpies">', '                            </div>', '                            <div id="statsGeneralStars">', '                            </div>', '                            <div id="statsGeneralGlyphs">', '                            </div>', '                        </div>', '                    </div>', '                </div>', '            </div>', '        </div>', '    </div>', '    <div class="ft"></div>'].join('');
             },
-            getServerStats: function () {
+            getServerStats: function() {
                 Lacuna.Pulser.Show();
                 Util.Connect.asyncRequest('GET', Game.RPCBase + 'server_overview.json', {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Stats.populateServerStats.success");
                         Lacuna.Pulser.Hide();
                         try {
                             this._serverOverview = Lang.JSON.parse(o.responseText);
                             this.populateServerStats();
-                        } catch (ex) {
+                        }
+                        catch (ex) {
                             YAHOO.log(ex);
                         }
                     },
                     scope: this
                 });
             },
-            populateServerStats: function () {
+            populateServerStats: function() {
                 var data = this._serverOverview;
                 Event.purgeElement(this.statsGeneralBodies);
                 Event.purgeElement(this.statsGeneralBuildings);
@@ -135,15 +136,15 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                 ["Orbit 1 Inhabited", "Orbit 2 Inhabited", "Orbit 3 Inhabited", "Orbit 4 Inhabited", "Orbit 5 Inhabited", "Orbit 6 Inhabited", "Orbit 7 Inhabited", "Orbit 8 Inhabited"]
             ],true);*/
             },
-            expander: function (e, matchedEl, container) {
+            expander: function(e, matchedEl, container) {
                 var ul = Sel.query("ul", matchedEl.parentNode, true);
                 Dom.setStyle(ul, "display", (Dom.getStyle(ul, "display") == "none" ? "" : "none"));
             },
-            _getBodiesHtml: function () {
+            _getBodiesHtml: function() {
                 var data = this._serverOverview.bodies;
                 return ['<ul class="statsList">', '<li><label>Total Bodies:</label>', Lib.formatNumber(data.count), '</li>', '<li><label>Colonies:</label>', Lib.formatNumber(data.colony_count), '</li>', '<li><label>Types</label>', '    <ul class="statsSubList">', '    <li><label class="statsSubHeader">Asteroids</label>', '        <ul style="display:none;">', '        <li><label>Total:</label>', Lib.formatNumber(data.types.asteroids.count), '</li>', '        <li><label>Average Orbit:</label>', data.types.asteroids.average_orbit, '</li>', '        <li><label>Average Size:</label>', data.types.asteroids.average_size, '</li>', '        <li><label>Largest Size:</label>', data.types.asteroids.largest_size, '</li>', '        <li><label>Smallest Size:</label>', data.types.asteroids.smallest_size, '</li>', '        </ul>', '    </li>', '    <li><label class="statsSubHeader">Gas Giants</label>', '        <ul style="display:none;">', '        <li><label>Total:</label>', Lib.formatNumber(data.types.gas_giants.count), '</li>', '        <li><label>Average Orbit:</label>', data.types.gas_giants.average_orbit, '</li>', '        <li><label>Average Size:</label>', data.types.gas_giants.average_size, '</li>', '        <li><label>Largest Size:</label>', data.types.gas_giants.largest_size, '</li>', '        <li><label>Smallest Size:</label>', data.types.gas_giants.smallest_size, '</li>', '        </ul>', '    </li>', '    <li><label class="statsSubHeader">Habitables</label>', '        <ul style="display:none;">', '        <li><label>Total:</label>', Lib.formatNumber(data.types.habitables.count), '</li>', '        <li><label>Average Orbit:</label>', data.types.habitables.average_orbit, '</li>', '        <li><label>Average Size:</label>', data.types.habitables.average_size, '</li>', '        <li><label>Largest Size:</label>', data.types.habitables.largest_size, '</li>', '        <li><label>Smallest Size:</label>', data.types.habitables.smallest_size, '</li>', '        </ul>', '    </li>', '    <li><label class="statsSubHeader">Stations</label>', '        <ul style="display:none;">', '        <li><label>Total:</label>', Lib.formatNumber(data.types.stations.count), '</li>', '        <li><label>Average Orbit:</label>', data.types.stations.average_orbit, '</li>', '        <li><label>Average Size:</label>', data.types.stations.average_size, '</li>', '        <li><label>Largest Size:</label>', data.types.stations.largest_size, '</li>', '        <li><label>Smallest Size:</label>', data.types.stations.smallest_size, '</li>', '        </ul>', '    </li>', '    </ul>', '</li>', '</ul>'].join('');
             },
-            _getBuildingsHtml: function () {
+            _getBuildingsHtml: function() {
                 var data = this._serverOverview.buildings,
                     output = ['<ul class="statsList">', '<li><label>Total Buildings:</label>', Lib.formatNumber(data.count), '</li>', '<li><label>Types</label><ul class="statsSubList">'];
                 var btArr = [];
@@ -160,15 +161,15 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                 output.push('</ul></li></ul>');
                 return output.join('');
             },
-            _getEmpiresHtml: function () {
+            _getEmpiresHtml: function() {
                 var data = this._serverOverview.empires;
                 return ['<ul class="statsList">', '<li><label>Total Empires:</label>', Lib.formatNumber(data.count), '</li>', '<li><label>Active This Week:</label>', Lib.formatNumber(data.active_this_week_count), '</li>', '<li><label>Active Today:</label>', Lib.formatNumber(data.active_today_count), '</li>', '<li><label>Currently Active:</label>', Lib.formatNumber(data.currently_active_count), '</li>', '<li><label>Average University Level:</label>', Lib.formatNumber(data.average_university_level), '</li>', '<li><label>Highest University Level:</label>', Lib.formatNumber(data.highest_university_level), '</li>', '<li><label>Empires Using Essentia:</label>', Lib.formatNumber(data.essentia_using_count), '</li>', '<li><label>Isolationist Empires:</label>', Lib.formatNumber(data.isolationist_count), '</li>', '</ul>'].join('');
             },
-            _getOrbitsHtml: function () {
+            _getOrbitsHtml: function() {
                 var data = this._serverOverview.orbits;
                 return ['<ul class="statsList">', '<li><label>Orbits</label><ul class="statsSubList">', '<li><label class="statsSubHeader">One</label>', '    <ul style="display:none;">', '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["1"].bodies), '</li>', '    <li><label>Inhabited:</label>', Lib.formatNumber(data["1"].inhabited), '</li>', '    </ul>', '</li>', '<li><label class="statsSubHeader">Two</label>', '    <ul style="display:none;">', '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["2"].bodies), '</li>', '    <li><label>Inhabited:</label>', Lib.formatNumber(data["2"].inhabited), '</li>', '    </ul>', '</li>', '<li><label class="statsSubHeader">Three</label>', '    <ul style="display:none;">', '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["3"].bodies), '</li>', '    <li><label>Inhabited:</label>', Lib.formatNumber(data["3"].inhabited), '</li>', '    </ul>', '</li>', '<li><label class="statsSubHeader">Four</label>', '    <ul style="display:none;">', '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["4"].bodies), '</li>', '    <li><label>Inhabited:</label>', Lib.formatNumber(data["4"].inhabited), '</li>', '    </ul>', '</li>', '<li><label class="statsSubHeader">Five</label>', '    <ul style="display:none;">', '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["5"].bodies), '</li>', '    <li><label>Inhabited:</label>', Lib.formatNumber(data["5"].inhabited), '</li>', '    </ul>', '</li>', '<li><label class="statsSubHeader">Six</label>', '    <ul style="display:none;">', '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["6"].bodies), '</li>', '    <li><label>Inhabited:</label>', Lib.formatNumber(data["6"].inhabited), '</li>', '    </ul>', '</li>', '<li><label class="statsSubHeader">Seven</label>', '    <ul style="display:none;">', '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["7"].bodies), '</li>', '    <li><label>Inhabited:</label>', Lib.formatNumber(data["7"].inhabited), '</li>', '    </ul>', '</li>', '<li><label class="statsSubHeader">Eight</label>', '    <ul style="display:none;">', '    <li><label>Total Bodies:</label>', Lib.formatNumber(data["8"].bodies), '</li>', '    <li><label>Inhabited:</label>', Lib.formatNumber(data["8"].inhabited), '</li>', '    </ul>', '</li>', '</ul></li></ul>'].join('');
             },
-            _getShipsHtml: function () {
+            _getShipsHtml: function() {
                 var data = this._serverOverview.ships,
                     output = ['<ul class="statsList">', '<li><label>Total Ships:</label>', Lib.formatNumber(data.count), '</li>', '<li><label>Types</label><ul class="statsSubList">'];
                 for (var bt in data.types) {
@@ -179,15 +180,15 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                 output.push('</ul></li></ul>');
                 return output.join('');
             },
-            _getSpiesHtml: function () {
+            _getSpiesHtml: function() {
                 var data = this._serverOverview.spies;
                 return ['<ul class="statsList">', '<li><label>Total Spies:</label>', Lib.formatNumber(data.count), '</li>', '<li><label>Average Defense:</label>', Lib.formatNumber(data.average_defense), '</li>', '<li><label>Highest Defense:</label>', Lib.formatNumber(data.highest_defense), '</li>', '<li><label>Average Offense:</label>', Lib.formatNumber(data.average_offense), '</li>', '<li><label>Highest Offense:</label>', Lib.formatNumber(data.highest_offense), '</li>', '<li><label>Average Intel XP:</label>', Lib.formatNumber(data.average_intel), '</li>', '<li><label>Highest Intel XP:</label>', Lib.formatNumber(data.highest_intel), '</li>', '<li><label>Average Mayhem XP:</label>', Lib.formatNumber(data.average_mayhem), '</li>', '<li><label>Highest Mayhem XP:</label>', Lib.formatNumber(data.highest_mayhem), '</li>', '<li><label>Average Politics XP:</label>', Lib.formatNumber(data.average_politics), '</li>', '<li><label>Highest Politics XP:</label>', Lib.formatNumber(data.highest_politics), '</li>', '<li><label>Average Theft XP:</label>', Lib.formatNumber(data.average_theft), '</li>', '<li><label>Highest Theft XP:</label>', Lib.formatNumber(data.highest_theft), '</li>', '<li><label>Idle:</label>', Lib.formatNumber(data.idle_count), '</li>', '<li><label>Travelling:</label>', Lib.formatNumber(data.travelling_count), '</li>', '<li><label>Countering Espionage:</label>', Lib.formatNumber(data.countering_espionage_count), '</li>', '<li><label>Doing Sweeps:</label>', Lib.formatNumber(data.security_count), '</li>', '<li><label>At the Ministry of Truth:</label>', Lib.formatNumber(data.propaganda_count), '</li>', '<li><label>Training:</label>', Lib.formatNumber(data.training_count), '</li>', '<li><label>Extra Training:</label>', Lib.formatNumber(data.extra_training_count), '</li>', '<li><label>Gathering Intelligence:</label>', Lib.formatNumber(data.gathering_intelligence_count), '</li>', '<li><label>Hacking Networks:</label>', Lib.formatNumber(data.hacking_networks_count), '</li>', '<li><label>Inciting:</label>', Lib.formatNumber(data.inciting_count), '</li>', '<li><label>Sabotaging:</label>', Lib.formatNumber(data.sabotaging_count), '</li>', '<li><label>Appropriating:</label>', Lib.formatNumber(data.stealing_count), '</li>', '<li><label>Extraction:</label>', Lib.formatNumber(data.extraction_count), '</li>', '<li><label>Antipersonal:</label>', Lib.formatNumber(data.antipersonal_count), '</li>', '<li><label>Infiltrating:</label>', Lib.formatNumber(data.infiltrating_count), '</li>', '<li><label>In Prison:</label>', Lib.formatNumber(data.in_prison_count), '</li>', '<li><label>For Sale:</label>', Lib.formatNumber(data.for_sale_count), '</li>', '<li><label>Unconscious:</label>', Lib.formatNumber(data.unconscious_count), '</li>', '</ul>'].join('');
             },
-            _getStarsHtml: function () {
+            _getStarsHtml: function() {
                 var data = this._serverOverview.stars;
                 return ['<ul class="statsList">', '<li><label>Total Stars:</label>', Lib.formatNumber(data.count), '</li>', '<li><label>Seized Stars:</label>', Lib.formatNumber(data.seized_count), '</li>', '<li><label>Probed Stars:</label>', Lib.formatNumber(data.probed_count), '</li>', '<li><label>Total Probes:</label>', Lib.formatNumber(data.probes_count), '</li>', '</ul>'].join('');
             },
-            _getGlyphsHtml: function () {
+            _getGlyphsHtml: function() {
                 var data = this._serverOverview.glyphs;
                 output = ['<ul class="statsList">'];
                 var glyphs = new Array;
@@ -199,7 +200,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                     };
                     i++;
                 }
-                glyphs.sort(function (a, b) {
+                glyphs.sort(function(a, b) {
                     return a.count - b.count
                 });
                 for (var i = 0; i < glyphs.length; i++) {
@@ -207,21 +208,22 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                 }
                 return output.join('');
             },
-            formatPercent: function (el, oRecord, oColumn, oData) {
+            formatPercent: function(el, oRecord, oColumn, oData) {
                 el.innerHTML = Util.Number.format(Math.round(oData * 100), {
                     thousandsSeparator: ",",
                     suffix: "%"
                 });
             },
-            EmpireStats: function () {
+            EmpireStats: function() {
                 if (this.EmpireTable) {
                     this.EmpireTable.requery();
-                } else {
+                }
+                else {
                     this.EmpireFindCreate();
                     this.EmpireColumns = [{
                         key: "rank",
                         label: "Rank",
-                        formatter: function (el, oRecord, oColumn, oData) {
+                        formatter: function(el, oRecord, oColumn, oData) {
                             var oState = this.getState();
                             el.innerHTML = Math.floor(oState.pagination.recordOffset + this.rankCounter++);
                         }
@@ -338,36 +340,37 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                     this.EmpireTable.subscribe("rowMouseoutEvent", this.EmpireTable.onEventUnhighlightRow);
                     this.EmpireTable.subscribe("rowClickEvent", this.EmpireTable.onEventSelectRow);
                     this.EmpireTable.subscribe("cellMouseoverEvent", this.EmpireTable.onEventHighlightCell);
-                    this.EmpireTable.subscribe("cellHighlightEvent", function (oArgs) {
+                    this.EmpireTable.subscribe("cellHighlightEvent", function(oArgs) {
                         if (oArgs.key == "empire_name" || oArgs.key == "alliance_name") {
                             Dom.setStyle(oArgs.el, "cursor", "help");
                         }
                     });
                     this.EmpireTable.subscribe("cellMouseoutEvent", this.EmpireTable.onEventUnhighlightCell);
-                    this.EmpireTable.subscribe("cellUnhighlightEvent", function (oArgs) {
+                    this.EmpireTable.subscribe("cellUnhighlightEvent", function(oArgs) {
                         if (oArgs.key == "empire_name" || oArgs.key == "alliance_name") {
                             Dom.setStyle(oArgs.el, "cursor", "auto");
                         }
                     });
-                    this.EmpireTable.subscribe("cellClickEvent", function (ev) {
+                    this.EmpireTable.subscribe("cellClickEvent", function(ev) {
                         var target = Event.getTarget(ev),
                             column = this.getColumn(target),
                             record;
                         if (column.key == "empire_name") {
                             record = this.getRecord(target);
                             Lacuna.Info.Empire.Load(record.getData("empire_id"));
-                        } else if (column.key == "alliance_name") {
+                        }
+                        else if (column.key == "alliance_name") {
                             record = this.getRecord(target);
                             Lacuna.Info.Alliance.Load(record.getData("alliance_id"));
                         }
                     });
-                    this.EmpireTable.subscribe("postRenderEvent", function () {
+                    this.EmpireTable.subscribe("postRenderEvent", function() {
                         var els = this.getSelectedTrEls();
                         if (els && els.length > 0) {
                             this._elBdContainer.scrollTop = els[els.length - 1].offsetTop;
                         }
                     });
-                    this.EmpireTable.handleDataReturnPayload = function (oRequest, oResponse, oPayload) {
+                    this.EmpireTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
                         oPayload.totalRecords = oResponse.meta.totalRecords;
                         var pn = oResponse.meta.pageNumber - 1;
                         oPayload.pagination = {
@@ -376,7 +379,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                         };
                         return oPayload;
                     };
-                    this.EmpireTable.requery = function (page) {
+                    this.EmpireTable.requery = function(page) {
                         // Get the current state
                         var oState = this.getState();
                         if (Lang.isNumber(page)) {
@@ -398,7 +401,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                         };
                         this._oDataSource.sendRequest(request, callback);
                     };
-                    this.EmpireTable.find = function (id, page) {
+                    this.EmpireTable.find = function(id, page) {
                         // Get the current state
                         var oState = this.getState(),
                             sort = (oState.sortedBy) ? oState.sortedBy.key : oSelf.getColumnSet()
@@ -431,7 +434,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                         this._oDataSource.sendRequest(request, callback);
                     };
                     //overriding generateRequest to send the correct column name back
-                    this.EmpireTable.set("generateRequest", function (oState, oSelf) {
+                    this.EmpireTable.set("generateRequest", function(oState, oSelf) {
                         // Set defaults
                         oState = oState || {
                             pagination: null,
@@ -454,7 +457,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                             ]
                         });
                     });
-                    this.EmpireTable.set("formatRow", function (elTr, oRecord) {
+                    this.EmpireTable.set("formatRow", function(elTr, oRecord) {
                         if (this.selectedEmpireId && oRecord.getData("empire_id") == this.selectedEmpireId) {
                             this.selectRow(oRecord);
                         }
@@ -462,7 +465,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                     });
                 }
             },
-            EmpireFindCreate: function () {
+            EmpireFindCreate: function() {
                 var dataSource = new Util.XHRDataSource(Game.RPCBase + 'stats');
                 dataSource.connMethodPost = "POST";
                 dataSource.maxCacheEntries = 2;
@@ -480,7 +483,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                     formatResultColumnKeys: ["empire_name"],
                     useIndicator: true
                 });
-                oTextboxList.generateRequest = function (sQuery) {
+                oTextboxList.generateRequest = function(sQuery) {
                     var state = Lacuna.Stats.EmpireTable.getState(),
                         s = Lang.JSON.stringify({
                             "id": YAHOO.rpc.Service._requestId++,
@@ -494,22 +497,23 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                         });
                     return s;
                 };
-                oTextboxList.itemSelectEvent.subscribe(function (e, oArgs) {
+                oTextboxList.itemSelectEvent.subscribe(function(e, oArgs) {
                     oArgs[0]._elTextbox.value = "";
                     var data = oArgs[2];
                     Lacuna.Stats.EmpireTable.find(data.empire_id, data.page_number);
                 });
                 this.empireFind = oTextboxList;
             },
-            AllianceStats: function () {
+            AllianceStats: function() {
                 if (this.AllianceTable) {
                     this.AllianceTable.requery();
-                } else {
+                }
+                else {
                     this.AllianceFindCreate();
                     this.AllianceColumns = [{
                         key: "rank",
                         label: "Rank",
-                        formatter: function (el, oRecord, oColumn, oData) {
+                        formatter: function(el, oRecord, oColumn, oData) {
                             var oState = this.getState();
                             el.innerHTML = Math.floor(oState.pagination.recordOffset + this.rankCounter++);
                         }
@@ -647,18 +651,18 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                     this.AllianceTable.subscribe("rowMouseoutEvent", this.AllianceTable.onEventUnhighlightRow);
                     this.AllianceTable.subscribe("rowClickEvent", this.AllianceTable.onEventSelectRow);
                     this.AllianceTable.subscribe("cellMouseoverEvent", this.AllianceTable.onEventHighlightCell);
-                    this.AllianceTable.subscribe("cellHighlightEvent", function (oArgs) {
+                    this.AllianceTable.subscribe("cellHighlightEvent", function(oArgs) {
                         if (oArgs.key == "alliance_name") {
                             Dom.setStyle(oArgs.el, "cursor", "help");
                         }
                     });
                     this.AllianceTable.subscribe("cellMouseoutEvent", this.AllianceTable.onEventUnhighlightCell);
-                    this.AllianceTable.subscribe("cellUnhighlightEvent", function (oArgs) {
+                    this.AllianceTable.subscribe("cellUnhighlightEvent", function(oArgs) {
                         if (oArgs.key == "alliance_name") {
                             Dom.setStyle(oArgs.el, "cursor", "auto");
                         }
                     });
-                    this.AllianceTable.subscribe("cellClickEvent", function (ev) {
+                    this.AllianceTable.subscribe("cellClickEvent", function(ev) {
                         var target = Event.getTarget(ev),
                             column = this.getColumn(target);
                         if (column.key == "alliance_name") {
@@ -666,13 +670,13 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                             Lacuna.Info.Alliance.Load(record.getData("alliance_id"));
                         }
                     });
-                    this.AllianceTable.subscribe("postRenderEvent", function () {
+                    this.AllianceTable.subscribe("postRenderEvent", function() {
                         var els = this.getSelectedTrEls();
                         if (els && els.length > 0) {
                             this._elBdContainer.scrollTop = els[els.length - 1].offsetTop;
                         }
                     });
-                    this.AllianceTable.handleDataReturnPayload = function (oRequest, oResponse, oPayload) {
+                    this.AllianceTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
                         oPayload.totalRecords = oResponse.meta.totalRecords;
                         var pn = oResponse.meta.pageNumber - 1;
                         oPayload.pagination = {
@@ -681,7 +685,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                         };
                         return oPayload;
                     };
-                    this.AllianceTable.requery = function (page) {
+                    this.AllianceTable.requery = function(page) {
                         // Get the current state
                         var oState = this.getState();
                         if (Lang.isNumber(page)) {
@@ -703,7 +707,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                         };
                         this._oDataSource.sendRequest(request, callback);
                     };
-                    this.AllianceTable.find = function (id, page) {
+                    this.AllianceTable.find = function(id, page) {
                         // Get the current state
                         var oState = this.getState(),
                             sort = (oState.sortedBy) ? oState.sortedBy.key : oSelf.getColumnSet()
@@ -736,7 +740,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                         this._oDataSource.sendRequest(request, callback);
                     };
                     //overriding generateRequest to send the correct column name back
-                    this.AllianceTable.set("generateRequest", function (oState, oSelf) {
+                    this.AllianceTable.set("generateRequest", function(oState, oSelf) {
                         // Set defaults
                         oState = oState || {
                             pagination: null,
@@ -759,7 +763,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                             ]
                         });
                     });
-                    this.AllianceTable.set("formatRow", function (elTr, oRecord) {
+                    this.AllianceTable.set("formatRow", function(elTr, oRecord) {
                         if (this.selectedAllianceId && oRecord.getData("alliance_id") == this.selectedAllianceId) {
                             this.selectRow(oRecord);
                         }
@@ -767,7 +771,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                     });
                 }
             },
-            AllianceFindCreate: function () {
+            AllianceFindCreate: function() {
                 var dataSource = new Util.XHRDataSource(Game.RPCBase + 'stats');
                 dataSource.connMethodPost = "POST";
                 dataSource.maxCacheEntries = 2;
@@ -785,7 +789,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                     formatResultColumnKeys: ["alliance_name"],
                     useIndicator: true
                 });
-                oTextboxList.generateRequest = function (sQuery) {
+                oTextboxList.generateRequest = function(sQuery) {
                     var state = Lacuna.Stats.AllianceTable.getState(),
                         s = Lang.JSON.stringify({
                             "id": YAHOO.rpc.Service._requestId++,
@@ -799,21 +803,22 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                         });
                     return s.replace(/%20/g, ' ');
                 };
-                oTextboxList.itemSelectEvent.subscribe(function (e, oArgs) {
+                oTextboxList.itemSelectEvent.subscribe(function(e, oArgs) {
                     oArgs[0]._elTextbox.value = "";
                     var data = oArgs[2];
                     Lacuna.Stats.AllianceTable.find(data.alliance_id, data.page_number);
                 });
                 this.allianceFind = oTextboxList;
             },
-            ColonyStats: function () {
+            ColonyStats: function() {
                 if (this.ColonyTable) {
                     this.ColonyTable.requery();
-                } else {
+                }
+                else {
                     this.ColonyColumns = [{
                         key: "rank",
                         label: "Rank",
-                        formatter: function (el, oRecord, oColumn, oData) {
+                        formatter: function(el, oRecord, oColumn, oData) {
                             el.innerHTML = this.rankCounter++;
                         }
                     }, {
@@ -890,18 +895,18 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                     this.ColonyTable.subscribe("rowMouseoutEvent", this.ColonyTable.onEventUnhighlightRow);
                     this.ColonyTable.subscribe("rowClickEvent", this.ColonyTable.onEventSelectRow);
                     this.ColonyTable.subscribe("cellMouseoverEvent", this.ColonyTable.onEventHighlightCell);
-                    this.ColonyTable.subscribe("cellHighlightEvent", function (oArgs) {
+                    this.ColonyTable.subscribe("cellHighlightEvent", function(oArgs) {
                         if (oArgs.key == "empire_name") {
                             Dom.setStyle(oArgs.el, "cursor", "help");
                         }
                     });
                     this.ColonyTable.subscribe("cellMouseoutEvent", this.ColonyTable.onEventUnhighlightCell);
-                    this.ColonyTable.subscribe("cellUnhighlightEvent", function (oArgs) {
+                    this.ColonyTable.subscribe("cellUnhighlightEvent", function(oArgs) {
                         if (oArgs.key == "empire_name") {
                             Dom.setStyle(oArgs.el, "cursor", "auto");
                         }
                     });
-                    this.ColonyTable.subscribe("cellClickEvent", function (ev) {
+                    this.ColonyTable.subscribe("cellClickEvent", function(ev) {
                         var target = Event.getTarget(ev),
                             column = this.getColumn(target);
                         if (column.key == "empire_name") {
@@ -909,7 +914,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                             Lacuna.Info.Empire.Load(record.getData("empire_id"));
                         }
                     });
-                    this.ColonyTable.requery = function () {
+                    this.ColonyTable.requery = function() {
                         // Get the current state
                         var oState = this.getState();
                         // Reset record offset, if paginated
@@ -932,7 +937,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                         this._oDataSource.sendRequest(request, callback);
                     };
                     //overriding generateRequest to send the correct column name back
-                    this.ColonyTable.set("generateRequest", function (oState, oSelf) {
+                    this.ColonyTable.set("generateRequest", function(oState, oSelf) {
                         // Set defaults
                         oState = oState || {
                             pagination: null,
@@ -955,14 +960,15 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                     });
                 }
             },
-            SpyStats: function () {
+            SpyStats: function() {
                 if (this.SpyTable) {
                     this.SpyTable.requery();
-                } else {
+                }
+                else {
                     this.SpyColumns = [{
                         key: "rank",
                         label: "Rank",
-                        formatter: function (el, oRecord, oColumn, oData) {
+                        formatter: function(el, oRecord, oColumn, oData) {
                             el.innerHTML = this.rankCounter++;
                         }
                     }, {
@@ -974,7 +980,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                     }, {
                         key: "age",
                         label: "Age",
-                        formatter: function (el, oRecord, oColumn, oData) {
+                        formatter: function(el, oRecord, oColumn, oData) {
                             el.innerHTML = Lib.formatTime(oData);
                         }
                     }, {
@@ -1043,18 +1049,18 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                     this.SpyTable.subscribe("rowMouseoutEvent", this.SpyTable.onEventUnhighlightRow);
                     this.SpyTable.subscribe("rowClickEvent", this.SpyTable.onEventSelectRow);
                     this.SpyTable.subscribe("cellMouseoverEvent", this.SpyTable.onEventHighlightCell);
-                    this.SpyTable.subscribe("cellHighlightEvent", function (oArgs) {
+                    this.SpyTable.subscribe("cellHighlightEvent", function(oArgs) {
                         if (oArgs.key == "empire_name") {
                             Dom.setStyle(oArgs.el, "cursor", "help");
                         }
                     });
                     this.SpyTable.subscribe("cellMouseoutEvent", this.SpyTable.onEventUnhighlightCell);
-                    this.SpyTable.subscribe("cellUnhighlightEvent", function (oArgs) {
+                    this.SpyTable.subscribe("cellUnhighlightEvent", function(oArgs) {
                         if (oArgs.key == "empire_name") {
                             Dom.setStyle(oArgs.el, "cursor", "auto");
                         }
                     });
-                    this.SpyTable.subscribe("cellClickEvent", function (ev) {
+                    this.SpyTable.subscribe("cellClickEvent", function(ev) {
                         var target = Event.getTarget(ev),
                             column = this.getColumn(target);
                         if (column.key == "empire_name") {
@@ -1062,7 +1068,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                             Lacuna.Info.Empire.Load(record.getData("empire_id"));
                         }
                     });
-                    this.SpyTable.requery = function () {
+                    this.SpyTable.requery = function() {
                         // Get the current state
                         var oState = this.getState();
                         // Reset record offset, if paginated
@@ -1085,7 +1091,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                         this._oDataSource.sendRequest(request, callback);
                     };
                     //overriding generateRequest to send the correct column name back
-                    this.SpyTable.set("generateRequest", function (oState, oSelf) {
+                    this.SpyTable.set("generateRequest", function(oState, oSelf) {
                         // Set defaults
                         oState = oState || {
                             pagination: null,
@@ -1108,10 +1114,11 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                     });
                 }
             },
-            WeeklyMedalStats: function () {
+            WeeklyMedalStats: function() {
                 if (this.WeeklyMedalTable) {
                     this.WeeklyMedalTable.requery();
-                } else {
+                }
+                else {
                     this.WeeklyMedalColumns = [{
                         key: "empire_name",
                         label: "Empire"
@@ -1124,7 +1131,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                     }, {
                         key: "medal_image",
                         label: "Medal",
-                        formatter: function (elLiner, oRecord, oColumn, oData) {
+                        formatter: function(elLiner, oRecord, oColumn, oData) {
                             var name = oRecord.getData("medal_name");
                             elLiner.innerHTML = ['<img src="', Lib.AssetUrl, 'medal/', oData, '.png" alt="', name, '" title="', name, '" />'].join('');
                         }
@@ -1167,18 +1174,18 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                     this.WeeklyMedalTable.subscribe("rowMouseoutEvent", this.WeeklyMedalTable.onEventUnhighlightRow);
                     this.WeeklyMedalTable.subscribe("rowClickEvent", this.WeeklyMedalTable.onEventSelectRow);
                     this.WeeklyMedalTable.subscribe("cellMouseoverEvent", this.WeeklyMedalTable.onEventHighlightCell);
-                    this.WeeklyMedalTable.subscribe("cellHighlightEvent", function (oArgs) {
+                    this.WeeklyMedalTable.subscribe("cellHighlightEvent", function(oArgs) {
                         if (oArgs.key == "empire_name") {
                             Dom.setStyle(oArgs.el, "cursor", "help");
                         }
                     });
                     this.WeeklyMedalTable.subscribe("cellMouseoutEvent", this.WeeklyMedalTable.onEventUnhighlightCell);
-                    this.WeeklyMedalTable.subscribe("cellUnhighlightEvent", function (oArgs) {
+                    this.WeeklyMedalTable.subscribe("cellUnhighlightEvent", function(oArgs) {
                         if (oArgs.key == "empire_name") {
                             Dom.setStyle(oArgs.el, "cursor", "auto");
                         }
                     });
-                    this.WeeklyMedalTable.subscribe("cellClickEvent", function (ev) {
+                    this.WeeklyMedalTable.subscribe("cellClickEvent", function(ev) {
                         var target = Event.getTarget(ev),
                             column = this.getColumn(target);
                         if (column.key == "empire_name") {
@@ -1186,7 +1193,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                             Lacuna.Info.Empire.Load(record.getData("empire_id"));
                         }
                     });
-                    this.WeeklyMedalTable.requery = function () {
+                    this.WeeklyMedalTable.requery = function() {
                         // Get the current state
                         var oState = this.getState();
                         // Reset record offset, if paginated
@@ -1209,7 +1216,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                         this._oDataSource.sendRequest(request, callback);
                     };
                     //overriding generateRequest to send the correct column name back
-                    this.WeeklyMedalTable.set("generateRequest", function (oState, oSelf) {
+                    this.WeeklyMedalTable.set("generateRequest", function(oState, oSelf) {
                         // Set defaults
                         oState = oState || {
                             pagination: null,
@@ -1230,7 +1237,7 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                     });
                 }
             },
-            show: function () {
+            show: function() {
                 //this is called out of scope so make sure to pass the correct scope in
                 Lacuna.Stats.EmpireStats();
                 Game.OverlayManager.hideAll();
@@ -1245,10 +1252,10 @@ if (typeof YAHOO.lacuna.Stats == "undefined" || !YAHOO.lacuna.Stats) {
                 Lacuna.Stats.Panel.show();
                 Lacuna.Stats.Panel.center();
             },
-            hide: function () {
+            hide: function() {
                 this.Panel.hide();
             },
-            Reset: function () {
+            Reset: function() {
                 if (this.AllianceTable) {
                     this.AllianceTable.requery(1);
                 }

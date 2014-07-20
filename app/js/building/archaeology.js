@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         DDM = Util.DragDropMgr,
@@ -10,7 +10,7 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var DDList = function (id, sGroup, config) {
+    var DDList = function(id, sGroup, config) {
         DDList.superclass.constructor.call(this, id, sGroup, config);
         var el = this.getDragEl();
         Dom.setStyle(el, "opacity", 0.67); // The proxy is slightly transparent
@@ -18,12 +18,12 @@ YAHOO.namespace("lacuna.buildings");
         this.lastY = 0;
     };
     YAHOO.extend(DDList, YAHOO.util.DDProxy, {
-        startDrag: function (x, y) {
+        startDrag: function(x, y) {
             // make the proxy look like the source element
             var dragEl = this.getDragEl();
             var clickEl = this.getEl();
             // only hide original when moving with the 'combine' list
-            var fromCombineList = Dom.getAncestorBy(clickEl, function (el) {
+            var fromCombineList = Dom.getAncestorBy(clickEl, function(el) {
                 return el.id === "archaeologyGlyphCombine";
             });
             if (fromCombineList) {
@@ -38,7 +38,7 @@ YAHOO.namespace("lacuna.buildings");
                 this._removeGlyphCount(dragEl);
             }
         },
-        endDrag: function (e) {
+        endDrag: function(e) {
             var srcEl = this.getEl();
             var proxy = this.getDragEl();
             // Show the proxy element and animate it to the src element's location
@@ -51,13 +51,13 @@ YAHOO.namespace("lacuna.buildings");
             var proxyid = proxy.id;
             var thisid = this.id;
             // Hide the proxy and show the source element when finished with the animation
-            a.onComplete.subscribe(function () {
+            a.onComplete.subscribe(function() {
                 Dom.setStyle(proxyid, "visibility", "hidden");
                 Dom.setStyle(thisid, "visibility", "");
             });
             a.animate();
         },
-        onDragDrop: function (e, id) {
+        onDragDrop: function(e, id) {
             if (id === "archaeologyGlyphDetails") {
                 // The position of the cursor at the time of the drop (YAHOO.util.Point)
                 var pt = DDM.interactionInfo.point;
@@ -68,7 +68,7 @@ YAHOO.namespace("lacuna.buildings");
                 // the negative space (the area of the list without any list items)
                 if (!region.intersect(pt)) {
                     var El = this.getEl();
-                    var fromCombineList = Dom.getAncestorBy(El, function (el) {
+                    var fromCombineList = Dom.getAncestorBy(El, function(el) {
                         return el.id == "archaeologyGlyphCombine"
                     });
                     if (fromCombineList) {
@@ -78,7 +78,8 @@ YAHOO.namespace("lacuna.buildings");
                         DDM.refreshCache();
                     }
                 }
-            } else if (id === "archaeologyGlyphCombine") {
+            }
+            else if (id === "archaeologyGlyphCombine") {
                 // The position of the cursor at the time of the drop (YAHOO.util.Point)
                 var pt = DDM.interactionInfo.point;
                 // The region occupied by the source element at the time of the drop
@@ -90,7 +91,7 @@ YAHOO.namespace("lacuna.buildings");
                     var destEl = Dom.get(id);
                     var destDD = DDM.getDDById(id);
                     var El = this.getEl();
-                    var fromAvailableList = Dom.getAncestorBy(El, function (el) {
+                    var fromAvailableList = Dom.getAncestorBy(El, function(el) {
                         return el.id === "archaeologyGlyphDetails";
                     });
                     if (fromAvailableList) {
@@ -108,7 +109,7 @@ YAHOO.namespace("lacuna.buildings");
                 }
             }
         },
-        onDrag: function (e) {
+        onDrag: function(e) {
             // Keep track of the direction of the drag for use during onDragOver
             var y = Event.getPageY(e),
                 el = this.getEl(),
@@ -118,7 +119,8 @@ YAHOO.namespace("lacuna.buildings");
                 if (container.scrollTop > el.offsetTop) {
                     container.scrollTop -= el.clientHeight;
                 }
-            } else if (y > this.lastY) {
+            }
+            else if (y > this.lastY) {
                 this.goingUp = false;
                 if ((el.offsetTop - container.scrollTop) > el.clientHeight) {
                     container.scrollTop = el.offsetTop;
@@ -126,15 +128,15 @@ YAHOO.namespace("lacuna.buildings");
             }
             this.lastY = y;
         },
-        onDragOver: function (e, id) {
+        onDragOver: function(e, id) {
             var srcEl = this.getEl();
             var destEl = Dom.get(id);
             // only allow reordering when rearranging the 'combine' list
             // moves from 'details' to 'combine' always just get added to the end of the 'combine' list
-            var fromDetailsList = Dom.getAncestorBy(srcEl, function (el) {
+            var fromDetailsList = Dom.getAncestorBy(srcEl, function(el) {
                 return el.id === "archaeologyGlyphDetails";
             });
-            var toCombineList = Dom.getAncestorBy(destEl, function (el) {
+            var toCombineList = Dom.getAncestorBy(destEl, function(el) {
                 return el.id === "archaeologyGlyphCombine";
             });
             if (fromDetailsList || !toCombineList) {
@@ -147,38 +149,39 @@ YAHOO.namespace("lacuna.buildings");
                 var p = destEl.parentNode;
                 if (this.goingUp) {
                     p.insertBefore(srcEl, destEl); // insert above
-                } else {
+                }
+                else {
                     p.insertBefore(srcEl, destEl.nextSibling); // insert below
                 }
                 DDM.refreshCache();
             }
         },
-        _removeGlyphCount: function (element) {
+        _removeGlyphCount: function(element) {
             // remove glyph count from header text
-            var container = Dom.getFirstChildBy(element, function (el) {
+            var container = Dom.getFirstChildBy(element, function(el) {
                 return Dom.hasClass(el, "archaeologyGlyphContainer");
             });
-            var header = Dom.getFirstChildBy(container, function (el) {
+            var header = Dom.getFirstChildBy(container, function(el) {
                 return Dom.hasClass(el, "archaeologyGlyphHeader");
             });
             var text = header.innerHTML;
             header.innerHTML = text.replace(/ \([0-9]+\)/, "");
         }
     });
-    var Archaeology = function (result) {
+    var Archaeology = function(result) {
         Archaeology.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.Archaeology;
     };
     Lang.extend(Archaeology, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getSearchTab(), this._getViewTab(), this._getExcavatorTab()];
         },
-        _getSearchTab: function () {
+        _getSearchTab: function() {
             var tab = new YAHOO.widget.Tab({
                 label: "Search",
                 content: ['<div id="archaeologySearchContainer">', '  <ul id="archaeologySearchForm">', '    <li>Search Ore:<select id="archaeologyOre"></select></li>', '    <li><button type="button" id="archaeologySearch">Search</button></li>', '  </ul>', '  <ul id="archaeologySearchNone" style="display: none">', '    <li>Not enough ore available to search.</li>', '  </ul>', '</div>', '<div id="archaeologyWorkingContainer">', '  <ul>', '    <li>Searching: <span id="archaeologySearchOre"></span></li>', '    <li>Time left on current search: <span id="archaeologySearchTime"></span></li>', '    <li>You may subsidize the search for 2 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" />.</li>', '    <li><button type="button" id="archaeologySearchSubsidize">Subsidize</button></li>', '  </ul>', '</div>'].join('')
             });
-            tab.subscribe("activeChange", function (e) {
+            tab.subscribe("activeChange", function(e) {
                 if (e.newValue) {
                     this.checkIfWorking();
                 }
@@ -188,12 +191,12 @@ YAHOO.namespace("lacuna.buildings");
             Event.on("archaeologySearchSubsidize", "click", this.Subsidize, this, true);
             return tab;
         },
-        _getViewTab: function () {
+        _getViewTab: function() {
             var tab = new YAHOO.widget.Tab({
                 label: "View Glyphs",
                 content: ['<div class="clearafter">', '  <div class="archaeologySlots">', '    <label>Available Glyphs</label>', '    <ul id="archaeologyGlyphDetails" class="archaeologyGlyphInfo">', '    </ul>', '  </div>', '  <div class="archaeologySlots">', '    <label>Combine Glyphs</label>', '    <ul id="archaeologyGlyphCombine" class="archaeologyGlyphInfo">', '    </ul>', '  </div>', '</div><span title="How many times should the specified glyphs be combined (max 50)"> Quantity: <input type="text" id="combineQuantity" value="1" size="2"></span> <button type="button" id="archaeologyCombine">Combine</button>'].join('')
             });
-            tab.subscribe("activeChange", function (e) {
+            tab.subscribe("activeChange", function(e) {
                 if (e.newValue) {
                     this.getGlyphs();
                 }
@@ -207,7 +210,7 @@ YAHOO.namespace("lacuna.buildings");
                 Dom.setStyle(tC, 'height', Ht + 'px');
                 Dom.setStyle(tC, 'overflow-y', 'auto');
             }, this, true);
-            Event.onAvailable("archaeologyCombine", function (e) {
+            Event.onAvailable("archaeologyCombine", function(e) {
                 Event.on("archaeologyCombine", "click", this.assembleGlyph, this, true);
             }, this, true);
             Event.delegate("archaeologyGlyphDetails", "dblclick", this.viewAdd, "li");
@@ -215,7 +218,7 @@ YAHOO.namespace("lacuna.buildings");
             this.viewTab = tab;
             return tab;
         },
-        _getExcavatorTab: function () {
+        _getExcavatorTab: function() {
             this.excavatorTab = new YAHOO.widget.Tab({
                 label: "Excavators",
                 content: ['<div id="excavatorInfo"></div>', '<div class="excavatorContainer">', '  <div id="excavatorDetails">', '  </div>', '</div>'].join('')
@@ -223,7 +226,7 @@ YAHOO.namespace("lacuna.buildings");
             this.excavatorTab.subscribe("activeChange", this.viewExcavators, this, true);
             return this.excavatorTab;
         },
-        viewExcavators: function (e) {
+        viewExcavators: function(e) {
             if (e.newValue) {
                 if (!this.excavators) {
                     Lacuna.Pulser.Show();
@@ -231,7 +234,7 @@ YAHOO.namespace("lacuna.buildings");
                         session_id: Game.GetSession(),
                         building_id: this.building.id
                     }, {
-                        success: function (o) {
+                        success: function(o) {
                             YAHOO.log(o, "info", "Archaeology.view_excavators.success");
                             Lacuna.Pulser.Hide();
                             this.rpcSuccess(o);
@@ -244,12 +247,13 @@ YAHOO.namespace("lacuna.buildings");
                         },
                         scope: this
                     });
-                } else {
+                }
+                else {
                     this.ArchaeologyExcavators();
                 }
             }
         },
-        ArchaeologyExcavators: function () {
+        ArchaeologyExcavators: function() {
             var excavators = this.excavators.excavators,
                 details = Dom.get("excavatorDetails");
             if (details) {
@@ -294,7 +298,7 @@ YAHOO.namespace("lacuna.buildings");
                         for (var chance_i in ctypes) {
                             var chance = ctypes[chance_i];
                             if (obj[chance] > 0) {
-                                outChance.push('<li><label>' + chance.replace(/^\w/, function (c) {
+                                outChance.push('<li><label>' + chance.replace(/^\w/, function(c) {
                                     return c.toUpperCase()
                                 }) + ':</label> ');
                                 outChance.push(obj[chance]);
@@ -319,7 +323,7 @@ YAHOO.namespace("lacuna.buildings");
                     }
                 }
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 210;
                     if (Ht > 280) {
@@ -330,7 +334,7 @@ YAHOO.namespace("lacuna.buildings");
                 }, 10);
             }
         },
-        ExcavatorAbandon: function () {
+        ExcavatorAbandon: function() {
             if (confirm(["Are you sure you want to Abandon the excavator ", this.Excavator.id, " at  ", this.Excavator.body.name, "?"].join(''))) {
                 Lacuna.Pulser.Show();
                 this.Self.service.abandon_excavator({
@@ -338,7 +342,7 @@ YAHOO.namespace("lacuna.buildings");
                     building_id: this.Self.building.id,
                     excavator_id: this.Excavator.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Archaeology.ExcavatorAbandon.success");
                         Lacuna.Pulser.Hide();
                         this.Self.rpcSuccess(o);
@@ -356,7 +360,7 @@ YAHOO.namespace("lacuna.buildings");
             }
         },
         //wee
-        populateSearch: function () {
+        populateSearch: function() {
             var sel = Dom.get("archaeologyOre");
             if (sel && this.ore) {
                 sel.options.length = 0;
@@ -379,34 +383,37 @@ YAHOO.namespace("lacuna.buildings");
                 if (sel.options.length > 0) {
                     Dom.setStyle("archaeologySearchForm", "display", "");
                     Dom.setStyle("archaeologySearchNone", "display", "none");
-                } else {
+                }
+                else {
                     Dom.setStyle("archaeologySearchForm", "display", "none");
                     Dom.setStyle("archaeologySearchNone", "display", "");
                 }
             }
         },
-        populateActiveSearch: function (seconds_remaining) {
+        populateActiveSearch: function(seconds_remaining) {
             this.addQueue(seconds_remaining, this.searchQueue, "archaeologySearchTime");
         },
-        searchQueue: function (remaining, el) {
+        searchQueue: function(remaining, el) {
             if (remaining <= 0) {
                 var span = Dom.get(el),
                     p = span.parentNode;
                 p.removeChild(span);
                 p.innerHTML = "Search Complete";
-            } else {
+            }
+            else {
                 Dom.get(el)
                     .innerHTML = Lib.formatTime(Math.round(remaining));
             }
         },
-        populateView: function () {
+        populateView: function() {
             var glyphs = this.glyphs,
                 details = Dom.get("archaeologyGlyphDetails");
             if (details) {
                 if (!this.glyphList) {
                     this.glyphList = new Util.DDTarget("archaeologyGlyphDetails");
                     this.glyphList.isGlyphContainer = true;
-                } else {
+                }
+                else {
                     var gl = Sel.query("li", "archaeologyGlyphDetails");
                     for (var gli = 0, glLen = gl.length; gli < glLen; gli++) {
                         var glio = gl[gli];
@@ -418,7 +425,8 @@ YAHOO.namespace("lacuna.buildings");
                 if (!this.glyphCombine) {
                     this.glyphCombine = new Util.DDTarget("archaeologyGlyphCombine");
                     this.glyphCombine.isGlyphContainer = true;
-                } else {
+                }
+                else {
                     var gc = Sel.query("li", "archaeologyGlyphCombine");
                     for (var gci = 0, gcLen = gc.length; gci < gcLen; gci++) {
                         var gcio = gc[gci];
@@ -429,12 +437,14 @@ YAHOO.namespace("lacuna.buildings");
                 }
                 var li = document.createElement("li");
                 //glyphs.slice(0);
-                glyphs.sort(function (a, b) {
+                glyphs.sort(function(a, b) {
                     if (a.type > b.type) {
                         return 1;
-                    } else if (a.type < b.type) {
+                    }
+                    else if (a.type < b.type) {
                         return -1;
-                    } else {
+                    }
+                    else {
                         return 0;
                     }
                 });
@@ -449,37 +459,38 @@ YAHOO.namespace("lacuna.buildings");
                 }
             }
         },
-        viewAdd: function (e, matchedEl, container) {
+        viewAdd: function(e, matchedEl, container) {
             matchedEl.parentNode.removeChild(matchedEl);
             Dom.get("archaeologyGlyphCombine")
                 .appendChild(matchedEl);
         },
-        viewRemove: function (e, matchedEl, container) {
+        viewRemove: function(e, matchedEl, container) {
             matchedEl.parentNode.removeChild(matchedEl);
             Dom.get("archaeologyGlyphDetails")
                 .appendChild(matchedEl);
         },
-        checkIfWorking: function () {
+        checkIfWorking: function() {
             if (this.work && this.work.seconds_remaining) {
                 Dom.setStyle("archaeologySearchContainer", "display", "none");
                 Dom.setStyle("archaeologyWorkingContainer", "display", "");
                 Dom.get("archaeologySearchOre")
                     .innerHTML = this.work.searching;
                 this.populateActiveSearch(this.work.seconds_remaining);
-            } else {
+            }
+            else {
                 Dom.setStyle("archaeologySearchContainer", "display", "");
                 Dom.setStyle("archaeologyWorkingContainer", "display", "none");
                 this.getOres();
             }
         },
-        getOres: function () {
+        getOres: function() {
             if (!this.ore) {
                 Lacuna.Pulser.Show();
                 this.service.get_ores_available_for_processing({
                     session_id: Game.GetSession(),
                     building_id: this.building.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Archaeology.getOres.success");
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
@@ -490,14 +501,14 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        getGlyphs: function () {
+        getGlyphs: function() {
             if (!this.glyphs) {
                 Lacuna.Pulser.Show();
                 this.service.get_glyphs({
                     session_id: Game.GetSession(),
                     building_id: this.building.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Archaeology.getGlyphs.success");
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
@@ -508,7 +519,7 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        assembleGlyph: function () {
+        assembleGlyph: function() {
             Lacuna.Pulser.Show();
             var glyphs = Sel.query("li", "archaeologyGlyphCombine"),
                 glyphTypes = [],
@@ -523,7 +534,7 @@ YAHOO.namespace("lacuna.buildings");
                 glyphs: glyphTypes,
                 quantity: quantity
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Archaeology.assembleGlyph.success");
                     var article = (quantity == 1) ? "a" : quantity;
                     var suffix = (quantity == 1) ? "plan" : "plans";
@@ -536,7 +547,7 @@ YAHOO.namespace("lacuna.buildings");
                 scope: this
             });
         },
-        searchForGlyph: function () {
+        searchForGlyph: function() {
             Lacuna.Pulser.Show();
             var sel = Dom.get("archaeologyOre"),
                 opts = sel.options,
@@ -548,7 +559,7 @@ YAHOO.namespace("lacuna.buildings");
                     building_id: this.building.id,
                     ore_type: type
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Archaeology.searchForGlyph.success");
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
@@ -560,13 +571,13 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        Subsidize: function () {
+        Subsidize: function() {
             Lacuna.Pulser.Show();
             this.service.subsidize_search({
                 session_id: Game.GetSession(),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
                     delete this.work;

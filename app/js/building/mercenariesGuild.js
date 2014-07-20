@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -10,7 +10,7 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var MercenariesGuild = function (result) {
+    var MercenariesGuild = function(result) {
         MercenariesGuild.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.MercenariesGuild;
         this.availableAcceptText = "Accept";
@@ -20,7 +20,7 @@ YAHOO.namespace("lacuna.buildings");
         this.spySize = 350;
         this.createEvent("onLoadSpies");
         if (this.building.level > 0) {
-            this.subscribe("onLoad", function () {
+            this.subscribe("onLoad", function() {
                 this.getSpies();
                 this.mine.subscribe("activeChange", this.getMine, this, true);
                 this.avail.subscribe("activeChange", this.getAvailable, this, true);
@@ -29,7 +29,7 @@ YAHOO.namespace("lacuna.buildings");
         }
     };
     Lang.extend(MercenariesGuild, Lacuna.buildings.Building, {
-        destroy: function () {
+        destroy: function() {
             if (this.availablePager) {
                 this.availablePager.destroy();
             }
@@ -38,25 +38,25 @@ YAHOO.namespace("lacuna.buildings");
             }
             MercenariesGuild.superclass.destroy.call(this);
         },
-        getChildTabs: function () {
+        getChildTabs: function() {
             this.mineTabIndex = 2; //array location plus 1 since Production tab is always first
             return [this._getAvailTab(), this._getMineTab(), this._getAddTab()];
         },
-        _getAvailTab: function () {
+        _getAvailTab: function() {
             this.avail = new YAHOO.widget.Tab({
                 label: "Available Mercs",
                 content: ['<div>', '    <ul class="tradeHeader tradeInfo clearafter">', '        <li class="tradeEmpire">Empire</li>', '        <li class="tradeOfferedDate">Offered Date</li>', '        <li class="tradeAsking">Cost</li>', '        <li class="tradeOffer">Offering</li>', '        <li class="tradeAction"></li>', '        <li class="tradeAction"></li>', '    </ul>', '    <div><div id="tradeAvailableDetails"></div></div>', '    <div id="tradeAvailablePaginator"></div>', '</div>'].join('')
             });
             return this.avail;
         },
-        _getMineTab: function () {
+        _getMineTab: function() {
             this.mine = new YAHOO.widget.Tab({
                 label: "My Mercs",
                 content: ['<div class="myMercenariesGuilds">', '    <ul class="tradeHeader tradeInfo clearafter">', '        <li class="tradeOfferedDate">Offered Date</li>', '        <li class="tradeAsking">Cost</li>', '        <li class="tradeOffer">Offering</li>', '        <li class="tradeAction"></li>', '    </ul>', '    <div><div id="tradeMineDetails"></div></div>', '    <div id="tradeMinePaginator"></div>', '</div>'].join('')
             });
             return this.mine;
         },
-        _getAddTab: function () {
+        _getAddTab: function() {
             this.add = new YAHOO.widget.Tab({
                 label: "Add Merc",
                 content: ['<div id="aHt">', '<ul style="margin-top:5px;">', '    <li><label>Spy:</label><select id="tradeAddSpyName"></select></li>', '    <li style="margin: 5px 0;"><label>Asking Essentia:</label><input type="text" id="tradeAddAskingQuantity" /></li>', '    <li style="margin-bottom:5px;"><label>With Ship:</label><select id="tradeAddShip"></select></li>', '    <li id="tradeAddMessage" class="alert"></li>', '</ul></div><button id="tradeAdd" type="button">', this.addMercenariesGuildText, '</button>'].join('')
@@ -65,14 +65,14 @@ YAHOO.namespace("lacuna.buildings");
             Event.on("tradeAdd", "click", this.AddMerc, this, true);
             return this.add;
         },
-        getSpies: function (force) {
+        getSpies: function(force) {
             if (force || !this.spies) {
                 Lacuna.Pulser.Show();
                 this.service.get_spies({
                     session_id: Game.GetSession(""),
                     building_id: this.building.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         this.rpcSuccess(o);
                         this.spies = o.result.spies;
                         this.spySize = o.result.cargo_space_used_each || this.spySize;
@@ -84,7 +84,7 @@ YAHOO.namespace("lacuna.buildings");
             }
         },
         //View Available
-        getAvailable: function (e) {
+        getAvailable: function(e) {
             if (e.newValue && !this.availableMercs) {
                 Lacuna.Pulser.Show();
                 var data = {
@@ -93,7 +93,7 @@ YAHOO.namespace("lacuna.buildings");
                     page_number: 1
                 };
                 this.service.view_market(data, {
-                    success: function (o) {
+                    success: function(o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
                         delete o.result.status; //get rid of status after we process it, since it's big
@@ -113,7 +113,7 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        AvailablePopulate: function () {
+        AvailablePopulate: function() {
             var details = Dom.get("tradeAvailableDetails");
             if (details) {
                 var trades = this.availableMercs.trades,
@@ -173,7 +173,7 @@ YAHOO.namespace("lacuna.buildings");
                     details.appendChild(nUl);
                 }
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 240;
                     if (Ht > 300) {
@@ -185,7 +185,7 @@ YAHOO.namespace("lacuna.buildings");
                 }, 10);
             }
         },
-        AvailableHandlePagination: function (newState) {
+        AvailableHandlePagination: function(newState) {
             Lacuna.Pulser.Show();
             var data = {
                 session_id: Game.GetSession(),
@@ -193,7 +193,7 @@ YAHOO.namespace("lacuna.buildings");
                 page_number: newState.page
             };
             this.service.view_market(data, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
                     delete o.result.status; //get rid of status after we process it, since it's big
@@ -205,7 +205,7 @@ YAHOO.namespace("lacuna.buildings");
             // Update the Paginator's state
             this.availablePager.setState(newState);
         },
-        AvailableAccept: function (e) {
+        AvailableAccept: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             Lacuna.Pulser.Show();
@@ -214,7 +214,7 @@ YAHOO.namespace("lacuna.buildings");
                 building_id: this.Self.building.id,
                 trade_id: this.MercenariesGuild.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "MercenariesGuild.accept_trade.success");
                     this.Self.rpcSuccess(o);
                     //force get the new availabe list after accepting so we get a new captcha
@@ -224,13 +224,13 @@ YAHOO.namespace("lacuna.buildings");
                     });
                     Lacuna.Pulser.Hide();
                 },
-                failure: function () {
+                failure: function() {
                     btn.disabled = false;
                 },
                 scope: this
             });
         },
-        AvailableReport: function (e) {
+        AvailableReport: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             Lacuna.Pulser.Show();
@@ -239,23 +239,23 @@ YAHOO.namespace("lacuna.buildings");
                 building_id: this.Self.building.id,
                 trade_id: this.MercenariesGuild.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     Event.purgeElement(btn);
                     btn.parentNode.removeChild(btn);
                     this.Self.rpcSuccess(o);
                     Lacuna.Pulser.Hide();
                 },
-                failure: function () {
+                failure: function() {
                     btn.disabled = false;
                 },
                 scope: this
             });
         },
-        EmpireProfile: function (e, empire) {
+        EmpireProfile: function(e, empire) {
             Lacuna.Info.Empire.Load(empire.id);
         },
         //View Mine
-        getMine: function (e) {
+        getMine: function(e) {
             if (e.newValue && !this.mineMercs) {
                 Lacuna.Pulser.Show();
                 this.service.view_my_market({
@@ -263,7 +263,7 @@ YAHOO.namespace("lacuna.buildings");
                     building_id: this.building.id,
                     page_number: 1
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
                         delete o.result.status; //get rid of status after we process it, since it's big
@@ -283,7 +283,7 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        MinePopulate: function () {
+        MinePopulate: function() {
             var details = Dom.get("tradeMineDetails");
             if (details) {
                 var trades = this.mineMercs.trades,
@@ -325,7 +325,7 @@ YAHOO.namespace("lacuna.buildings");
                     details.appendChild(nUl);
                 }
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 240;
                     if (Ht > 300) {
@@ -337,14 +337,14 @@ YAHOO.namespace("lacuna.buildings");
                 }, 10);
             }
         },
-        MineHandlePagination: function (newState) {
+        MineHandlePagination: function(newState) {
             Lacuna.Pulser.Show();
             this.service.view_my_market({
                 session_id: Game.GetSession(),
                 building_id: this.building.id,
                 page_number: newState.page
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "MercenariesGuild.view_available_trades.success");
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
@@ -357,7 +357,7 @@ YAHOO.namespace("lacuna.buildings");
             // Update the Paginator's state
             this.minePage.setState(newState);
         },
-        MineWithdraw: function (e) {
+        MineWithdraw: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             if (confirm(['Are you sure you want to withdraw the trade asking for ', this.Trade.ask, ' essentia and offering ', this.Trade.offer, '?'].join(''))) {
@@ -367,7 +367,7 @@ YAHOO.namespace("lacuna.buildings");
                     building_id: this.Self.building.id,
                     trade_id: this.Trade.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         this.Self.rpcSuccess(o);
                         //splice out removed trade
                         var trades = this.Self.mineMercs.trades;
@@ -383,17 +383,18 @@ YAHOO.namespace("lacuna.buildings");
                         delete this.Self.tradeShips;
                         this.Self.getSpies(true);
                     },
-                    failure: function () {
+                    failure: function() {
                         btn.disabled = false;
                     },
                     scope: this
                 });
-            } else {
+            }
+            else {
                 btn.disabled = false;
             }
         },
         //Add trade
-        populateAddSpyName: function () {
+        populateAddSpyName: function() {
             var elm = Dom.get("tradeAddSpyName"),
                 opt = document.createElement("option"),
                 nOpt;
@@ -408,14 +409,14 @@ YAHOO.namespace("lacuna.buildings");
                 }
             }
         },
-        getAddShips: function (e) {
+        getAddShips: function(e) {
             if (e.newValue && !this.tradeShips) {
                 Lacuna.Pulser.Show();
                 this.service.get_trade_ships({
                     session_id: Game.GetSession(""),
                     building_id: this.building.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         this.rpcSuccess(o);
                         var elm = Dom.get("tradeAddShip"),
                             opt = document.createElement("option"),
@@ -440,19 +441,20 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        updateAddCargo: function (byVal) {
+        updateAddCargo: function(byVal) {
             var c = Dom.get("tradeAddCargo"),
                 cv = c.innerHTML * 1;
             c.innerHTML = cv + byVal;
         },
-        AddMerc: function (e) {
+        AddMerc: function(e) {
             var qVal = Dom.get("tradeAddAskingQuantity")
                 .value * 1;
             if (!Lang.isNumber(qVal) || qVal <= 0) {
                 Dom.get("tradeAddMessage")
                     .innerHTML = "Quantity of asking essentia must be a number and greater than 0";
                 return;
-            } else {
+            }
+            else {
                 Dom.get("tradeAddMessage")
                     .innerHTML = "";
             }
@@ -467,7 +469,7 @@ YAHOO.namespace("lacuna.buildings");
             };
             Lacuna.Pulser.Show();
             this.service.add_to_market(data, {
-                success: function (o) {
+                success: function(o) {
                     this.rpcSuccess(o);
                     delete this.tradeShips;
                     this.getSpies(true);
@@ -478,7 +480,7 @@ YAHOO.namespace("lacuna.buildings");
                     btn.disabled = false;
                     Lacuna.Pulser.Hide();
                 },
-                failure: function () {
+                failure: function() {
                     btn.disabled = false;
                 },
                 scope: this

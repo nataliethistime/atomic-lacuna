@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -9,17 +9,17 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var Development = function (result) {
+    var Development = function(result) {
         Development.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.Development;
     };
     Lang.extend(Development, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             if (this.result.build_queue && this.result.build_queue.length > 0) {
                 return [this._getQueueTab()];
             }
         },
-        _getQueueTab: function () {
+        _getQueueTab: function() {
             var bq = this.result.build_queue,
                 ul = document.createElement("ul"),
                 li = document.createElement("li"),
@@ -90,16 +90,17 @@ YAHOO.namespace("lacuna.buildings");
             this.queueTab = tab;
             return tab;
         },
-        DevMinistryQueue: function (remaining, el) {
+        DevMinistryQueue: function(remaining, el) {
             if (remaining <= 0) {
                 var ul = el.parentNode,
                     c = ul.parentNode;
                 c.removeChild(ul);
-            } else {
+            }
+            else {
                 el.innerHTML = Lib.formatTime(Math.round(remaining));
             }
         },
-        DevCancelOneBuild: function (e) {
+        DevCancelOneBuild: function(e) {
             Lacuna.Pulser.Show();
             this.Self.service.cancel_build({
                 args: {
@@ -108,7 +109,7 @@ YAHOO.namespace("lacuna.buildings");
                     scheduled_id: this.ScheduledId
                 }
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Development.DevCancelOneBuild.success");
                     Lacuna.Pulser.Hide();
                     this.Self.rpcSuccess(o);
@@ -122,7 +123,7 @@ YAHOO.namespace("lacuna.buildings");
                 scope: this
             });
         },
-        DevSubsidizeOneBuild: function (e) {
+        DevSubsidizeOneBuild: function(e) {
             Lacuna.Pulser.Show();
             this.Self.service.subsidize_one_build({
                 args: {
@@ -131,7 +132,7 @@ YAHOO.namespace("lacuna.buildings");
                     scheduled_id: this.ScheduledId
                 }
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Development.DevSubsidizeOneBuild.success");
                     Lacuna.Pulser.Hide();
                     var e = Game.EmpireData.essentia * 1;
@@ -147,13 +148,13 @@ YAHOO.namespace("lacuna.buildings");
                 scope: this
             });
         },
-        DevSubsidize: function (e) {
+        DevSubsidize: function(e) {
             Lacuna.Pulser.Show();
             this.service.subsidize_build_queue({
                 session_id: Game.GetSession(),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Development.DevSubsidize.success");
                     Lacuna.Pulser.Hide();
                     var e = Game.EmpireData.essentia * 1;

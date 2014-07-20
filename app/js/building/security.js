@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -10,13 +10,13 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var Security = function (result) {
+    var Security = function(result) {
         Security.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.Security;
         this.foreignSpiesMessage = "There may be spies on your planet that we don't know about.";
     };
     Lang.extend(Security, Lacuna.buildings.Building, {
-        destroy: function () {
+        destroy: function() {
             if (this.pagerPrisoners) {
                 this.pagerPrisoners.destroy();
             }
@@ -25,10 +25,10 @@ YAHOO.namespace("lacuna.buildings");
             }
             Security.superclass.destroy.call(this);
         },
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getPrisonersTab(), this._getSpiesTab()];
         },
-        _getPrisonersTab: function () {
+        _getPrisonersTab: function() {
             var spies = this.result.spies;
             this.prisonersTab = new YAHOO.widget.Tab({
                 label: "Prisoners",
@@ -37,7 +37,7 @@ YAHOO.namespace("lacuna.buildings");
             this.prisonersTab.subscribe("activeChange", this.prisonersView, this, true);
             return this.prisonersTab;
         },
-        _getSpiesTab: function () {
+        _getSpiesTab: function() {
             this.spiesTab = new YAHOO.widget.Tab({
                 label: "Foreign Spies",
                 content: ['<div>', '    <p>', this.foreignSpiesMessage, '</p>', '    <ul class="spiesHeader securityInfo clearafter">', '        <li class="securityName">Name</li>', '        <li class="securityLevel">Level</li>', '        <li class="securityNextMisson">Next Misson</li>', '        <li class="securityNextMisson">Current Misson</li>', '    </ul>', '    <div><div id="securityDetails"></div></div>', '    <div id="securityPaginator"></div>', '</div>'].join('')
@@ -45,7 +45,7 @@ YAHOO.namespace("lacuna.buildings");
             this.spiesTab.subscribe("activeChange", this.spiesView, this, true);
             return this.spiesTab;
         },
-        prisonersView: function (e) {
+        prisonersView: function(e) {
             if (e.newValue) {
                 if (!this.prisoners) {
                     Lacuna.Pulser.Show();
@@ -53,7 +53,7 @@ YAHOO.namespace("lacuna.buildings");
                         session_id: Game.GetSession(),
                         building_id: this.building.id
                     }, {
-                        success: function (o) {
+                        success: function(o) {
                             YAHOO.log(o, "info", "Security.Security.view_prisoners.success");
                             Lacuna.Pulser.Hide();
                             this.rpcSuccess(o);
@@ -71,12 +71,13 @@ YAHOO.namespace("lacuna.buildings");
                         },
                         scope: this
                     });
-                } else {
+                }
+                else {
                     this.SpyPopulate();
                 }
             }
         },
-        PrisonersPopulate: function () {
+        PrisonersPopulate: function() {
             var details = Dom.get("prisonersDetails");
             if (details) {
                 var prisoners = this.prisoners,
@@ -137,7 +138,7 @@ YAHOO.namespace("lacuna.buildings");
                     }, true);
                 }
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 200;
                     if (Ht > 300) {
@@ -148,14 +149,14 @@ YAHOO.namespace("lacuna.buildings");
                 }, 10);
             }
         },
-        PrisonersHandlePagination: function (newState) {
+        PrisonersHandlePagination: function(newState) {
             Lacuna.Pulser.Show();
             this.service.view_prisoners({
                 session_id: Game.GetSession(),
                 building_id: this.building.id,
                 page_number: newState.page
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Security.PrisonersHandlePagination.view_prisoners.success");
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
@@ -167,7 +168,7 @@ YAHOO.namespace("lacuna.buildings");
             // Update the Paginator's state
             this.pagerPrisoners.setState(newState);
         },
-        PrisonersExecute: function () {
+        PrisonersExecute: function() {
             if (confirm(["Are you sure you want to execute ", this.Prisoner.name, "?"].join(''))) {
                 Lacuna.Pulser.Show();
                 this.Self.service.execute_prisoner({
@@ -175,7 +176,7 @@ YAHOO.namespace("lacuna.buildings");
                     building_id: this.Self.building.id,
                     prisoner_id: this.Prisoner.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Security.PrisonersExecute.success");
                         Lacuna.Pulser.Hide();
                         this.Self.rpcSuccess(o);
@@ -192,7 +193,7 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        PrisonersRelease: function () {
+        PrisonersRelease: function() {
             if (confirm(["Are you sure you want to release ", this.Prisoner.name, "?"].join(''))) {
                 Lacuna.Pulser.Show();
                 this.Self.service.release_prisoner({
@@ -200,7 +201,7 @@ YAHOO.namespace("lacuna.buildings");
                     building_id: this.Self.building.id,
                     prisoner_id: this.Prisoner.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Security.PrisonersRelease.success");
                         Lacuna.Pulser.Hide();
                         this.Self.rpcSuccess(o);
@@ -217,7 +218,7 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        spiesView: function (e) {
+        spiesView: function(e) {
             if (e.newValue) {
                 if (!this.spies) {
                     Lacuna.Pulser.Show();
@@ -225,7 +226,7 @@ YAHOO.namespace("lacuna.buildings");
                         session_id: Game.GetSession(),
                         building_id: this.building.id
                     }, {
-                        success: function (o) {
+                        success: function(o) {
                             YAHOO.log(o, "info", "Security.Security.view_foreign_spies.success");
                             Lacuna.Pulser.Hide();
                             this.rpcSuccess(o);
@@ -243,12 +244,13 @@ YAHOO.namespace("lacuna.buildings");
                         },
                         scope: this
                     });
-                } else {
+                }
+                else {
                     this.SpyPopulate();
                 }
             }
         },
-        SpyPopulate: function () {
+        SpyPopulate: function() {
             var details = Dom.get("securityDetails");
             if (details) {
                 var spies = this.spies,
@@ -285,7 +287,7 @@ YAHOO.namespace("lacuna.buildings");
                     details.appendChild(nDiv);
                 }
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 200;
                     if (Ht > 300) {
@@ -296,14 +298,14 @@ YAHOO.namespace("lacuna.buildings");
                 }, 10);
             }
         },
-        SpyHandlePagination: function (newState) {
+        SpyHandlePagination: function(newState) {
             Lacuna.Pulser.Show();
             this.service.view_foreign_spies({
                 session_id: Game.GetSession(),
                 building_id: this.building.id,
                 page_number: newState.page
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Security.SpyHandlePagination.view_foreign_spies.success");
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);

@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -37,24 +37,24 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> LibraryOfJith = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+    <span class="hljs-keyword">var</span> LibraryOfJith = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> {</span>
         LibraryOfJith.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
         <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.LibraryOfJith;
         <span class="hljs-keyword">this</span>.maps = {};
         <span class="hljs-keyword">this</span>.subscribe(<span class="hljs-string">"onLoad"</span>, <span class="hljs-keyword">this</span>.createFind, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
     };
     Lang.extend(LibraryOfJith, Lacuna.buildings.Building, {
-        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getTab()];
         },
-        _getTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.libraryTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Species Library"</span>,
                 content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;&lt;label for="lojFindEmpire"&gt;Lookup by Empire Name:&lt;/label&gt;&lt;div style="display:inline-block;width:300px;"&gt;&lt;input type="text" id="lojFindEmpire" /&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;ul id="lojDetails" style="margin-top:5px;overflow-y:auto;"&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
             });
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.libraryTab;
         },
-        createFind: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        createFind: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.species = Dom.get(<span class="hljs-string">"lojDetails"</span>);
             <span class="hljs-keyword">var</span> dataSource = <span class="hljs-keyword">new</span> Util.XHRDataSource(<span class="hljs-string">"/empire"</span>);
             dataSource.connMethodPost = <span class="hljs-string">"POST"</span>;
@@ -71,7 +71,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 forceSelection: <span class="hljs-literal">false</span>,
                 useIndicator: <span class="hljs-literal">true</span>
             });
-            oTextboxList.generateRequest = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sQuery)</span> {</span>
+            oTextboxList.generateRequest = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(sQuery)</span> {</span>
                 <span class="hljs-keyword">var</span> s = Lang.JSON.stringify({
                     <span class="hljs-string">"id"</span>: YAHOO.rpc.Service._requestId++,
                     <span class="hljs-string">"method"</span>: <span class="hljs-string">"find"</span>,
@@ -83,20 +83,20 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
                 <span class="hljs-keyword">return</span> s;
             };
-            oTextboxList.dirtyEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event, isDirty, oSelf)</span> {</span>
+            oTextboxList.dirtyEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, isDirty, oSelf)</span> {</span>
                 <span class="hljs-keyword">var</span> empire = <span class="hljs-keyword">this</span>._oTblSingleSelection.Object;
                 oSelf.getSpecies(empire.id);
             }, <span class="hljs-keyword">this</span>);
             <span class="hljs-keyword">this</span>.find = oTextboxList;
         },
-        getSpecies: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> {</span>
+        getSpecies: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id)</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.service.research_species({
                 session_id: Game.GetSession(),
                 building_id: <span class="hljs-keyword">this</span>.building.id,
                 empire_id: id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-keyword">this</span>.speciesDisplay(o.result.species);
@@ -104,10 +104,10 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        speciesDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(stat)</span> {</span>
+        speciesDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(stat)</span> {</span>
             <span class="hljs-keyword">this</span>.species.innerHTML = [<span class="hljs-string">'&lt;li style="border-bottom:1px solid #52ACFF;font-size:120%;"&gt;&lt;label&gt;'</span>, stat.name, <span class="hljs-string">'&lt;/label&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li style="padding-bottom:5px;"&gt;'</span>, stat.description, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;'</span>, <span class="hljs-string">'    &lt;label&gt;Habitable Orbits:&lt;/label&gt;&lt;span&gt;'</span>, stat.min_orbit, stat.max_orbit &gt; stat.min_orbit ? <span class="hljs-string">' to '</span> + stat.max_orbit : <span class="hljs-string">''</span>, <span class="hljs-string">'&lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;'</span>, <span class="hljs-string">'    &lt;label&gt;Manufacturing:&lt;/label&gt;&lt;span&gt;'</span>, stat.manufacturing_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;'</span>, <span class="hljs-string">'    &lt;label&gt;Deception:&lt;/label&gt;&lt;span&gt;'</span>, stat.deception_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;'</span>, <span class="hljs-string">'    &lt;label&gt;Research:&lt;/label&gt;&lt;span&gt;'</span>, stat.research_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;'</span>, <span class="hljs-string">'    &lt;label&gt;Management:&lt;/label&gt;&lt;span&gt;'</span>, stat.management_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;'</span>, <span class="hljs-string">'    &lt;label&gt;Farming:&lt;/label&gt;&lt;span&gt;'</span>, stat.farming_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;'</span>, <span class="hljs-string">'    &lt;label&gt;Mining:&lt;/label&gt;&lt;span&gt;'</span>, stat.mining_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;'</span>, <span class="hljs-string">'    &lt;label&gt;Science:&lt;/label&gt;&lt;span&gt;'</span>, stat.science_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;'</span>, <span class="hljs-string">'    &lt;label&gt;Environmental:&lt;/label&gt;&lt;span&gt;'</span>, stat.environmental_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;'</span>, <span class="hljs-string">'    &lt;label&gt;Political:&lt;/label&gt;&lt;span&gt;'</span>, stat.political_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;'</span>, <span class="hljs-string">'    &lt;label&gt;Trade:&lt;/label&gt;&lt;span&gt;'</span>, stat.trade_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;'</span>, <span class="hljs-string">'    &lt;label&gt;Growth:&lt;/label&gt;&lt;span&gt;'</span>, stat.growth_affinity, <span class="hljs-string">'&lt;/span&gt;'</span>, <span class="hljs-string">'&lt;/li&gt;'</span>].join(<span class="hljs-string">''</span>);
             <span class="hljs-comment">//wait for tab to display first</span>
-            setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> Ht = Game.GetSize()
                     .h - <span class="hljs-number">180</span>;
                 <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {

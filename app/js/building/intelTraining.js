@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -10,18 +10,18 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var IntelTraining = function (result) {
+    var IntelTraining = function(result) {
         IntelTraining.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.IntelTraining;
     };
     Lang.extend(IntelTraining, Lacuna.buildings.Building, {
-        destroy: function () {
+        destroy: function() {
             IntelTraining.superclass.destroy.call(this);
         },
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getTrainTab()];
         },
-        _getTrainTab: function () {
+        _getTrainTab: function() {
             var spies = this.result.spies;
             this.trainTab = new YAHOO.widget.Tab({
                 label: "Train Spies",

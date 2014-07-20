@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -36,23 +36,25 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> Park = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+    <span class="hljs-keyword">var</span> Park = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> {</span>
         Park.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
         <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.Park;
     };
     Lang.extend(Park, Lacuna.buildings.Building, {
-        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getPartyTab()];
         },
-        _getPartyTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getPartyTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> div = document.createElement(<span class="hljs-string">"div"</span>);
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.result.party.can_throw) {
                 div.appendChild(<span class="hljs-keyword">this</span>.PartyGetDisplay());
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.result.party.seconds_remaining * <span class="hljs-number">1</span> &gt; <span class="hljs-number">0</span>) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.result.party.seconds_remaining * <span class="hljs-number">1</span> &gt; <span class="hljs-number">0</span>) {
                 div.innerHTML = [].join(<span class="hljs-string">''</span>);
                 div.appendChild(<span class="hljs-keyword">this</span>.PartyGetTimeDisplay(<span class="hljs-keyword">this</span>.result.party));
                 <span class="hljs-keyword">this</span>.addQueue(<span class="hljs-keyword">this</span>.result.party.seconds_remaining, <span class="hljs-keyword">this</span>.PartyQueue, <span class="hljs-string">"partyTime"</span>);
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 div.innerHTML = <span class="hljs-string">'&lt;p&gt;You need at least 10,000 food to throw a party.&lt;/p&gt;'</span>;
             }
             <span class="hljs-keyword">this</span>.partyTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
@@ -61,13 +63,13 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             });
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.partyTab;
         },
-        Party: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        Party: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.service.throw_a_party({
                 session_id: Game.GetSession(),
                 building_id: <span class="hljs-keyword">this</span>.building.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Park.Party.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
@@ -78,7 +80,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        UpdatePartyTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(party)</span> {</span>
+        UpdatePartyTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(party)</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.partyTab) {
                 <span class="hljs-keyword">var</span> ce = <span class="hljs-keyword">this</span>.partyTab.get(<span class="hljs-string">"contentEl"</span>);
                 Event.purgeElement(ce);
@@ -86,38 +88,41 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.work &amp;&amp; <span class="hljs-keyword">this</span>.work.seconds_remaining &amp;&amp; <span class="hljs-keyword">this</span>.work.seconds_remaining * <span class="hljs-number">1</span> &gt; <span class="hljs-number">0</span>) {
                     ce.appendChild(<span class="hljs-keyword">this</span>.PartyGetTimeDisplay(party));
                     <span class="hljs-keyword">this</span>.addQueue(<span class="hljs-keyword">this</span>.work.seconds_remaining, <span class="hljs-keyword">this</span>.PartyQueue, <span class="hljs-string">"partyTime"</span>);
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (party &amp;&amp; party.can_throw) {
+                }
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (party &amp;&amp; party.can_throw) {
                     ce.appendChild(<span class="hljs-keyword">this</span>.PartyGetDisplay());
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     ce.innerHTML = <span class="hljs-string">"&lt;p&gt;You need at least 10,000 food to throw a party.&lt;/p&gt;"</span>;
                 }
             }
         },
-        PartyGetDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        PartyGetDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> btn = document.createElement(<span class="hljs-string">"button"</span>);
             btn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
             btn.innerHTML = <span class="hljs-string">"Throw Party!"</span>;
             Event.on(btn, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Party, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> btn;
         },
-        PartyGetTimeDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(party)</span> {</span>
+        PartyGetTimeDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(party)</span> {</span>
             <span class="hljs-keyword">var</span> ul = document.createElement(<span class="hljs-string">"ul"</span>);
             ul.innerHTML = [<span class="hljs-string">'&lt;li&gt;You will get '</span>, Lib.formatNumber(party.happiness), <span class="hljs-string">' happiness from your party!&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;Party time remaining: &lt;span id="partyTime"&gt;'</span>, Lib.formatTime(party.seconds_remaining), <span class="hljs-string">'&lt;/span&gt;&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;You may subsidize the party for 2 &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/essentia.png" class="smallEssentia" /&gt;.&lt;/li&gt;'</span>, <span class="hljs-string">'&lt;li&gt;&lt;button type="button" id="parkSubsidize"&gt;Subsidize&lt;/button&gt;&lt;/li&gt;'</span>].join(<span class="hljs-string">''</span>);
             Event.on(<span class="hljs-string">"parkSubsidize"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.Subsidize, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> ul;
         },
-        PartyQueue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(remaining, el)</span> {</span>
+        PartyQueue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(remaining, el)</span> {</span>
             <span class="hljs-keyword">if</span> (remaining &lt;= <span class="hljs-number">0</span>) {
                 <span class="hljs-keyword">var</span> span = Dom.get(el),
                     p = span.parentNode;
                 p.removeChild(span);
                 p.innerHTML = <span class="hljs-string">"No Parties being thrown."</span>;
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Dom.get(el)
                     .innerHTML = Lib.formatTime(<span class="hljs-built_in">Math</span>.round(remaining));
             }
         },
-        Subsidize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        Subsidize: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             Lacuna.Pulser.Show();
             Dom.get(<span class="hljs-string">"parkSubsidize"</span>)
                 .disabled = <span class="hljs-literal">true</span>;
@@ -125,7 +130,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 session_id: Game.GetSession(),
                 building_id: <span class="hljs-keyword">this</span>.building.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                     <span class="hljs-comment">//delete this.work;</span>
@@ -133,7 +138,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     <span class="hljs-keyword">this</span>.resetQueue();
                     <span class="hljs-keyword">this</span>.UpdatePartyTab(o.result.party);
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     Dom.get(<span class="hljs-string">"parkSubsidize"</span>)
                         .disabled = <span class="hljs-literal">false</span>;
                 },

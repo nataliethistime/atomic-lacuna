@@ -3,14 +3,14 @@
 YAHOO.namespace("lacuna.buildings");
 var Templates = require('js/templates'),
     assets = require('js/assets');
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
         Event = Util.Event,
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game;
-    var Building = function (oResults) {
+    var Building = function(oResults) {
         this.repairTemplate = Templates.get('tab.building.repair');
         this.productionTemplate = Templates.get('tab.building.production');
         this.storageTemplate = Templates.get('tab.building.storage');
@@ -37,13 +37,13 @@ var Templates = require('js/templates'),
         this.result = oResults;
     };
     Building.prototype = {
-        destroy: function () {
+        destroy: function() {
             this.unsubscribeAll();
         },
-        load: function () {
+        load: function() {
             this.fireEvent("onLoad");
         },
-        getTabs: function () {
+        getTabs: function() {
             if (parseInt(this.building.efficiency, 10) < 100 && this.building.repair_costs) {
                 return [this.getProductionTab(), this.getRepairTab()];
             }
@@ -63,7 +63,7 @@ var Templates = require('js/templates'),
             }
             return tabs;
         },
-        getChildTabs: function () {
+        getChildTabs: function() {
             //overrideable function for child classes that have their own tabs
             //** Must return nothing or an array of tabs **
             return [];
@@ -71,7 +71,7 @@ var Templates = require('js/templates'),
         /*
         Event Helpers
         */
-        rpcSuccess: function (o) {
+        rpcSuccess: function(o) {
             this.fireEvent("onMapRpc", o.result);
             if (o.result.building && this.building) {
                 // if we suddenly have work update the tile to add the tile.
@@ -96,7 +96,7 @@ var Templates = require('js/templates'),
                 }*/
             }
         },
-        addQueue: function (sec, func, elm, sc) {
+        addQueue: function(sec, func, elm, sc) {
             this.fireEvent("onQueueAdd", {
                 seconds: sec,
                 fn: func,
@@ -104,25 +104,25 @@ var Templates = require('js/templates'),
                 scope: sc
             });
         },
-        resetQueue: function () {
+        resetQueue: function() {
             this.fireEvent("onQueueReset");
         },
-        addTab: function (tab) {
+        addTab: function(tab) {
             this.fireEvent("onAddTab", tab);
         },
-        removeTab: function (tab) {
+        removeTab: function(tab) {
             this.fireEvent("onRemoveTab", tab);
         },
-        updateBuildingTile: function (building) {
+        updateBuildingTile: function(building) {
             //always updated url when doing this since some returns don't have the url
             building.url = this.building.url;
             this.building = building;
             this.fireEvent("onUpdateTile", this.building);
         },
-        removeBuildingTile: function (building) {
+        removeBuildingTile: function(building) {
             this.fireEvent("onRemoveTile", building);
         },
-        getRepairTab: function () {
+        getRepairTab: function() {
             this.repairTab = new YAHOO.widget.Tab({
                 label: 'Repair',
                 content: this.repairTemplate({
@@ -137,7 +137,7 @@ var Templates = require('js/templates'),
             Event.on("repairBuilding", "click", this.Repair, this, true);
             return this.repairTab;
         },
-        Repair: function (e) {
+        Repair: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             Lacuna.Pulser.Show();
@@ -145,7 +145,7 @@ var Templates = require('js/templates'),
                 session_id: Game.GetSession(),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
                     if (this.repairTab) {
@@ -163,14 +163,14 @@ var Templates = require('js/templates'),
                     }
                     this.fireEvent("onRepair");
                 },
-                failure: function () {
+                failure: function() {
                     btn.disabled = false;
                 },
                 target: this.building.url,
                 scope: this
             });
         },
-        getProductionTab: function () {
+        getProductionTab: function() {
             var level = parseInt(this.building.level, 10);
             this.productionTab = new YAHOO.widget.Tab({
                 label: 'Production',
@@ -194,7 +194,7 @@ var Templates = require('js/templates'),
             }
             return this.productionTab;
         },
-        Demolish: function () {
+        Demolish: function() {
             var building = this.building;
             if (confirm(['Are you sure you want to Demolish the level ', building.level, ' ', building.name, '?'].join(''))) {
                 Lacuna.Pulser.Show();
@@ -202,7 +202,7 @@ var Templates = require('js/templates'),
                     session_id: Game.GetSession(),
                     building_id: building.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
                         this.removeBuildingTile(building);
@@ -213,7 +213,7 @@ var Templates = require('js/templates'),
                 });
             }
         },
-        Downgrade: function () {
+        Downgrade: function() {
             var building = this.building;
             if (confirm(['Are you sure you want to downgrade the level ', building.level, ' ', building.name, '?'].join(''))) {
                 Lacuna.Pulser.Show();
@@ -221,7 +221,7 @@ var Templates = require('js/templates'),
                     session_id: Game.GetSession(),
                     building_id: building.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         Lacuna.Pulser.Hide();
                         this.fireEvent("onMapRpc", o.result);
                         var b = building; //originally passed in building data from currentBuilding
@@ -237,12 +237,13 @@ var Templates = require('js/templates'),
                 });
             }
         },
-        Upgrade: function () {
+        Upgrade: function() {
             var building = this.building,
                 userUpgrade = false;
             if (building.upgrade.cost.halls) {
                 userUpgrade = confirm('Are you sure you want to sacrifice ' + building.upgrade.cost.halls + ' Halls of Vrbansk?');
-            } else {
+            }
+            else {
                 userUpgrade = true;
             }
             if (userUpgrade) {
@@ -253,7 +254,7 @@ var Templates = require('js/templates'),
                         building_id: building.id
                     };
                 BuildingServ.upgrade(data, {
-                    success: function (o) {
+                    success: function(o) {
                         Lacuna.Pulser.Hide();
                         this.fireEvent("onMapRpc", o.result);
                         var b = building; //originally passed in building data from currentBuilding
@@ -268,7 +269,7 @@ var Templates = require('js/templates'),
                 });
             }
         },
-        getIncomingSupplyChainsTab: function () {
+        getIncomingSupplyChainsTab: function() {
             this.incomingSupplyChainTab = new YAHOO.widget.Tab({
                 label: "Supply Chains",
                 content: ['<div id="incomingSupplyChainInfo" style="margin-bottom: 2px">', '   <div id="incomingSupplyChainList">', '      <b>Incoming Supply Chains</b><hr/>', '      <ul id="incomingSupplyChainListHeader" class="incomingSupplyChainHeader incomingSupplyChainInfo clearafter">', '        <li class="incomingSupplyChainBody">From Body</li>', '        <li class="incomingSupplyChainResource">Resource</li>', '        <li class="incomingSupplyChainHour">/hr</li>', '        <li class="incomingSupplyChainEfficiency">Efficiency</li>', '      </ul>', '      <div><div id="incomingSupplyChainListDetails"></div></div>', '   </div>', '   <div id="incomingSupplyChainListNone"><b>No Incoming Supply Chains</b></div>', '</div>'].join('')
@@ -276,7 +277,7 @@ var Templates = require('js/templates'),
             this.incomingSupplyChainTab.subscribe("activeChange", this.viewIncomingSupplyChainInfo, this, true);
             return this.incomingSupplyChainTab;
         },
-        viewIncomingSupplyChainInfo: function () {
+        viewIncomingSupplyChainInfo: function() {
             Dom.setStyle("incomingSupplyChainList", "display", "none");
             Dom.setStyle("incomingSupplyChainListNone", "display", "none");
             if (!this.incoming_supply_chains) {
@@ -285,7 +286,7 @@ var Templates = require('js/templates'),
                     session_id: Game.GetSession(),
                     building_id: this.building.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
                         this.incoming_supply_chains = o.result.supply_chains;
@@ -293,11 +294,12 @@ var Templates = require('js/templates'),
                     },
                     scope: this
                 });
-            } else {
+            }
+            else {
                 this.incomingSupplyChainList();
             }
         },
-        incomingSupplyChainList: function () {
+        incomingSupplyChainList: function() {
             var supply_chains = this.incoming_supply_chains,
                 i, chain, nUl, nLi, details, detailsParent, ul, li;
             if (supply_chains.length === 0) {
@@ -327,7 +329,8 @@ var Templates = require('js/templates'),
                 if (chain.stalled === 1) {
                     Dom.addClass(nUl, "incomingSupplyChainStalled");
                     nLi.innerHTML = chain.from_body.name + " (Stalled)";
-                } else {
+                }
+                else {
                     nLi.innerHTML = chain.from_body.name;
                 }
                 nUl.appendChild(nLi);
@@ -346,7 +349,7 @@ var Templates = require('js/templates'),
                 details.appendChild(nUl);
             }
             //wait for tab to display first
-            setTimeout(function () {
+            setTimeout(function() {
                 var Ht = Game.GetSize()
                     .h - 250;
                 if (Ht > 250) {
@@ -356,7 +359,7 @@ var Templates = require('js/templates'),
                 Dom.setStyle(detailsParent, "overflow-y", "auto");
             }, 10);
         },
-        getStorageTab: function () {
+        getStorageTab: function() {
             return new YAHOO.widget.Tab({
                 label: 'Storage',
                 content: this.storageTemplate({

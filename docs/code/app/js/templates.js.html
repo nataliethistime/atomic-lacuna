@@ -44,7 +44,7 @@
         <div class="code"><pre class="wrapper"><span class="hljs-built_in">require</span>(<span class="hljs-string">'js/templateHelpers'</span>);
 module.exports = {
     tmplCache: {},
-    get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span></pre></div>
+    get: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span> {</span></pre></div>
       
       </div>
     
@@ -58,7 +58,7 @@ module.exports = {
       
         <div class="code"><pre class="wrapper">        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.tmplCache[<span class="hljs-keyword">this</span>.addPrefix(name)] || <span class="hljs-keyword">this</span>.load(name);
     },
-    load: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+    load: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span> {</span>
         <span class="hljs-keyword">var</span> buffer, location;</pre></div>
       
       </div>
@@ -86,7 +86,8 @@ module.exports = {
       
         <div class="code"><pre class="wrapper">            buffer = fs.readFileSync(<span class="hljs-keyword">this</span>.getLocation(name));
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.save(name, <span class="hljs-keyword">this</span>.prepare(buffer.toString()));
-        } <span class="hljs-keyword">else</span> {</pre></div>
+        }
+        <span class="hljs-keyword">else</span> {</pre></div>
       
       </div>
     
@@ -101,27 +102,26 @@ module.exports = {
         <div class="code"><pre class="wrapper">            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Template had not been loaded: '</span> + name);
         }
     },
-    save: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, func)</span> {</span>
+    save: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name, func)</span> {</span>
         <span class="hljs-keyword">this</span>.tmplCache[<span class="hljs-keyword">this</span>.addPrefix(name)] = func;
         <span class="hljs-keyword">return</span> func;
     },
-    prepare: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(string)</span> {</span>
+    prepare: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(string)</span> {</span>
         string = string.replace(<span class="hljs-regexp">/\n/g</span>, <span class="hljs-string">''</span>); <span class="hljs-comment">// Remove newlines.</span>
         string = string.replace(<span class="hljs-regexp">/\s{2,}/g</span>, <span class="hljs-string">''</span>); <span class="hljs-comment">// Weed out whitespace.</span>
         <span class="hljs-keyword">return</span> Handlebars.compile(string);
     },
-    fixName: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+    fixName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span> {</span>
         name = name.replace(<span class="hljs-regexp">/\./g</span>, path.sep);
         <span class="hljs-keyword">return</span> name + <span class="hljs-string">'.hbs'</span>;
     },
-    addPrefix: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+    addPrefix: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span> {</span>
         <span class="hljs-keyword">return</span> <span class="hljs-string">'__'</span> + name;
     },
-    getLocation: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+    getLocation: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span> {</span>
         <span class="hljs-keyword">return</span> path.join(Util.root(), <span class="hljs-string">'templates'</span>, name);
     }
-};
-</pre></div>
+};</pre></div>
       
       </div>
     

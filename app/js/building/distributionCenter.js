@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -9,15 +9,15 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var DistributionCenter = function (result) {
+    var DistributionCenter = function(result) {
         DistributionCenter.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.DistributionCenter;
     };
     Lang.extend(DistributionCenter, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getReserveTab()];
         },
-        _getReserveTab: function () {
+        _getReserveTab: function() {
             this.tab = new YAHOO.widget.Tab({
                 label: "Reserve",
                 content: ['<div id="distribReserveAnnounce"></div>', '<div id="distribReserveContainers" style="display:none;">', '    <div class="distribReserve yui-g">', '        <div class="yui-u first">', '            <legend>On Planet</legend>', '            <div class="distribContainers"><ul id="distribReserveOnPlanet"></ul></div>', '        </div>', '        <div class="yui-u">', '            <legend>Reserve</legend>', '            <div class="distribContainers"><ul id="distribReserveToStore"></ul></div>', '        </div>', '    </div>', '    <ul style="margin-top:5px;">', '        <li><label>Total:</label><span id="distribTotalSelected">0</span></li>', '        <li id="distribReserveMessage" class="alert"></li>', '    </ul><div>', '        <button type="button" id="distribReserveSubmit">Reserve</button>', '    </div>', '</div>', '<div id="distribStoredContainer" class="distribReserve yui-g" style="display:none;">', '    <div class="yui-u first">', '        <legend>In Reserve</legend>', '        <div class="distribContainers"><ul id="distribReserveInReserve"></ul></div>', '        <div>', '            <div id="distribReleaseMessage" class="alert"></div>', '            <button type="button" id="distribReleaseSubmit">Release</button>', '        </div>', '    </div>', '</div>'].join('')
@@ -29,14 +29,14 @@ YAHOO.namespace("lacuna.buildings");
             Event.delegate("distribReserveToStore", "click", this.ReserveStoreRemove, "button", this, true);
             return this.tab;
         },
-        GetStoredResources: function () {
+        GetStoredResources: function() {
             if (!this.resources) {
                 Lacuna.Pulser.Show();
                 this.service.get_stored_resources({
                     session_id: Game.GetSession(""),
                     building_id: this.building.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         this.rpcSuccess(o);
                         this.resources = o.result.resources;
                         this.ReservePopulate();
@@ -44,24 +44,26 @@ YAHOO.namespace("lacuna.buildings");
                     },
                     scope: this
                 });
-            } else {
+            }
+            else {
                 this.ReservePopulate();
             }
         },
-        CheckReserve: function (e) {
+        CheckReserve: function(e) {
             if (e.newValue) {
                 if (!this.result.reserve.can) {
                     Dom.setStyle("distribReserveContainers", "display", "none");
                     Dom.setStyle("distribStoredContainer", "display", "");
                     this.StorePopulate();
-                } else {
+                }
+                else {
                     Dom.setStyle("distribReserveContainers", "display", "");
                     Dom.setStyle("distribStoredContainer", "display", "none");
                     this.GetStoredResources();
                 }
             }
         },
-        ReservePopulate: function () {
+        ReservePopulate: function() {
             var reserve = this.result.reserve || {},
                 onPlanet = Dom.get("distribReserveOnPlanet"),
                 announce = Dom.get("distribReserveAnnounce"),
@@ -88,7 +90,8 @@ YAHOO.namespace("lacuna.buildings");
                                     onPlanet.appendChild(nLi);
                                 }
                             }
-                        } else if (this.resources[r] && resource) {
+                        }
+                        else if (this.resources[r] && resource) {
                             nLi = li.cloneNode(false);
                             nLi.Reserve = {
                                 type: r,
@@ -107,7 +110,7 @@ YAHOO.namespace("lacuna.buildings");
             }
             Dom.setStyle(Sel.query('.distribContainers', 'distribReserveContainers'), 'height', Ht + 'px');
         },
-        ReserveStoreAdd: function (e, matchedEl, container) {
+        ReserveStoreAdd: function(e, matchedEl, container) {
             var quantity = matchedEl.previousSibling.value * 1,
                 li = matchedEl.parentNode,
                 c = Dom.get("distribReserveToStore");
@@ -124,7 +127,7 @@ YAHOO.namespace("lacuna.buildings");
                     }
                     Dom.addClass(item, "reserveItem");
                     Dom.addClass(del, "reserveDelete");
-                    Event.on(del, "click", function (e) {
+                    Event.on(del, "click", function(e) {
                         var ed = Event.getTarget(e),
                             ep = ed.parentNode;
                         this.UpdateReserveStore(ep.Object.quantity * -1);
@@ -138,7 +141,8 @@ YAHOO.namespace("lacuna.buildings");
                     content.innerHTML = ['<span class="reserveName">', item.Object.type.titleCaps(), ' (<label class="quantity">', quantity, '</label>)</span> <input type="text" style="width:75px;" value="', quantity, '" /><button type="button">-</button>'].join('');
                     c.appendChild(item);
                     this.UpdateReserveStore(quantity);
-                } else {
+                }
+                else {
                     var found = exists[0],
                         newTotal = found.Object.quantity + quantity,
                         diff = quantity,
@@ -164,7 +168,7 @@ YAHOO.namespace("lacuna.buildings");
                 }
             }
         },
-        ReserveStoreRemove: function (e, matchedEl, container) {
+        ReserveStoreRemove: function(e, matchedEl, container) {
             var quantity = matchedEl.previousSibling.value * 1,
                 li = matchedEl.parentNode.parentNode;
             if (quantity) {
@@ -179,7 +183,8 @@ YAHOO.namespace("lacuna.buildings");
                     this.UpdateReserveStore(li.Object.quantity * -1);
                     Event.purgeElement(li);
                     li.parentNode.removeChild(li);
-                } else {
+                }
+                else {
                     lq.innerHTML = newTotal;
                     li.Object.quantity = newTotal;
                     this.UpdateReserveStore(diff);
@@ -193,12 +198,12 @@ YAHOO.namespace("lacuna.buildings");
                 }
             }
         },
-        UpdateReserveStore: function (byVal) {
+        UpdateReserveStore: function(byVal) {
             var c = Dom.get("distribTotalSelected"),
                 cv = c.innerHTML * 1;
             c.innerHTML = cv + byVal;
         },
-        ReserveSubmit: function () {
+        ReserveSubmit: function() {
             var data = {
                 session_id: Game.GetSession(""),
                 building_id: this.building.id
@@ -216,13 +221,14 @@ YAHOO.namespace("lacuna.buildings");
             if (reserveTotal === 0) {
                 Dom.get("distribReserveMessage")
                     .innerHTML = "Must add items to Reserve.";
-            } else {
+            }
+            else {
                 data.resources = reserveItems;
                 Dom.get("distribReserveMessage")
                     .innerHTML = "";
                 Lacuna.Pulser.Show();
                 this.service.reserve(data, {
-                    success: function (o) {
+                    success: function(o) {
                         this.rpcSuccess(o);
                         for (var n = 0; n < toStoreLis.length; n++) {
                             if (toStoreLis[n].Object) {
@@ -243,7 +249,7 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        StorePopulate: function () {
+        StorePopulate: function() {
             var reserve = this.result.reserve || {},
                 inReserve = Dom.get("distribReserveInReserve"),
                 announce = Dom.get("distribReserveAnnounce"),
@@ -263,18 +269,19 @@ YAHOO.namespace("lacuna.buildings");
                 }
             }
         },
-        StoreTimer: function (remaining, el) {
+        StoreTimer: function(remaining, el) {
             if (remaining <= 0) {
                 var span = Dom.get(el),
                     p = span.parentNode;
                 p.removeChild(span);
                 p.innerHTML = "Search Complete";
-            } else {
+            }
+            else {
                 Dom.get(el)
                     .innerHTML = Lib.formatTime(Math.round(remaining));
             }
         },
-        StoreRelease: function () {
+        StoreRelease: function() {
             Dom.get("distribReleaseMessage")
                 .innerHTML = "";
             Lacuna.Pulser.Show();
@@ -282,7 +289,7 @@ YAHOO.namespace("lacuna.buildings");
                 session_id: Game.GetSession(""),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     this.rpcSuccess(o);
                     Dom.get("distribReserveInReserve")
                         .innerHTML = "";

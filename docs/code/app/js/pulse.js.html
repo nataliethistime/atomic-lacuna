@@ -27,8 +27,8 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-    <span class="hljs-keyword">var</span> Pulse = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Pulse = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
         <span class="hljs-keyword">var</span> panel = <span class="hljs-keyword">new</span> YAHOO.widget.Panel(<span class="hljs-string">"pulsing"</span>, {
             fixedcenter: <span class="hljs-literal">true</span>,
             close: <span class="hljs-literal">false</span>,
@@ -45,12 +45,12 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         <span class="hljs-keyword">this</span>.counter = <span class="hljs-number">0</span>;
     };
     Pulse.prototype = {
-        Show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        Show: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>._panel.bringToTop();
             <span class="hljs-keyword">this</span>._panel.show();
             <span class="hljs-comment">//this.counter++;</span>
         },
-        Hide: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        Hide: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-comment">//this.counter--;</span>
             <span class="hljs-comment">//if(this.counter &lt;= 0) {</span></pre></div>
       

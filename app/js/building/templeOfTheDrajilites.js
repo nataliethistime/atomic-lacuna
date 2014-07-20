@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -10,20 +10,20 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var TempleOfTheDrajilites = function (result) {
+    var TempleOfTheDrajilites = function(result) {
         TempleOfTheDrajilites.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.TempleOfTheDrajilites;
         this.maps = {};
-        this.subscribe("onLoad", function () {
+        this.subscribe("onLoad", function() {
             this.CreateFind();
             Event.on("planetsDetailsCurrentStar", "click", this.GoToCurrentStar, this, true);
         }, this, true);
     };
     Lang.extend(TempleOfTheDrajilites, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getPlanetsTab()];
         },
-        _getPlanetsTab: function () {
+        _getPlanetsTab: function() {
             this.planetsTab = new YAHOO.widget.Tab({
                 label: "Planets",
                 content: ['<div>', '    <div><label for="planetsDetailsStarFind">Lookup Star Name:</label><div style="display:inline-block;width:300px;"><input type="text" id="planetsDetailsStarFind" /></div> or <button type="button" id="planetsDetailsCurrentStar">Go To Current Star</button></div>', '    <div id="planetsDetailsMessage"></div>', '    <div class="clearafter">', '        <ul id="planetsDetails" class="planetsInfo">', '        </ul>', '    </div>', '</div>'].join('')
@@ -31,7 +31,7 @@ YAHOO.namespace("lacuna.buildings");
             //this.planetsTab.subscribe("activeChange", this.GetPlanets, this, true);
             return this.planetsTab;
         },
-        CreateFind: function () {
+        CreateFind: function() {
             if (!this.findStar) {
                 var dataSource = new Util.XHRDataSource("/map");
                 dataSource.connMethodPost = "POST";
@@ -48,10 +48,10 @@ YAHOO.namespace("lacuna.buildings");
                     forceSelection: false,
                     useIndicator: true
                 });
-                oTextboxList.formatResult = function (oResultData, sQuery, sResultMatch) {
+                oTextboxList.formatResult = function(oResultData, sQuery, sResultMatch) {
                     return ['<div class="yui-gf">', '    <div class="yui-u first" style="background-color:black;">', '        <img src="', Lib.AssetUrl, 'star_map/', oResultData.color, '.png" alt="', oResultData, name, '" style="width:50px;height:50px;" />', '    </div>', '    <div class="yui-u">', '        <div>', oResultData.name, '</div>', '        <div>', oResultData.x, ' : ', oResultData.y, '</div>', '    </div>', '</div>'].join("");
                 };
-                oTextboxList.generateRequest = function (sQuery) {
+                oTextboxList.generateRequest = function(sQuery) {
                     var s = Lang.JSON.stringify({
                         "id": YAHOO.rpc.Service._requestId++,
                         "method": "search_stars",
@@ -63,31 +63,31 @@ YAHOO.namespace("lacuna.buildings");
                     });
                     return s;
                 };
-                oTextboxList.dirtyEvent.subscribe(function (event, isDirty, oSelf) {
+                oTextboxList.dirtyEvent.subscribe(function(event, isDirty, oSelf) {
                     var star = this._oTblSingleSelection.Object;
                     oSelf.GetPlanets(star.id);
                 }, this);
                 this.findStar = oTextboxList;
             }
         },
-        GoToCurrentStar: function () {
+        GoToCurrentStar: function() {
             this.GetPlanets(Game.GetCurrentPlanet()
                 .star_id);
         },
-        GetPlanets: function (starId) {
+        GetPlanets: function(starId) {
             Lacuna.Pulser.Show();
             this.service.list_planets({
                 session_id: Game.GetSession(),
                 building_id: this.building.id,
                 star_id: starId
             }, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
                     this.planets = o.result.planets;
                     this.PlanetsDisplay();
                 },
-                failure: function (o) {
+                failure: function(o) {
                     var msg = Dom.get("planetsDetailsMessage"),
                         planetsDetails = Dom.get("planetsDetails");
                     msg.innerHTML = o.error.message;
@@ -98,7 +98,7 @@ YAHOO.namespace("lacuna.buildings");
                 scope: this
             });
         },
-        PlanetsDisplay: function () {
+        PlanetsDisplay: function() {
             var planets = this.planets,
                 planetsDetails = Dom.get("planetsDetails");
             if (planetsDetails) {
@@ -116,7 +116,7 @@ YAHOO.namespace("lacuna.buildings");
                 }
             }
         },
-        PlanetView: function (e) {
+        PlanetView: function(e) {
             var nLi = Event.getTarget(e);
             if (nLi.Planet) {
                 if (!this.maps[nLi.Planet.id]) {
@@ -126,7 +126,7 @@ YAHOO.namespace("lacuna.buildings");
                         building_id: this.building.id,
                         planet_id: nLi.Planet.id
                     }, {
-                        success: function (o) {
+                        success: function(o) {
                             Lacuna.Pulser.Hide();
                             this.rpcSuccess(o);
                             this.maps[nLi.Planet.id] = o.result.map;
@@ -134,7 +134,8 @@ YAHOO.namespace("lacuna.buildings");
                         },
                         scope: this
                     });
-                } else {
+                }
+                else {
                     Lacuna.Messaging.attachmentPanel.load(this.maps[nLi.Planet.id]);
                 }
             }

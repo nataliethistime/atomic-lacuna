@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -10,15 +10,15 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var BlackHoleGenerator = function (result) {
+    var BlackHoleGenerator = function(result) {
         BlackHoleGenerator.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.BlackHoleGenerator;
     };
     Lang.extend(BlackHoleGenerator, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getBHGTab()];
         },
-        _getBHGTab: function () {
+        _getBHGTab: function() {
             var zoneOptions = "";
             var zones = this.result.task_options.zones;
             for (var i = 0; i < zones.length; i++) {
@@ -30,21 +30,23 @@ YAHOO.namespace("lacuna.buildings");
                     zoneOptions, '    </select>', '  </span>', '  <button type="button" id="bhgGetActions">Get Actions</button>', '  <div id="bhgTaskInfo"></div>', '  <div id="bhgActions" style="display:none;border-top:1px solid #52ACFF;margin-top:5px;padding-top:5px">', '    Singularity Target: <span id="bhgTargetNote"></span>', '    <div style="border-top:1px solid #52ACFF;margin-top:5px;">', '      <ul id="bhgActionsAvail"></ul>', '    </div>', '    <div style="border-top:1px solid #52ACFF;margin-top:5px;">', '      <ul id="bhgResult"></ul>', '    </div>', '  </div>', '</div>', '<div id="bhgWorkingContainer">', '  <ul>', '    <li>Cool-down time remaining: <span id="bhgCooldownTime"></span></li>', '    <li>You may subsidize the cool-down for 2 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" />.</li>', '    <li><button type="button" id="bhgCooldownSubsidize">Subsidize</button></li>', '  </ul>', '</div>'
                 ].join('')
             });
-            this.tab.subscribe("activeChange", function (e) {
+            this.tab.subscribe("activeChange", function(e) {
                 if (e.newValue) {
                     this.checkIfWorking();
                 }
             }, this, true);
-            Event.on("bhgTargetType", "change", function () {
+            Event.on("bhgTargetType", "change", function() {
                 if (Lib.getSelectedOptionValue(this) === "xy") {
                     Dom.setStyle("bhgTargetSelectText", "display", "none");
                     Dom.setStyle("bhgTargetSelectXY", "display", "");
                     Dom.setStyle("bhgTargetSelectZone", "display", "none");
-                } else if (Lib.getSelectedOptionValue(this) === "zone") {
+                }
+                else if (Lib.getSelectedOptionValue(this) === "zone") {
                     Dom.setStyle("bhgTargetSelectText", "display", "none");
                     Dom.setStyle("bhgTargetSelectXY", "display", "none");
                     Dom.setStyle("bhgTargetSelectZone", "display", "");
-                } else {
+                }
+                else {
                     Dom.setStyle("bhgTargetSelectText", "display", "");
                     Dom.setStyle("bhgTargetSelectXY", "display", "none");
                     Dom.setStyle("bhgTargetSelectZone", "display", "none");
@@ -54,7 +56,7 @@ YAHOO.namespace("lacuna.buildings");
             Event.on("bhgCooldownSubsidize", "click", this.cooldownSubsidize, this, true);
             return this.tab;
         },
-        bhgGetActions: function () {
+        bhgGetActions: function() {
             Lacuna.Pulser.Show();
             Dom.setStyle("bhgActions", "display", "none");
             var type = Lib.getSelectedOptionValue("bhgTargetType"),
@@ -66,12 +68,14 @@ YAHOO.namespace("lacuna.buildings");
                     .value;
                 Dom.get("bhgTargetNote")
                     .innerHTML = ['X: ', target.x, ', Y: ', target.y].join('');
-            } else if (type === "zone") {
+            }
+            else if (type === "zone") {
                 target.zone = Dom.get("bhgTargetZone")
                     .value;
                 Dom.get("bhgTargetNote")
                     .innerHTML = ['Zone: ', target.zone].join('');
-            } else {
+            }
+            else {
                 target[type] = Dom.get("bhgTargetText")
                     .value;
                 Dom.get("bhgTargetNote")
@@ -82,7 +86,7 @@ YAHOO.namespace("lacuna.buildings");
                 building_id: this.building.id,
                 target: target
             }, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
                     this.PopulateBHGTab(target, o.result.tasks);
@@ -90,7 +94,7 @@ YAHOO.namespace("lacuna.buildings");
                 scope: this
             });
         },
-        PopulateBHGTab: function (target, actions) {
+        PopulateBHGTab: function(target, actions) {
             var details = Dom.get("bhgActionsAvail"),
                 detailsParent = details.parentNode,
                 li = document.createElement("li");
@@ -103,21 +107,24 @@ YAHOO.namespace("lacuna.buildings");
                 .parentNode, "display", "none");
             if (actions.length === 0) {
                 details.innerHTML = "No available actions for singularity.";
-            } else {
+            }
+            else {
                 for (var i = 0; i < actions.length; i++) {
                     var task = actions[i],
                         nLi = li.cloneNode(false);
                     var waste_out;
                     if (task.waste_cost < 1000000000) {
                         waste_out = [Lib.formatNumber(task.waste_cost / 1000000), 'M'].join('');
-                    } else {
+                    }
+                    else {
                         waste_out = [Lib.formatNumber(task.waste_cost / 1000000000), 'B'].join('');
                     }
                     var canGenerate = 1;
                     if (Game.GetCurrentPlanet()
                         .waste_stored < task.waste_cost) {
                         canGenerate = 0;
-                    } else if (task.success === 0) {
+                    }
+                    else if (task.success === 0) {
                         continue;
                     }
                     var typeSelector = "";
@@ -154,7 +161,7 @@ YAHOO.namespace("lacuna.buildings");
             }
             detailsParent.appendChild(details); //add back as child
             //wait for tab to display first
-            setTimeout(function () {
+            setTimeout(function() {
                 var Ht = Game.GetSize()
                     .h - 250;
                 if (Ht > 250) {
@@ -165,7 +172,7 @@ YAHOO.namespace("lacuna.buildings");
             }, 10);
             return this.tab;
         },
-        bhgGenerate: function (e) {
+        bhgGenerate: function(e) {
             var oSelf = this.Self,
                 target = this.Target,
                 task = this.Task;
@@ -192,7 +199,7 @@ YAHOO.namespace("lacuna.buildings");
                 this.Self.service.generate_singularity({
                     params: rpcParams
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         Lacuna.Pulser.Hide();
                         this.Self.rpcSuccess(o);
                         this.Self.PopulateBHGResult(target, o.result.effect);
@@ -201,7 +208,7 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        PopulateBHGResult: function (target, effect) {
+        PopulateBHGResult: function(target, effect) {
             var details = Dom.get("bhgResult"),
                 detailsParent = details.parentNode,
                 li = document.createElement("li");
@@ -216,7 +223,8 @@ YAHOO.namespace("lacuna.buildings");
                 var nLi = li.cloneNode(false);
                 nLi.innerHTML = ['<div class="yui-gd" style="margin-bottom:2px;">', '  <div style="border:1px white solid;" class="yui-u" style="width:100%">', '    <label style="font-weight:bold;">Failure</label>', '    <div>', effect.fail.message, ' at ', effect.fail.name, '</div>', '  </div></div>', ].join('');
                 details.appendChild(nLi);
-            } else {
+            }
+            else {
                 // success
                 if (effect.target) {
                     var nLi = li.cloneNode(false);
@@ -230,7 +238,7 @@ YAHOO.namespace("lacuna.buildings");
                 }
             }
             //wait for tab to display first
-            setTimeout(function () {
+            setTimeout(function() {
                 var Ht = Game.GetSize()
                     .h - 250;
                 if (Ht > 250) {
@@ -240,34 +248,39 @@ YAHOO.namespace("lacuna.buildings");
                 Dom.setStyle(detailsParent, "overflow-y", "auto");
             }, 10);
         },
-        bhgParseResult: function (result, type) {
+        bhgParseResult: function(result, type) {
             var out = ['<div class="yui-gd" style="margin-bottom:2px;">', '  <div style="border:1px white solid;" class="yui-u" style="width:100%">', '    <label style="font-weight:bold;">', type, '</label>', '    <div>'].join('');
             if (result.message === "Swapped Places") {
                 out = out + [
                     result.message, ' with ', result.swapname, ' at orbit ', result.orbit
                 ].join('');
-            } else if (result.message === "Changed Size") {
+            }
+            else if (result.message === "Changed Size") {
                 out = out + [
                     result.name, ' changed size from ', result.old_size, ' to ', result.size
                 ].join('');
-            } else if (result.message === "Changed Type") {
+            }
+            else if (result.message === "Changed Type") {
                 var newtype = result['class'].replace(new RegExp(".*::", "g"), "");
                 out = out + [
                     result.name, ' changed to type ', newtype, ' planet'
                 ].join('');
-            } else if (result.message === "Made Asteroid") {
+            }
+            else if (result.message === "Made Asteroid") {
                 var newtype = result['class'].replace(new RegExp(".*::", "g"), "");
                 out = out + [
                     result.name, ' is now a type ', newtype, ' asteroid of size ',
                     result.size
                 ].join('');
-            } else if (result.message === "Made Planet") {
+            }
+            else if (result.message === "Made Planet") {
                 var newtype = result['class'].replace(new RegExp(".*::", "g"), "");
                 out = out + [
                     result.name, ' is now a type ', newtype, ' planet of size ',
                     result.size
                 ].join('');
-            } else {
+            }
+            else {
                 out = out + [
                     result.message, ' at ', result.name
                 ].join('');
@@ -275,37 +288,39 @@ YAHOO.namespace("lacuna.buildings");
             out = out + '  </div></div></div>';
             return out;
         },
-        checkIfWorking: function () {
+        checkIfWorking: function() {
             if (this.work && this.work.seconds_remaining) {
                 Dom.setStyle("bhgContainer", "display", "none");
                 Dom.setStyle("bhgWorkingContainer", "display", "");
                 this.populateCooldownTimer(this.work.seconds_remaining);
-            } else {
+            }
+            else {
                 Dom.setStyle("bhgContainer", "display", "");
                 Dom.setStyle("bhgWorkingContainer", "display", "none");
             }
         },
-        populateCooldownTimer: function (seconds_remaining) {
+        populateCooldownTimer: function(seconds_remaining) {
             this.addQueue(seconds_remaining, this.cooldownQueue, "bhgCooldownTime");
         },
-        cooldownQueue: function (remaining, el) {
+        cooldownQueue: function(remaining, el) {
             if (remaining <= 0) {
                 var span = Dom.get(el),
                     p = span.parentNode;
                 p.removeChild(span);
                 p.innerHTML = "Cool-down Complete";
-            } else {
+            }
+            else {
                 Dom.get(el)
                     .innerHTML = Lib.formatTime(Math.round(remaining));
             }
         },
-        cooldownSubsidize: function () {
+        cooldownSubsidize: function() {
             Lacuna.Pulser.Show();
             this.service.subsidize_cooldown({
                 session_id: Game.GetSession(),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
                     delete this.work;

@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -9,15 +9,15 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var Network19 = function (result) {
+    var Network19 = function(result) {
         Network19.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.Network19;
     };
     Lang.extend(Network19, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getCoverageTab()];
         },
-        _getCoverageTab: function () {
+        _getCoverageTab: function() {
             this.coverageTab = new YAHOO.widget.Tab({
                 label: "Coverage",
                 content: ['<div id="newsCoverageContainer">', '    <span id="newsCoverageText">', this.result.restrict_coverage === "1" ? 'Coverage is current restricted' : 'News is flowing freely', '</span>', '    : <button id="newsCoverage" type="button">', (this.result.restrict_coverage === "1" ? 'Open Coverage' : 'Restrict Coverage'), '</button>', '</div>', '<div class="newsFeedContainer">', '    <ul id="newsFeed">', '    </ul>', '</div>', '<div class="newsRssLinksContainer">', '    <ul id="newsRssLinks" class="clearafter">', '    </ul>', '</div>'].join('')
@@ -26,7 +26,7 @@ YAHOO.namespace("lacuna.buildings");
             Event.on("newsCoverage", "click", this.NewsCoverage, this, true);
             return this.coverageTab;
         },
-        NewsCoverage: function (e) {
+        NewsCoverage: function(e) {
             var target = Event.getTarget(e),
                 isRestrict = 1;
             target.disabled = true;
@@ -39,7 +39,7 @@ YAHOO.namespace("lacuna.buildings");
                 building_id: this.result.building.id,
                 onoff: isRestrict
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Network19.NewsCoverage.restrict_coverage.success");
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
@@ -48,19 +48,19 @@ YAHOO.namespace("lacuna.buildings");
                     target.innerHTML = isRestrict ? 'Open Coverage' : 'Restrict Coverage';
                     target.disabled = false;
                 },
-                failure: function (o) {
+                failure: function(o) {
                     target.disabled = false;
                 },
                 scope: this
             });
         },
-        NewsGet: function () {
+        NewsGet: function() {
             Lacuna.Pulser.Show();
             this.service.view_news({
                 session_id: Game.GetSession(),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Network19.NewsGet.success");
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);

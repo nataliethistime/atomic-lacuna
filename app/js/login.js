@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Cookie = Util.Cookie,
@@ -9,7 +9,7 @@ YAHOO.namespace("lacuna");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var Login = function () {
+    var Login = function() {
         this.id = "login";
         this.createEvent("onLoginSuccessful");
         var container = document.createElement("div");
@@ -32,7 +32,7 @@ YAHOO.namespace("lacuna");
             underlay: false,
             zIndex: 9999
         });
-        this.Dialog.renderEvent.subscribe(function () {
+        this.Dialog.renderEvent.subscribe(function() {
             //get el's after rendered
             this.elName = Dom.get("loginName");
             this.elPass = Dom.get("loginPass");
@@ -42,22 +42,22 @@ YAHOO.namespace("lacuna");
             this.elCreate = Dom.get("loginCreate");
             this.elReset = Dom.get("loginReset");
             this.elServer = Dom.get('selectServer');
-            Event.addListener(this.elCreate, "click", function (e) {
+            Event.addListener(this.elCreate, "click", function(e) {
                 Event.stopEvent(e);
                 this.createEmpire();
             }, this, true);
-            Event.addListener(this.elReset, "click", function (e) {
+            Event.addListener(this.elReset, "click", function(e) {
                 Event.stopEvent(e);
                 this.resetPassword();
             }, this, true);
-            Event.addListener(this.elServer, 'change', function (e) {
+            Event.addListener(this.elServer, 'change', function(e) {
                 Event.stopEvent(e);
                 var server = Lib.getSelectedOptionValue(this.elServer);
                 var url = 'https://' + server + '.lacunaexpanse.com';
                 Game.RPCBase = url;
                 Game.Services = Game.InitServices(YAHOO.lacuna.SMD.Services);
             }, this, true);
-            Event.addListener(this.elForm, "submit", function (e) {
+            Event.addListener(this.elForm, "submit", function(e) {
                 Event.stopEvent(e);
                 this.handleLogin();
             }, this, true);
@@ -67,7 +67,7 @@ YAHOO.namespace("lacuna");
         Game.OverlayManager.register(this.Dialog);
     };
     Login.prototype = {
-        handleLogin: function () {
+        handleLogin: function() {
             Lacuna.Pulser.Show();
             this.setMessage("");
             var EmpireServ = Game.Services.Empire;
@@ -76,30 +76,33 @@ YAHOO.namespace("lacuna");
                 password: this.elPass.value,
                 api_key: Lib.ApiKey
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Login.handleLogin.success");
                     //clear the session just in case
                     Game.RemoveCookie("session");
                     if (this.elRemember.checked) {
                         Game.SetCookie('empireName', this.elName.value);
-                    } else {
+                    }
+                    else {
                         Game.RemoveCookie('empireName');
                     }
                     this.elForm.reset();
                     this.fireEvent("onLoginSuccessful", o);
                     this.hide();
                 },
-                failure: function (o) {
+                failure: function(o) {
                     if (o.error.code === 1100) {
                         //haven't founded empire yet so take them to species
                         this.hide();
                         this.initEmpireCreator();
                         Game.OverlayManager.hideAll();
                         Game.SpeciesCreator.show(o.error.data.empire_id);
-                    } else if (o.error.code === 1200) {
+                    }
+                    else if (o.error.code === 1200) {
                         alert(o.error.message);
                         window.location = o.error.data;
-                    } else {
+                    }
+                    else {
                         this.setMessage(o.error.message || "There was a problem logging in.  Please try again.");
                     }
                     return true;
@@ -107,7 +110,7 @@ YAHOO.namespace("lacuna");
                 scope: this
             });
         },
-        show: function (error) {
+        show: function(error) {
             if (!this.Dialog.cfg.getProperty("visible")) {
                 Game.OverlayManager.hideAll();
                 this.elForm.reset();
@@ -117,7 +120,8 @@ YAHOO.namespace("lacuna");
                     this.elName.value = str;
                     this.elRemember.checked = true;
                     this.elPass.focus();
-                } else {
+                }
+                else {
                     this.elName.focus();
                 }
                 if (error) {
@@ -125,13 +129,13 @@ YAHOO.namespace("lacuna");
                 }
             }
         },
-        hide: function () {
+        hide: function() {
             if (this.elMessage) {
                 Dom.replaceClass(this.elMessage, Lib.Styles.ALERT, Lib.Styles.HIDDEN);
             }
             this.Dialog.hide();
         },
-        setMessage: function (str) {
+        setMessage: function(str) {
             if (!this.elMessage) {
                 var d = document.createElement("div");
                 d.id = "loginMessage";
@@ -142,42 +146,44 @@ YAHOO.namespace("lacuna");
             if (str && str.length > 0) {
                 Dom.replaceClass(this.elMessage, Lib.Styles.HIDDEN, Lib.Styles.ALERT);
                 this.elMessage.innerHTML = str;
-            } else {
+            }
+            else {
                 Dom.replaceClass(this.elMessage, Lib.Styles.ALERT, Lib.Styles.HIDDEN);
             }
         },
-        initEmpireCreator: function () {
+        initEmpireCreator: function() {
             if (!Game.EmpireCreator) {
                 Game.EmpireCreator = new Lacuna.CreateEmpire(this);
-                Game.EmpireCreator.subscribe("onCreateSuccessful", function (oArgs) {
+                Game.EmpireCreator.subscribe("onCreateSuccessful", function(oArgs) {
                     this.fireEvent("onLoginSuccessful", oArgs);
                 }, this, true);
             }
         },
-        createEmpire: function () {
+        createEmpire: function() {
             this.hide(); //hide login
             this.initEmpireCreator();
             Game.OverlayManager.hideAll();
             Game.EmpireCreator.show();
         },
-        resetPassword: function (reset_key) {
+        resetPassword: function(reset_key) {
             this.hide(); //hide login
             if (!this.ResetPassword) {
                 this.ResetPassword = new ResetPassword(this);
-                this.ResetPassword.subscribe("onResetSuccessful", function (oArgs) {
+                this.ResetPassword.subscribe("onResetSuccessful", function(oArgs) {
                     this.fireEvent("onLoginSuccessful", oArgs);
                 }, this, true);
             }
             Game.OverlayManager.hideAll();
             if (reset_key) {
                 this.ResetPassword.showReset(reset_key);
-            } else {
+            }
+            else {
                 this.ResetPassword.show(this.elName.value);
             }
         }
     };
     Lang.augmentProto(Login, Util.EventProvider);
-    var ResetPassword = function (Login) {
+    var ResetPassword = function(Login) {
         this.createEvent("onResetSuccessful");
         this._login = Login;
         this.emailId = "resetPasswordEmail";
@@ -199,23 +205,23 @@ YAHOO.namespace("lacuna");
             zIndex: 9999,
             buttons: [{
                 text: "Send Reset Email",
-                handler: function () {
+                handler: function() {
                     this.submit();
                 },
                 isDefault: true
             }, {
                 text: "Cancel",
-                handler: function () {
+                handler: function() {
                     this.cancel();
                 }
             }],
             hideaftersubmit: false,
             postmethod: "manual"
         });
-        this.EmailDialog.renderEvent.subscribe(function () {
+        this.EmailDialog.renderEvent.subscribe(function() {
             this.elName = Dom.get("resetEmpireName");
             this.elEmail = Dom.get("resetEmail");
-            Event.on('resetShowKey', 'click', function (e) {
+            Event.on('resetShowKey', 'click', function(e) {
                 this.showReset();
             }, this, true);
             Dom.removeClass(this.emailId, Lib.Styles.HIDDEN);
@@ -242,20 +248,20 @@ YAHOO.namespace("lacuna");
             zIndex: 9999,
             buttons: [{
                 text: "Reset Password",
-                handler: function () {
+                handler: function() {
                     this.submit();
                 },
                 isDefault: true
             }, {
                 text: "Cancel",
-                handler: function () {
+                handler: function() {
                     this.cancel();
                 }
             }],
             hideaftersubmit: false,
             postmethod: "manual"
         });
-        this.ResetDialog.renderEvent.subscribe(function () {
+        this.ResetDialog.renderEvent.subscribe(function() {
             this.elKey = Dom.get("resetKey");
             this.elPassword1 = Dom.get("resetPassword1");
             this.elPassword2 = Dom.get("resetPassword2");
@@ -267,18 +273,18 @@ YAHOO.namespace("lacuna");
         Game.OverlayManager.register(this.ResetDialog);
     };
     ResetPassword.prototype = {
-        show: function (empire_name) {
+        show: function(empire_name) {
             this.elName.value = empire_name ? empire_name : '';
             this.elEmail.value = '';
             this.EmailDialog.getButtons()[0].disabled = false;
             this.EmailDialog.show();
         },
-        hide: function () {
+        hide: function() {
             this.EmailDialog.hide();
             this.ResetDialog.hide();
             this._login.show();
         },
-        sendEmail: function () {
+        sendEmail: function() {
             var empireName = this.elName.value;
             var email = this.elEmail.value;
             var data = {};
@@ -291,21 +297,22 @@ YAHOO.namespace("lacuna");
             this.EmailDialog.getButtons()[0].disabled = true;
             Lacuna.Pulser.Show();
             Game.Services.Empire.send_password_reset_message(data, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "ResetPassword.sendEmail.success");
                     Lacuna.Pulser.Hide();
                     this.showReset();
                 },
-                failure: function (o) {
+                failure: function(o) {
                     this.EmailDialog.getButtons()[0].disabled = false;
                 },
                 scope: this
             });
         },
-        showReset: function (reset_key) {
+        showReset: function(reset_key) {
             if (reset_key) {
                 this.elKey.value = reset_key;
-            } else {
+            }
+            else {
                 this.elKey.value = '';
             }
             this.elPassword1.value = '';
@@ -313,13 +320,14 @@ YAHOO.namespace("lacuna");
             this.EmailDialog.hide();
             this.ResetDialog.show();
         },
-        resetPassword: function () {
+        resetPassword: function() {
             var reset_key = this.elKey.value;
             var password1 = this.elPassword1.value;
             var password2 = this.elPassword2.value;
             if (password1 !== password2) {
                 alert("Passwords do not match!");
-            } else {
+            }
+            else {
                 Lacuna.Pulser.Show();
                 Game.Services.Empire.reset_password({
                     reset_key: reset_key,
@@ -327,7 +335,7 @@ YAHOO.namespace("lacuna");
                     password2: password2,
                     api_key: Lib.ApiKey
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "ResetPassword.resetPassword.success");
                         Lacuna.Pulser.Hide();
                         this.fireEvent('onResetSuccessful', o);

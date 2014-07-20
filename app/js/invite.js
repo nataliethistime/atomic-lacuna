@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -8,7 +8,7 @@ YAHOO.namespace("lacuna");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var Invite = function () {
+    var Invite = function() {
         this.createEvent("onRpc");
         this.id = "invite";
         var container = document.createElement("div");
@@ -29,14 +29,14 @@ YAHOO.namespace("lacuna");
             width: "450px",
             zIndex: 9999
         });
-        this.Dialog.renderEvent.subscribe(function () {
+        this.Dialog.renderEvent.subscribe(function() {
             this.elFriendEmail = Dom.get("inviteFriendEmail");
             this.elMessage = Dom.get("inviteMessage");
             Dom.removeClass(this.id, Lib.Styles.HIDDEN);
             Event.on("inviteButton", "click", this.handleInvite, this, true);
             this.inviteGenerate = Dom.get("inviteGenerate");
             Event.on(this.inviteGenerate, "click", this.handleGenerate, this, true);
-            Event.on("inviteGenerateLink", "click", function () {
+            Event.on("inviteGenerateLink", "click", function() {
                 this.select();
             });
         }, this, true);
@@ -44,19 +44,19 @@ YAHOO.namespace("lacuna");
         Game.OverlayManager.register(this.Dialog);
     };
     Invite.prototype = {
-        _getHtml: function () {
+        _getHtml: function() {
             return ['    <div class="hd">Invite a Friend</div>', '    <div class="bd">', '        <form name="inviteForm">', '            <ul>', '                <li><label for="inviteFriendEmail">EMail:</label><input type="text" id="inviteFriendEmail"></li>', '                <li><label for="inviteMessage">Message:</label></li>', '                <li><textarea id="inviteMessage"></textarea></li>', '                <li style="text-align:right;"><button id="inviteButton" type="button">Invite</button></li>', '            </ul>', '        </form>', '        <hr />', '        <p id="inviteGenerateDesc">You can also generate a URL you can post to your blog or email to your friends.</p>', '        <button id="inviteGenerate" type="button">Generate URL</button>', '        <input id="inviteGenerateLink" type="text" readonly="readonly" style="display: none" />', '    </div>'].join('');
         },
-        show: function () {
+        show: function() {
             //this is called out of scope so make sure to pass the correct scope in
             Lacuna.Invite.elFriendEmail.value = '';
             Lacuna.Invite.elMessage.value = "I'm having a great time with this new game called Lacuna Expanse. Come play with me.";
             Lacuna.Invite.Dialog.show();
         },
-        hide: function () {
+        hide: function() {
             this.Dialog.hide();
         },
-        handleInvite: function (e) {
+        handleInvite: function(e) {
             Lacuna.Pulser.Show();
             var email = this.elFriendEmail.value;
             email = email.split(/\s*[,;]\s*/)
@@ -66,7 +66,7 @@ YAHOO.namespace("lacuna");
                 email: email,
                 message: this.elMessage.value
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "InviteFriend.success");
                     Lacuna.Pulser.Hide();
                     var not_sent = o.result.not_sent;
@@ -79,7 +79,8 @@ YAHOO.namespace("lacuna");
                         }
                         this.elFriendEmail.value = errorEmails.join(', ');
                         alert(errorMessage.join("\n"));
-                    } else {
+                    }
+                    else {
                         this.hide();
                     }
                     this.fireEvent('onRpc', o);
@@ -87,13 +88,13 @@ YAHOO.namespace("lacuna");
                 scope: this
             });
         },
-        handleGenerate: function (e) {
+        handleGenerate: function(e) {
             this.inviteGenerate.disabled = true;
             Lacuna.Pulser.Show();
             Game.Services.Empire.get_invite_friend_url({
                 session_id: Game.GetSession("")
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "handleGenerate.success");
                     Lacuna.Pulser.Hide();
                     Dom.setStyle(this.inviteGenerate, "display", "none");
@@ -104,7 +105,7 @@ YAHOO.namespace("lacuna");
                         .value = o.result.referral_url;
                     this.fireEvent('onRpc', o);
                 },
-                failure: function (o) {
+                failure: function(o) {
                     this.inviteGenerate.disabled = false;
                 },
                 scope: this

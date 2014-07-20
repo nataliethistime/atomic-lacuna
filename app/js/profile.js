@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -9,7 +9,7 @@ YAHOO.namespace("lacuna");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var Profile = function () {
+    var Profile = function() {
         this.createEvent("onRpc");
         this.id = "profile";
         var container = document.createElement("div");
@@ -37,7 +37,7 @@ YAHOO.namespace("lacuna");
             width: "500px",
             zIndex: 9999
         });
-        this.Dialog.renderEvent.subscribe(function () {
+        this.Dialog.renderEvent.subscribe(function() {
             this.description = Dom.get("profileDescription");
             this.status = Dom.get("profileStatus");
             this.email = Dom.get("profileEmail");
@@ -63,49 +63,49 @@ YAHOO.namespace("lacuna");
             this.skipIncomingShips = Dom.get("profileSkipIncomingShips");
             this.skipExcavatorReplaceMsg = Dom.get("profileSkipExcavatorReplaceMsg");
             this.dontReplaceExcavator = Dom.get("profileDontReplaceExcavator");
-            Event.on(this.skipFoundNothing, 'change', function () {
+            Event.on(this.skipFoundNothing, 'change', function() {
                 if (!this.checked) {
                     Dom.get("profileSkipAllExcavator")
                         .checked = false;
                 }
             });
-            Event.on(this.skipExcavatorResources, 'change', function () {
+            Event.on(this.skipExcavatorResources, 'change', function() {
                 if (!this.checked) {
                     Dom.get("profileSkipAllExcavator")
                         .checked = false;
                 }
             });
-            Event.on(this.skipExcavatorGlyph, 'change', function () {
+            Event.on(this.skipExcavatorGlyph, 'change', function() {
                 if (!this.checked) {
                     Dom.get("profileSkipAllExcavator")
                         .checked = false;
                 }
             });
-            Event.on(this.skipExcavatorPlan, 'change', function () {
+            Event.on(this.skipExcavatorPlan, 'change', function() {
                 if (!this.checked) {
                     Dom.get("profileSkipAllExcavator")
                         .checked = false;
                 }
             });
-            Event.on(this.skipExcavatorArtifact, 'change', function () {
+            Event.on(this.skipExcavatorArtifact, 'change', function() {
                 if (!this.checked) {
                     Dom.get("profileSkipAllExcavator")
                         .checked = false;
                 }
             });
-            Event.on(this.skipExcavatorDestroyed, 'change', function () {
+            Event.on(this.skipExcavatorDestroyed, 'change', function() {
                 if (!this.checked) {
                     Dom.get("profileSkipAllExcavator")
                         .checked = false;
                 }
             });
-            Event.on(this.skipExcavatorReplaceMsg, 'change', function () {
+            Event.on(this.skipExcavatorReplaceMsg, 'change', function() {
                 if (!this.checked) {
                     Dom.get("profileSkipExcavatorReplaceMsg")
                         .checked = false;
                 }
             });
-            Event.on(this.skipAllExcavator, 'change', function () {
+            Event.on(this.skipAllExcavator, 'change', function() {
                 if (this.checked) {
                     Dom.get("profileSkipFoundNothing")
                         .checked = true;
@@ -131,10 +131,10 @@ YAHOO.namespace("lacuna");
             this.new_password = Dom.get("profileNewPassword");
             this.confirm_password = Dom.get("profileConfirmPassword");
             this.account_tab = Dom.get('detailsAccount');
-            Event.on(this.sitter_password, 'focus', function () {
+            Event.on(this.sitter_password, 'focus', function() {
                 this.type = 'text';
             });
-            Event.on(this.sitter_password, 'blur', function () {
+            Event.on(this.sitter_password, 'blur', function() {
                 this.type = 'password';
             });
             this.stopAnim = Dom.get("profileDisableDialogAnim");
@@ -146,14 +146,14 @@ YAHOO.namespace("lacuna");
             //species tab
             this.hasSpecies = false;
             this.tabView.getTab(2)
-                .subscribe("activeChange", function (e) {
+                .subscribe("activeChange", function(e) {
                     if (e.newValue && !this.hasSpecies) {
                         this.hasSpecies = true;
                         var requests = 0;
                         Game.Services.Empire.view_species_stats({
                             session_id: Game.GetSession("")
                         }, {
-                            success: function (o) {
+                            success: function(o) {
                                 YAHOO.log(o, "info", "Profile.show.view_stats.success");
                                 this.fireEvent('onRpc', o.result);
                                 this.speciesStats = o.result.species;
@@ -167,7 +167,7 @@ YAHOO.namespace("lacuna");
                         Game.Services.Empire.redefine_species_limits({
                             session_id: Game.GetSession("")
                         }, {
-                            success: function (o) {
+                            success: function(o) {
                                 YAHOO.log(o, "info", "Profile.redefine_species_limits.success");
                                 this.fireEvent('onRpc', o.result);
                                 this.speciesRedefineLimits = o.result;
@@ -204,7 +204,7 @@ YAHOO.namespace("lacuna");
             }, {
                 text: "Cancel",
                 handler: {
-                    fn: function () {
+                    fn: function() {
                         this.hide();
                     }
                 }
@@ -218,7 +218,7 @@ YAHOO.namespace("lacuna");
             width: "735px",
             zIndex: 99999
         });
-        this.SpeciesDialog.renderEvent.subscribe(function () {
+        this.SpeciesDialog.renderEvent.subscribe(function() {
             this.SpeciesDesigner = new Lacuna.SpeciesDesigner({
                 templates: false
             });
@@ -229,10 +229,10 @@ YAHOO.namespace("lacuna");
         Game.OverlayManager.register(this.SpeciesDialog);
     };
     Profile.prototype = {
-        _getHtml: function () {
+        _getHtml: function() {
             return ['    <div class="hd">Profile</div>', '    <div class="bd">', '        <form name="profileForm" autocomplete="off">', '            <ul id="profileDetails">', '                <li><label style="vertical-align:top;" title="The publicly displayed description for your empire.">Description:</label><textarea id="profileDescription" cols="47"></textarea></li>', '                <li><label title="What are you doing right now?">Status:</label><input id="profileStatus" maxlength="100" size="50" /></li>', '            </ul>', '            <div id="profileTabs" class="yui-navset">', '                <ul class="yui-nav">', '                    <li><a href="#detailsPlayer"><em>Player</em></a></li>', '                    <li><a href="#detailsMedals"><em>Medals</em></a></li>', '                    <li><a href="#detailsSpecies"><em>Species</em></a></li>', '                    <li><a href="#detailsNotes"><em>Notes</em></a></li>', '                    <li><a href="#detailsAccount"><em>Account</em></a></li>', '                    <li><a href="#detailsBrowser"><em>Browser</em></a></li>', '                </ul>', '                <div class="yui-content" style="padding:0;">', '                    <div id="detailsPlayer">', '                        <ul id="profilePlayer" style="overflow:auto">', '                            <li><label>Name:<input id="profilePlayerName" /></label></li>', '                            <li><label title="Your email is used to recover your password if it is lost, and to send you any unused essentia if you cancel your account.">Email:<input id="profileEmail" /></label></li>', '                            <li><label>City:<input id="profileCity" /></label></li>', '                            <li><label>Country:<input id="profileCountry" /></label></li>', '                            <li><label>Skype:<input id="profileSkype" /></label></li>', '                            <li><hr /><div class="yui-g">', '                                <div class="yui-u first">', '                                    <ul><li><input id="profileSkipFacebookWallPosts" type="checkbox" /> Stop Facebook Wall posts</li>', '                                    <li><input id="profileSkipMedal" type="checkbox" /> Stop Medal Messages</li>', '                                    <li><input id="profileSkipProbeDetected" type="checkbox" /> Stop Probe Detected</li>', '                                    <li><input id="profileSkipSpyRecovery" type="checkbox" /> Stop Spy Recovery Messages</li>', '                                    <li><input id="profileSkipResource" type="checkbox" /> Stop Resource Warnings</li>', '                                    <li><input id="profileSkipPollution" type="checkbox" /> Stop Pollution Warnings</li>', '                                    <li><input id="profileSkipHappiness" type="checkbox" /> Stop Happiness Warnings</li>', '                                    <li><input id="profileSkipAttackMessages" type="checkbox" /> Stop Attack Messages</li>', '                 <li><input id="profileSkipIncomingShips" type="checkbox" /> Stop Incoming Ships Notification</li>', '                 </ul></div>', '               <div class="yui-u">', '               <ul id="profileCheckboxes">', '                                    <li><input id="profileSkipAllExcavator" type="checkbox" /> Stop All Excavator Messages</li>', '                                    <li><input id="profileSkipFoundNothing" type="checkbox" /> Stop Excavator Found Nothing</li>', '                                    <li><input id="profileSkipExcavatorGlyph" type="checkbox" /> Stop Excavator Glyph</li>', '                                    <li><input id="profileSkipExcavatorResources" type="checkbox" /> Stop Excavator Resources</li>', '                                    <li><input id="profileSkipExcavatorPlan" type="checkbox" /> Stop Excavator Plan</li>', '                                    <li><input id="profileSkipExcavatorArtifact" type="checkbox" /> Stop Excavator Artifact</li>', '                                    <li><input id="profileSkipExcavatorDestroyed" type="checkbox" /> Stop Excavator Destroyed</li>', '                                    <li><input id="profileSkipExcavatorReplaceMsg" type="checkbox" /> Stop Excavator Replace Alert</li>', '                                    <li><input id="profileDontReplaceExcavator" type="checkbox" /> Do not replace Excavator automatically</li>', '               </ul></div>', '                            </div></li>', '                            <li><hr />Today\'s RPC Usage:<span id="profileRpc" style="margin-left:5px;"></span></li>', '                        </ul>', '                    </div>', '                    <div id="detailsMedals">', '                        <div>Select the medals to display on your profile :</div>', '                        <ul id="profileMedalsList" style="overflow:auto;">', '                        </ul>', '                    </div>', '                    <div id="detailsSpecies">', '                        <ul id="profileSpecies" style="overflow:auto;">', '                        </ul>', '                    </div>', '                    <div id="detailsNotes">', '                        <textarea id="profileNotes" title="Write down anything you would like to store with your account."></textarea>', '                    </div>', '                    <div id="detailsAccount">', '                        <ul>', '                            <li><label title="The sitter password can be used to allow others to log in to your account to help you manage it, but doesn\'t allow access edit your profile or delete the account.">Sitter Password:<input id="profileSitterPassword" type="password" /></label></li>', '                        </ul>', '                        <hr />', '                        <ul>', '                            <li style="text-align: center; margin-bottom: 2px;">Change Account Password:</li>', '                            <li><label>New Password:<input id="profileNewPassword" type="password" /></label></li>', '                            <li><label>Confirm:<input id="profileConfirmPassword" type="password" /></label></li>', '                        </ul>', '                    </div>', '                    <div id="detailsBrowser">', '                        <ul>', '                            <li><input id="profileDisableDialogAnim" type="checkbox" /> Stop Dialog Animation</li>', '                            <li><input id="profileShowBuildingLevels" type="checkbox" /> Always Show Building Levels</li>', '                            <li><input id="profileHidePlanets" type="checkbox" /> Hide Planet Images in Star Map</li>', '                            <li><input id="profileHideTips" type="checkbox" /> Hide Tips at Login</li>', '                            <li>Assets Path: (Note: make sure it ends in a file separator.)</li>', '                            <li><input id="assetsPath" type="text" placeholder="Assets URL" /></li>', '                        </ul>', '                    </div>', '                </div>', '            </div>', '        </form>', '    </div>', '    <div class="ft"></div>'].join('');
         },
-        handleUpdate: function () {
+        handleUpdate: function() {
             var updatesLeft = 1;
             if (this.new_password.value !== "") {
                 if (this.new_password.value !== this.confirm_password.value) {
@@ -240,21 +240,22 @@ YAHOO.namespace("lacuna");
                     this.tabView.set('activeIndex', 4);
                     this.confirm_password.focus();
                     return;
-                } else {
+                }
+                else {
                     updatesLeft++;
                     Game.Services.Empire.change_password({
                         session_id: Game.GetSession(""),
                         password1: this.new_password.value,
                         password2: this.confirm_password.value
                     }, {
-                        success: function (o) {
+                        success: function(o) {
                             YAHOO.log(o, "info", "Profile.handleUpdate.password.success");
                             Dom.removeClass(this.account_tab, 'password-changed');
                             if (--updatesLeft === 0) {
                                 this.hide();
                             }
                         },
-                        failure: function (o) {
+                        failure: function(o) {
                             this.tabView.set('activeIndex', 4);
                             this.new_password.focus();
                             return true;
@@ -275,7 +276,8 @@ YAHOO.namespace("lacuna");
                 var newEffect;
                 if (this.stopAnim.checked) {
                     Game.SetCookieSettings("disableDialogAnim", "1");
-                } else {
+                }
+                else {
                     Game.RemoveCookieSettings("disableDialogAnim");
                     newEffect = Game.GetContainerEffect();
                 }
@@ -287,7 +289,8 @@ YAHOO.namespace("lacuna");
             if (Game.GetCookieSettings("showLevels", "0") !== (this.showLevels.checked ? "1" : "0")) {
                 if (this.showLevels.checked) {
                     Game.SetCookieSettings("showLevels", "1");
-                } else {
+                }
+                else {
                     Game.RemoveCookieSettings("showLevels");
                 }
                 var levels = Sel.query("#planetMap .tileContainer .planetMapTileActionLevel");
@@ -298,7 +301,8 @@ YAHOO.namespace("lacuna");
             if (Game.GetCookieSettings("hidePlanets", "0") !== (this.hidePlanets.checked ? "1" : "0")) {
                 if (this.hidePlanets.checked) {
                     Game.SetCookieSettings("hidePlanets", "1");
-                } else {
+                }
+                else {
                     Game.RemoveCookieSettings("hidePlanets");
                 }
                 if (YAHOO.lacuna.MapStar.IsVisible()) {
@@ -309,7 +313,8 @@ YAHOO.namespace("lacuna");
             if (Game.GetCookieSettings("hideTips", "0") !== (this.hideTips.checked ? "1" : "0")) {
                 if (this.hideTips.checked) {
                     Game.SetCookieSettings("hideTips", "1");
-                } else {
+                }
+                else {
                     Game.RemoveCookieSettings("hideTips");
                 }
             }
@@ -349,7 +354,7 @@ YAHOO.namespace("lacuna");
                     skip_incoming_ships: this.skipIncomingShips.checked ? 1 : 0
                 }
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Profile.handleUpdate.success");
                     if (--updatesLeft === 0) {
                         this.hide();
@@ -358,12 +363,12 @@ YAHOO.namespace("lacuna");
                 scope: this
             });
         },
-        show: function () {
+        show: function() {
             //this is called out of scope so make sure to pass the correct scope in
             Game.Services.Empire.view_profile({
                 session_id: Game.GetSession("")
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Profile.show.view_profile.success");
                     this.fireEvent('onRpc', o.result);
                     this.populateProfile(o.result);
@@ -375,10 +380,10 @@ YAHOO.namespace("lacuna");
             Lacuna.Profile.Dialog.center();
             Lacuna.Profile.Dialog.show();
         },
-        hide: function () {
+        hide: function() {
             this.Dialog.hide();
         },
-        populateProfile: function (results) {
+        populateProfile: function(results) {
             var p = results.profile;
             this.description.value = p.description;
             this.status.value = p.status_message;
@@ -440,7 +445,7 @@ YAHOO.namespace("lacuna");
             Dom.setStyle(this.medals, 'height', Ht + 'px');
             this.Dialog.center();
         },
-        populateSpecies: function () {
+        populateSpecies: function() {
             var frag = document.createDocumentFragment(),
                 li = document.createElement('li');
             var stat = this.speciesStats;
@@ -506,7 +511,7 @@ YAHOO.namespace("lacuna");
             }
             Dom.setStyle(this.species, 'height', Ht + 'px');
         },
-        showSpeciesRedefine: function (e) {
+        showSpeciesRedefine: function(e) {
             Event.stopEvent(e);
             if (this.speciesRedefineLimits.can) {
                 this.Dialog.hide();
@@ -517,11 +522,12 @@ YAHOO.namespace("lacuna");
                 this.SpeciesDesigner.setSpeciesLocks(this.speciesRedefineLimits);
                 this.SpeciesDialog.getButtons()[0].innerHTML = [this.speciesRedefineLimits.essentia_cost, ' <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia smallImg" /> Update'].join('');
                 this.SpeciesDialog.show();
-            } else {
+            }
+            else {
                 alert("Can't redefine species: " + this.speciesRedefineLimits.reason);
             }
         },
-        redefineSpecies: function () {
+        redefineSpecies: function() {
             var data = this.SpeciesDesigner.getSpeciesData();
             if (this.SpeciesDesigner.compareSpeciesData(data, this.speciesStats)) {
                 this.SpeciesDialog.hide();
@@ -531,7 +537,8 @@ YAHOO.namespace("lacuna");
                 if (!this.SpeciesDesigner.validateSpecies(data)) {
                     return;
                 }
-            } catch (e) {
+            }
+            catch (e) {
                 alert(e);
                 return;
             }
@@ -540,7 +547,7 @@ YAHOO.namespace("lacuna");
                 session_id: Game.GetSession(""),
                 params: data
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Profile.redefine_species.success");
                     Lacuna.Pulser.Hide();
                     this.hasSpecies = false;

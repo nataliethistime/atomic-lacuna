@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -10,7 +10,7 @@ YAHOO.namespace("lacuna");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var Messaging = function () {
+    var Messaging = function() {
         this.createEvent("onRpc");
         this.createEvent("onShow");
         this.createEvent("onPageLoaded");
@@ -18,7 +18,7 @@ YAHOO.namespace("lacuna");
         this._buildAttachmentPanel();
     };
     Messaging.prototype = {
-        _buildPanel: function () {
+        _buildPanel: function() {
             var panelId = "messagingPanel";
             var panel = document.createElement("div");
             panel.id = panelId;
@@ -37,7 +37,7 @@ YAHOO.namespace("lacuna");
                 width: "700px",
                 zIndex: 9999
             });
-            this.messagingPanel.renderEvent.subscribe(function () {
+            this.messagingPanel.renderEvent.subscribe(function() {
                 //tabs
                 this.create = Dom.get("messagingCreate");
                 this.inbox = Dom.get("messagingInbox");
@@ -86,13 +86,13 @@ YAHOO.namespace("lacuna");
                 Dom.setStyle(this.display, "visibility", "hidden");
                 Event.delegate("messagingTabs", "click", this.tabClick, "li.tab", this, true);
             }, this, true);
-            this.messagingPanel.hideEvent.subscribe(function () {
+            this.messagingPanel.hideEvent.subscribe(function() {
                 this.attachmentPanel.hide();
             }, this, true);
             this.messagingPanel.render();
             Game.OverlayManager.register(this.messagingPanel);
         },
-        _buildAttachmentPanel: function () {
+        _buildAttachmentPanel: function() {
             var panelId = "attachmentPanel";
             var panel = document.createElement("div");
             panel.id = panelId;
@@ -111,13 +111,13 @@ YAHOO.namespace("lacuna");
                 width: "575px",
                 zIndex: 10000
             });
-            this.attachmentPanel.renderEvent.subscribe(function () {
+            this.attachmentPanel.renderEvent.subscribe(function() {
                 this.map = Dom.get("attachmentMap");
             });
-            this.attachmentPanel.hideEvent.subscribe(function () {
+            this.attachmentPanel.hideEvent.subscribe(function() {
                 this.map.innerHTML = "";
             });
-            this.attachmentPanel.load = function (map) {
+            this.attachmentPanel.load = function(map) {
                 this.map.innerHTML = "";
                 if (map) {
                     Dom.setStyle(this.map, "background", ['url("', Lib.AssetUrl, 'planet_side/', (map.surface || map.surface_image), '.jpg") repeat scroll 0 0 black'].join(''));
@@ -146,7 +146,7 @@ YAHOO.namespace("lacuna");
             this.attachmentPanel.render();
             Game.OverlayManager.register(this.attachmentPanel);
         },
-        _createToSelect: function () {
+        _createToSelect: function() {
             var dataSource = new Util.XHRDataSource("/empire");
             dataSource.connMethodPost = "POST";
             dataSource.maxCacheEntries = 2;
@@ -164,7 +164,7 @@ YAHOO.namespace("lacuna");
                 formatResultColumnKeys: ["name"],
                 useIndicator: true
             });
-            oTextboxList.generateRequest = function (sQuery) {
+            oTextboxList.generateRequest = function(sQuery) {
                 var s = Lang.JSON.stringify({
                     "id": YAHOO.rpc.Service._requestId++,
                     "method": "find",
@@ -176,7 +176,7 @@ YAHOO.namespace("lacuna");
                 });
                 return s;
             };
-            oTextboxList.doBeforeLoadData = function (sQuery, oResponse, oPayload) {
+            oTextboxList.doBeforeLoadData = function(sQuery, oResponse, oPayload) {
                 var tq = decodeURIComponent(sQuery);
                 if (tq[0] === "@") {
                     if (tq[1].toLowerCase() === "a") {
@@ -189,37 +189,37 @@ YAHOO.namespace("lacuna");
             };
             this.createTo = oTextboxList;
         },
-        _setTab: function (el) {
+        _setTab: function(el) {
             var list = this.list;
             Event.purgeElement(list, true);
             list.innerHTML = "";
             Dom.removeClass([this.create, this.inbox, this.alerts, this.intel, this.medals, this.tutorial, this.sent, this.archive, this.trash, this.announce], "selected");
             Dom.addClass(el, "selected");
             switch (el.id) {
-            case this.create.id:
-                Dom.setStyle("messagingCreator", "display", "");
-                Dom.setStyle("messagingReader", "display", "none");
-                Dom.setStyle("messagingAnnouncement", "display", "none");
-                break;
-            case this.announce.id:
-                Dom.setStyle("messagingCreator", "display", "none");
-                Dom.setStyle("messagingReader", "display", "none");
-                Dom.setStyle("messagingAnnouncement", "display", "");
-                Dom.get("messagingAnnounceFrame")
-                    .src = '/announcement?session_id=' + Game.GetSession();
-                break;
-            default:
-                this.viewingMessage = null;
-                Dom.setStyle("messagingCreator", "display", "none");
-                Dom.setStyle("messagingReader", "display", "");
-                Dom.setStyle("messagingAnnouncement", "display", "none");
-                break;
+                case this.create.id:
+                    Dom.setStyle("messagingCreator", "display", "");
+                    Dom.setStyle("messagingReader", "display", "none");
+                    Dom.setStyle("messagingAnnouncement", "display", "none");
+                    break;
+                case this.announce.id:
+                    Dom.setStyle("messagingCreator", "display", "none");
+                    Dom.setStyle("messagingReader", "display", "none");
+                    Dom.setStyle("messagingAnnouncement", "display", "");
+                    Dom.get("messagingAnnounceFrame")
+                        .src = '/announcement?session_id=' + Game.GetSession();
+                    break;
+                default:
+                    this.viewingMessage = null;
+                    Dom.setStyle("messagingCreator", "display", "none");
+                    Dom.setStyle("messagingReader", "display", "");
+                    Dom.setStyle("messagingAnnouncement", "display", "none");
+                    break;
             }
             Dom.setStyle(this.display, "visibility", "hidden");
             this.toArchive = {};
             this.toArchiveCount = 0;
         },
-        tabClick: function (e, matchedEl, container) {
+        tabClick: function(e, matchedEl, container) {
             var id = matchedEl.id;
             if (this.currentTab !== id) {
                 this.viewingMessage = null;
@@ -227,43 +227,43 @@ YAHOO.namespace("lacuna");
                 this.loadTab();
             }
         },
-        loadTab: function (isAll) {
+        loadTab: function(isAll) {
             switch (this.currentTab) {
-            case this.create.id:
-                Dom.setStyle(this.archiver, "display", "none");
-                this.loadCreate(isAll);
-                break;
-            case this.announce.id:
-                this._setTab(this.announce);
-                break;
-            case this.sent.id:
-                Dom.setStyle(this.archiver, "display", "none");
-                this.loadSentMessages();
-                break;
-            case this.archive.id:
-                Dom.setStyle(this.archiver, "display", "");
-                Dom.setStyle(this.archiveButton, "display", "none");
-                Dom.setStyle(this.trashButton, "display", "");
-                Dom.setStyle(this.inboxTag, "display", "none");
-                this.loadArchiveMessages();
-                break;
-            case this.trash.id:
-                Dom.setStyle(this.archiver, "display", "");
-                Dom.setStyle(this.archiveButton, "display", "");
-                Dom.setStyle(this.trashButton, "display", "none");
-                Dom.setStyle(this.inboxTag, "display", "none");
-                this.loadTrashMessages();
-                break;
-            default:
-                Dom.setStyle(this.archiver, "display", "");
-                Dom.setStyle(this.archiveButton, "display", "");
-                Dom.setStyle(this.trashButton, "display", "");
-                Dom.setStyle(this.inboxTag, "display", "");
-                this.loadInboxMessages();
-                break;
+                case this.create.id:
+                    Dom.setStyle(this.archiver, "display", "none");
+                    this.loadCreate(isAll);
+                    break;
+                case this.announce.id:
+                    this._setTab(this.announce);
+                    break;
+                case this.sent.id:
+                    Dom.setStyle(this.archiver, "display", "none");
+                    this.loadSentMessages();
+                    break;
+                case this.archive.id:
+                    Dom.setStyle(this.archiver, "display", "");
+                    Dom.setStyle(this.archiveButton, "display", "none");
+                    Dom.setStyle(this.trashButton, "display", "");
+                    Dom.setStyle(this.inboxTag, "display", "none");
+                    this.loadArchiveMessages();
+                    break;
+                case this.trash.id:
+                    Dom.setStyle(this.archiver, "display", "");
+                    Dom.setStyle(this.archiveButton, "display", "");
+                    Dom.setStyle(this.trashButton, "display", "none");
+                    Dom.setStyle(this.inboxTag, "display", "none");
+                    this.loadTrashMessages();
+                    break;
+                default:
+                    Dom.setStyle(this.archiver, "display", "");
+                    Dom.setStyle(this.archiveButton, "display", "");
+                    Dom.setStyle(this.trashButton, "display", "");
+                    Dom.setStyle(this.inboxTag, "display", "");
+                    this.loadInboxMessages();
+                    break;
             }
         },
-        loadCreate: function (isAll) {
+        loadCreate: function(isAll) {
             this.createResponse.innerHTML = "";
             if (this.viewingMessage) {
                 if (isAll) {
@@ -279,25 +279,27 @@ YAHOO.namespace("lacuna");
                         }
                     }
                     this.createTo.SelectItems(to);
-                } else {
+                }
+                else {
                     this.createTo.SelectItems([{
                         name: this.viewingMessage.from
                     }]);
                 }
                 this.createSubject.value = (this.viewingMessage.forwarding ? "Fwd: " : "Re: ") + this.viewingMessage.subject;
                 this.createText.value = "\n\n--------------\nOn " + Lib.formatServerDate(this.viewingMessage.date) + " " + this.viewingMessage.from + " wrote:\n" + this.viewingMessage.body;
-            } else {
+            }
+            else {
                 this.createTo.ResetSelections();
                 this.createSubject.value = "";
                 this.createText.value = "";
             }
             this._setTab(this.create);
         },
-        updateTag: function () {
+        updateTag: function() {
             this.tag = this.inboxTag.options[this.inboxTag.selectedIndex].value;
             this.loadInboxMessages();
         },
-        loadInboxMessages: function () {
+        loadInboxMessages: function() {
             this._setTab(this.inbox);
             if (this.pager) {
                 this.pager.destroy();
@@ -314,7 +316,7 @@ YAHOO.namespace("lacuna");
             }
             Lacuna.Pulser.Show();
             InboxServ.view_inbox(data, {
-                success: function (o) {
+                success: function(o) {
                     this.fireEvent("onRpc", o.result);
                     if (o.result.message_count > 25) {
                         this.pager = new Pager({
@@ -327,7 +329,8 @@ YAHOO.namespace("lacuna");
                         });
                         this.pager.subscribe('changeRequest', this.handleInboxPagination, this, true);
                         this.pager.render();
-                    } else {
+                    }
+                    else {
                         delete this.pager;
                     }
                     this.processMessages(o.result, {
@@ -339,7 +342,7 @@ YAHOO.namespace("lacuna");
                 scope: this
             });
         },
-        loadSentMessages: function () {
+        loadSentMessages: function() {
             this._setTab(this.sent);
             if (this.pager) {
                 this.pager.destroy();
@@ -353,7 +356,7 @@ YAHOO.namespace("lacuna");
                 };
             Lacuna.Pulser.Show();
             InboxServ.view_sent(data, {
-                success: function (o) {
+                success: function(o) {
                     this.fireEvent("onRpc", o.result);
                     if (o.result.message_count > 25) {
                         this.pager = new Pager({
@@ -365,7 +368,8 @@ YAHOO.namespace("lacuna");
                         });
                         this.pager.subscribe('changeRequest', this.handleSentPagination, this, true);
                         this.pager.render();
-                    } else {
+                    }
+                    else {
                         delete this.pager;
                     }
                     this.processMessages(o.result, {
@@ -376,7 +380,7 @@ YAHOO.namespace("lacuna");
                 scope: this
             });
         },
-        loadArchiveMessages: function () {
+        loadArchiveMessages: function() {
             this._setTab(this.archive);
             if (this.pager) {
                 this.pager.destroy();
@@ -390,7 +394,7 @@ YAHOO.namespace("lacuna");
                 };
             Lacuna.Pulser.Show();
             InboxServ.view_archived(data, {
-                success: function (o) {
+                success: function(o) {
                     this.fireEvent("onRpc", o.result);
                     if (o.result.message_count > 25) {
                         this.pager = new Pager({
@@ -402,7 +406,8 @@ YAHOO.namespace("lacuna");
                         });
                         this.pager.subscribe('changeRequest', this.handleArchivePagination, this, true);
                         this.pager.render();
-                    } else {
+                    }
+                    else {
                         delete this.pager;
                     }
                     this.processMessages(o.result, {
@@ -413,7 +418,7 @@ YAHOO.namespace("lacuna");
                 scope: this
             });
         },
-        loadTrashMessages: function () {
+        loadTrashMessages: function() {
             this._setTab(this.trash);
             if (this.pager) {
                 this.pager.destroy();
@@ -427,7 +432,7 @@ YAHOO.namespace("lacuna");
                 };
             Lacuna.Pulser.Show();
             InboxServ.view_trashed(data, {
-                success: function (o) {
+                success: function(o) {
                     this.fireEvent("onRpc", o.result);
                     if (o.result.message_count > 25) {
                         this.pager = new Pager({
@@ -439,7 +444,8 @@ YAHOO.namespace("lacuna");
                         });
                         this.pager.subscribe('changeRequest', this.handleTrashPagination, this, true);
                         this.pager.render();
-                    } else {
+                    }
+                    else {
                         delete this.pager;
                     }
                     this.processMessages(o.result, {
@@ -450,7 +456,7 @@ YAHOO.namespace("lacuna");
                 scope: this
             });
         },
-        handleInboxPagination: function (newState) {
+        handleInboxPagination: function(newState) {
             var InboxServ = Game.Services.Inbox,
                 data = {
                     session_id: Game.GetSession(""),
@@ -463,7 +469,7 @@ YAHOO.namespace("lacuna");
             }
             Lacuna.Pulser.Show();
             InboxServ.view_inbox(data, {
-                success: function (o) {
+                success: function(o) {
                     this.fireEvent("onRpc", o.result);
                     this.processMessages(o.result, {
                         inbox: 1
@@ -475,7 +481,7 @@ YAHOO.namespace("lacuna");
             // Update the Paginator's state
             this.pager.setState(newState);
         },
-        handleSentPagination: function (newState) {
+        handleSentPagination: function(newState) {
             var InboxServ = Game.Services.Inbox,
                 data = {
                     session_id: Game.GetSession(""),
@@ -485,7 +491,7 @@ YAHOO.namespace("lacuna");
                 };
             Lacuna.Pulser.Show();
             InboxServ.view_sent(data, {
-                success: function (o) {
+                success: function(o) {
                     this.fireEvent("onRpc", o.result);
                     this.processMessages(o.result, {
                         sent: 1
@@ -497,7 +503,7 @@ YAHOO.namespace("lacuna");
             // Update the Paginator's state
             this.pager.setState(newState);
         },
-        handleArchivePagination: function (newState) {
+        handleArchivePagination: function(newState) {
             var InboxServ = Game.Services.Inbox,
                 data = {
                     session_id: Game.GetSession(""),
@@ -507,7 +513,7 @@ YAHOO.namespace("lacuna");
                 };
             Lacuna.Pulser.Show();
             InboxServ.view_archived(data, {
-                success: function (o) {
+                success: function(o) {
                     this.fireEvent("onRpc", o.result);
                     this.processMessages(o.result, {
                         archive: 1
@@ -519,7 +525,7 @@ YAHOO.namespace("lacuna");
             // Update the Paginator's state
             this.pager.setState(newState);
         },
-        handleTrashPagination: function (newState) {
+        handleTrashPagination: function(newState) {
             var InboxServ = Game.Services.Inbox,
                 data = {
                     session_id: Game.GetSession(""),
@@ -529,7 +535,7 @@ YAHOO.namespace("lacuna");
                 };
             Lacuna.Pulser.Show();
             InboxServ.view_trashed(data, {
-                success: function (o) {
+                success: function(o) {
                     this.fireEvent("onRpc", o.result);
                     this.processMessages(o.result, {
                         trash: 1
@@ -541,7 +547,7 @@ YAHOO.namespace("lacuna");
             // Update the Paginator's state
             this.pager.setState(newState);
         },
-        processMessages: function (results, is) {
+        processMessages: function(results, is) {
             var list = this.list,
                 messages = results.messages,
                 li = document.createElement("li"),
@@ -555,7 +561,8 @@ YAHOO.namespace("lacuna");
             if (messages.length === 0) {
                 li.innerHTML = 'No messages to display.';
                 list.appendChild(li);
-            } else {
+            }
+            else {
                 for (var i = 0; i < messages.length; i++) {
                     var msg = messages[i],
                         nLi = li.cloneNode(false);
@@ -566,7 +573,8 @@ YAHOO.namespace("lacuna");
                     if (msg.has_read === "0") {
                         Dom.addClass(nLi, "unread");
                         img = 'unread';
-                    } else {
+                    }
+                    else {
                         img = 'read';
                     }
                     if (msg.has_replied === "1") {
@@ -582,7 +590,7 @@ YAHOO.namespace("lacuna");
             }
             //wait for tab to display first
             var panel = this.messagingPanel;
-            setTimeout(function () {
+            setTimeout(function() {
                 var size = Game.GetSize();
                 var Ht = size.h - 90;
                 if (Ht > 400) {
@@ -595,19 +603,20 @@ YAHOO.namespace("lacuna");
                 panel.center();
             }, 10);
         },
-        checkSelect: function (e, matchedEl, container) {
+        checkSelect: function(e, matchedEl, container) {
             var msg = matchedEl.parentNode.parentNode.Message;
             if (msg) {
                 if (matchedEl.checked) {
                     this.toArchive[msg.id] = msg;
                     this.toArchiveCount++;
-                } else {
+                }
+                else {
                     delete this.toArchive[msg.id];
                     this.toArchiveCount--;
                 }
             }
         },
-        loadMessage: function (e, matchedEl, container) {
+        loadMessage: function(e, matchedEl, container) {
             var msg = matchedEl.parentNode.Message;
             if (msg && msg.id) {
                 var InboxServ = Game.Services.Inbox,
@@ -617,7 +626,7 @@ YAHOO.namespace("lacuna");
                     };
                 Lacuna.Pulser.Show();
                 InboxServ.read_message(data, {
-                    success: function (o) {
+                    success: function(o) {
                         var message = matchedEl.parentNode;
                         var messageSelect = message.childNodes[1];
                         var img = messageSelect.childNodes[0];
@@ -631,7 +640,7 @@ YAHOO.namespace("lacuna");
                 });
             }
         },
-        displayMessage: function (msg) {
+        displayMessage: function(msg) {
             if (msg) {
                 /* {
                 "id" : "id-goes-here",
@@ -650,7 +659,8 @@ YAHOO.namespace("lacuna");
                 Dom.setStyle(this.display, "visibility", "");
                 if (msg.from !== msg.to) {
                     Dom.setStyle("messagingReplyC", "display", "");
-                } else {
+                }
+                else {
                     Dom.setStyle("messagingReplyC", "display", "none");
                 }
                 this.viewingMessage = msg;
@@ -668,7 +678,8 @@ YAHOO.namespace("lacuna");
                         imgDiv.id = "attachmentImage";
                         if (img.link) {
                             imgDiv.innerHTML = ['<a href="', img.link, '" title="', img.title, '" target="_blank"><img src="', img.url, '" alt="', img.title, '" title="', img.title, '" /></a>'].join('');
-                        } else {
+                        }
+                        else {
                             imgDiv.innerHTML = ['<img src="', img.url, '" alt="', img.title, '" title="', img.title, '" />'].join('');
                         }
                     }
@@ -716,14 +727,15 @@ YAHOO.namespace("lacuna");
                 }
             }
         },
-        displayAttachment: function () {
+        displayAttachment: function() {
             this.attachmentPanel.load(this.viewingMessage.attachments.map);
         },
-        sendMessage: function () {
+        sendMessage: function() {
             var to = this.createTo.Selections();
             if (to.length === 0) {
                 this.createResponse.innerHTML = "Must send a message To someone.";
-            } else {
+            }
+            else {
                 var InboxServ = Game.Services.Inbox,
                     data = {
                         session_id: Game.GetSession(""),
@@ -736,19 +748,21 @@ YAHOO.namespace("lacuna");
                         data.options = {
                             forward: this.viewingMessage.id
                         };
-                    } else {
+                    }
+                    else {
                         data.options = {
                             in_reply_to: this.viewingMessage.id
                         };
                     }
                 }
                 InboxServ.send_message(data, {
-                    success: function (o) {
+                    success: function(o) {
                         this.fireEvent("onRpc", o.result);
                         var u = o.result.message.unknown;
                         if (u && u.length > 0) {
                             this.createResponse.innerHTML = "Unable to send to: " + u.join(', ');
-                        } else {
+                        }
+                        else {
                             this.createResponse.innerHTML = "";
                             this.createTo.ResetSelections();
                             this.createSubject.value = "";
@@ -757,7 +771,7 @@ YAHOO.namespace("lacuna");
                             this.loadTab();
                         }
                     },
-                    failure: function (o) {
+                    failure: function(o) {
                         if (o.error.code === 1005) {
                             this.createResponse.innerHTML = o.error.message;
                             return true;
@@ -767,20 +781,20 @@ YAHOO.namespace("lacuna");
                 });
             }
         },
-        replyMessage: function (e) {
+        replyMessage: function(e) {
             this.currentTab = this.create.id;
             this.loadTab();
         },
-        replyAllMessage: function (e) {
+        replyAllMessage: function(e) {
             this.currentTab = this.create.id;
             this.loadTab(true);
         },
-        forwardMessage: function (e) {
+        forwardMessage: function(e) {
             this.currentTab = this.create.id;
             this.viewingMessage.forwarding = true;
             this.loadTab();
         },
-        archiveMessage: function (e) {
+        archiveMessage: function(e) {
             if (!this.toArchive[this.viewingMessage.id]) {
                 this.toArchive[this.viewingMessage.id] = this.viewingMessage;
                 this.toArchiveCount++;
@@ -791,14 +805,14 @@ YAHOO.namespace("lacuna");
                     message_ids: [this.viewingMessage.id]
                 };
             InboxServ.archive_messages(data, {
-                success: function (o) {
+                success: function(o) {
                     this.archiveProcess(o.result);
                     this.fireEvent("onRpc", o.result);
                 },
                 scope: this
             });
         },
-        archiveMessages: function () {
+        archiveMessages: function() {
             if (this.toArchiveCount > 0) {
                 var mIds = [];
                 for (var key in this.toArchive) {
@@ -812,7 +826,7 @@ YAHOO.namespace("lacuna");
                         message_ids: mIds
                     };
                 InboxServ.archive_messages(data, {
-                    success: function (o) {
+                    success: function(o) {
                         this.archiveProcess(o.result);
                         this.fireEvent("onRpc", o.result);
                     },
@@ -820,8 +834,8 @@ YAHOO.namespace("lacuna");
                 });
             }
         },
-        archiveProcess: function (results) {
-            Dom.batch(Sel.query("li.message", this.list), function (el) {
+        archiveProcess: function(results) {
+            Dom.batch(Sel.query("li.message", this.list), function(el) {
                 if (results.success.indexOf(el.Message.id) >= 0) {
                     delete this.toArchive[el.Message.id];
                     if (el.Message.has_read * 1 === 0) {
@@ -843,7 +857,7 @@ YAHOO.namespace("lacuna");
             delete this.selectedAll;
             this.select.innerHTML = "Select All";
         },
-        trashMessage: function (e) {
+        trashMessage: function(e) {
             if (!this.toArchive[this.viewingMessage.id]) {
                 this.toArchive[this.viewingMessage.id] = this.viewingMessage;
                 this.toArchiveCount++;
@@ -854,14 +868,14 @@ YAHOO.namespace("lacuna");
                     message_ids: [this.viewingMessage.id]
                 };
             InboxServ.trash_messages(data, {
-                success: function (o) {
+                success: function(o) {
                     this.trashProcess(o.result);
                     this.fireEvent("onRpc", o.result);
                 },
                 scope: this
             });
         },
-        trashMessages: function () {
+        trashMessages: function() {
             if (this.toArchiveCount > 0) {
                 var mIds = [];
                 for (var key in this.toArchive) {
@@ -875,7 +889,7 @@ YAHOO.namespace("lacuna");
                         message_ids: mIds
                     };
                 InboxServ.trash_messages(data, {
-                    success: function (o) {
+                    success: function(o) {
                         this.trashProcess(o.result);
                         this.fireEvent("onRpc", o.result);
                     },
@@ -883,8 +897,8 @@ YAHOO.namespace("lacuna");
                 });
             }
         },
-        trashProcess: function (results) {
-            Dom.batch(Sel.query("li.message", this.list), function (el) {
+        trashProcess: function(results) {
+            Dom.batch(Sel.query("li.message", this.list), function(el) {
                 if (results.success.indexOf(el.Message.id) >= 0) {
                     delete this.toArchive[el.Message.id];
                     if (el.Message.has_read * 1 === 0) {
@@ -906,27 +920,28 @@ YAHOO.namespace("lacuna");
             delete this.selectedAll;
             this.select.innerHTML = "Select All";
         },
-        selectAllMessages: function () {
+        selectAllMessages: function() {
             var els = Sel.query("input[type=checkbox]", this.list);
-            Dom.batch(els, function (el) {
+            Dom.batch(els, function(el) {
                 el.checked = !this.selectedAll;
                 this.checkSelect(null, el);
             }, this, true);
             if (this.selectedAll) {
                 delete this.selectedAll;
                 this.select.innerHTML = "Select All";
-            } else {
+            }
+            else {
                 this.selectedAll = 1;
                 this.select.innerHTML = "Select None";
             }
         },
-        formatBody: function (body) {
+        formatBody: function(body) {
             body = body.replace(/&/g, '&amp;');
             body = body.replace(/</g, '&lt;');
             body = body.replace(/>/g, '&gt;');
             body = body.replace(/\n/g, '<br />');
             body = body.replace(/\*([^*]+)\*/gi, '<b>$1</b>');
-            body = body.replace(/\{(food|water|ore|energy|waste|happiness|time|essentia|plots|build)\}/gi, function (str, icon) {
+            body = body.replace(/\{(food|water|ore|energy|waste|happiness|time|essentia|plots|build)\}/gi, function(str, icon) {
                 var cl = 'small' + icon.substr(0, 1)
                     .toUpperCase() + icon.substr(1);
                 return '<img src="' + Lib.AssetUrl + 'ui/s/' + icon + '.png" class="' + cl + '" />';
@@ -942,14 +957,14 @@ YAHOO.namespace("lacuna");
             //body = body.replace(/\{Alliance\s+(\d+)\s+([^\}]+)}/gi,'$2');
             return body;
         },
-        handleProfileLink: function (e, el) {
+        handleProfileLink: function(e, el) {
             Event.stopEvent(e);
             var res = el.href.match(/\#(-?\d+)$/);
             if (res) {
                 Lacuna.Info.Empire.Load(res[1]);
             }
         },
-        handleStarmapLink: function (e, el) {
+        handleStarmapLink: function(e, el) {
             Event.stopEvent(e);
             var res = el.href.match(/\#(-?\d+)x(-?\d+)$/);
             Game.StarJump({
@@ -962,19 +977,19 @@ YAHOO.namespace("lacuna");
             //Lacuna.Menu.StarVisible();
             //Lacuna.MapStar.Jump(res[1]*1,res[2]*1);
         },
-        handlePlanetLink: function (e, el) {
+        handlePlanetLink: function(e, el) {
             Event.stopEvent(e);
             var res = el.href.match(/\#(-?\d+)$/);
             this.hide();
             var planet = Game.EmpireData.planets[res[1]];
             Game.PlanetJump(planet);
         },
-        handleAllianceLink: function (e, el) {
+        handleAllianceLink: function(e, el) {
             Event.stopEvent(e);
             var res = el.href.match(/\#(-?\d+)$/);
             Lacuna.Info.Alliance.Load(res[1]);
         },
-        handleVoteYesLink: function (e, el) {
+        handleVoteYesLink: function(e, el) {
             Event.stopEvent(e);
             var res = el.href.match(/\#(-?\d+)&(-?\d+)&(-?\d+)$/);
             Game.Services.Modules.Parliament.cast_vote({
@@ -983,13 +998,13 @@ YAHOO.namespace("lacuna");
                 proposition_id: res[3],
                 vote: 1
             }, {
-                success: function (o) {
+                success: function(o) {
                     alert("Voted Yes!");
                 },
                 scope: this
             });
         },
-        handleVoteNoLink: function (e, el) {
+        handleVoteNoLink: function(e, el) {
             Event.stopEvent(e);
             var res = el.href.match(/\#(-?\d+)&(-?\d+)&(-?\d+)$/);
             Game.Services.Modules.Parliament.cast_vote({
@@ -998,23 +1013,23 @@ YAHOO.namespace("lacuna");
                 proposition_id: res[3],
                 vote: 0
             }, {
-                success: function (o) {
+                success: function(o) {
                     alert("Voted No!");
                 },
                 scope: this
             });
         },
-        isVisible: function () {
+        isVisible: function() {
             return this.messagingPanel.cfg.getProperty("visible");
         },
-        show: function () {
+        show: function() {
             Game.OverlayManager.hideAll();
             this.messagingPanel.show();
             this.currentTab = this.inbox.id;
             this.loadTab();
             this.fireEvent("onShow");
         },
-        sendTo: function (empireName) {
+        sendTo: function(empireName) {
             Game.OverlayManager.hideAll();
             delete this.viewingMessage;
             this.messagingPanel.show();
@@ -1025,7 +1040,7 @@ YAHOO.namespace("lacuna");
             }]);
             this.fireEvent("onShow");
         },
-        showMessage: function (msg) {
+        showMessage: function(msg) {
             Game.OverlayManager.hideAll();
             this.messagingPanel.show();
             var InboxServ = Game.Services.Inbox,
@@ -1034,11 +1049,12 @@ YAHOO.namespace("lacuna");
                     message_id: msg
                 };
             InboxServ.read_message(data, {
-                success: function (o) {
+                success: function(o) {
                     var message = o.result.message;
                     if (message.has_archived !== "0") {
                         this.currentTab = this.archive.id;
-                    } else {
+                    }
+                    else {
                         this.currentTab = this.inbox.id;
                     }
                     this.fireEvent("onRpc", o);
@@ -1048,7 +1064,7 @@ YAHOO.namespace("lacuna");
                 scope: this
             });
         },
-        hide: function () {
+        hide: function() {
             this.messagingPanel.hide();
         }
     };

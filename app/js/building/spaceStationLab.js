@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -9,21 +9,22 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var SpaceStationLab = function (result) {
+    var SpaceStationLab = function(result) {
         SpaceStationLab.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.SpaceStationLab;
     };
     Lang.extend(SpaceStationLab, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             if (this.result.make_plan && this.result.make_plan.level_costs.length > 0) {
                 return [this._getPlanTab()];
-            } else {
+            }
+            else {
                 return;
             }
         },
-        _getPlanTab: function () {
+        _getPlanTab: function() {
             Event.onContentReady("stationLabLevelsContainer", this.PlanPopulate, this, true);
-            Event.on("stationLabGoToPlan", "click", function () {
+            Event.on("stationLabGoToPlan", "click", function() {
                 delete this.selectedType;
                 Dom.get("stationLabPlanSelected")
                     .innerHTML = "";
@@ -31,7 +32,7 @@ YAHOO.namespace("lacuna.buildings");
                 Dom.setStyle("stationLabLevelsContainer", "display", "none");
             }, this, true);
             Event.on("stationLabMakingSubsidize", "click", this.PlanSubsidize, this, true);
-            Event.delegate("stationLabPlans", 'click', function (e, matchedEl, container) {
+            Event.delegate("stationLabPlans", 'click', function(e, matchedEl, container) {
                 this.selectedType = matchedEl.value;
                 Dom.get("stationLabPlanSelected")
                     .innerHTML = Sel.query('div.buildingName', matchedEl.parentNode.parentNode, true)
@@ -45,7 +46,7 @@ YAHOO.namespace("lacuna.buildings");
                 content: ['<div id="stationLabPlansContainer" style="display:none;"><div style="overflow-y:auto;"><ul id="stationLabPlans"></ul></div></div>', '<div id="stationLabLevelsContainer" style="display:none;">', '    <div class="yui-g" style="padding-bottom:3px;margin-bottom:3px;border-bottom: 1px solid #52acff;">', '        <div class="yui-u first" style="font-weight:bold;">Building a <span id="stationLabPlanSelected"></span></div>', '        <div class="yui-u" style="text-align:right;"><button type="button" id="stationLabGoToPlan">Go Back</button></div>', '    </div>', '    <div>', '        <table class="buildingStats" cellpadding="0" cellspacing="0">', '            <col width="53" /><colgroup span="6" width="110" />', '            <tr><td>Level</td>', '                <th><img src="', Lib.AssetUrl, 'ui/s/food.png" title="Food" class="smallFood" /></th>', '                <th><img src="', Lib.AssetUrl, 'ui/s/ore.png" title="Ore" class="smallOre"  /></th>', '                <th><img src="', Lib.AssetUrl, 'ui/s/water.png" title="Water" class="smallWater" /></th>', '                <th><img src="', Lib.AssetUrl, 'ui/s/energy.png" title="Energy" class="smallEnergy" /></th>', '                <th><img src="', Lib.AssetUrl, 'ui/s/waste.png" title="Waste" class="smallWaste" /></th>', '                <th></th>', '            </tr>', '        </table>', '        <div id="stationLabLevelsList" style="overflow-y:auto;"></div>', '    </div>', '</div>', '<div id="stationLabMakingContainer" style="display:none;">', '    <div style="margin-bottom:10px;"><span id="stationLabMakingName"></span> will complete in <span id="stationLabMakingTime"></span>.</div>', '    <button type="button" id="stationLabMakingSubsidize">Subsidize for ', this.result.make_plan.subsidy_cost, ' <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" style="vertical-align: middle;" /></button>', '</div>'].join('')
             });
         },
-        buildPlans: function (types) {
+        buildPlans: function(types) {
             var frag = [];
             for (var n = 0; n < types.length; n++) {
                 var plan = types[n];
@@ -56,7 +57,7 @@ YAHOO.namespace("lacuna.buildings");
             }
             return frag.join('');
         },
-        buildLevels: function (levelCosts) {
+        buildLevels: function(levelCosts) {
             var frag = ['<table id="stationLabLevels" class="buildingStats" cellpadding="0" cellspacing="0"><col width="53" /><colgroup span="6" width="110" />'],
                 planet = Game.GetCurrentPlanet();
             for (var n = 0; n < levelCosts.length; n++) {
@@ -66,16 +67,17 @@ YAHOO.namespace("lacuna.buildings");
             frag[frag.length] = '</table>';
             return frag.join('');
         },
-        makingQueue: function (remaining, span) {
+        makingQueue: function(remaining, span) {
             var time;
             if (remaining <= 0) {
                 time = 'Overdue ' + Lib.formatTime(Math.round(-remaining));
-            } else {
+            }
+            else {
                 time = Lib.formatTime(Math.round(remaining));
             }
             span.innerHTML = time;
         },
-        PlanPopulate: function () {
+        PlanPopulate: function() {
             var makePlan = this.result.make_plan;
             if (makePlan.making) {
                 Dom.setStyle("stationLabPlansContainer", "display", "none");
@@ -84,7 +86,8 @@ YAHOO.namespace("lacuna.buildings");
                 Dom.get("stationLabMakingName")
                     .innerHTML = makePlan.making;
                 this.addQueue(this.result.building.work.seconds_remaining, this.makingQueue, Dom.get("stationLabMakingTime"));
-            } else {
+            }
+            else {
                 Dom.setStyle("stationLabPlansContainer", "display", "");
                 Dom.setStyle("stationLabLevelsContainer", "display", "none");
                 Dom.setStyle("stationLabMakingContainer", "display", "none");
@@ -93,7 +96,7 @@ YAHOO.namespace("lacuna.buildings");
                 Dom.get("stationLabLevelsList")
                     .innerHTML = this.buildLevels(makePlan.level_costs);
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 200;
                     if (Ht > 250) {
@@ -106,7 +109,7 @@ YAHOO.namespace("lacuna.buildings");
                 }, 10);
             }
         },
-        PlanMake: function (e, matchedEl, container) {
+        PlanMake: function(e, matchedEl, container) {
             var type = this.selectedType,
                 level = matchedEl.value;
             if (type && level) {
@@ -118,21 +121,21 @@ YAHOO.namespace("lacuna.buildings");
                     type: type,
                     level: level
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
                         this.result = o.result;
                         matchedEl.disabled = false;
                         this.PlanPopulate();
                     },
-                    failure: function (o) {
+                    failure: function(o) {
                         matchedEl.disabled = false;
                     },
                     scope: this
                 });
             }
         },
-        PlanSubsidize: function (e) {
+        PlanSubsidize: function(e) {
             var btn = Event.getTarget(e);
             btn.disabled = true;
             Lacuna.Pulser.Show();
@@ -140,14 +143,14 @@ YAHOO.namespace("lacuna.buildings");
                 session_id: Game.GetSession(),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
                     this.result = o.result;
                     btn.disabled = false;
                     this.PlanPopulate();
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this

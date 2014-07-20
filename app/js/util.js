@@ -2,7 +2,7 @@
 var path = require('path');
 module.exports = {
     _cwd: process.cwd(),
-    root: function () {
+    root: function() {
         // Get a full path to the app/ directory
         var cwd = this._cwd || process.cwd();
         // When in development mode, the cwd is:

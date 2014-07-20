@@ -9,16 +9,16 @@ YAHOO.namespace("lacuna");
 if (!String.prototype.titleCaps) {
     String.small = "(a|an|and|as|at|but|by|en|for|if|in|of|on|or|the|to|v[.]?|via|vs[.]?)";
     String.punct = "([!\"#$%&'()*+,./:;<=>?@[\\\\\\]^_`{|}~-]*)";
-    String.prototype.titleCaps = function (replaceVal, withVal) {
+    String.prototype.titleCaps = function(replaceVal, withVal) {
         var parts = [],
             split = /[:.;?!] |(?: |^)["�]/g,
             index = 0,
             processVal = this;
-        var fnUpper = function (all) {
+        var fnUpper = function(all) {
             return (/[A-Za-z]\.[A-Za-z]/)
                 .test(all) ? all : String.upper(all);
         },
-            fnPuntUpper = function (all, punct, word) {
+            fnPuntUpper = function(all, punct, word) {
                 return punct + String.upper(word);
             };
         if (replaceVal) {
@@ -35,31 +35,32 @@ if (!String.prototype.titleCaps) {
             index = split.lastIndex;
             if (m) {
                 parts.push(m[0]);
-            } else {
+            }
+            else {
                 break;
             }
         }
         return parts.join("")
             .replace(/ V(s?)\. /ig, " v$1. ")
             .replace(/(['�])S\b/ig, "$1s")
-            .replace(/\b(AT&T|Q&A)\b/ig, function (all) {
+            .replace(/\b(AT&T|Q&A)\b/ig, function(all) {
                 return all.toUpperCase();
             });
     };
-    String.lower = function (word) {
+    String.lower = function(word) {
         return word.toLowerCase();
     };
-    String.upper = function (word) {
+    String.upper = function(word) {
         return word.substr(0, 1)
             .toUpperCase() + word.substr(1);
     };
 }
-(function () {
+(function() {
     var Util = YAHOO.util,
         Lang = YAHOO.lang,
         Dom = Util.Dom,
         assetUrl = window.lacuna_s3_base_url + 'assets/';
-    var xPad = function (x, pad, r) {
+    var xPad = function(x, pad, r) {
         if (typeof r === 'undefined') {
             r = 10;
         }
@@ -80,7 +81,8 @@ if (!String.prototype.titleCaps) {
         };
         db = new Storage(path.join(root, 'data', 'db.json'), args);
         settings = new Storage(path.join(root, 'data', 'settings.json'), args);
-    } else {
+    }
+    else {
         db = settings = window.localStorage;
     }
     var Library = {
@@ -123,7 +125,7 @@ if (!String.prototype.titleCaps) {
             STAR: "2",
             SYSTEM: "3"
         },
-        formatInlineList: function (stringArray, start, end) {
+        formatInlineList: function(stringArray, start, end) {
             if (Lang.isArray(stringArray)) {
                 var offering = ['<ul class="inlineList">'];
                 var len = stringArray.length,
@@ -142,16 +144,18 @@ if (!String.prototype.titleCaps) {
                 }
                 offering[offering.length] = '</ul>';
                 return offering.join('');
-            } else if (Lang.isString(stringArray)) {
+            }
+            else if (Lang.isString(stringArray)) {
                 return stringArray;
-            } else {
+            }
+            else {
                 return 'Unrecognized stringArray in formatInlineList';
             }
         },
-        formatMillisecondTime: function (totalMs) {
+        formatMillisecondTime: function(totalMs) {
             return Library.formatTime(totalMs / 1000);
         },
-        formatTime: function (totalSeconds) {
+        formatTime: function(totalSeconds) {
             if (totalSeconds < 0) {
                 return "";
             }
@@ -165,26 +169,29 @@ if (!String.prototype.titleCaps) {
                 seconds = Math.floor(sleft % 60);
             if (day > 0) {
                 return [day, xPad(hour, '0'), xPad(min, '0'), xPad(seconds, '0')].join(':');
-            } else if (hour > 0) {
+            }
+            else if (hour > 0) {
                 return [hour, xPad(min, '0'), xPad(seconds, '0')].join(':');
-            } else {
+            }
+            else {
                 return [min, xPad(seconds, '0')].join(':');
             }
         },
-        formatNumber: function (num) {
+        formatNumber: function(num) {
             return Util.Number.format(num, {
                 thousandsSeparator: ","
             });
         },
-        getTime: function (dt) {
+        getTime: function(dt) {
             if (dt instanceof Date) {
                 return dt.getTime();
-            } else {
+            }
+            else {
                 return Library.parseServerDate(dt)
                     .getTime();
             }
         },
-        parseServerDate: function (strDate) {
+        parseServerDate: function(strDate) {
             if (strDate instanceof Date) {
                 return strDate;
             }
@@ -200,120 +207,132 @@ if (!String.prototype.titleCaps) {
             dt.setUTCSeconds(time[2] * 1);
             return dt;
         },
-        parseReason: function (reason, defReason) {
+        parseReason: function(reason, defReason) {
             var output = "";
             if (reason) {
                 if (Lang.isArray(reason)) {
                     switch (reason[0]) {
-                    case 1011:
-                        output = [reason[1], ' Requires more ', (Lang.isArray(reason[2]) ? reason[2].join(', ') : reason[2])].join('');
-                        break;
-                    case 1012:
-                        if (reason[2]) {
-                            output = [reason[1], ' Requires higher production of ', (Lang.isArray(reason[2]) ? reason[2].join(', ') : reason[2])].join('');
-                        } else {
+                        case 1011:
+                            output = [reason[1], ' Requires more ', (Lang.isArray(reason[2]) ? reason[2].join(', ') : reason[2])].join('');
+                            break;
+                        case 1012:
+                            if (reason[2]) {
+                                output = [reason[1], ' Requires higher production of ', (Lang.isArray(reason[2]) ? reason[2].join(', ') : reason[2])].join('');
+                            }
+                            else {
+                                output = reason[1];
+                            }
+                            break;
+                        case 1013:
                             output = reason[1];
-                        }
-                        break;
-                    case 1013:
-                        output = reason[1];
-                        break;
-                    default:
-                        output = defReason || reason[1];
-                        break;
+                            break;
+                        default:
+                            output = defReason || reason[1];
+                            break;
                     }
-                } else {
+                }
+                else {
                     output = defReason || reason;
                 }
             }
             return output;
         },
-        formatServerDate: function (oDate) {
+        formatServerDate: function(oDate) {
             var dt = oDate instanceof Date ? oDate : Library.parseServerDate(oDate);
             return Util.Date.format(dt, {
                 format: "%m/%d/%Y %r"
             }, "en");
         },
-        formatServerDateShort: function (oDate) {
+        formatServerDateShort: function(oDate) {
             var dt = oDate instanceof Date ? oDate : Library.parseServerDate(oDate);
             return Util.Date.format(dt, {
                 format: "%m/%d %r"
             }, "en");
         },
-        formatServerDateTimeShort: function (oDate) {
+        formatServerDateTimeShort: function(oDate) {
             var dt = oDate instanceof Date ? oDate : Library.parseServerDate(oDate);
             return Util.Date.format(dt, {
                 format: "%m/%d %I:%M%p"
             }, "en");
         },
-        formatUTC: function (oDate) {
+        formatUTC: function(oDate) {
             var dt = new Date(oDate.getUTCFullYear(), oDate.getUTCMonth(), oDate.getUTCDate(), oDate.getUTCHours(), oDate.getUTCMinutes(), oDate.getUTCSeconds(), 0);
             return Util.Date.format(dt, {
                 format: "%m/%d/%Y %r"
             }, "en");
         },
-        convertNumDisplay: function (number, always) {
+        convertNumDisplay: function(number, always) {
             if (number >= 100000000000000000 || number <= -100000000000000000) {
                 //101Q
                 return Math.floor(number / 1000000000000000) + 'Q';
-            } else if (number >= 1000000000000000 || number <= -1000000000000000) {
+            }
+            else if (number >= 1000000000000000 || number <= -1000000000000000) {
                 //75.3Q
                 return (Math.floor(number / 100000000000000) / 10) + 'Q';
-            } else if (number >= 100000000000000 || number <= -100000000000000) {
+            }
+            else if (number >= 100000000000000 || number <= -100000000000000) {
                 //101T
                 return Math.floor(number / 1000000000000) + 'T';
-            } else if (number >= 1000000000000 || number <= -1000000000000) {
+            }
+            else if (number >= 1000000000000 || number <= -1000000000000) {
                 //75.3T
                 return (Math.floor(number / 100000000000) / 10) + 'T';
-            } else if (number >= 100000000000 || number <= -100000000000) {
+            }
+            else if (number >= 100000000000 || number <= -100000000000) {
                 //101B
                 return Math.floor(number / 1000000000) + 'B';
-            } else if (number >= 1000000000 || number <= -1000000000) {
+            }
+            else if (number >= 1000000000 || number <= -1000000000) {
                 //75.3B
                 return (Math.floor(number / 100000000) / 10) + 'B';
-            } else if (number >= 100000000 || number <= -100000000) {
+            }
+            else if (number >= 100000000 || number <= -100000000) {
                 //101M
                 return Math.floor(number / 1000000) + 'M';
-            } else if (number >= 1000000 || number <= -1000000) {
+            }
+            else if (number >= 1000000 || number <= -1000000) {
                 //75.3M
                 return (Math.floor(number / 100000) / 10) + 'M';
-            } else if (number >= 10000 || number <= -10000) {
+            }
+            else if (number >= 10000 || number <= -10000) {
                 //123k
                 return Math.floor(number / 1000) + 'k';
-            } else if (always) {
+            }
+            else if (always) {
                 //8765
                 return Math.floor(number);
-            } else {
+            }
+            else {
                 //8765
                 return Math.floor(number) || "0";
             }
         },
-        getSelectedOption: function (select) {
+        getSelectedOption: function(select) {
             //just making sure
             select = Dom.get(select);
             return Library.getSelectedOptionFromSelectElement(select);
         },
-        getSelectedOptionFromSelectElement: function (select) {
+        getSelectedOptionFromSelectElement: function(select) {
             var opts = select.options,
                 ind = select.selectedIndex;
             return ind >= 0 && opts.length > ind ? opts[ind] : null;
         },
-        getSelectedOptionValue: function (select) {
+        getSelectedOptionValue: function(select) {
             var opt = Library.getSelectedOption(select);
             return opt ? opt.value : null;
         },
-        getSelectedOptionValueFromSelectElement: function (select) {
+        getSelectedOptionValueFromSelectElement: function(select) {
             var opt = Library.getSelectedOptionFromSelectElement(select);
             return opt ? opt.value : null;
         },
-        fadeOutElm: function (id) {
+        fadeOutElm: function(id) {
             var a = new Util.Anim(id, {
                 opacity: {
                     from: 1,
                     to: 0
                 }
             }, 4);
-            a.onComplete.subscribe(function (e, dur, arg) {
+            a.onComplete.subscribe(function(e, dur, arg) {
                 Dom.get(arg)
                     .innerHTML = "";
                 Dom.setStyle(arg, "opacity", 1);
@@ -330,19 +349,21 @@ if (!String.prototype.titleCaps) {
         },
         UIImages: ['ui/bkg.png', 'ui/button_bkg_200.png', 'ui/close.png', 'ui/down.png', 'ui/l/about.png', 'ui/l/bookmarks.png', 'ui/l/build-no.png', 'ui/l/build.png', 'ui/l/disable_self_destruct.png', 'ui/l/enable_self_destruct.png', 'ui/l/energy.png', 'ui/l/essentia.png', 'ui/l/food.png', 'ui/l/happiness.png', 'ui/l/inbox.png', 'ui/l/inbox_new.png', 'ui/l/invite_friend.png', 'ui/l/logout.png', 'ui/l/ore.png', 'ui/l/planet_side.png', 'ui/l/plots.png', 'ui/l/profile.png', 'ui/l/star_map.png', 'ui/l/stats.png', 'ui/l/support.png', 'ui/l/tutorial.png', 'ui/l/waste.png', 'ui/l/water.png', 'ui/mail-read.png', 'ui/rss.png', 'ui/s/build-no.png', 'ui/s/build.png', 'ui/s/energy.png', 'ui/s/essentia.png', 'ui/s/food.png', 'ui/s/happiness.png', 'ui/s/inbox.png', 'ui/s/ore.png', 'ui/s/refresh.png', 'ui/s/star_map.png', 'ui/s/storage.png', 'ui/s/time.png', 'ui/s/tutorial.png', 'ui/s/waste.png', 'ui/s/water.png', 'ui/tab.png', 'ui/tickbar.png', 'ui/transparent_black.png', 'ui/up.png', 'ui/web/bar_bottom_back.png', 'ui/web/bar_top_back.png', 'ui/web/facebook-login-button.png', 'ui/web/selector_bottom.png', 'ui/web/selector_bottom_shine.png', 'ui/web/selector_top.png', 'ui/web/selector_top_shine.png', 'ui/web/slider-thumb-half-left.png', 'ui/web/slider-thumb-half-right.png', 'ui/web/slider-thumb.png', 'ui/web/t.png', 'ui/zoom.png', 'ui/zoom_slider.png'],
         // planetarySort - Input: Game.EmpireData.planets, Output: A sorted array of planetary objects
-        planetarySort: function (planets) {
+        planetarySort: function(planets) {
             var newplanets = [];
             for (var pId in planets) {
                 if (planets.hasOwnProperty(pId)) {
                     newplanets.push(planets[pId]);
                 }
             }
-            newplanets.sort(function (a, b) {
+            newplanets.sort(function(a, b) {
                 if (a.name > b.name) {
                     return 1;
-                } else if (a.name < b.name) {
+                }
+                else if (a.name < b.name) {
                     return -1;
-                } else {
+                }
+                else {
                     return 0;
                 }
             });

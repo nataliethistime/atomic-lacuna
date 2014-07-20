@@ -1,21 +1,21 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Util = YAHOO.util,
         Dom = Util.Dom,
         Event = Util.Event,
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var SubspaceSupplyDepot = function (result) {
+    var SubspaceSupplyDepot = function(result) {
         SubspaceSupplyDepot.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.SubspaceSupplyDepot;
     };
     YAHOO.lang.extend(SubspaceSupplyDepot, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getTransmitTab()];
         },
-        _getTransmitTab: function () {
+        _getTransmitTab: function() {
             var div = document.createElement("div");
             div.innerHTML = ['<div>', '    <button class="subspaceTransmit" id="subspaceTransmitFood">Transmit <span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/food.png" class="smallFood" /></span>3600 Food</button>', '    <button class="subspaceTransmit" id="subspaceTransmitOre">Transmit <span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/ore.png" class="smallOre" /></span>3600 Ore</button>', '</div>', '<div>', '    <button class="subspaceTransmit" id="subspaceTransmitWater">Transmit <span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/water.png" class="smallWater" /></span>3600 Water</button>', '    <button class="subspaceTransmit" id="subspaceTransmitEnergy">Transmit <span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/energy.png" class="smallEnergy" /></span>3600 Energy</button>', '</div>', '<div>', '    <button class="subspaceTransmit" id="subspaceCompleteBuildQueue">Complete Build Queue (<span class="smallImg"><img src="', Lib.AssetUrl, 'ui/s/time.png" class="smallTime" /></span><span id="subspaceQueueTime"></span>)</button>', '</div>', '<div id="subspaceMessage">&nbsp;</div>'].join('');
             Dom.setStyle(div, 'text-align', 'center');
@@ -38,7 +38,7 @@ YAHOO.namespace("lacuna.buildings");
                 label: "Transmit Resources",
                 contentEl: div
             });
-            tab.subscribe("activeChange", function (e) {
+            tab.subscribe("activeChange", function(e) {
                 if (e.newValue) {
                     var buildQueueTotal = 0;
                     var buildings = Lacuna.MapPlanet.buildings;
@@ -59,19 +59,20 @@ YAHOO.namespace("lacuna.buildings");
             }, this, true);
             return tab;
         },
-        UpdateQueueTime: function (remaining) {
+        UpdateQueueTime: function(remaining) {
             if (remaining < 1) {
                 remaining = 0;
                 Dom.get('subspaceCompleteBuildQueue')
                     .disabled = true;
-            } else {
+            }
+            else {
                 Dom.get('subspaceCompleteBuildQueue')
                     .disabled = false;
             }
             Dom.get('subspaceQueueTime')
                 .innerHTML = Lib.formatTime(remaining);
         },
-        Transmit: function (e, opt) {
+        Transmit: function(e, opt) {
             var btn = Event.getTarget(e);
             Event.stopEvent(e);
             Lacuna.Pulser.Show();
@@ -80,14 +81,15 @@ YAHOO.namespace("lacuna.buildings");
                 session_id: Game.GetSession(),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "SubspaceSupplyDepot.Transmit.success");
                     var elMessage = Dom.get('subspaceMessage');
                     if (opt.method === 'complete_build_queue') {
                         this.resetQueue();
                         this.UpdateQueueTime(0);
                         elMessage.innerHTML = 'Build queue completed.';
-                    } else {
+                    }
+                    else {
                         btn.disabled = false;
                         elMessage.innerHTML = 'Transmission completed.';
                     }
@@ -97,14 +99,14 @@ YAHOO.namespace("lacuna.buildings");
                             to: 0
                         }
                     }, 4);
-                    a.onComplete.subscribe(function () {
+                    a.onComplete.subscribe(function() {
                         elMessage.innerHTML = "&nbsp;";
                     }, this, true);
                     a.animate();
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this

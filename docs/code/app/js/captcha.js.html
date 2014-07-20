@@ -30,10 +30,10 @@
 YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
 <span class="hljs-keyword">var</span> Templates = <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/templates'</span>),
     assets = <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/assets'</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game;
-    <span class="hljs-keyword">var</span> Captcha = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> Captcha = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
         <span class="hljs-keyword">this</span>.id = <span class="hljs-string">"captcha"</span>;
         <span class="hljs-keyword">var</span> container = $(<span class="hljs-string">'&lt;div&gt;&lt;/div&gt;'</span>)
             .attr(<span class="hljs-string">'id'</span>, <span class="hljs-keyword">this</span>.id)
@@ -55,7 +55,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             zIndex: <span class="hljs-number">9999</span>
         });
         <span class="hljs-keyword">this</span>.dialog.setHeader(<span class="hljs-string">'Verify Your Humanity'</span>);
-        <span class="hljs-keyword">this</span>.dialog.hideEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.dialog.hideEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.failFunction();
         }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
         <span class="hljs-keyword">this</span>.dialog.render();
@@ -63,14 +63,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
     };
     Captcha.prototype = {
         template: Templates.get(<span class="hljs-string">'menu.captcha'</span>),
-        show: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(retry, fail)</span> {</span>
+        show: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(retry, fail)</span> {</span>
             <span class="hljs-keyword">this</span>.retyFunction = retry;
             <span class="hljs-keyword">this</span>.failFunction = fail;
             <span class="hljs-keyword">this</span>.refreshCaptcha();
             <span class="hljs-keyword">this</span>.render();
             <span class="hljs-keyword">this</span>.dialog.show();
         },
-        render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        render: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.dialog.setBody(<span class="hljs-keyword">this</span>.template({
                 assets: assets
             }));
@@ -81,7 +81,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             $(<span class="hljs-string">'#cancelCaptcha'</span>)
                 .click(_.bind(<span class="hljs-keyword">this</span>.cancel, <span class="hljs-keyword">this</span>));
         },
-        solveCaptcha: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        solveCaptcha: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Lacuna.Pulser.Show();
             Game.Services.Captcha.solve({
                 session_id: Game.GetSession(),
@@ -89,12 +89,12 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 captcha_solution: $(<span class="hljs-string">'#captchaSolution'</span>)
                     .val()
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.dialog.hide();
                     <span class="hljs-keyword">this</span>.retyFunction();
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.setError(o.error.message);
                     <span class="hljs-keyword">if</span> (o.error.message === <span class="hljs-string">'Captcha not valid.'</span>) {
                         <span class="hljs-keyword">this</span>.refreshCaptcha();
@@ -104,13 +104,13 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        refreshCaptcha: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        refreshCaptcha: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.clear();
             Game.Services.Captcha.fetch({
                 session_id: Game.GetSession()
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">this</span>.captchaGuid = o.result.guid;
                     $(<span class="hljs-string">'#captchaImage'</span>)
                         .attr(<span class="hljs-string">'src'</span>, o.result.url);
@@ -120,22 +120,22 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        cancel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        cancel: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.dialog.hide();
         },
-        clear: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        clear: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             $(<span class="hljs-string">'#captchaSolution'</span>)
                 .text(<span class="hljs-string">''</span>);
             $(<span class="hljs-string">'#captchaImage'</span>)
                 .attr(<span class="hljs-string">'src'</span>, <span class="hljs-string">''</span>);
         },
-        setError: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(msg)</span> {</span>
+        setError: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> {</span>
             $(<span class="hljs-string">'#captchaSolution'</span>)
                 .text(<span class="hljs-string">''</span>)
                 .focus();
             $(<span class="hljs-string">'#captchaMessage'</span>)
                 .html(msg)
-                .fadeOut(<span class="hljs-number">5</span> * <span class="hljs-number">1000</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                .fadeOut(<span class="hljs-number">5</span> * <span class="hljs-number">1000</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     $(<span class="hljs-keyword">this</span>)
                         .html(<span class="hljs-string">'&amp;nbsp;'</span>);
                 });

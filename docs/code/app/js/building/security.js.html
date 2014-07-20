@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -37,13 +37,13 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> Security = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+    <span class="hljs-keyword">var</span> Security = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> {</span>
         Security.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
         <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.Security;
         <span class="hljs-keyword">this</span>.foreignSpiesMessage = <span class="hljs-string">"There may be spies on your planet that we don't know about."</span>;
     };
     Lang.extend(Security, Lacuna.buildings.Building, {
-        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        destroy: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.pagerPrisoners) {
                 <span class="hljs-keyword">this</span>.pagerPrisoners.destroy();
             }
@@ -52,10 +52,10 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             }
             Security.superclass.destroy.call(<span class="hljs-keyword">this</span>);
         },
-        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getPrisonersTab(), <span class="hljs-keyword">this</span>._getSpiesTab()];
         },
-        _getPrisonersTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getPrisonersTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> spies = <span class="hljs-keyword">this</span>.result.spies;
             <span class="hljs-keyword">this</span>.prisonersTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Prisoners"</span>,
@@ -64,7 +64,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             <span class="hljs-keyword">this</span>.prisonersTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.prisonersView, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.prisonersTab;
         },
-        _getSpiesTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getSpiesTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.spiesTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Foreign Spies"</span>,
                 content: [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;p&gt;'</span>, <span class="hljs-keyword">this</span>.foreignSpiesMessage, <span class="hljs-string">'&lt;/p&gt;'</span>, <span class="hljs-string">'    &lt;ul class="spiesHeader securityInfo clearafter"&gt;'</span>, <span class="hljs-string">'        &lt;li class="securityName"&gt;Name&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="securityLevel"&gt;Level&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="securityNextMisson"&gt;Next Misson&lt;/li&gt;'</span>, <span class="hljs-string">'        &lt;li class="securityNextMisson"&gt;Current Misson&lt;/li&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'    &lt;div&gt;&lt;div id="securityDetails"&gt;&lt;/div&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div id="securityPaginator"&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
@@ -72,7 +72,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             <span class="hljs-keyword">this</span>.spiesTab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-keyword">this</span>.spiesView, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.spiesTab;
         },
-        prisonersView: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        prisonersView: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">if</span> (e.newValue) {
                 <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.prisoners) {
                     Lacuna.Pulser.Show();
@@ -80,7 +80,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         session_id: Game.GetSession(),
                         building_id: <span class="hljs-keyword">this</span>.building.id
                     }, {
-                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Security.Security.view_prisoners.success"</span>);
                             Lacuna.Pulser.Hide();
                             <span class="hljs-keyword">this</span>.rpcSuccess(o);
@@ -98,12 +98,13 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         },
                         scope: <span class="hljs-keyword">this</span>
                     });
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">this</span>.SpyPopulate();
                 }
             }
         },
-        PrisonersPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        PrisonersPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"prisonersDetails"</span>);
             <span class="hljs-keyword">if</span> (details) {
                 <span class="hljs-keyword">var</span> prisoners = <span class="hljs-keyword">this</span>.prisoners,
@@ -164,7 +165,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     }, <span class="hljs-literal">true</span>);
                 }
                 <span class="hljs-comment">//wait for tab to display first</span>
-                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">var</span> Ht = Game.GetSize()
                         .h - <span class="hljs-number">200</span>;
                     <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
@@ -175,14 +176,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }, <span class="hljs-number">10</span>);
             }
         },
-        PrisonersHandlePagination: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newState)</span> {</span>
+        PrisonersHandlePagination: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newState)</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.service.view_prisoners({
                 session_id: Game.GetSession(),
                 building_id: <span class="hljs-keyword">this</span>.building.id,
                 page_number: newState.page
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Security.PrisonersHandlePagination.view_prisoners.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
@@ -204,7 +205,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
       
         <div class="code"><pre class="wrapper">            <span class="hljs-keyword">this</span>.pagerPrisoners.setState(newState);
         },
-        PrisonersExecute: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        PrisonersExecute: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">"Are you sure you want to execute "</span>, <span class="hljs-keyword">this</span>.Prisoner.name, <span class="hljs-string">"?"</span>].join(<span class="hljs-string">''</span>))) {
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">this</span>.Self.service.execute_prisoner({
@@ -212,7 +213,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     building_id: <span class="hljs-keyword">this</span>.Self.building.id,
                     prisoner_id: <span class="hljs-keyword">this</span>.Prisoner.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Security.PrisonersExecute.success"</span>);
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
@@ -229,7 +230,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
             }
         },
-        PrisonersRelease: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        PrisonersRelease: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (confirm([<span class="hljs-string">"Are you sure you want to release "</span>, <span class="hljs-keyword">this</span>.Prisoner.name, <span class="hljs-string">"?"</span>].join(<span class="hljs-string">''</span>))) {
                 Lacuna.Pulser.Show();
                 <span class="hljs-keyword">this</span>.Self.service.release_prisoner({
@@ -237,7 +238,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     building_id: <span class="hljs-keyword">this</span>.Self.building.id,
                     prisoner_id: <span class="hljs-keyword">this</span>.Prisoner.id
                 }, {
-                    success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Security.PrisonersRelease.success"</span>);
                         Lacuna.Pulser.Hide();
                         <span class="hljs-keyword">this</span>.Self.rpcSuccess(o);
@@ -254,7 +255,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 });
             }
         },
-        spiesView: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        spiesView: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">if</span> (e.newValue) {
                 <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.spies) {
                     Lacuna.Pulser.Show();
@@ -262,7 +263,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         session_id: Game.GetSession(),
                         building_id: <span class="hljs-keyword">this</span>.building.id
                     }, {
-                        success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                        success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                             YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Security.Security.view_foreign_spies.success"</span>);
                             Lacuna.Pulser.Hide();
                             <span class="hljs-keyword">this</span>.rpcSuccess(o);
@@ -280,12 +281,13 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         },
                         scope: <span class="hljs-keyword">this</span>
                     });
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">this</span>.SpyPopulate();
                 }
             }
         },
-        SpyPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        SpyPopulate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"securityDetails"</span>);
             <span class="hljs-keyword">if</span> (details) {
                 <span class="hljs-keyword">var</span> spies = <span class="hljs-keyword">this</span>.spies,
@@ -322,7 +324,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     details.appendChild(nDiv);
                 }
                 <span class="hljs-comment">//wait for tab to display first</span>
-                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">var</span> Ht = Game.GetSize()
                         .h - <span class="hljs-number">200</span>;
                     <span class="hljs-keyword">if</span> (Ht &gt; <span class="hljs-number">300</span>) {
@@ -333,14 +335,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 }, <span class="hljs-number">10</span>);
             }
         },
-        SpyHandlePagination: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newState)</span> {</span>
+        SpyHandlePagination: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newState)</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.service.view_foreign_spies({
                 session_id: Game.GetSession(),
                 building_id: <span class="hljs-keyword">this</span>.building.id,
                 page_number: newState.page
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Security.SpyHandlePagination.view_foreign_spies.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);

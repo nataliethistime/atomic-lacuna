@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -9,20 +9,20 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var MissionCommand = function (result) {
+    var MissionCommand = function(result) {
         MissionCommand.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.MissionCommand;
     };
     Lang.extend(MissionCommand, Lacuna.buildings.Building, {
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getMissionTab()];
         },
-        _getMissionTab: function () {
+        _getMissionTab: function() {
             this.missionTab = new YAHOO.widget.Tab({
                 label: "Missions",
                 content: ['<div>', '    <div class="missionsHeader"></div>', '    <div id="missionsHt" style="overflow:auto;">', '        <ul id="missionsAvailable">', '        </ul>', '    </div>', '</div>'].join('')
             });
-            this.missionTab.subscribe("activeChange", function (e) {
+            this.missionTab.subscribe("activeChange", function(e) {
                 if (e.newValue) {
                     this.getMissions();
                     var mHt = Game.GetSize()
@@ -35,14 +35,14 @@ YAHOO.namespace("lacuna.buildings");
             }, this, true);
             return this.missionTab;
         },
-        getMissions: function () {
+        getMissions: function() {
             if (!this.missions) {
                 Lacuna.Pulser.Show();
                 this.service.get_missions({
                     session_id: Game.GetSession(),
                     building_id: this.building.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
                         this.missions = o.result.missions;
@@ -50,11 +50,12 @@ YAHOO.namespace("lacuna.buildings");
                     },
                     scope: this
                 });
-            } else {
+            }
+            else {
                 this.displayMissions();
             }
         },
-        displayMissions: function () {
+        displayMissions: function() {
             var missions = this.missions,
                 ul = Dom.get("missionsAvailable");
             if (ul) {
@@ -105,7 +106,7 @@ YAHOO.namespace("lacuna.buildings");
                 ulParent.appendChild(ul);
             }
         },
-        parseObjectives: function (arr) {
+        parseObjectives: function(arr) {
             var lst = ['<ol class="missionList">'];
             for (var n = 0; n < arr.length; n++) {
                 lst[lst.length] = '<li>';
@@ -115,7 +116,7 @@ YAHOO.namespace("lacuna.buildings");
             lst[lst.length] = '</ol>';
             return lst.join('');
         },
-        parseRewards: function (arr) {
+        parseRewards: function(arr) {
             var lst = ['<ol class="missionList">'];
             for (var n = 0; n < arr.length; n++) {
                 lst[lst.length] = '<li>';
@@ -125,7 +126,7 @@ YAHOO.namespace("lacuna.buildings");
             lst[lst.length] = '</ol>';
             return lst.join('');
         },
-        completeMission: function () {
+        completeMission: function() {
             var btn = Dom.get('complete' + this.Mission.id);
             btn.disabled = true;
             Lacuna.Pulser.Show();
@@ -134,19 +135,19 @@ YAHOO.namespace("lacuna.buildings");
                 building_id: this.Self.building.id,
                 mission_id: this.Mission.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     this.Self.rpcSuccess(o);
                     this.Self.missions = undefined;
                     this.Self.getMissions();
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this
             });
         },
-        skipMission: function () {
+        skipMission: function() {
             var btn = Dom.get('skip' + this.Mission.id);
             btn.disabled = true;
             Lacuna.Pulser.Show();
@@ -155,13 +156,13 @@ YAHOO.namespace("lacuna.buildings");
                 building_id: this.Self.building.id,
                 mission_id: this.Mission.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     this.Self.rpcSuccess(o);
                     this.Self.missions = undefined;
                     this.Self.getMissions();
                 },
-                failure: function (o) {
+                failure: function(o) {
                     btn.disabled = false;
                 },
                 scope: this

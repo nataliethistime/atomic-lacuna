@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -36,15 +36,15 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> Network19 = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+    <span class="hljs-keyword">var</span> Network19 = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> {</span>
         Network19.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
         <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.Network19;
     };
     Lang.extend(Network19, Lacuna.buildings.Building, {
-        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getCoverageTab()];
         },
-        _getCoverageTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getCoverageTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">this</span>.coverageTab = <span class="hljs-keyword">new</span> YAHOO.widget.Tab({
                 label: <span class="hljs-string">"Coverage"</span>,
                 content: [<span class="hljs-string">'&lt;div id="newsCoverageContainer"&gt;'</span>, <span class="hljs-string">'    &lt;span id="newsCoverageText"&gt;'</span>, <span class="hljs-keyword">this</span>.result.restrict_coverage === <span class="hljs-string">"1"</span> ? <span class="hljs-string">'Coverage is current restricted'</span> : <span class="hljs-string">'News is flowing freely'</span>, <span class="hljs-string">'&lt;/span&gt;'</span>, <span class="hljs-string">'    : &lt;button id="newsCoverage" type="button"&gt;'</span>, (<span class="hljs-keyword">this</span>.result.restrict_coverage === <span class="hljs-string">"1"</span> ? <span class="hljs-string">'Open Coverage'</span> : <span class="hljs-string">'Restrict Coverage'</span>), <span class="hljs-string">'&lt;/button&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="newsFeedContainer"&gt;'</span>, <span class="hljs-string">'    &lt;ul id="newsFeed"&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div class="newsRssLinksContainer"&gt;'</span>, <span class="hljs-string">'    &lt;ul id="newsRssLinks" class="clearafter"&gt;'</span>, <span class="hljs-string">'    &lt;/ul&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>)
@@ -53,7 +53,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             Event.on(<span class="hljs-string">"newsCoverage"</span>, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.NewsCoverage, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.coverageTab;
         },
-        NewsCoverage: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        NewsCoverage: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             <span class="hljs-keyword">var</span> target = Event.getTarget(e),
                 isRestrict = <span class="hljs-number">1</span>;
             target.disabled = <span class="hljs-literal">true</span>;
@@ -66,7 +66,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 building_id: <span class="hljs-keyword">this</span>.result.building.id,
                 onoff: isRestrict
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Network19.NewsCoverage.restrict_coverage.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
@@ -75,19 +75,19 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                     target.innerHTML = isRestrict ? <span class="hljs-string">'Open Coverage'</span> : <span class="hljs-string">'Restrict Coverage'</span>;
                     target.disabled = <span class="hljs-literal">false</span>;
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     target.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>
             });
         },
-        NewsGet: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        NewsGet: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">this</span>.service.view_news({
                 session_id: Game.GetSession(),
                 building_id: <span class="hljs-keyword">this</span>.building.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Network19.NewsGet.success"</span>);
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);

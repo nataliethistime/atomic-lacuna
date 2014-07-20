@@ -27,22 +27,22 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Util = YAHOO.util,
         Dom = Util.Dom,
         Event = Util.Event,
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    <span class="hljs-keyword">var</span> SubspaceSupplyDepot = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+    <span class="hljs-keyword">var</span> SubspaceSupplyDepot = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span> {</span>
         SubspaceSupplyDepot.superclass.constructor.call(<span class="hljs-keyword">this</span>, result);
         <span class="hljs-keyword">this</span>.service = Game.Services.Buildings.SubspaceSupplyDepot;
     };
     YAHOO.lang.extend(SubspaceSupplyDepot, Lacuna.buildings.Building, {
-        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        getChildTabs: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">return</span> [<span class="hljs-keyword">this</span>._getTransmitTab()];
         },
-        _getTransmitTab: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        _getTransmitTab: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> div = document.createElement(<span class="hljs-string">"div"</span>);
             div.innerHTML = [<span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;button class="subspaceTransmit" id="subspaceTransmitFood"&gt;Transmit &lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/food.png" class="smallFood" /&gt;&lt;/span&gt;3600 Food&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;button class="subspaceTransmit" id="subspaceTransmitOre"&gt;Transmit &lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/ore.png" class="smallOre" /&gt;&lt;/span&gt;3600 Ore&lt;/button&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;button class="subspaceTransmit" id="subspaceTransmitWater"&gt;Transmit &lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/water.png" class="smallWater" /&gt;&lt;/span&gt;3600 Water&lt;/button&gt;'</span>, <span class="hljs-string">'    &lt;button class="subspaceTransmit" id="subspaceTransmitEnergy"&gt;Transmit &lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/energy.png" class="smallEnergy" /&gt;&lt;/span&gt;3600 Energy&lt;/button&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div&gt;'</span>, <span class="hljs-string">'    &lt;button class="subspaceTransmit" id="subspaceCompleteBuildQueue"&gt;Complete Build Queue (&lt;span class="smallImg"&gt;&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/time.png" class="smallTime" /&gt;&lt;/span&gt;&lt;span id="subspaceQueueTime"&gt;&lt;/span&gt;)&lt;/button&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'&lt;div id="subspaceMessage"&gt;&amp;nbsp;&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
             Dom.setStyle(div, <span class="hljs-string">'text-align'</span>, <span class="hljs-string">'center'</span>);
@@ -65,7 +65,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 label: <span class="hljs-string">"Transmit Resources"</span>,
                 contentEl: div
             });
-            tab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            tab.subscribe(<span class="hljs-string">"activeChange"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                 <span class="hljs-keyword">if</span> (e.newValue) {
                     <span class="hljs-keyword">var</span> buildQueueTotal = <span class="hljs-number">0</span>;
                     <span class="hljs-keyword">var</span> buildings = Lacuna.MapPlanet.buildings;
@@ -86,19 +86,20 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
             }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
             <span class="hljs-keyword">return</span> tab;
         },
-        UpdateQueueTime: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(remaining)</span> {</span>
+        UpdateQueueTime: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(remaining)</span> {</span>
             <span class="hljs-keyword">if</span> (remaining &lt; <span class="hljs-number">1</span>) {
                 remaining = <span class="hljs-number">0</span>;
                 Dom.get(<span class="hljs-string">'subspaceCompleteBuildQueue'</span>)
                     .disabled = <span class="hljs-literal">true</span>;
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Dom.get(<span class="hljs-string">'subspaceCompleteBuildQueue'</span>)
                     .disabled = <span class="hljs-literal">false</span>;
             }
             Dom.get(<span class="hljs-string">'subspaceQueueTime'</span>)
                 .innerHTML = Lib.formatTime(remaining);
         },
-        Transmit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, opt)</span> {</span>
+        Transmit: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, opt)</span> {</span>
             <span class="hljs-keyword">var</span> btn = Event.getTarget(e);
             Event.stopEvent(e);
             Lacuna.Pulser.Show();
@@ -107,14 +108,15 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                 session_id: Game.GetSession(),
                 building_id: <span class="hljs-keyword">this</span>.building.id
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"SubspaceSupplyDepot.Transmit.success"</span>);
                     <span class="hljs-keyword">var</span> elMessage = Dom.get(<span class="hljs-string">'subspaceMessage'</span>);
                     <span class="hljs-keyword">if</span> (opt.method === <span class="hljs-string">'complete_build_queue'</span>) {
                         <span class="hljs-keyword">this</span>.resetQueue();
                         <span class="hljs-keyword">this</span>.UpdateQueueTime(<span class="hljs-number">0</span>);
                         elMessage.innerHTML = <span class="hljs-string">'Build queue completed.'</span>;
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         btn.disabled = <span class="hljs-literal">false</span>;
                         elMessage.innerHTML = <span class="hljs-string">'Transmission completed.'</span>;
                     }
@@ -124,14 +126,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                             to: <span class="hljs-number">0</span>
                         }
                     }, <span class="hljs-number">4</span>);
-                    a.onComplete.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    a.onComplete.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                         elMessage.innerHTML = <span class="hljs-string">"&amp;nbsp;"</span>;
                     }, <span class="hljs-keyword">this</span>, <span class="hljs-literal">true</span>);
                     a.animate();
                     Lacuna.Pulser.Hide();
                     <span class="hljs-keyword">this</span>.rpcSuccess(o);
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     btn.disabled = <span class="hljs-literal">false</span>;
                 },
                 scope: <span class="hljs-keyword">this</span>

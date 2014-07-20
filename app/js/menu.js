@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -8,7 +8,7 @@ YAHOO.namespace("lacuna");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var UserMenu = function () {
+    var UserMenu = function() {
         this.id = "userMenu";
         this.container = Dom.get("header");
         this.clickId = "userClick";
@@ -19,7 +19,7 @@ YAHOO.namespace("lacuna");
         this.createEvent("onDestructClick");
     };
     UserMenu.prototype = {
-        create: function () {
+        create: function() {
             var userMenu = new YAHOO.widget.Menu(this.id, {
                 zindex: 1006,
                 shadow: false,
@@ -60,7 +60,7 @@ YAHOO.namespace("lacuna");
                 url: "http://community.lacunaexpanse.com/wiki/",
                 target: "_blank"
             }]);
-            userMenu.subscribe("beforeShow", function () {
+            userMenu.subscribe("beforeShow", function() {
                 if (this.getRoot() === this) {
                     this.align("tl", "bl", [11, -14]);
                     //this.bringToTop();
@@ -68,7 +68,7 @@ YAHOO.namespace("lacuna");
             });
             userMenu.render();
             Dom.removeClass(this.container, Lib.Styles.HIDDEN);
-            Event.addListener(this.elClick, "click", function (ev) {
+            Event.addListener(this.elClick, "click", function(ev) {
                 //this.align("tl","bl");
                 if (!this.cfg.getProperty("visible")) {
                     this.show();
@@ -85,14 +85,14 @@ YAHOO.namespace("lacuna");
                 context: [this.elChangeClick, "userMenuProfile", this.elInboxClick, this.elEssentiaClick, this.elDestructClick, "userMenuInvite", "userMenuTutorial", "userMenuSupport", "userMenuStats", "userMenuAbout", "userMenuLogout"]
             });
             // Set the text for the tooltip just before we display it.
-            userMenuTT.contextTriggerEvent.subscribe(function (type, args) {
+            userMenuTT.contextTriggerEvent.subscribe(function(type, args) {
                 var context = args[0];
                 this.cfg.setProperty("text", Lacuna.Menu.UserMenu.getTextFor(context.id));
             });
             this.userMenuTT = userMenuTT;
             this.update();
         },
-        createLeft: function () {
+        createLeft: function() {
             var change = document.createElement("div"),
                 changeClick = change.cloneNode(false),
                 changeImg = change.appendChild(document.createElement("img")),
@@ -116,7 +116,7 @@ YAHOO.namespace("lacuna");
             changeImg.src = Lib.AssetUrl + 'ui/l/star_map.png';
             changeImg.alt = "Change";
             changeClick.id = "userMenuChange";
-            Event.on(changeClick, "click", function () {
+            Event.on(changeClick, "click", function() {
                 this.fireEvent("onChangeClick");
             }, this, true);
             Dom.addClass([change, changeClick], "change");
@@ -129,7 +129,7 @@ YAHOO.namespace("lacuna");
                 inboxImg.title += " (" + Game.EmpireData.has_new_messages + " new)";
                 inboxTxt.innerHTML = Game.EmpireData.has_new_messages;
             }
-            Event.on(inboxClick, "click", function () {
+            Event.on(inboxClick, "click", function() {
                 this.fireEvent("onInboxClick");
             }, this, true);
             Dom.addClass([inbox, inboxClick], "inbox");
@@ -160,7 +160,7 @@ YAHOO.namespace("lacuna");
             destructImg.src = Lib.AssetUrl + (Game.EmpireData.self_destruct_active * 1 === 1 ? 'ui/l/disable_self_destruct.png' : 'ui/l/enable_self_destruct.png');
             destructImg.alt = destructImg.title = "Destruct";
             destructClick.id = "userMenuDestruct";
-            Event.on(destructClick, "click", function () {
+            Event.on(destructClick, "click", function() {
                 this.fireEvent("onDestructClick");
             }, this, true);
             Dom.addClass([destruct, destructClick], "destruct menuItem");
@@ -182,7 +182,7 @@ YAHOO.namespace("lacuna");
             this.elDestructClick = this.container.appendChild(destructClick);
             this.elDestructImg = destructImg;
         },
-        createRight: function () {
+        createRight: function() {
             var invite = this.container.appendChild(document.createElement("div")),
                 inviteClick = this.container.appendChild(document.createElement("a")),
                 inviteImg = invite.appendChild(document.createElement("img")),
@@ -240,17 +240,18 @@ YAHOO.namespace("lacuna");
             Dom.addClass([logout, logoutClick], "logout menuItem");
             Dom.addClass(logoutClick, "click");
         },
-        update: function () {
+        update: function() {
             this.elText.innerHTML = Game.EmpireData.name || "Empire";
             this.updateTick();
         },
-        updateTick: function () {
+        updateTick: function() {
             var new_inbox_image;
             if (Game.EmpireData.has_new_messages) {
                 new_inbox_image = Lib.AssetUrl + 'ui/l/inbox_new.png';
                 this.elInboxImg.title = "Inbox (" + Game.EmpireData.has_new_messages + " new)";
                 this.elInboxText.innerHTML = Game.EmpireData.has_new_messages;
-            } else {
+            }
+            else {
                 new_inbox_image = Lib.AssetUrl + 'ui/l/inbox.png';
                 this.elInboxImg.title = "Inbox";
                 this.elInboxText.innerHTML = "";
@@ -264,82 +265,84 @@ YAHOO.namespace("lacuna");
             }
             this.elEssentiaText.innerHTML = Lib.convertNumDisplay(Game.EmpireData.essentia, true);
         },
-        show: function () {
+        show: function() {
             Dom.removeClass(this.container, Lib.Styles.HIDDEN);
         },
-        hide: function () {
+        hide: function() {
             Dom.addClass(this.container, Lib.Styles.HIDDEN);
         },
-        starVisible: function (vis) {
+        starVisible: function(vis) {
             this.elChangeClick.title = "To your Planet";
             this.elChangeImg.src = Lib.AssetUrl + 'ui/l/planet_side.png';
             this._planetVisible = false;
             this._starVisible = true;
         },
-        planetVisible: function (vis) {
+        planetVisible: function(vis) {
             this.elChangeClick.title = "To the Starmap";
             this.elChangeImg.src = Lib.AssetUrl + 'ui/l/star_map.png';
             this._planetVisible = true;
             this._starVisible = false;
         },
-        showAbout: function () {
+        showAbout: function() {
             Game.OverlayManager.hideAll();
             Lacuna.About.show();
         },
-        getTextFor: function (id) {
+        getTextFor: function(id) {
             var ED = Game.EmpireData,
                 output;
             switch (id) {
-            case "userMenuChange":
-                output = [this._planetVisible ? "To the Starmap" : "To your Planet"];
-                break;
-            case "userMenuProfile":
-                output = ['Profile'];
-                break;
-            case "userMenuInbox":
-                if (Game.EmpireData.has_new_messages) {
-                    output = ["Inbox (" + Game.EmpireData.has_new_messages + " new)"];
-                } else {
-                    output = ["Inbox"];
-                }
-                break;
-            case "userMenuEssentia":
-                output = ['Essentia'];
-                break;
-            case "userMenuInvite":
-                output = ['Invite a Friend'];
-                break;
-            case "userMenuTutorial":
-                output = ['Tutorial'];
-                break;
-            case "userMenuSupport":
-                output = ['Support'];
-                break;
-            case "userMenuDestruct":
-                if (ED.self_destruct_active * 1 === 1) {
-                    output = ['Disable Destruction Date of : ', Lib.formatServerDate(ED.self_destruct_date)];
-                } else {
-                    output = ['Enable Self Destruct'];
-                }
-                break;
-            case "userMenuStats":
-                output = ['Stats'];
-                break;
-            case "userMenuAbout":
-                output = ['About'];
-                break;
-            case "userMenuLogout":
-                output = ['Logout'];
-                break;
-            default:
-                output = [];
-                break;
+                case "userMenuChange":
+                    output = [this._planetVisible ? "To the Starmap" : "To your Planet"];
+                    break;
+                case "userMenuProfile":
+                    output = ['Profile'];
+                    break;
+                case "userMenuInbox":
+                    if (Game.EmpireData.has_new_messages) {
+                        output = ["Inbox (" + Game.EmpireData.has_new_messages + " new)"];
+                    }
+                    else {
+                        output = ["Inbox"];
+                    }
+                    break;
+                case "userMenuEssentia":
+                    output = ['Essentia'];
+                    break;
+                case "userMenuInvite":
+                    output = ['Invite a Friend'];
+                    break;
+                case "userMenuTutorial":
+                    output = ['Tutorial'];
+                    break;
+                case "userMenuSupport":
+                    output = ['Support'];
+                    break;
+                case "userMenuDestruct":
+                    if (ED.self_destruct_active * 1 === 1) {
+                        output = ['Disable Destruction Date of : ', Lib.formatServerDate(ED.self_destruct_date)];
+                    }
+                    else {
+                        output = ['Enable Self Destruct'];
+                    }
+                    break;
+                case "userMenuStats":
+                    output = ['Stats'];
+                    break;
+                case "userMenuAbout":
+                    output = ['About'];
+                    break;
+                case "userMenuLogout":
+                    output = ['Logout'];
+                    break;
+                default:
+                    output = [];
+                    break;
             }
             return output.join('');
         }
     };
     Lang.augmentProto(UserMenu, Util.EventProvider);
-    var PlanetMenu = function () {
+    var PlanetMenu = function() {
         this.id = "planetMenu";
         this.container = Dom.get("footer");
         this.clickId = "planetsClick";
@@ -347,14 +350,14 @@ YAHOO.namespace("lacuna");
         this.elText = Dom.get("planets");
     };
     PlanetMenu.prototype = {
-        create: function () {
+        create: function() {
             var planetMenu = new YAHOO.widget.Menu(this.id, {
                 zindex: 1006,
                 shadow: false,
                 //effect:{effect:YAHOO.widget.ContainerEffect.SLIDE,duration:0.5},
                 context: [this.clickId, "bl", "tl", [9, 10]]
             });
-            planetMenu.subscribe("beforeShow", function () {
+            planetMenu.subscribe("beforeShow", function() {
                 if (this.getRoot() === this) {
                     this.align("bl", "tl", [9, 10]);
                     //this.bringToTop();
@@ -362,7 +365,7 @@ YAHOO.namespace("lacuna");
             });
             planetMenu.render();
             Dom.removeClass(this.container, Lib.Styles.HIDDEN);
-            Event.addListener(this.elClick, "click", function (ev) {
+            Event.addListener(this.elClick, "click", function(ev) {
                 //this.align("bl","tl");
                 this.show();
                 Event.stopEvent(ev);
@@ -380,14 +383,14 @@ YAHOO.namespace("lacuna");
                 context: [this.elFoodOver, this.elOreOver, this.elWaterOver, this.elEnergyOver, this.elWasteOver, this.elHappyOver, this.elPlotsOver]
             });
             // Set the text for the tooltip just before we display it.
-            planetMenuTT.contextTriggerEvent.subscribe(function (type, args) {
+            planetMenuTT.contextTriggerEvent.subscribe(function(type, args) {
                 var context = args[0];
                 this.cfg.setProperty("text", Lacuna.Menu.PlanetMenu.getTextFor(context.id));
             });
             this.planetMenuTT = planetMenuTT;
             this.update();
         },
-        createLeft: function () {
+        createLeft: function() {
             var food = document.createElement("div"),
                 foodOver = food.cloneNode(false),
                 foodImg = food.appendChild(document.createElement("img")),
@@ -475,7 +478,7 @@ YAHOO.namespace("lacuna");
             this.elEnergyPercent = energyPercent;
             this.elEnergyHour = energyHr;
         },
-        createRight: function () {
+        createRight: function() {
             var waste = document.createElement("div"),
                 wasteOver = waste.cloneNode(false),
                 wasteImg = waste.appendChild(document.createElement("img")),
@@ -531,7 +534,7 @@ YAHOO.namespace("lacuna");
             this.elPlotsOver = this.container.appendChild(plotsOver);
             this.elPlotsText = plotsTxt;
         },
-        update: function () {
+        update: function() {
             var ED = Game.EmpireData,
                 planets = ED.planets || {},
                 cpi = ED.current_planet_id || ED.home_planet_id,
@@ -573,7 +576,7 @@ YAHOO.namespace("lacuna");
                     items.push(pObj);
                 }
             }
-            items.sort(function (a, b) {
+            items.sort(function(a, b) {
                 var nameA = a.text.toLowerCase();
                 var nameB = b.text.toLowerCase();
                 if (nameA < nameB) {
@@ -589,7 +592,7 @@ YAHOO.namespace("lacuna");
             this.elText.innerHTML = [cp.image ? '<img src="' + Lib.AssetUrl + 'star_system/' + cp.image + '.png" class="menuPlanetThumb" />' : '', cp.name].join('');
             this.updateTick();
         },
-        updateElm: function (el, newVal, extra) {
+        updateElm: function(el, newVal, extra) {
             var formatedVal = Lib.convertNumDisplay(newVal) + (extra || '');
             if (el.innerHTML !== formatedVal) {
                 var fromColor = el.currentValue && el.currentValue > newVal ? '#f00' : '#0f0';
@@ -604,7 +607,7 @@ YAHOO.namespace("lacuna");
                 a.animate();
             }
         },
-        updateTick: function () {
+        updateTick: function() {
             var ED = Game.EmpireData,
                 planets = ED.planets || {},
                 cpi = ED.current_planet_id || ED.home_planet_id,
@@ -630,7 +633,8 @@ YAHOO.namespace("lacuna");
                 this.updateElm(this.elHappyText, cp.happiness);
                 this.updateElm(this.elHappyHour, cp.happiness_hour, '/hr');
                 this.updateElm(this.elPlotsText, cp.plots_available * 1);
-            } else {
+            }
+            else {
                 this.elText.innerHTML = "Planet";
                 this.elFoodText.innerHTML = "0";
                 this.elFoodHour.innerHTML = "0";
@@ -652,7 +656,7 @@ YAHOO.namespace("lacuna");
                 this.elPlotsText.innerHTML = "0";
             }
         },
-        updatePercent: function (el, perc) {
+        updatePercent: function(el, perc) {
             if (perc > 1) {
                 perc = 1;
             }
@@ -660,23 +664,25 @@ YAHOO.namespace("lacuna");
             var colorPercent;
             if (perc < 0.8) {
                 colorPercent = 0;
-            } else {
+            }
+            else {
                 colorPercent = 5 * perc - 4;
             }
             var color = 'rgb(255,' + Math.round(255 - 127 * colorPercent) + ',' + Math.round(255 - 255 * colorPercent) + ')';
             Dom.setStyle(el, 'background-color', color);
             Dom.setStyle(el.parentNode, 'border-color', color);
         },
-        menuClick: function (p_sType, p_aArgs, planet) {
+        menuClick: function(p_sType, p_aArgs, planet) {
             Lacuna.Menu.PlanetMenu.Menu.hide();
             YAHOO.log(planet, "info", "PlanetMenu.menuClick.click");
             if (Lacuna.MapStar.IsVisible()) {
                 Game.PlanetChange(planet);
-            } else {
+            }
+            else {
                 Game.PlanetJump(planet);
             }
         },
-        menuStarClick: function (p_sType, p_aArgs, planet) {
+        menuStarClick: function(p_sType, p_aArgs, planet) {
             Lacuna.Menu.PlanetMenu.Menu.hide();
             YAHOO.log(planet, "info", "PlanetMenu.menuStarClick.click");
             Game.StarJump({
@@ -686,117 +692,118 @@ YAHOO.namespace("lacuna");
                 y: planet.y
             });
         },
-        menuPlanetClick: function (p_sType, p_aArgs, planet) {
+        menuPlanetClick: function(p_sType, p_aArgs, planet) {
             Lacuna.Menu.PlanetMenu.Menu.hide();
             Game.PlanetJump(planet);
         },
-        show: function () {
+        show: function() {
             Dom.removeClass(this.container, Lib.Styles.HIDDEN);
         },
-        hide: function () {
+        hide: function() {
             Dom.addClass(this.container, Lib.Styles.HIDDEN);
         },
-        resourceTTText: function (name, icon, iconClass, hour, store, cap) {
+        resourceTTText: function(name, icon, iconClass, hour, store, cap) {
             var wantCap = typeof cap !== 'undefined';
             return ['<div><strong>', name, '</strong></div>', '<div><img alt="" class="', iconClass, '" src="', Lib.AssetUrl, 'ui/s/', icon, '.png" /> ', Lib.formatNumber(hour), '/hr</div>', '<div><img alt="" class="smallStorage" src="', Lib.AssetUrl, 'ui/s/storage.png" />', Lib.formatNumber(Math.round(store)), (wantCap ? '/' + Lib.formatNumber(cap) : ''), '</div>', (wantCap ? '<div><img alt="" class="smallTime" src="' + Lib.AssetUrl + 'ui/s/time.png" />' + (hour < 0 && store > 0 ? 'Empty In ' + Lib.formatTime(-3600 * store / hour) : hour >= 0 && cap === store ? 'Full' : hour > 0 ? 'Full In ' + Lib.formatTime(3600 * (cap - store) / hour) : 'Will Never Fill') + '</div>' : '')];
         },
-        getTextFor: function (id) {
+        getTextFor: function(id) {
             var ED = Game.EmpireData,
                 planet = ED.planets[ED.current_planet_id || ED.home_planet_id],
                 output;
             switch (id) {
-            case "planetMenuFood":
-                output = this.resourceTTText('Food', 'food', 'smallFood', planet.food_hour, planet.food_stored, planet.food_capacity);
-                break;
-            case "planetMenuOre":
-                output = this.resourceTTText('Ore', 'ore', 'smallOre', planet.ore_hour, planet.ore_stored, planet.ore_capacity);
-                break;
-            case "planetMenuWater":
-                output = this.resourceTTText('Water', 'water', 'smallWater', planet.water_hour, planet.water_stored, planet.water_capacity);
-                break;
-            case "planetMenuEnergy":
-                output = this.resourceTTText('Energy', 'energy', 'smallEnergy', planet.energy_hour, planet.energy_stored, planet.energy_capacity);
-                break;
-            case "planetMenuWaste":
-                output = this.resourceTTText('Waste', 'waste', 'smallWaste', planet.waste_hour, planet.waste_stored, planet.waste_capacity);
-                break;
-            case "planetMenuHappiness":
-                output = this.resourceTTText('Happiness', 'happiness', 'smallHappy', planet.happiness_hour, planet.happiness);
-                break;
-            case "planetMenuPlots":
-                output = [planet.plots_available * 1, ' Plots Available'];
-                break;
-            default:
-                output = [];
-                break;
+                case "planetMenuFood":
+                    output = this.resourceTTText('Food', 'food', 'smallFood', planet.food_hour, planet.food_stored, planet.food_capacity);
+                    break;
+                case "planetMenuOre":
+                    output = this.resourceTTText('Ore', 'ore', 'smallOre', planet.ore_hour, planet.ore_stored, planet.ore_capacity);
+                    break;
+                case "planetMenuWater":
+                    output = this.resourceTTText('Water', 'water', 'smallWater', planet.water_hour, planet.water_stored, planet.water_capacity);
+                    break;
+                case "planetMenuEnergy":
+                    output = this.resourceTTText('Energy', 'energy', 'smallEnergy', planet.energy_hour, planet.energy_stored, planet.energy_capacity);
+                    break;
+                case "planetMenuWaste":
+                    output = this.resourceTTText('Waste', 'waste', 'smallWaste', planet.waste_hour, planet.waste_stored, planet.waste_capacity);
+                    break;
+                case "planetMenuHappiness":
+                    output = this.resourceTTText('Happiness', 'happiness', 'smallHappy', planet.happiness_hour, planet.happiness);
+                    break;
+                case "planetMenuPlots":
+                    output = [planet.plots_available * 1, ' Plots Available'];
+                    break;
+                default:
+                    output = [];
+                    break;
             }
             return output.join('');
         }
     };
-    var Menu = function () {
+    var Menu = function() {
         this.UserMenu = new UserMenu();
         this.PlanetMenu = new PlanetMenu();
         this.createEvent("onChangeClick");
         this.createEvent("onInboxClick");
         this.createEvent("onDestructClick");
-        this.UserMenu.subscribe("onChangeClick", function () {
+        this.UserMenu.subscribe("onChangeClick", function() {
             this.fireEvent("onChangeClick");
         }, this, true);
-        this.UserMenu.subscribe("onInboxClick", function () {
+        this.UserMenu.subscribe("onInboxClick", function() {
             this.fireEvent("onInboxClick");
         }, this, true);
-        this.UserMenu.subscribe("onDestructClick", function () {
+        this.UserMenu.subscribe("onDestructClick", function() {
             this.fireEvent("onDestructClick");
         }, this, true);
     };
     Menu.prototype = {
-        create: function () {
+        create: function() {
             if (!this.created) {
                 this.created = true;
                 this.UserMenu.create();
                 this.PlanetMenu.create();
-            } else {
+            }
+            else {
                 this.UserMenu.update();
                 this.PlanetMenu.update();
                 this.show();
             }
         },
-        update: function () {
+        update: function() {
             if (this.created) {
                 this.UserMenu.update();
                 this.PlanetMenu.update();
             }
         },
-        updateTick: function () {
+        updateTick: function() {
             if (this.created) {
                 this.UserMenu.updateTick();
                 this.PlanetMenu.updateTick();
             }
         },
-        hide: function () {
+        hide: function() {
             this.UserMenu.hide();
             this.PlanetMenu.hide();
             this._starVisible = false;
             this._planetVisible = false;
         },
-        show: function () {
+        show: function() {
             this.UserMenu.show();
             this.PlanetMenu.show();
         },
-        StarVisible: function () {
+        StarVisible: function() {
             this._starVisible = true;
             this._planetVisible = false;
             this.UserMenu.starVisible();
         },
-        PlanetVisible: function () {
+        PlanetVisible: function() {
             this._starVisible = false;
             this._planetVisible = true;
             this.UserMenu.planetVisible();
         },
-        IsStarVisible: function () {
+        IsStarVisible: function() {
             return this._starVisible;
         },
-        IsPlanetVisible: function () {
+        IsPlanetVisible: function() {
             return this._planetVisible;
         }
     };

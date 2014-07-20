@@ -27,7 +27,7 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">var</span> Util = YAHOO.util,
         Lang = YAHOO.lang,
         Cookie = Util.Cookie,
@@ -42,11 +42,10 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         Services: {},
         Timeout: <span class="hljs-number">60000</span>,
         HourMS: <span class="hljs-number">3600000</span>,
-        <span class="hljs-comment">//(60min * 60sec * 1000ms),</span>
         onTick: <span class="hljs-keyword">new</span> Util.CustomEvent(<span class="hljs-string">"onTick"</span>),
         OverlayManager: <span class="hljs-keyword">new</span> YAHOO.widget.OverlayManager(),
 
-        Start: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(query)</span> {</span>
+        Start: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(query)</span> {</span>
             <span class="hljs-keyword">var</span> l = window.location;
             Game.RPCBase = window.lacuna_rpc_base_url || l.protocol + <span class="hljs-string">'//'</span> + l.host + <span class="hljs-string">'/'</span>;
             Game.domain = l.hostname || <span class="hljs-string">"lacunaexpanse.com"</span>;
@@ -102,7 +101,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-keyword">if</span> (oldBrowserOkay === <span class="hljs-number">0</span> &amp;&amp; ((ie &gt; <span class="hljs-number">0</span> &amp;&amp; ie &lt; <span class="hljs-number">7</span>) || (opera &gt; <span class="hljs-number">0</span> &amp;&amp; opera &lt; <span class="hljs-number">9.65</span>) || (firefox &gt; <span class="hljs-number">0</span> &amp;&amp; firefox &lt; <span class="hljs-number">1.9</span>) || (webkit &gt; <span class="hljs-number">0</span> &amp;&amp; webkit &lt; <span class="hljs-number">523</span>))) {
                 <span class="hljs-keyword">if</span> (confirm(<span class="hljs-string">"Your browser is quite old and some game functions may not work properly. Are you certain you want to continue?"</span>)) {
                     Game.SetCookieSettings(<span class="hljs-string">"oldBrowserOkay"</span>, <span class="hljs-string">"1"</span>);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     window.location = <span class="hljs-string">'http://www.lacunaexpanse.com'</span>;
                 }
             }
@@ -114,7 +114,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 query = {};
             }
             <span class="hljs-comment">//add overlay manager functionality</span>
-            Game.OverlayManager.hideAllBut = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id)</span> {</span>
+            Game.OverlayManager.hideAllBut = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id)</span> {</span>
                 <span class="hljs-keyword">var</span> overlays = <span class="hljs-keyword">this</span>.overlays,
                     n = overlays.length;
                 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
@@ -153,28 +153,31 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 Game.LoginDialog.initEmpireCreator();
                 Game.EmpireCreator.facebookReturn(query.facebook_uid, query.facebook_token, query.facebook_name);
                 <span class="hljs-keyword">return</span>;
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (query.session_id) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (query.session_id) {
                 Game.SetSession(query.session_id);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (query.empire_id) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (query.empire_id) {
                 Game.InitLogin();
                 Game.LoginDialog.initEmpireCreator();
                 Game.SpeciesCreator.show(query.empire_id);
                 <span class="hljs-keyword">return</span>;
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!session) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!session) {
                 Game.DoLogin();
                 <span class="hljs-keyword">return</span>;
             }
             <span class="hljs-comment">//Run rest of UI since we're logged in</span>
             Game.GetStatus({
                 success: Game.Run,
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     Game.Reset();
                     Game.DoLogin(o.error);
                     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
                 }
             });
         },
-        Failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o, retry, fail)</span> {</span></pre></div>
+        Failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o, retry, fail)</span> {</span></pre></div>
       
       </div>
     
@@ -205,8 +208,9 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 alert(o.error.message);
                 Game.Reset();
                 window.location = o.error.data;
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (o.error.code === <span class="hljs-number">1016</span>) {
-                Lacuna.Captcha.show(retry, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (o.error.code === <span class="hljs-number">1016</span>) {
+                Lacuna.Captcha.show(retry, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     fail(<span class="hljs-literal">true</span>);
                 });
             }</pre></div>
@@ -227,22 +231,22 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                     text: [<span class="hljs-string">'&lt;p&gt;An internal error has occurred.  Please report this on &lt;a target="_blank" href="http://community.lacunaexpanse.com/forums/support"&gt;the support forums&lt;/a&gt;, and include the data below.&lt;/p&gt;'</span>, <span class="hljs-string">'&lt;textarea style="width: 100%; height: 300px;" id="internalErrorMessageText" readonly="readonly" onclick="this.select()"&gt;&lt;/textarea&gt;'</span>].join(<span class="hljs-string">''</span>),
                     buttons: [{
                         text: <span class="hljs-string">"Close"</span>,
-                        handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                        handler: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                             <span class="hljs-keyword">this</span>.hide();
                         }
                     }]
-                }, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-                    Dom.get(<span class="hljs-string">'internalErrorMessageText'</span>)
-                        .value = o.error.data;
+                }, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+                    Dom.get(<span class="hljs-string">'internalErrorMessageText'</span>).value = o.error.data;
                 });
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 fail();
             }
         },
-        InitLogin: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(error)</span> {</span>
+        InitLogin: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error)</span> {</span>
             <span class="hljs-keyword">if</span> (!Lacuna.Game.LoginDialog) {
                 Lacuna.Game.LoginDialog = <span class="hljs-keyword">new</span> Lacuna.Login();
-                Lacuna.Game.LoginDialog.subscribe(<span class="hljs-string">"onLoginSuccessful"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oArgs)</span> {</span>
+                Lacuna.Game.LoginDialog.subscribe(<span class="hljs-string">"onLoginSuccessful"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oArgs)</span> {</span>
                     <span class="hljs-keyword">var</span> result = oArgs.result;
                     <span class="hljs-comment">//remember session</span>
                     Game.SetSession(result.session_id);
@@ -258,14 +262,14 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                             text: [<span class="hljs-string">'Welcome to the Lacuna Expanse.  It is recommended that you play through the in game tutorial to familiarize yourself with the game, and to get some free resources to build up your empire.'</span>, <span class="hljs-string">'&lt;p&gt;If you choose to skip the tutorial now you may find it by clicking &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/inbox.png" title="Inbox" style="width:19px;height:22px;vertical-align:middle;margin:-5px 0 -4px -2px" /&gt; in the upper left of the interface and find the message with the subject `Welcome`.&lt;/p&gt;'</span>, <span class="hljs-string">'&lt;p&gt;For some extra help, look to the upper right of the interface for the &lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'ui/s/tutorial.png" title="Interface Tutorial" style="width:19px;height:22px;vertical-align:middle;margin-left:-3px" /&gt; button.&lt;/p&gt;'</span>, <span class="hljs-string">'&lt;p&gt;Thanks for playing!&lt;/p&gt;'</span>].join(<span class="hljs-string">''</span>),
                             buttons: [{
                                 text: <span class="hljs-string">"View Tutorial"</span>,
-                                handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                                handler: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                                     <span class="hljs-keyword">this</span>.hide();
                                     Lacuna.Messaging.showMessage(result.welcome_message_id);
                                 },
                                 isDefault: <span class="hljs-literal">true</span>
                             }, {
                                 text: <span class="hljs-string">"Skip Tutorial"</span>,
-                                handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                                handler: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                                     <span class="hljs-keyword">this</span>.hide();
                                 }
                             }]
@@ -274,7 +278,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 });
             }
         },
-        DoLogin: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(error)</span> {</span>
+        DoLogin: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error)</span> {</span>
             Dom.setStyle(document.body, <span class="hljs-string">'background'</span>, <span class="hljs-string">'url("'</span> + Lib.AssetUrl + <span class="hljs-string">'star_system/field.png") repeat scroll 0 0 black'</span>);
             <span class="hljs-keyword">this</span>.InitLogin();
             <span class="hljs-comment">//Game.OverlayManager.hideAll(); //don't need this.  the show already hides everything if it needs to</span>
@@ -282,7 +286,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             Lacuna.Menu.hide();
             Lacuna.Pulser.Hide();
         },
-        Run: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        Run: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-comment">//create menus (or update if already created)</span>
             Lacuna.Menu.create();
             <span class="hljs-comment">//set our interval going for resource calcs since Logout clears it</span>
@@ -306,7 +310,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                     setTimeout(GameLoop, <span class="hljs-number">1000</span>);
                 }
             })();
-            Game.planetRefreshInterval = setInterval(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Game.planetRefreshInterval = setInterval(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> BodyServ = Game.Services.Body,
                     session = Game.GetSession(),
                     body = Game.GetCurrentPlanet();
@@ -315,7 +319,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                     body_id: body.id
                 }, {
                     success: Game.onRpc,
-                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
                     }
                 });
@@ -333,13 +337,15 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-keyword">if</span> (!locationId) {
                 Lacuna.Menu.PlanetVisible();
                 Lacuna.MapPlanet.Load(Game.EmpireData.current_planet_id || Game.EmpireData.home_planet_id);
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (locationView === <span class="hljs-string">"planet"</span>) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (locationView === <span class="hljs-string">"planet"</span>) {
                 Game.EmpireData.current_planet_id = locationId;
                 Lacuna.MapStar.MapVisible(<span class="hljs-literal">false</span>);
                 Lacuna.MapPlanet.MapVisible(<span class="hljs-literal">true</span>);
                 Lacuna.Menu.PlanetVisible();
                 Lacuna.MapPlanet.Load(locationId);
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Lacuna.MapStar.MapVisible(<span class="hljs-literal">true</span>);
                 Lacuna.MapPlanet.MapVisible(<span class="hljs-literal">false</span>);
                 Lacuna.Menu.StarVisible();
@@ -347,7 +353,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             }
             Lacuna.Pulser.Hide();
         },
-        InitChat: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div>
+        InitChat: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span></pre></div>
       
       </div>
     
@@ -360,13 +366,13 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
       
       
         <div class="code"><pre class="wrapper">        },
-        InitEvents: _.once(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        InitEvents: _.once(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-comment">//this will be called on the first load and create menu</span>
             Lacuna.MapStar.subscribe(<span class="hljs-string">"onMapRpc"</span>, Game.onRpc);
             Lacuna.MapStar.subscribe(<span class="hljs-string">"onChangeToPlanetView"</span>, Game.onChangeToPlanetView);
             Lacuna.MapPlanet.subscribe(<span class="hljs-string">"onMapRpc"</span>, Game.onRpc);
             Lacuna.Menu.subscribe(<span class="hljs-string">"onChangeClick"</span>, Game.onChangeClick);
-            Lacuna.Menu.subscribe(<span class="hljs-string">"onInboxClick"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            Lacuna.Menu.subscribe(<span class="hljs-string">"onInboxClick"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 Game.OverlayManager.hideAll();
                 Lacuna.Messaging.show();
             });
@@ -375,24 +381,25 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             Lacuna.Essentia.subscribe(<span class="hljs-string">"onRpc"</span>, Game.onRpc);
             Lacuna.Invite.subscribe(<span class="hljs-string">"onRpc"</span>, Game.onRpc);
             Lacuna.Profile.subscribe(<span class="hljs-string">"onRpc"</span>, Game.onRpc);
-            Event.on(window, <span class="hljs-string">"resize"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            Event.on(window, <span class="hljs-string">"resize"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
                 <span class="hljs-comment">//taken from YUI Overlay</span>
                 <span class="hljs-keyword">if</span> (YAHOO.env.ua.ie) {
                     <span class="hljs-keyword">if</span> (!window.resizeEnd) {
                         window.resizeEnd = -<span class="hljs-number">1</span>;
                     }
                     clearTimeout(window.resizeEnd);
-                    window.resizeEnd = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                    window.resizeEnd = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                         Lacuna.Game.Resize();
                     }, <span class="hljs-number">100</span>);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     Lacuna.Game.Resize();
                 }
             });
         }),
-        InitServices: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(smd)</span> {</span>
+        InitServices: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(smd)</span> {</span>
             <span class="hljs-keyword">var</span> serviceOut = {};
-            <span class="hljs-keyword">var</span> successFunc = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> successFunc = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> methodName <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>) {
                     <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.hasOwnProperty(methodName) &amp;&amp; Lang.isFunction(<span class="hljs-keyword">this</span>[methodName])) {
                         <span class="hljs-keyword">var</span> method = <span class="hljs-keyword">this</span>[methodName];
@@ -407,17 +414,18 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                         serviceOut[sKey] = <span class="hljs-keyword">new</span> YAHOO.rpc.Service(oSmd, {
                             success: successFunc
                         }, Game.RPCBase);
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         serviceOut[sKey] = Game.InitServices(oSmd);
                     }
                 }
             }
             <span class="hljs-keyword">return</span> serviceOut;
         },
-        WrappedService: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method, name)</span> {</span>
+        WrappedService: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(method, name)</span> {</span>
             <span class="hljs-keyword">var</span> logNS = <span class="hljs-string">'Game.RPC.'</span> + name + <span class="hljs-string">'.failure'</span>;
-            <span class="hljs-keyword">var</span> func = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params, origOpts)</span> {</span>
-                <span class="hljs-keyword">var</span> retry = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> func = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(params, origOpts)</span> {</span>
+                <span class="hljs-keyword">var</span> retry = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">var</span> opts = {
                         retry: <span class="hljs-number">0</span>
                     };
@@ -426,9 +434,9 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                     func(params, opts);
                 };
                 <span class="hljs-keyword">var</span> opts = {
-                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                    failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                         <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
-                        <span class="hljs-keyword">var</span> failure = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(silent)</span> {</span>
+                        <span class="hljs-keyword">var</span> failure = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(silent)</span> {</span>
                             <span class="hljs-keyword">if</span> (Lang.isFunction(origOpts.failure)) {
                                 <span class="hljs-keyword">if</span> (origOpts.failure.call(self, o)) {
                                     <span class="hljs-keyword">return</span>;
@@ -451,7 +459,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             };
             <span class="hljs-keyword">return</span> func;
         },
-        InitTips: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        InitTips: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (!Game.Resources.tips &amp;&amp; !Game.Resources.complete) {
                 setTimeout(Game.InitTips, <span class="hljs-number">10</span>);
                 <span class="hljs-keyword">return</span>;
@@ -460,7 +468,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-keyword">if</span> (showTips === <span class="hljs-number">1</span>) {
                 <span class="hljs-keyword">var</span> tipCount = Game.Resources.tips.length,
                     tipNum = Game.GetCookieSettings(<span class="hljs-string">"tipNum"</span>, -<span class="hljs-number">1</span>),
-                    showTip = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dialog, change)</span> {</span>
+                    showTip = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(dialog, change)</span> {</span>
                         tipNum = (tipNum + change + tipCount) % tipCount;
                         <span class="hljs-keyword">var</span> tip = Game.Resources.tips[tipNum];
                         dialog.setBody(tip);
@@ -470,39 +478,40 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                     width: <span class="hljs-string">"400px"</span>,
                     buttons: [{
                         text: <span class="hljs-string">"&lt; Previous"</span>,
-                        handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                        handler: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                             showTip(dialog, -<span class="hljs-number">1</span>);
                         }
                     }, {
                         text: <span class="hljs-string">"Next &gt;"</span>,
-                        handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                        handler: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                             showTip(dialog, <span class="hljs-number">1</span>);
                         }
                     }, {
                         text: <span class="hljs-string">"Close"</span>,
-                        handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                        handler: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                             <span class="hljs-keyword">this</span>.hide();
                         },
                         isDefault: <span class="hljs-literal">true</span>
                     }]
-                }, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                }, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">this</span>.setHeader(<span class="hljs-string">'Tips'</span>);
                     showTip(<span class="hljs-keyword">this</span>, <span class="hljs-number">1</span>);
                     <span class="hljs-keyword">var</span> label = document.createElement(<span class="hljs-string">'label'</span>);
                     Dom.setStyle(label, <span class="hljs-string">'float'</span>, <span class="hljs-string">'left'</span>);
                     label.innerHTML = <span class="hljs-string">'&lt;input id="showTips" type="checkbox" checked="checked" /&gt; Show tips at login'</span>;
                     <span class="hljs-keyword">this</span>.footer.insertBefore(label, <span class="hljs-keyword">this</span>.footer.firstChild);
-                }, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+                }, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     <span class="hljs-keyword">if</span> (Dom.get(<span class="hljs-string">'showTips'</span>)
                         .checked) {
                         Game.RemoveCookieSettings(<span class="hljs-string">"hideTips"</span>);
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         Game.SetCookieSettings(<span class="hljs-string">"hideTips"</span>, <span class="hljs-string">"1"</span>);
                     }
                 });
             }
         },
-        PreloadUI: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        PreloadUI: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> images = Lib.UIImages;
             <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; images.length; i++) {
                 <span class="hljs-keyword">var</span> url = Lib.AssetUrl + images[i];
@@ -510,7 +519,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 img.src = url;
             }
         },
-        QuickDialog: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(config, afterRender, afterHide)</span> {</span>
+        QuickDialog: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(config, afterRender, afterHide)</span> {</span>
             <span class="hljs-keyword">var</span> container = document.createElement(<span class="hljs-string">'div'</span>);
             <span class="hljs-keyword">if</span> (config.id) {
                 container.id = config.id;
@@ -528,13 +537,13 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             Dom.addClass(container, <span class="hljs-string">'quick-dialog'</span>);
             document.body.insertBefore(container, document.body.firstChild);
             <span class="hljs-keyword">var</span> dialog = <span class="hljs-keyword">new</span> YAHOO.widget.SimpleDialog(container, config);
-            dialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            dialog.renderEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (afterRender) {
                     afterRender.call(<span class="hljs-keyword">this</span>);
                 }
                 <span class="hljs-keyword">this</span>.show();
             });
-            dialog.hideEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            dialog.hideEvent.subscribe(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (afterHide) {
                     afterHide.call(<span class="hljs-keyword">this</span>);
                 }</pre></div>
@@ -549,33 +558,34 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         </div>
       
       
-        <div class="code"><pre class="wrapper">                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <div class="code"><pre class="wrapper">                setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                     dialog.destroy();
                 }, <span class="hljs-number">1</span>);
             });
             dialog.render();
             Game.OverlayManager.register(dialog);
         },
-        onChangeToPlanetView: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(planetId)</span> {</span>
+        onChangeToPlanetView: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(planetId)</span> {</span>
             YAHOO.log(planetId, <span class="hljs-string">"info"</span>, <span class="hljs-string">"onChangeToPlanetView"</span>);
             Game.PlanetJump(Game.EmpireData.planets[planetId]);
         },
-        onRpc: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oResult)</span> {</span>
+        onRpc: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oResult)</span> {</span>
             Lacuna.Game.ProcessStatus(oResult.status);
         },
-        onChangeClick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        onChangeClick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             YAHOO.log(<span class="hljs-string">"onChangeClick"</span>, <span class="hljs-string">"debug"</span>, <span class="hljs-string">"Game"</span>);
             Game.OverlayManager.hideAll();
             <span class="hljs-keyword">if</span> (Lacuna.MapStar.IsVisible() || Lacuna.Menu.IsStarVisible()) {
                 Game.PlanetJump(Game.GetCurrentPlanet());
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (Lacuna.MapPlanet.IsVisible() || Lacuna.Menu.IsPlanetVisible()) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (Lacuna.MapPlanet.IsVisible() || Lacuna.Menu.IsPlanetVisible()) {
                 Lacuna.MapPlanet.MapVisible(<span class="hljs-literal">false</span>);
                 Lacuna.MapStar.MapVisible(<span class="hljs-literal">true</span>);
                 Lacuna.Menu.StarVisible();
                 Lacuna.MapStar.Load();
             }
         },
-        onDestructClick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        onDestructClick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             YAHOO.log(<span class="hljs-string">"onDestructClick"</span>, <span class="hljs-string">"debug"</span>, <span class="hljs-string">"Game"</span>);
             <span class="hljs-keyword">var</span> ED = Game.EmpireData,
                 EmpireServ = Game.Services.Empire,
@@ -583,23 +593,25 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 func;
             <span class="hljs-keyword">if</span> (ED.self_destruct_active * <span class="hljs-number">1</span> === <span class="hljs-number">1</span>) {
                 func = EmpireServ.disable_self_destruct;
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (confirm(<span class="hljs-string">"Are you certain you want to enable self destruct?  If enabled, your empire will be deleted after 24 hours."</span>)) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (confirm(<span class="hljs-string">"Are you certain you want to enable self destruct?  If enabled, your empire will be deleted after 24 hours."</span>)) {
                 func = EmpireServ.enable_self_destruct;
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">return</span>;
             }
             Lacuna.Pulser.Show();
             func({
                 session_id: session
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">'info'</span>, <span class="hljs-string">'Game.onDestructClick.success'</span>);
                     Game.ProcessStatus(o.result.status);
                     Lacuna.Pulser.Hide();
                 }
             });
         },
-        ProcessStatus: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(status)</span> {</span>
+        ProcessStatus: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(status)</span> {</span>
             <span class="hljs-keyword">if</span> (status) {
                 <span class="hljs-keyword">var</span> doMenuUpdate;
                 <span class="hljs-keyword">if</span> (status.server) {
@@ -650,7 +662,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                                     water_hour: <span class="hljs-number">0</span>,
                                     water_stored: <span class="hljs-number">0</span>
                                 };
-                            } <span class="hljs-keyword">else</span> {
+                            }
+                            <span class="hljs-keyword">else</span> {
                                 Lacuna.Game.EmpireData.planets[pKey].name = status.empire.planets[pKey];
                             }
                             Lacuna.Game.EmpireData.planetsByName[status.empire.planets[pKey]] = Lacuna.Game.EmpireData.planets[pKey];
@@ -701,20 +714,20 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 }
             }
         },
-        GetStatus: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback)</span> {</span>
+        GetStatus: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span> {</span>
             <span class="hljs-keyword">var</span> EmpireServ = Game.Services.Empire,
                 session = Game.GetSession();
             EmpireServ.get_status({
                 session_id: session
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">"info"</span>, <span class="hljs-string">"Game.GetStatus.success"</span>);
                     Lacuna.Game.ProcessStatus(o.result);
                     <span class="hljs-keyword">if</span> (callback &amp;&amp; callback.success) {
                         <span class="hljs-keyword">return</span> callback.success.call(<span class="hljs-keyword">this</span>);
                     }
                 },
-                failure: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                failure: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     <span class="hljs-keyword">if</span> (callback &amp;&amp; callback.failure) {
                         <span class="hljs-keyword">return</span> callback.failure.call(<span class="hljs-keyword">this</span>, o);
                     }
@@ -722,28 +735,29 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 scope: callback &amp;&amp; callback.scope || <span class="hljs-keyword">this</span>
             });
         },
-        GetSession: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(replace)</span> {</span>
+        GetSession: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(replace)</span> {</span>
             <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._session) {
                 <span class="hljs-keyword">this</span>._session = Game.GetCookie(<span class="hljs-string">'session'</span>);
             }
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._session || replace;
         },
-        SetSession: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(session)</span> {</span>
+        SetSession: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(session)</span> {</span>
             <span class="hljs-keyword">if</span> (session) {
                 Game.SetCookie(<span class="hljs-string">'session'</span>, session);
                 Game._session = session;
                 Game.InitTips();
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 Game.RemoveCookie(<span class="hljs-string">'session'</span>);
                 <span class="hljs-keyword">delete</span> Game._session;
             }
         },
-        GetCurrentPlanet: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        GetCurrentPlanet: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> ED = Game.EmpireData,
                 id = ED.current_planet_id || ED.home_planet_id;
             <span class="hljs-keyword">return</span> ED.planets[id];
         },
-        GetSize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        GetSize: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> content = document.getElementById(<span class="hljs-string">"content"</span>),
                 width = content.offsetWidth,
                 height = document.documentElement.clientHeight - document.getElementById(<span class="hljs-string">"header"</span>)
@@ -754,14 +768,15 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 h: height
             };
         },
-        Resize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        Resize: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (Lacuna.MapStar.IsVisible()) {
                 Lacuna.MapStar.Resize();
-            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (Lacuna.MapPlanet.IsVisible()) {
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (Lacuna.MapPlanet.IsVisible()) {
                 Lacuna.MapPlanet.Resize();
             }
         },
-        StarJump: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(star)</span> {</span>
+        StarJump: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(star)</span> {</span>
             YAHOO.log(star, <span class="hljs-string">"debug"</span>, <span class="hljs-string">"StarJump"</span>);
             Game.OverlayManager.hideAll();
             Lacuna.MapPlanet.MapVisible(<span class="hljs-literal">false</span>);
@@ -769,7 +784,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             Lacuna.Menu.StarVisible();
             Lacuna.MapStar.Jump(star.x * <span class="hljs-number">1</span>, star.y * <span class="hljs-number">1</span>);
         },
-        PlanetJump: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(planet)</span> {</span>
+        PlanetJump: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(planet)</span> {</span>
             <span class="hljs-keyword">if</span> (!planet) {
                 <span class="hljs-comment">//try to find home planet</span>
                 planet = Game.EmpireData.planets[Game.EmpireData.home_planet_id];
@@ -785,7 +800,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 Lacuna.MapPlanet.Load(planet.id, <span class="hljs-literal">true</span>);
             }
         },
-        PlanetChange: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(planet)</span> {</span>
+        PlanetChange: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(planet)</span> {</span>
             <span class="hljs-keyword">if</span> (!planet) {
                 <span class="hljs-comment">//try to find home planet</span>
                 planet = Game.EmpireData.planets[Game.EmpireData.home_planet_id];
@@ -799,22 +814,23 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 Lacuna.MapPlanet.Load(planet.id, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>);
             }
         },
-        GetResources: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        GetResources: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> newResources = <span class="hljs-built_in">require</span>(<span class="hljs-string">'data/resources.json'</span>);
             Game.Resources = newResources;
             Game.Resources.complete = <span class="hljs-number">1</span>;
         },
-        GetBuildingDesc: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(url)</span> {</span>
+        GetBuildingDesc: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(url)</span> {</span>
             <span class="hljs-keyword">if</span> (Game.Resources &amp;&amp; Game.Resources.buildings) {
                 <span class="hljs-keyword">var</span> desc = Game.Resources.buildings[url];
                 <span class="hljs-keyword">if</span> (desc) {
                     <span class="hljs-keyword">return</span> [desc.description, <span class="hljs-string">' &lt;a href="'</span>, desc.wiki, <span class="hljs-string">'" target="_blank"&gt;More Information on Wiki&lt;/a&gt;'</span>].join(<span class="hljs-string">''</span>);
-                } <span class="hljs-keyword">else</span> {
+                }
+                <span class="hljs-keyword">else</span> {
                     <span class="hljs-keyword">return</span> <span class="hljs-string">''</span>;
                 }
             }
         },
-        GetShipDesc: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type)</span> {</span>
+        GetShipDesc: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(type)</span> {</span>
             <span class="hljs-keyword">if</span> (Game.Resources &amp;&amp; Game.Resources.ships) {
                 <span class="hljs-keyword">var</span> desc = Game.Resources.ships[type];
                 <span class="hljs-keyword">if</span> (desc) {
@@ -822,24 +838,25 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 }
             }
         },
-        GetContainerEffect: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(effect)</span> {</span>
+        GetContainerEffect: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(effect)</span> {</span>
             <span class="hljs-keyword">if</span> (Game.GetCookieSettings(<span class="hljs-string">"disableDialogAnim"</span>, <span class="hljs-string">"0"</span>) === <span class="hljs-string">"1"</span>) {
                 <span class="hljs-keyword">return</span>;
-            } <span class="hljs-keyword">else</span> {
+            }
+            <span class="hljs-keyword">else</span> {
                 <span class="hljs-keyword">return</span> effect || {
                     effect: YAHOO.widget.ContainerEffect.FADE,
                     duration: <span class="hljs-number">0.5</span>
                 };
             }
         },
-        Logout: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        Logout: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Lacuna.Pulser.Show();
             <span class="hljs-keyword">var</span> EmpireServ = Game.Services.Empire,
                 session = Game.GetSession();
             EmpireServ.logout({
                 session_id: session
             }, {
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span>
                     YAHOO.log(o, <span class="hljs-string">'info'</span>, <span class="hljs-string">'Game.Logout.success'</span>);
                     Game.Reset();
                     Game.DoLogin();
@@ -847,7 +864,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 }
             });
         },
-        Reset: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        Reset: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">delete</span> Game.isRunning;
             clearInterval(Game.planetRefreshInterval);
             <span class="hljs-keyword">delete</span> Game.planetRefreshInterval;
@@ -870,36 +887,36 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             }
         },
         <span class="hljs-comment">//Cookie helpers functions</span>
-        GetCookie: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, defaultValue)</span> {</span>
+        GetCookie: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key, defaultValue)</span> {</span>
             <span class="hljs-keyword">var</span> item = Lib.db.getItem(key);
             <span class="hljs-keyword">return</span> item || defaultValue;
         },
-        SetCookie: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, value)</span> {</span>
+        SetCookie: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key, value)</span> {</span>
             Lib.db.setItem(key, value);
         },
-        RemoveCookie: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key)</span> {</span>
+        RemoveCookie: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key)</span> {</span>
             Lib.db.removeItem(key);
         },
-        RemoveAllCookies: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        RemoveAllCookies: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             Lib.db.clear();
         },
-        SetLocation: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, view)</span> {</span>
+        SetLocation: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, view)</span> {</span>
             Game.SetCookie(<span class="hljs-string">"locationId"</span>, id);
             Game.SetCookie(<span class="hljs-string">"locationView"</span>, view);
         },
         <span class="hljs-comment">//using a more permanent cookie</span>
-        GetCookieSettings: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, defaultValue)</span> {</span>
+        GetCookieSettings: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key, defaultValue)</span> {</span>
             <span class="hljs-keyword">var</span> item = Lib.settings.getItem(key);
             <span class="hljs-keyword">return</span> item || defaultValue;
         },
-        SetCookieSettings: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, value)</span> {</span>
+        SetCookieSettings: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key, value)</span> {</span>
             Lib.settings.setItem(key, value);
         },
-        RemoveCookieSettings: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key)</span> {</span>
+        RemoveCookieSettings: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key)</span> {</span>
             Lib.settings.clear();
         },
         <span class="hljs-comment">//Tick related</span>
-        Tick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        Tick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> ED = Lacuna.Game.EmpireData,
                 SD = Lacuna.Game.ServerData,
                 dt = (<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>())
@@ -918,7 +935,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                         planet.energy_stored += planet.energy_hour * ratio;
                         <span class="hljs-keyword">if</span> (planet.energy_stored &gt; planet.energy_capacity) {
                             planet.energy_stored = planet.energy_capacity;
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (planet.energy_stored &lt; <span class="hljs-number">0</span>) {
+                        }
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (planet.energy_stored &lt; <span class="hljs-number">0</span>) {
                             <span class="hljs-keyword">if</span> (isNotStation) {
                                 planet.happiness += planet.energy_stored;
                             }
@@ -929,7 +947,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                         planet.food_stored += planet.food_hour * ratio;
                         <span class="hljs-keyword">if</span> (planet.food_stored &gt; planet.food_capacity) {
                             planet.food_stored = planet.food_capacity;
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (planet.food_stored &lt; <span class="hljs-number">0</span>) {
+                        }
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (planet.food_stored &lt; <span class="hljs-number">0</span>) {
                             <span class="hljs-keyword">if</span> (isNotStation) {
                                 planet.happiness += planet.food_stored;
                             }
@@ -940,7 +959,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                         planet.ore_stored += planet.ore_hour * ratio;
                         <span class="hljs-keyword">if</span> (planet.ore_stored &gt; planet.ore_capacity) {
                             planet.ore_stored = planet.ore_capacity;
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (planet.ore_stored &lt; <span class="hljs-number">0</span>) {
+                        }
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (planet.ore_stored &lt; <span class="hljs-number">0</span>) {
                             <span class="hljs-keyword">if</span> (isNotStation) {
                                 planet.happiness += planet.ore_stored;
                             }
@@ -951,7 +971,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                         planet.water_stored += planet.water_hour * ratio;
                         <span class="hljs-keyword">if</span> (planet.water_stored &gt; planet.water_capacity) {
                             planet.water_stored = planet.water_capacity;
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (planet.water_stored &lt; <span class="hljs-number">0</span>) {
+                        }
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (planet.water_stored &lt; <span class="hljs-number">0</span>) {
                             <span class="hljs-keyword">if</span> (isNotStation) {
                                 planet.happiness += planet.water_stored;
                             }
@@ -964,13 +985,15 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                         <span class="hljs-keyword">if</span> (planet.waste_stored &gt; planet.waste_capacity) {
                             wasteOverage = planet.waste_stored - planet.waste_capacity;
                             planet.waste_stored = planet.waste_capacity;
-                        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (planet.waste_stored &lt; <span class="hljs-number">0</span>) {
+                        }
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (planet.waste_stored &lt; <span class="hljs-number">0</span>) {
                             <span class="hljs-keyword">if</span> (isNotStation) {
                                 planet.happiness += planet.waste_stored;
                             }
                             planet.waste_stored = <span class="hljs-number">0</span>;
                         }
-                    } <span class="hljs-keyword">else</span> {
+                    }
+                    <span class="hljs-keyword">else</span> {
                         wasteOverage = planet.waste_hour * ratio;
                     }
                     <span class="hljs-keyword">if</span> (isNotStation) {
@@ -987,7 +1010,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             }
             Game.onTick.fire(diff);
         },
-        QueueAdd: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, type, ms)</span> {</span>
+        QueueAdd: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, type, ms)</span> {</span>
             <span class="hljs-keyword">if</span> (!id || !type || !ms) {
                 <span class="hljs-keyword">return</span>;
             }
@@ -999,7 +1022,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             }
             Game.queue[type][id] = ms;
         },
-        QueueProcess: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, oArgs)</span> {</span>
+        QueueProcess: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, oArgs)</span> {</span>
             <span class="hljs-comment">//only do anything if the queue actually has data</span>
             <span class="hljs-keyword">if</span> (Game.queue) {
                 <span class="hljs-keyword">var</span> toFire = {},
@@ -1012,7 +1035,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                                 <span class="hljs-keyword">var</span> ms = qt[id] - tickMS;
                                 <span class="hljs-keyword">if</span> (ms &lt;= <span class="hljs-number">0</span>) {
                                     toFire[id] = type;
-                                } <span class="hljs-keyword">else</span> {
+                                }
+                                <span class="hljs-keyword">else</span> {
                                     qt[id] = ms;
                                     Game.QueueTick(type, id, ms);
                                 }
@@ -1029,35 +1053,35 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 }
             }
         },
-        QueueTick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type, id, ms)</span> {</span>
+        QueueTick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(type, id, ms)</span> {</span>
             <span class="hljs-keyword">switch</span> (type) {
-            <span class="hljs-keyword">case</span> Lib.QueueTypes.PLANET:
-                Lacuna.MapPlanet.QueueTick(id, ms);
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> Lib.QueueTypes.STAR:
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> Lib.QueueTypes.SYSTEM:
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">default</span>:
-                <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> Lib.QueueTypes.PLANET:
+                    Lacuna.MapPlanet.QueueTick(id, ms);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> Lib.QueueTypes.STAR:
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> Lib.QueueTypes.SYSTEM:
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">default</span>:
+                    <span class="hljs-keyword">break</span>;
             }
         },
-        QueueFire: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type, id)</span> {</span>
+        QueueFire: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(type, id)</span> {</span>
             YAHOO.log(<span class="hljs-built_in">arguments</span>, <span class="hljs-string">"debug"</span>, <span class="hljs-string">"Game.QueueFire"</span>);
             <span class="hljs-keyword">switch</span> (type) {
-            <span class="hljs-keyword">case</span> Lib.QueueTypes.PLANET:
-                Lacuna.MapPlanet.ReLoadTile(id);
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> Lib.QueueTypes.STAR:
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">case</span> Lib.QueueTypes.SYSTEM:
-                <span class="hljs-keyword">break</span>;
-            <span class="hljs-keyword">default</span>:
-                YAHOO.log(<span class="hljs-string">"type unknown"</span>, <span class="hljs-string">"debug"</span>, <span class="hljs-string">"Game.QueueFire"</span>);
-                <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> Lib.QueueTypes.PLANET:
+                    Lacuna.MapPlanet.ReLoadTile(id);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> Lib.QueueTypes.STAR:
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> Lib.QueueTypes.SYSTEM:
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">default</span>:
+                    YAHOO.log(<span class="hljs-string">"type unknown"</span>, <span class="hljs-string">"debug"</span>, <span class="hljs-string">"Game.QueueFire"</span>);
+                    <span class="hljs-keyword">break</span>;
             }
         },
-        QueueResetPlanet: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        QueueResetPlanet: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">if</span> (Game.queue &amp;&amp; Game.queue[Lib.QueueTypes.PLANET]) {
                 <span class="hljs-keyword">var</span> queue = Game.queue[Lib.QueueTypes.PLANET];
                 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> id <span class="hljs-keyword">in</span> queue) {
@@ -1067,13 +1091,13 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 }
             }
         },
-        onScroll: (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        onScroll: (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> evName;
             <span class="hljs-keyword">var</span> func;
             <span class="hljs-keyword">var</span> pixelsPerLine = <span class="hljs-number">10</span>;
             <span class="hljs-keyword">var</span> ua = navigator.userAgent;
             <span class="hljs-keyword">var</span> safari5 = ua.match(<span class="hljs-regexp">/\bSafari\//</span>) &amp;&amp; ua.match(<span class="hljs-regexp">/\bVersion\/5/</span>);
-            <span class="hljs-keyword">var</span> isEventSupported = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> isEventSupported = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">var</span> TAGNAMES = {
                     <span class="hljs-string">'select'</span>: <span class="hljs-string">'input'</span>,
                     <span class="hljs-string">'change'</span>: <span class="hljs-string">'input'</span>,
@@ -1103,8 +1127,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 <span class="hljs-keyword">return</span> isEventSupported;
             })();
             <span class="hljs-keyword">if</span> (isEventSupported(<span class="hljs-string">'mousewheel'</span>)) {
-                <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, fn, obj, context)</span> {</span>
-                    Event.on(el, <span class="hljs-string">'mousewheel'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, o)</span> {</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, fn, obj, context)</span> {</span>
+                    Event.on(el, <span class="hljs-string">'mousewheel'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, o)</span> {</span>
                         <span class="hljs-keyword">var</span> xDelta = <span class="hljs-string">'wheelDeltaX'</span> <span class="hljs-keyword">in</span> e ? e.wheelDeltaX : <span class="hljs-number">0</span>;
                         <span class="hljs-keyword">var</span> yDelta = <span class="hljs-string">'wheelDeltaY'</span> <span class="hljs-keyword">in</span> e ? e.wheelDeltaY : e.wheelDelta;</pre></div>
       
@@ -1139,17 +1163,18 @@ safari 5 gives pixels * 120</p>
       
       
         <div class="code"><pre class="wrapper">            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (YAHOO.env.ua.gecko &gt;= <span class="hljs-number">1.9</span> &amp;&amp; !ua.match(<span class="hljs-regexp">/\brv:1\.9\.0/</span>)) {
-                <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, fn, obj, context)</span> {</span>
-                    Event.on(el, <span class="hljs-string">'MozMousePixelScroll'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, o)</span> {</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, fn, obj, context)</span> {</span>
+                    Event.on(el, <span class="hljs-string">'MozMousePixelScroll'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, o)</span> {</span>
                         <span class="hljs-keyword">var</span> xAxis = (e.axis === e.HORIZONTAL_AXIS);
                         <span class="hljs-keyword">var</span> xDelta = xAxis ? -e.detail : <span class="hljs-number">0</span>;
                         <span class="hljs-keyword">var</span> yDelta = xAxis ? <span class="hljs-number">0</span> : -e.detail;
                         fn.call(<span class="hljs-keyword">this</span>, e, xDelta, yDelta, o);
                     }, obj, context);
                 };
-            } <span class="hljs-keyword">else</span> {
-                <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, fn, obj, context)</span> {</span>
-                    Event.on(el, <span class="hljs-string">'DOMMouseScroll'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e, o)</span> {</span>
+            }
+            <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, fn, obj, context)</span> {</span>
+                    Event.on(el, <span class="hljs-string">'DOMMouseScroll'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, o)</span> {</span>
                         <span class="hljs-keyword">var</span> xAxis = (<span class="hljs-string">'axis'</span> <span class="hljs-keyword">in</span> e &amp;&amp; e.axis === e.HORIZONTAL_AXIS);</pre></div>
       
       </div>
@@ -1171,8 +1196,7 @@ safari 5 gives pixels * 120</p>
         })()
     };
     YAHOO.lacuna.Game = Game;
-})();
-</pre></div>
+})();</pre></div>
       
       </div>
     

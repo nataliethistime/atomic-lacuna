@@ -3,18 +3,20 @@
  */
 YAHOO.namespace("rpc");
 if (typeof YAHOO.rpc.Service == "undefined" || !YAHOO.rpc.Service) {
-    (function () {
+    (function() {
         var Lang = YAHOO.lang,
             Util = YAHOO.util;
-        var Service = function (smd, callback, baseUrl) {
+        var Service = function(smd, callback, baseUrl) {
             if (Lang.isString(smd)) {
                 this.smdUrl = smd;
                 this.fetch(smd, callback);
-            } else if (Lang.isObject(smd)) {
+            }
+            else if (Lang.isObject(smd)) {
                 this._smd = smd;
                 this._baseUrl = baseUrl;
                 this.process(callback);
-            } else {
+            }
+            else {
                 throw new Error("smd should be an object or an url");
             }
         };
@@ -25,30 +27,31 @@ if (typeof YAHOO.rpc.Service == "undefined" || !YAHOO.rpc.Service) {
              * @param {String} serviceName
              * @param {Method definition} method
              */
-            _generateService: function (serviceName, method) {
+            _generateService: function(serviceName, method) {
                 if (this[method]) {
                     throw new Error("WARNING: " + serviceName + " already exists for service. Unable to generate function");
                 }
                 method.name = serviceName;
                 var self = this;
-                var func = function (oParams, opts) {
+                var func = function(oParams, opts) {
                     // Note: oParams = Object Parameters.
                     var smd = self._smd;
                     var baseUrl = self._baseUrl;
                     var envelope = YAHOO.rpc.Envelope[method.envelope || smd.envelope];
                     var callback = {
-                        success: function (o) {
+                        success: function(o) {
                             //YAHOO.log(o, "debug", "RPC.SUCCESS"); //debug
                             var results = envelope.deserialize(o);
                             opts.success.call(opts.scope || self, results);
                         },
-                        failure: function (o) {
+                        failure: function(o) {
                             //YAHOO.log(o, "debug", "RPC.FAILURE"); //debug
                             if (Lang.isFunction(opts.failure)) {
                                 var results;
                                 try {
                                     results = envelope.deserialize(o);
-                                } catch (e) {
+                                }
+                                catch (e) {
                                     results = o;
                                 }
                                 opts.failure.call(opts.scope || self, results);
@@ -79,7 +82,8 @@ if (typeof YAHOO.rpc.Service == "undefined" || !YAHOO.rpc.Service) {
                         if (!params[0] || params[0].name == 'args') {
                             params = oParams;
                         }
-                    } else {
+                    }
+                    else {
                         params = oParams;
                     }
                     //                console.log('Calling ' + method.name + ' with the parameters of ' + Lang.JSON.stringify(params) + '.'); //debug
@@ -93,7 +97,8 @@ if (typeof YAHOO.rpc.Service == "undefined" || !YAHOO.rpc.Service) {
                         var a = this.smdUrl.split('/');
                         a[a.length - 1] = "";
                         url = a.join("/") + url;
-                    } else if (baseUrl) {
+                    }
+                    else if (baseUrl) {
                         baseUrl = baseUrl.replace(/\/?$/, '/');
                         url = url.replace(/^\//, baseUrl);
                     }
@@ -120,7 +125,7 @@ if (typeof YAHOO.rpc.Service == "undefined" || !YAHOO.rpc.Service) {
              * Process the SMD definition.
              * @method process
              */
-            process: function (callback) {
+            process: function(callback) {
                 var serviceDefs = this._smd.services;
                 // Generate the methods to this object
                 for (var serviceName in serviceDefs) {
@@ -145,19 +150,21 @@ if (typeof YAHOO.rpc.Service == "undefined" || !YAHOO.rpc.Service) {
              * @method fetch
              * @param {String} Absolute or relative url
              */
-            fetch: function (url, callback) {
+            fetch: function(url, callback) {
                 if (YAHOO.rpc.Service._smdCache[url]) {
                     this._smd = YAHOO.rpc.Service._smdCache[url];
                     this.process(callback);
-                } else {
+                }
+                else {
                     // TODO: if url is not in the same domain, we should use jsonp !
                     Util.Connect.asyncRequest('GET', url, {
-                        success: function (o) {
+                        success: function(o) {
                             try {
                                 this._smd = Lang.JSON.parse(o.responseText);
                                 YAHOO.rpc.Service._smdCache[url] = this._smd;
                                 this.process(callback);
-                            } catch (ex) {
+                            }
+                            catch (ex) {
                                 //YAHOO.log(ex);
                                 if (Lang.isFunction(callback.failure)) {
                                     callback.failure.call(callback.scope || this, {
@@ -166,7 +173,7 @@ if (typeof YAHOO.rpc.Service == "undefined" || !YAHOO.rpc.Service) {
                                 }
                             }
                         },
-                        failure: function (o) {
+                        failure: function(o) {
                             if (Lang.isFunction(callback.failure)) {
                                 callback.failure.call(callback.scope || this, {
                                     error: "unable to fetch url " + url
@@ -191,7 +198,7 @@ if (typeof YAHOO.rpc.Service == "undefined" || !YAHOO.rpc.Service) {
              * @method POST
              * @param {Object} r Object specifying target, callback and data attributes
              */
-            "POST": function (r) {
+            "POST": function(r) {
                 return Util.Connect.asyncRequest('POST', r.target, r.callback, r.data);
             },
             /**
@@ -199,7 +206,7 @@ if (typeof YAHOO.rpc.Service == "undefined" || !YAHOO.rpc.Service) {
              * @method GET
              * @param {Object} r Object specifying target, callback and data attributes
              */
-            "GET": function (r) {
+            "GET": function(r) {
                 return Util.Connect.asyncRequest('GET', r.target + (r.data ? '?' + r.data : ''), r.callback, '');
             },
             jsonp_id: 0,
@@ -208,10 +215,10 @@ if (typeof YAHOO.rpc.Service == "undefined" || !YAHOO.rpc.Service) {
              * @method JSONP
              * @param {Object} r Object specifying target, callback and data attributes
              */
-            "JSONP": function (r) {
+            "JSONP": function(r) {
                 r.callbackParamName = r.callbackParamName || "callback";
                 var fctName = encodeURIComponent("YAHOO.rpc.Transport.JSONP.jsonpCallback" + YAHOO.rpc.Transport.jsonp_id);
-                YAHOO.rpc.Transport.JSONP["jsonpCallback" + YAHOO.rpc.Transport.jsonp_id] = function (results) {
+                YAHOO.rpc.Transport.JSONP["jsonpCallback" + YAHOO.rpc.Transport.jsonp_id] = function(results) {
                     if (Lang.isObject(r.callback) && Lang.isFunction(r.callback.success)) {
                         r.callback.success.call(r.callback.scope || this, results);
                     }
@@ -235,7 +242,7 @@ if (typeof YAHOO.rpc.Service == "undefined" || !YAHOO.rpc.Service) {
                 /**
                  * serialize
                  */
-                serialize: function (smd, method, data) {
+                serialize: function(smd, method, data) {
                     return {
                         data: Lang.JSON.stringify({
                             "id": YAHOO.rpc.Service._requestId++,
@@ -248,27 +255,31 @@ if (typeof YAHOO.rpc.Service == "undefined" || !YAHOO.rpc.Service) {
                 /**
                  * deserialize
                  */
-                deserialize: function (results) {
+                deserialize: function(results) {
                     if (results.getResponseHeader && (results.getResponseHeader["Content-Type"] == "application/json-rpc" || results.getResponseHeader["Content-Type"] == "application/json")) {
                         return Lang.JSON.parse(results.responseText);
-                    } else {
+                    }
+                    else {
                         if (results.status == -1) {
                             return {
                                 "error": {
                                     "message": "The Request has been Aborted because it was taking too long."
                                 }
                             };
-                        } else if (results.status === 0) {
+                        }
+                        else if (results.status === 0) {
                             return {
                                 "error": {
                                     "message": "Communication with the server has been interrupted for an unknown reason."
                                 }
                             };
-                        } else {
+                        }
+                        else {
                             // YUI loses headers for Cross-Origin requests, so try as JSON anyway
                             try {
                                 return Lang.JSON.parse(results.responseText);
-                            } catch (e) {
+                            }
+                            catch (e) {
                                 return {
                                     "error": {
                                         "message": "Response Content-Type is not JSON"

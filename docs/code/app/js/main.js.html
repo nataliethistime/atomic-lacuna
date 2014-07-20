@@ -26,7 +26,7 @@
       
       
         <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
-(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span></pre></div>
       
       </div>
     
@@ -59,7 +59,7 @@ before the JS code starts to load.</p>
         <span class="hljs-keyword">var</span> menu = <span class="hljs-keyword">new</span> Menu();
         menu.append(<span class="hljs-keyword">new</span> MenuItem({
             label: <span class="hljs-string">'Debug Mode'</span>,
-            click: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            click: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 console.log(<span class="hljs-string">'Toggling dev tools.'</span>);
                 remote.getCurrentWindow()
                     .toggleDevTools();
@@ -70,17 +70,17 @@ before the JS code starts to load.</p>
         }));
         menu.append(<span class="hljs-keyword">new</span> MenuItem({
             label: <span class="hljs-string">'Copy'</span>,
-            click: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            click: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 console.error(<span class="hljs-string">'TODO: implement copy!'</span>);
             }
         }));
         menu.append(<span class="hljs-keyword">new</span> MenuItem({
             label: <span class="hljs-string">'Paste'</span>,
-            click: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            click: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 console.error(<span class="hljs-string">'TODO: implement paste!'</span>);
             }
         }));
-        window.addEventListener(<span class="hljs-string">'contextmenu'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        window.addEventListener(<span class="hljs-string">'contextmenu'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
             e.preventDefault();
             menu.popup(remote.getCurrentWindow());
         }, <span class="hljs-literal">false</span>);
@@ -110,7 +110,8 @@ has a code in the url as a parameter.)</p>
     }
     <span class="hljs-keyword">if</span> (window.history.replaceState) {
         window.history.replaceState({}, document.title, l.protocol + <span class="hljs-string">'//'</span> + l.host + l.pathname + l.search);
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (l.hash !== <span class="hljs-string">''</span>) {
+    }
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (l.hash !== <span class="hljs-string">''</span>) {
         l.hash = <span class="hljs-string">''</span>;
     }</pre></div>
       
@@ -131,7 +132,8 @@ has a code in the url as a parameter.)</p>
     <span class="hljs-keyword">var</span> basePath = <span class="hljs-string">''</span>;
     <span class="hljs-keyword">if</span> (window.DOWNLOAD_YUI) {
         basePath = <span class="hljs-string">'http://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/'</span>;
-    } <span class="hljs-keyword">else</span> {
+    }
+    <span class="hljs-keyword">else</span> {
         <span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
         <span class="hljs-keyword">var</span> Util = <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/util'</span>);
         basePath = path.join(Util.root(), <span class="hljs-string">'lib'</span>, <span class="hljs-string">'yui2'</span>) + <span class="hljs-string">'/'</span>;
@@ -154,7 +156,7 @@ has a code in the url as a parameter.)</p>
       
       
         <div class="code"><pre class="wrapper">    loader.require([<span class="hljs-string">"autocomplete"</span>, <span class="hljs-string">"logger"</span>, <span class="hljs-string">"yahoo"</span>, <span class="hljs-string">"dom"</span>, <span class="hljs-string">"connection"</span>, <span class="hljs-string">"get"</span>, <span class="hljs-string">"json"</span>, <span class="hljs-string">"event"</span>, <span class="hljs-string">"container"</span>, <span class="hljs-string">"dragdrop"</span>, <span class="hljs-string">"slider"</span>, <span class="hljs-string">"animation"</span>, <span class="hljs-string">"selector"</span>, <span class="hljs-string">"event-delegate"</span>, <span class="hljs-string">"event-mouseenter"</span>, <span class="hljs-string">"paginator"</span>, <span class="hljs-string">"tabview"</span>, <span class="hljs-string">"menu"</span>, <span class="hljs-string">"datatable"</span>]);
-    loader.onSuccess = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> {</span></pre></div>
+    loader.onSuccess = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span> {</span></pre></div>
       
       </div>
     
@@ -319,8 +321,7 @@ has a code in the url as a parameter.)</p>
       
       
         <div class="code"><pre class="wrapper">    loader.insert();
-})();
-</pre></div>
+})();</pre></div>
       
       </div>
     

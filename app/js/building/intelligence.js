@@ -1,6 +1,6 @@
 'use strict';
 YAHOO.namespace("lacuna.buildings");
-(function () {
+(function() {
     var Lang = YAHOO.lang,
         Util = YAHOO.util,
         Dom = Util.Dom,
@@ -10,21 +10,21 @@ YAHOO.namespace("lacuna.buildings");
         Lacuna = YAHOO.lacuna,
         Game = Lacuna.Game,
         Lib = Lacuna.Library;
-    var Intelligence = function (result) {
+    var Intelligence = function(result) {
         Intelligence.superclass.constructor.call(this, result);
         this.service = Game.Services.Buildings.Intelligence;
     };
     Lang.extend(Intelligence, Lacuna.buildings.Building, {
-        destroy: function () {
+        destroy: function() {
             if (this.pager) {
                 this.pager.destroy();
             }
             Intelligence.superclass.destroy.call(this);
         },
-        getChildTabs: function () {
+        getChildTabs: function() {
             return [this._getTrainTab(), this._getSpiesTab()];
         },
-        _getTrainTab: function () {
+        _getTrainTab: function() {
             var spies = this.result.spies;
             this.trainTab = new YAHOO.widget.Tab({
                 label: "Train Spies",
@@ -37,7 +37,7 @@ YAHOO.namespace("lacuna.buildings");
             }
             return this.trainTab;
         },
-        _getSpiesTab: function () {
+        _getSpiesTab: function() {
             this.spiesTab = new YAHOO.widget.Tab({
                 label: "Spies",
                 content: ['<div>', '    <p id="spiesSubsidizeOffer" style="display:none;">You may subsidize training for 1 <img src="', Lib.AssetUrl, 'ui/s/essentia.png" class="smallEssentia" /> per spy. <button type="button" id="spiesSubsidize">Subsidize</button></p>', '    <div>', '        <div id="spiesDetails">', '        </div>', '    </div>', '    <div id="spyPaginator"></div>', '</div>'].join('')
@@ -46,7 +46,7 @@ YAHOO.namespace("lacuna.buildings");
             Event.on("spiesSubsidize", "click", this.Subsidize, this, true);
             return this.spiesTab;
         },
-        trainView: function (e) {
+        trainView: function(e) {
             var spies = this.result.spies;
             var canTrain = spies.maximum - spies.current;
             Dom.get("spiesCurrent")
@@ -67,11 +67,12 @@ YAHOO.namespace("lacuna.buildings");
                     elOption.innerHTML = n;
                     elNumSelect.appendChild(elOption);
                 }
-            } else {
+            }
+            else {
                 Dom.setStyle('spiesTrainOptions', 'display', 'none');
             }
         },
-        spiesView: function (e) {
+        spiesView: function(e) {
             if (e.newValue) {
                 if (!this.spies) {
                     Lacuna.Pulser.Show();
@@ -79,7 +80,7 @@ YAHOO.namespace("lacuna.buildings");
                         session_id: Game.GetSession(),
                         building_id: this.building.id
                     }, {
-                        success: function (o) {
+                        success: function(o) {
                             YAHOO.log(o, "info", "Intelligence.Intelligence.view_spies.success");
                             Lacuna.Pulser.Hide();
                             this.rpcSuccess(o);
@@ -97,12 +98,13 @@ YAHOO.namespace("lacuna.buildings");
                         },
                         scope: this
                     });
-                } else {
+                }
+                else {
                     this.SpyPopulate();
                 }
             }
         },
-        SpyInfo: function (spy) {
+        SpyInfo: function(spy) {
             var assign = spy.possible_assignments,
                 div = document.createElement("div"),
                 ul = document.createElement("ul"),
@@ -157,7 +159,8 @@ YAHOO.namespace("lacuna.buildings");
                     Line: nDiv
                 }, true);
                 sel.Button = nLi.appendChild(btn);
-            } else {
+            }
+            else {
                 nLi.innerHTML = spy.assignment;
                 if (!isTraining) {
                     isTraining = (spy.assignment === "Training");
@@ -189,7 +192,8 @@ YAHOO.namespace("lacuna.buildings");
                 if (mission.message_id) {
                     elem.ResultLink.MessageId = mission.message_id;
                     Dom.setStyle(elem.ResultLink, "display", "inline");
-                } else {
+                }
+                else {
                     Dom.setStyle(elem.ResultLink, "display", "none");
                 }
             }
@@ -267,7 +271,7 @@ YAHOO.namespace("lacuna.buildings");
             }, true);
             return [nDiv, isTraining];
         },
-        SpyPopulate: function () {
+        SpyPopulate: function() {
             var details = Dom.get("spiesDetails");
             if (details) {
                 var spies = this.spies.spies,
@@ -288,13 +292,14 @@ YAHOO.namespace("lacuna.buildings");
                     Dom.get("spiesSubsidize")
                         .disabled = false;
                     Dom.setStyle("spiesSubsidizeOffer", "display", "");
-                } else {
+                }
+                else {
                     Dom.get("spiesSubsidize")
                         .disabled = true;
                     Dom.setStyle("spiesSubsidizeOffer", "display", "none");
                 }
                 //wait for tab to display first
-                setTimeout(function () {
+                setTimeout(function() {
                     var Ht = Game.GetSize()
                         .h - 150;
                     if (Ht > 300) {
@@ -305,7 +310,7 @@ YAHOO.namespace("lacuna.buildings");
                 }, 10);
             }
         },
-        handleStarmapLink: function (e, el) {
+        handleStarmapLink: function(e, el) {
             Event.stopEvent(e);
             var res = el.href.match(/\#(-?\d+)x(-?\d+)$/);
             Game.StarJump({
@@ -313,20 +318,20 @@ YAHOO.namespace("lacuna.buildings");
                 y: res[2]
             });
         },
-        SpyShowMessage: function () {
+        SpyShowMessage: function() {
             var message_id = this.ResultLink.MessageId;
             if (message_id) {
                 Lacuna.Messaging.showMessage(message_id);
             }
         },
-        SpyHandlePagination: function (newState) {
+        SpyHandlePagination: function(newState) {
             Lacuna.Pulser.Show();
             this.service.view_spies({
                 session_id: Game.GetSession(),
                 building_id: this.building.id,
                 page_number: newState.page
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Intelligence.SpyHandlePagination.view_spies.success");
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
@@ -338,7 +343,7 @@ YAHOO.namespace("lacuna.buildings");
             // Update the Paginator's state
             this.pager.setState(newState);
         },
-        SpyAssignChange: function () {
+        SpyAssignChange: function() {
             var btn = this.Button,
                 defVal = this.currentAssign,
                 selVal = this[this.selectedIndex].value;
@@ -346,7 +351,7 @@ YAHOO.namespace("lacuna.buildings");
                 Dom.setStyle(btn, "display", defVal !== selVal ? "" : "none");
             }
         },
-        SpyAssign: function () {
+        SpyAssign: function() {
             Lacuna.Pulser.Show();
             var assign = this.Assign[this.Assign.selectedIndex].value;
             this.Self.service.assign_spy({
@@ -355,7 +360,7 @@ YAHOO.namespace("lacuna.buildings");
                 spy_id: this.Id,
                 assignment: assign
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Intelligence.SpyAssign.success");
                     Lacuna.Pulser.Hide();
                     this.Self.rpcSuccess(o);
@@ -377,13 +382,13 @@ YAHOO.namespace("lacuna.buildings");
                     var ol = this.Line.parentNode.removeChild(this.Line);
                     Event.purgeElement(ol);
                 },
-                failure: function (o) {
+                failure: function(o) {
                     this.Assign.selectedIndex = this.Assign.defaultIndex;
                 },
                 scope: this
             });
         },
-        SpyBurn: function () {
+        SpyBurn: function() {
             if (confirm(["Are you sure you want to Burn ", this.Spy.name, "?"].join(''))) {
                 Lacuna.Pulser.Show();
                 this.Self.service.burn_spy({
@@ -391,7 +396,7 @@ YAHOO.namespace("lacuna.buildings");
                     building_id: this.Self.building.id,
                     spy_id: this.Spy.id
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Intelligence.SpyBurn.success");
                         Lacuna.Pulser.Hide();
                         this.Self.rpcSuccess(o);
@@ -409,7 +414,7 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        SpyName: function () {
+        SpyName: function() {
             this.el.innerHTML = "";
             var inp = document.createElement("input"),
                 bSave = document.createElement("button"),
@@ -429,7 +434,7 @@ YAHOO.namespace("lacuna.buildings");
             this.el.appendChild(bSave);
             this.el.appendChild(bCancel);
         },
-        SpyNameSave: function (e) {
+        SpyNameSave: function(e) {
             Event.stopEvent(e);
             Lacuna.Pulser.Show();
             var newName = this.Input.value;
@@ -439,7 +444,7 @@ YAHOO.namespace("lacuna.buildings");
                 spy_id: this.Spy.id,
                 name: newName
             }, {
-                success: function (o) {
+                success: function(o) {
                     YAHOO.log(o, "info", "Intelligence.SpyNameSave.success");
                     Lacuna.Pulser.Hide();
                     this.Self.rpcSuccess(o);
@@ -450,7 +455,7 @@ YAHOO.namespace("lacuna.buildings");
                     }
                     this.Self.SpyNameClear.call(this);
                 },
-                failure: function (o) {
+                failure: function(o) {
                     if (this.Input) {
                         this.Input.value = this.Spy.name;
                     }
@@ -458,7 +463,7 @@ YAHOO.namespace("lacuna.buildings");
                 scope: this
             });
         },
-        SpyNameClear: function (e) {
+        SpyNameClear: function(e) {
             if (e) {
                 Event.stopEvent(e);
             }
@@ -471,7 +476,7 @@ YAHOO.namespace("lacuna.buildings");
                 Event.on(this.el, "click", this.Self.SpyName, this, true);
             }
         },
-        SpyTrain: function () {
+        SpyTrain: function() {
             var select = Dom.get("spiesTrainNumber"),
                 num = select[select.selectedIndex].value * 1;
             if (Lang.isNumber(num) && num <= this.result.spies.maximum - this.result.spies.current) {
@@ -481,7 +486,7 @@ YAHOO.namespace("lacuna.buildings");
                     building_id: this.building.id,
                     quantity: num
                 }, {
-                    success: function (o) {
+                    success: function(o) {
                         YAHOO.log(o, "info", "Intelligence.SpyTrain.success");
                         Lacuna.Pulser.Hide();
                         this.rpcSuccess(o);
@@ -502,7 +507,7 @@ YAHOO.namespace("lacuna.buildings");
                 });
             }
         },
-        Subsidize: function (e) {
+        Subsidize: function(e) {
             Lacuna.Pulser.Show();
             Dom.get("spiesSubsidize")
                 .disabled = true;
@@ -510,7 +515,7 @@ YAHOO.namespace("lacuna.buildings");
                 session_id: Game.GetSession(),
                 building_id: this.building.id
             }, {
-                success: function (o) {
+                success: function(o) {
                     Lacuna.Pulser.Hide();
                     this.rpcSuccess(o);
                     delete this.spies;
@@ -518,7 +523,7 @@ YAHOO.namespace("lacuna.buildings");
                         newValue: 1
                     });
                 },
-                failure: function (o) {
+                failure: function(o) {
                     Dom.get("spiesSubsidize")
                         .disabled = false;
                 },
