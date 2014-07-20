@@ -7,8 +7,8 @@ var app = require('app'),
     Handlebars = require('handlebars'),
     development = process.env.ATOMIC_LACUNA_DEVELOPMENT || false,
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is GCed.
+    // Keep a global reference of the window object, if you don't, the window will
+    // be closed automatically when the JavaScript object is GCed.
     mainWindow = null;
 
 // Quit when all windows are closed.

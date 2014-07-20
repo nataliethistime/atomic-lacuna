@@ -286,7 +286,13 @@ has a code in the url as a parameter.)</p>
         <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/info'</span>);
         <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/notify'</span>);
         <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/captcha'</span>);
-        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/menu'</span>);</pre></div>
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/menu'</span>);
+
+        <span class="hljs-keyword">if</span> (window.ATOM_SHELL) {
+            <span class="hljs-keyword">var</span> ipc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'ipc'</span>);
+            ipc.send(<span class="hljs-string">'atomic-lacuna-window-show'</span>);
+        }
+</pre></div>
       
       </div>
     
@@ -313,7 +319,8 @@ has a code in the url as a parameter.)</p>
       
       
         <div class="code"><pre class="wrapper">    loader.insert();
-})();</pre></div>
+})();
+</pre></div>
       
       </div>
     

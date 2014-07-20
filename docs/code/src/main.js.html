@@ -29,6 +29,7 @@
     BrowserWindow = <span class="hljs-built_in">require</span>(<span class="hljs-string">'browser-window'</span>),
     fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>),
     path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>),
+    ipc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'ipc'</span>),
 
     Handlebars = <span class="hljs-built_in">require</span>(<span class="hljs-string">'handlebars'</span>),
     development = process.env.ATOMIC_LACUNA_DEVELOPMENT || <span class="hljs-literal">false</span>,
@@ -77,12 +78,16 @@ initialization and is ready to create browser windows.</p>
       
       
         <div class="code"><pre class="wrapper">app.on(<span class="hljs-string">'ready'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-    mainWindow = <span class="hljs-keyword">new</span> BrowserWindow({width: <span class="hljs-number">800</span>, height: <span class="hljs-number">600</span>});
+    mainWindow = <span class="hljs-keyword">new</span> BrowserWindow({width: <span class="hljs-number">800</span>, height: <span class="hljs-number">600</span>, show: <span class="hljs-literal">false</span>});
     mainWindow.maximize();
     mainWindow.loadUrl(<span class="hljs-string">'file://'</span> + doIndexStuff());
     mainWindow.on(<span class="hljs-string">'closed'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
         mainWindow = <span class="hljs-literal">null</span>;
     });
+});
+
+ipc.on(<span class="hljs-string">'atomic-lacuna-window-show'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    mainWindow.show();
 });
 
 </pre></div>
