@@ -4,16 +4,22 @@
     <title>Lacuna Expanse</title>
 
     {{#if development}}
-    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/reset-fonts-grids/reset-fonts-grids.css" />
+        <link rel="stylesheet" type="text/css" href="../app/lib/yui2/reset-fonts-grids/reset-fonts-grids.css" />
         <link rel="stylesheet" type="text/css" href="../app/css/styles.css" />
     {{else}}
-        <link rel="stylesheet" type="text/css" href="lib/yui2/reset-fonts-grids/reset-fonts-grids.css" />
-        <link rel="stylesheet" type="text/css" href="styles.css" />
+        {{#if atomShell}}
+            <link rel="stylesheet" type="text/css" href="lib/yui2/reset-fonts-grids/reset-fonts-grids.css" />
+            <link rel="stylesheet" type="text/css" href="styles.css" />
+        {{else}}
+            <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/reset-fonts-grids/reset-fonts-grids.css" />
+            <link rel="stylesheet" type="text/css" href="styles.css" />
+        {{/if}}
     {{/if}}
 
     <link rel="icon" href="http://s3.amazonaws.com/www.lacunaexpanse.com/favicon.png" type="image/png" />
     <link rel="SHORTCUT ICON" href="http://s3.amazonaws.com/www.lacunaexpanse.com/favicon.ico" />
 </head>
+
 <body id="body" class="yui-skin-sam">
 
     <div id="pulsing" class="nofooter yui-panel">
@@ -82,11 +88,22 @@
     {{/if}}
 
     {{#if development}}
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/yuiloader/yuiloader-min.js"></script>
+        <script type="text/javascript" src="../app/lib/yui2/yuiloader/yuiloader.js"></script>
         <script type="text/javascript" src="../app/js/main.js"></script>
     {{else}}
-        <script type="text/javascript" src="lib/yui2/yuiloader/yuiloader.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
+        {{#if atomShell}}
+            <script type="text/javascript" src="lib/yui2/yuiloader/yuiloader.js"></script>
+            <script type="text/javascript" src="js/main.js"></script>
+        {{else}}
+            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/yuiloader/yuiloader-min.js"></script>
+
+            {{! Include handlebars runtime for templates. }}
+            {{! Use the min version for the sake of simplicity and load time. }}
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.runtime.min.js"></script>
+            <script type="text/javascript" src="templates.js"></script>
+
+            <script type="text/javascript" src="browser-build.js"></script>
+        {{/if}}
     {{/if}}
 </body>
 </html>

@@ -3,10 +3,12 @@ var Handlebars = require('handlebars'),
     fs = require('fs'),
     path = require('path'),
     Util = require('js/util');
-// Define all the Handlebars helpers.
+
+// Get all the Handlebars helpers.
 require('js/templateHelpers');
+
 module.exports = {
-    tmplCache: {},
+    tmplCache: window.ATOMIC_LACUNA_TEMPLATES || {},
     get: function(name) {
         // Get from cache or load new one.
         return this.tmplCache[this.addPrefix(name)] || this.load(name);
@@ -22,7 +24,7 @@ module.exports = {
         }
         else {
             // If it can't be gotten from the file system, then it isn't here.
-            throw new Error('Template had not been loaded: ' + name);
+            throw new Error('Template has not been loaded: ' + name);
         }
     },
     save: function(name, func) {
@@ -39,7 +41,8 @@ module.exports = {
         return name + '.hbs';
     },
     addPrefix: function(name) {
-        return '__' + name;
+        // Note if you change this, please change it in the Gulpfile, too.
+        return ('__' + name).replace(/\./g, path.sep);
     },
     getLocation: function(name) {
         return path.join(Util.root(), 'templates', name);

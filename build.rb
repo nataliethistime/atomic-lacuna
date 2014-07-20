@@ -10,9 +10,10 @@
 require 'fileutils'
 require 'json'
 
-# This is a non-core dependency. If you're getting an error on this line, you'll
-# need to get and run bundler on in this directory. (Google it. :P)
+# These are non-core dependencies. If you're getting an error on this line, you'll
+# need to get and run bundler in this directory. (Google it. :P)
 require 'archive/zip'
+require 'handlebars'
 
 # Auto-Flush STDOUT
 STDOUT.sync = true
@@ -23,7 +24,7 @@ build_dir = File.join(Dir.getwd, 'build')
 FileUtils::mkdir_p build_dir
 
 
-PACKAGES = %w(linux-32 linux-64 win32-32)
+PACKAGES = %w(web linux-32 linux-64 win32-32)
 
 # Clean out the old build files 'n' things.
 puts 'Cleaning out files from previous run...'
@@ -57,8 +58,9 @@ print "\n\n" # some space
 if successful
 
     puts "Pulling all the code together."
-    FileUtils::mkdir_p File.join(build_dir, 'app')
-    FileUtils.cp('public/dist/application.js', 'build/app/application.js')
+    FileUtils.mkdir_p File.join(build_dir, 'app')
+    FileUtils.cp('public/dist/browser-build.js', 'build/app/browser-build.js')
+    FileUtils.cp('public/dist/templates.js', 'build/app/templates.js')
     FileUtils.cp('public/dist/styles.css', 'build/app/styles.css')
     FileUtils.cp('public/index-template.html', 'build/app/index-template.html')
     FileUtils.cp('public/browser.html', 'build/app/browser.html')
@@ -89,14 +91,33 @@ PACKAGES.each do |build|
 
     puts "Constructing the #{build} package."
 
-    unless Dir.exists? bin_path
-        puts "ERR: please download the #{build} binary."
-        next
-    end
 
     if build == 'web'
-        # Something special
+        # In this case, bin_path is the location we're copying all this stuff to.
+        src = File.join(build_dir, 'app')
+        dest = bin_path
+        FileUtils.mkdir_p dest
+
+        # Compile the HTML template for the index page.
+        handlebars = Handlebars::Context.new
+        template = handlebars.compile(File.read(File.join(src, 'index-template.html')))
+        html = template.call(atomShell: false, development: false)
+        File.write(File.join(dest, 'index.html'), html)
+
+        # Copy all assets needed for the browser.
+        FileUtils.cp(File.join(src, 'styles.css'), dest)
+        FileUtils.cp(File.join(src, 'browser-build.js'), dest)
+        FileUtils.cp(File.join(src, 'templates.js'), dest)
+
+        # DEBUG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        exit
     else
+
+        unless Dir.exists? bin_path
+            puts "ERR: please download the #{build} binary."
+            next
+        end
+
         src = File.join(build_dir, 'app')
         dest = File.join(bin_path, 'resources', 'app')
         FileUtils.mkdir_p dest # make sure we have somewhere to go..

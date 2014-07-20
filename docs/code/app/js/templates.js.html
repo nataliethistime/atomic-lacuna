@@ -29,21 +29,23 @@
 <span class="hljs-keyword">var</span> Handlebars = <span class="hljs-built_in">require</span>(<span class="hljs-string">'handlebars'</span>),
     fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>),
     path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>),
-    Util = <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/util'</span>);</pre></div>
+    Util = <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/util'</span>);
+</pre></div>
       
       </div>
     
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><p>Define all the Handlebars helpers.</p>
+          <div class="wrapper"><p>Get all the Handlebars helpers.</p>
 </div>
         </div>
       
       
         <div class="code"><pre class="wrapper"><span class="hljs-built_in">require</span>(<span class="hljs-string">'js/templateHelpers'</span>);
+
 module.exports = {
-    tmplCache: {},
+    tmplCache: window.ATOMIC_LACUNA_TEMPLATES || {},
     get: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span> {</span></pre></div>
       
       </div>
@@ -99,7 +101,7 @@ module.exports = {
         </div>
       
       
-        <div class="code"><pre class="wrapper">            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Template had not been loaded: '</span> + name);
+        <div class="code"><pre class="wrapper">            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Template has not been loaded: '</span> + name);
         }
     },
     save: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name, func)</span> {</span>
@@ -115,13 +117,25 @@ module.exports = {
         name = name.replace(<span class="hljs-regexp">/\./g</span>, path.sep);
         <span class="hljs-keyword">return</span> name + <span class="hljs-string">'.hbs'</span>;
     },
-    addPrefix: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span> {</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-string">'__'</span> + name;
+    addPrefix: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span> {</span></pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Note if you change this, please change it in the Gulpfile, too.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-keyword">return</span> (<span class="hljs-string">'__'</span> + name).replace(<span class="hljs-regexp">/\./g</span>, path.sep);
     },
     getLocation: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span> {</span>
         <span class="hljs-keyword">return</span> path.join(Util.root(), <span class="hljs-string">'templates'</span>, name);
     }
-};</pre></div>
+};
+</pre></div>
       
       </div>
     

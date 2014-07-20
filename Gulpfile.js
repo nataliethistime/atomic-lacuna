@@ -5,10 +5,15 @@ var cssConcat  = require('gulp-concat-css');
 var jshint     = require('gulp-jshint');
 var stylish    = require('jshint-stylish');
 var beautify   = require('gulp-js-prettify');
+var handlebars = require('gulp-handlebars');
+var defineModule = require('gulp-define-module');
+var declare = require('gulp-declare');
+var concat = require('gulp-concat');
 
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var AtomShellDownload = require('atom-shell-pull');
+var _ = require('lodash');
 
 var connect = require('connect');
 var http    = require('http');
@@ -39,18 +44,39 @@ gulp.task('code-build', function() {
             insertGlobals : true,
             ignoreMissing : true // For things like 'remote' which are atom-shell only.
         })
-        .pipe(source('application.js'))
+        .pipe(source('browser-build.js'))
         .pipe(gulp.dest('./public/dist'));
 
     gulp.src('app/css/styles.css')
         .pipe(cssConcat(''))
         .pipe(gulp.dest('public/dist/styles.css'))
 
-    // TODO: now we bundle all the Handlebars templates into one file.
+    // Bundle all the Handlebars templates into one file.
+    gulp.src('./app/templates/**/*.hbs')
+        .pipe(handlebars())
+        .pipe(defineModule('plain'))
+        .pipe(declare({
+            namespace : 'ATOMIC_LACUNA_TEMPLATES',
 
+            // Fixes the name so that `Templates.get('foo/bar/baz')` resolves correctly.
+            // Ex: /home/batman/atomic-lacuna/app/templates/menu/about
+            // => '__menu/about'
+            processName : function(location) {
+                // Note: this will probably break on Windows. Sorry Windows users.
+                var rv = '__' + location
+                    // Remove everything that's templates/ and before.
+                    .replace(/^\S+templates\//, '')
+
+                    // Cull '.js' file extension
+                    .replace(/\.js$/, '');
+                return rv;
+            }
+        }))
+        .pipe(concat('templates.js'))
+        .pipe(gulp.dest('public/dist/'));
 });
 
-gulp.task('code-clean', function () {
+gulp.task('code-clean', function() {
     gulp.src(JS_FILES)
         .pipe(beautify({
             max_preserve_newlines : 3,
@@ -59,7 +85,7 @@ gulp.task('code-clean', function () {
         .pipe(gulp.dest('app/js'));
 });
 
-gulp.task('download-shell', function () {
+gulp.task('download-shell', function() {
     var download = new AtomShellDownload({
         outputDir : 'build',
         platforms : ['linux', 'win32'],
