@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Atomic Lacuna by Vasari</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Atomic Lacuna</h1>
+        <p>The Lacuna Expanse Web Client inside an atom-shell.</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/Vasari/atomic-lacuna" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/Vasari/atomic-lacuna/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/Vasari/atomic-lacuna/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>
+<a name="atomic-lacuna" class="anchor" href="#atomic-lacuna"><span class="octicon octicon-link"></span></a>atomic-lacuna</h1>
+
+<p>The Lacuna Expanse Web Client inside an atom-shell. All the documentation for
+this is viewable on the <a href="https://github.com/Vasari/atomic-lacuna/blob/master/docs/index.md">documentation index page</a>.
+If you have any questions or suggestions, please yell at me via the Github Issue tracker.
+I'd love to hear from you. <img class="emoji" title=":blush:" alt=":blush:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f60a.png" height="20" width="20" align="absmiddle"></p>
+
+<h1>
+<a name="why-octocat" class="anchor" href="#why-octocat"><span class="octicon octicon-link"></span></a>Why? <img class="emoji" title=":octocat:" alt=":octocat:" src="https://assets-cdn.github.com/images/icons/emoji/octocat.png" height="20" width="20" align="absmiddle">
+</h1>
+
+<p>I've been wanting to try and add cool new stuff to the Lacuna Web Client for
+quite some time now, however, my plans have been foiled by the inability to load
+more JavaScript into the page (Underscore or jQuery to name a few). This was
+because the <code>index.html</code> couldn't be changed and I didn't want to be inserting
+<code>&lt;script&gt;</code> elements onto the page at runtime ('cause that's ugly, man).</p>
+
+<p>I came across <a href="atom.io">Atom</a> some time ago, however I never really looked into it.
+Recently I tried to build it on my system and I discovered that it ran on a 'shell'
+that could be re-used in other projects.</p>
+
+<p>To make a short story shorter, the <code>atom-shell</code> allows a web page (such as the
+web client) to run in a desktop window and have access to the file system via
+NodeJs. This allowed me to streamline the loading of all the JavaScript and assets.
+I don't have any performance tests, but the client <em>seems</em> faster in the desktop
+mode than in the web browser. If any of that doesn't convince you, just look at it.
+No silly web browser rubbish in the way! Tadaaa! <img class="emoji" title=":dizzy:" alt=":dizzy:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4ab.png" height="20" width="20" align="absmiddle"></p>
+
+<p><img src="https://raw.githubusercontent.com/Vasari/atomic-lacuna/master/docs/Screenshot.png" alt="Atomic Lacuna in action!">
+Made with <img class="emoji" title=":heart:" alt=":heart:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/2764-fe0f.png" height="20" width="20" align="absmiddle"> by Nathan McCallum and contributers under the MIT license! <img class="emoji" title=":panda_face:" alt=":panda_face:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f43c.png" height="20" width="20" align="absmiddle"></p>
+
+<h1>
+<a name="badges-beginner" class="anchor" href="#badges-beginner"><span class="octicon octicon-link"></span></a>Badges! <img class="emoji" title=":beginner:" alt=":beginner:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f530.png" height="20" width="20" align="absmiddle">
+</h1>
+
+<table>
+<thead><tr>
+<th align="center">Name</th>
+<th align="center">Status</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="center">Code Climate</td>
+<td align="center"><a href="https://codeclimate.com/github/Vasari/atomic-lacuna"><img src="https://codeclimate.com/github/Vasari/atomic-lacuna.png" alt="Code Climate"></a></td>
+</tr>
+<tr>
+<td align="center">Travis CI</td>
+<td align="center"><a href="https://travis-ci.org/Vasari/atomic-lacuna"><img src="https://travis-ci.org/Vasari/atomic-lacuna.svg?branch=master" alt="Build Status"></a></td>
+</tr>
+<tr>
+<td align="center">Ohloh</td>
+<td align="center"><a href="https://www.ohloh.net/p/atomic-lacuna"><img src="https://www.ohloh.net/images/logo/ohloh_hub.png" alt="Ohloh"></a></td>
+</tr>
+<tr>
+<td align="center">Dependencies</td>
+<td align="center"><a href="https://david-dm.org/Vasari/atomic-lacuna"><img src="https://david-dm.org/Vasari/atomic-lacuna.svg" alt="Dependency Status"></a></td>
+</tr>
+<tr>
+<td align="center">Dev Dependencies</td>
+<td align="center"><a href="https://david-dm.org/Vasari/atomic-lacuna#info=devDependencies"><img src="https://david-dm.org/Vasari/atomic-lacuna/dev-status.svg" alt="Dev Dependency Status"></a></td>
+</tr>
+</tbody>
+</table><h1>
+<a name="changes" class="anchor" href="#changes"><span class="octicon octicon-link"></span></a>Changes</h1>
+
+<h3>
+<a name="012-unreleased" class="anchor" href="#012-unreleased"><span class="octicon octicon-link"></span></a>0.1.2 (Unreleased)</h3>
+
+<ul>
+<li>Cleaned all of the code out using <code>node-beautify</code>.</li>
+<li>Fixed some errors introduced in the cleaning.</li>
+<li>Implemented a build for the web browser.</li>
+</ul><h3>
+<a name="011-2014-07-13" class="anchor" href="#011-2014-07-13"><span class="octicon octicon-link"></span></a>0.1.1 (2014-07-13)</h3>
+
+<ul>
+<li>Include binaries for Windows (32 bit) and Linux (64 and 32 bit).</li>
+</ul><h3>
+<a name="010-2014-07-13" class="anchor" href="#010-2014-07-13"><span class="octicon octicon-link"></span></a>0.1.0 (2014-07-13)</h3>
+
+<ul>
+<li>Started keeping a change log.</li>
+<li>Sorted out the inclusion of <code>node_modules</code> in linux builds.</li>
+<li>The build script now zips each package.</li>
+<li>Build script now deletes old stuff before running.</li>
+<li>Ignore useless development dependencies when building.</li>
+</ul><h3>
+<a name="001" class="anchor" href="#001"><span class="octicon octicon-link"></span></a>0.0.1</h3>
+
+<ul>
+<li>Initial version! :D</li>
+</ul>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/Vasari">Vasari</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
