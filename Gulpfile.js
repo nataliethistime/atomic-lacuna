@@ -9,6 +9,7 @@ var handlebars = require('gulp-handlebars');
 var defineModule = require('gulp-define-module');
 var declare = require('gulp-declare');
 var concat = require('gulp-concat');
+var cleanHTML = require('gulp-cleanhtml');
 
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
@@ -53,6 +54,7 @@ gulp.task('code-build', function() {
 
     // Bundle all the Handlebars templates into one file.
     gulp.src('./app/templates/**/*.hbs')
+        .pipe(cleanHTML())
         .pipe(handlebars())
         .pipe(defineModule('plain'))
         .pipe(declare({
