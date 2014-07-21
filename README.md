@@ -32,11 +32,13 @@ Made with :heart: by Nathan McCallum and contributers under the MIT license! :pa
 Badges! :beginner:
 =======
 
-| Name         | Status    |
-| :----------: | :-------: |
-| Code Climate | [![Code Climate](https://codeclimate.com/github/Vasari/atomic-lacuna.png)](https://codeclimate.com/github/Vasari/atomic-lacuna) |
-| Travis CI    | [![Build Status](https://travis-ci.org/Vasari/atomic-lacuna.svg?branch=master)](https://travis-ci.org/Vasari/atomic-lacuna)     |
-| Ohloh        | [![Ohloh](https://www.ohloh.net/images/logo/ohloh_hub.png)](https://www.ohloh.net/p/atomic-lacuna)
+| Name             | Status    |
+| :--------------: | :-------: |
+| Code Climate     | [![Code Climate](https://codeclimate.com/github/Vasari/atomic-lacuna.png)](https://codeclimate.com/github/Vasari/atomic-lacuna) |
+| Travis CI        | [![Build Status](https://travis-ci.org/Vasari/atomic-lacuna.svg?branch=master)](https://travis-ci.org/Vasari/atomic-lacuna)     |
+| Ohloh            | [![Ohloh](https://www.ohloh.net/images/logo/ohloh_hub.png)](https://www.ohloh.net/p/atomic-lacuna)
+| Dependencies     | [![Dependency Status](https://david-dm.org/Vasari/atomic-lacuna.svg)](https://david-dm.org/Vasari/atomic-lacuna) |
+| Dev Dependencies | [![Dev Dependency Status](https://david-dm.org/Vasari/atomic-lacuna/dev-status.svg)](https://david-dm.org/Vasari/atomic-lacuna#info=devDependencies) |
 
 Changes
 =======
