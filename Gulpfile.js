@@ -60,15 +60,18 @@ gulp.task('code-build', function() {
 
             // Fixes the name so that `Templates.get('foo/bar/baz')` resolves correctly.
             // Ex: /home/batman/atomic-lacuna/app/templates/menu/about
-            // => '__menu/about'
+            // => 'menu/about'
             processName : function(location) {
                 // Note: this will probably break on Windows. Sorry Windows users.
-                var rv = '__' + location
+                var rv = location
                     // Remove everything that's templates/ and before.
                     .replace(/^\S+templates\//, '')
 
                     // Cull '.js' file extension
-                    .replace(/\.js$/, '');
+                    .replace(/\.js$/, '')
+
+                    // Replace path separator with '.'
+                    .split(path.sep).join('.');
                 return rv;
             }
         }))

@@ -108,9 +108,6 @@ PACKAGES.each do |build|
         FileUtils.cp(File.join(src, 'styles.css'), dest)
         FileUtils.cp(File.join(src, 'browser-build.js'), dest)
         FileUtils.cp(File.join(src, 'templates.js'), dest)
-
-        # DEBUG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        exit
     else
 
         unless Dir.exists? bin_path
