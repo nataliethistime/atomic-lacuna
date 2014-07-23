@@ -1,5 +1,4 @@
 var gulp       = require('gulp');
-var gutil      = require('gulp-util');
 
 var cssConcat  = require('gulp-concat-css');
 var jshint     = require('gulp-jshint');
@@ -16,10 +15,7 @@ var source = require('vinyl-source-stream');
 var AtomShellDownload = require('atom-shell-pull');
 var _ = require('lodash');
 
-var connect = require('connect');
-var http    = require('http');
-var path    = require('path');
-var fs      = require('fs');
+var path = require('path');
 
 var JS_FILES = ['app/js/**/*.js'];
 var packageJson = require(path.join(__dirname, 'package.json'));
@@ -43,7 +39,7 @@ gulp.task('code-build', function() {
     browserify('./app/js/main.js')
         .bundle({
             insertGlobals : true,
-            ignoreMissing : true // For things like 'remote' which are atom-shell only.
+            ignoreMissing : true // Ignore missing modules. (Ex: 'ipc', 'remote').
         })
         .pipe(source('browser-build.js'))
         .pipe(gulp.dest('./public/dist'));
@@ -62,7 +58,7 @@ gulp.task('code-build', function() {
 
             // Fixes the name so that `Templates.get('foo/bar/baz')` resolves correctly.
             // Ex: /home/batman/atomic-lacuna/app/templates/menu/about
-            // => 'menu/about'
+            // => 'menu.about'
             processName : function(location) {
                 // Note: this will probably break on Windows. Sorry Windows users.
                 var rv = location
@@ -100,15 +96,4 @@ gulp.task('download-shell', function() {
     download.prepare(function (start) {
         start();
     });
-});
-
-// This should be used in conjunction with the browser-build. To run the desktop
-// version, do `./run.sh`.
-gulp.task('server', ['web-build'], function() {
-    var port = process.env.PORT || 5000;
-    var app = connect()
-        .use(connect.logger('dev'))
-        .use(connect['static'](path.join(__dirname, 'public')));
-    http.createServer(app).listen(port);
-    gutil.log('Server started on port ' + port);
 });
