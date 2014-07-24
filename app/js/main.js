@@ -3,6 +3,12 @@
     // Load jQuery, and Lodash before anything else just to make sure.
     window.$ = require('jquery');
     window._ = require('lodash');
+
+    // Load in the CoffeeScript compiler so that when something like:
+    // require('foo.coffee') happens, the file gets compiled first.
+    // Note: just 'foo' can be used in this case.
+    require('coffee-script/register');
+
     // Initialize the menu, this should be the last part of GUI initialization
     // before the JS code starts to load.
     if (window.ATOM_SHELL) {

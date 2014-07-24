@@ -1,15 +1,17 @@
-var app = require('app'),
-    BrowserWindow = require('browser-window'),
-    fs = require('fs'),
-    path = require('path'),
-    ipc = require('ipc'),
+'use strict';
 
-    Handlebars = require('handlebars'),
-    development = process.env.ATOMIC_LACUNA_DEVELOPMENT || false,
+var app = require('app');
+var BrowserWindow = require('browser-window');
+var fs = require('fs');
+var path = require('path');
+var ipc = require('ipc');
 
-    // Keep a global reference of the window object, if you don't, the window will
-    // be closed automatically when the JavaScript object is GCed.
-    mainWindow = null;
+var Handlebars = require('handlebars');
+var development = process.env.ATOMIC_LACUNA_DEVELOPMENT || false;
+
+// Keep a global reference of the window object, if you don't, the window will
+// be closed automatically when the JavaScript object is GCed.
+var mainWindow = null;
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
