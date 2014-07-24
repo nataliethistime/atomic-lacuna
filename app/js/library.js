@@ -11,7 +11,7 @@ if (!String.prototype.titleCaps) {
     String.punct = "([!\"#$%&'()*+,./:;<=>?@[\\\\\\]^_`{|}~-]*)";
     String.prototype.titleCaps = function(replaceVal, withVal) {
         var parts = [],
-            split = /[:.;?!] |(?: |^)["�]/g,
+            split = /[:.;?!] |(?: |^)["Ò]/g,
             index = 0,
             processVal = this;
         var fnUpper = function(all) {
@@ -28,7 +28,7 @@ if (!String.prototype.titleCaps) {
         while (true) {
             var m = split.exec(processVal);
             parts.push(processVal.substring(index, m ? m.index : processVal.length)
-                .replace(/\b([A-Za-z][a-z.'�]*)\b/g, fnUpper)
+                .replace(/\b([A-Za-z][a-z.'Ò]*)\b/g, fnUpper)
                 .replace(new RegExp("\\b" + String.small + "\\b", "ig"), String.lower)
                 .replace(new RegExp("^" + String.punct + String.small + "\\b", "ig"), fnPuntUpper)
                 .replace(new RegExp("\\b" + String.small + String.punct + "$", "ig"), String.upper));
@@ -42,7 +42,7 @@ if (!String.prototype.titleCaps) {
         }
         return parts.join("")
             .replace(/ V(s?)\. /ig, " v$1. ")
-            .replace(/(['�])S\b/ig, "$1s")
+            .replace(/(['Ò])S\b/ig, "$1s")
             .replace(/\b(AT&T|Q&A)\b/ig, function(all) {
                 return all.toUpperCase();
             });

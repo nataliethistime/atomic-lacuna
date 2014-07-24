@@ -1,6 +1,12 @@
 /**
  * Code taken from inputEx's  (http://javascript.neyric.com/inputex/) rpc library and slightly modified
  */
+
+
+// We need to do this because this code sucks ass.
+/* jshint strict:false */
+
+
 YAHOO.namespace("rpc");
 if (typeof YAHOO.rpc.Service == "undefined" || !YAHOO.rpc.Service) {
     (function() {

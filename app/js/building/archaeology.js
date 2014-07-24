@@ -69,7 +69,7 @@ YAHOO.namespace("lacuna.buildings");
                 if (!region.intersect(pt)) {
                     var El = this.getEl();
                     var fromCombineList = Dom.getAncestorBy(El, function(el) {
-                        return el.id == "archaeologyGlyphCombine"
+                        return el.id == "archaeologyGlyphCombine";
                     });
                     if (fromCombineList) {
                         // moving from 'combine' list to 'details' list
@@ -280,10 +280,11 @@ YAHOO.namespace("lacuna.buildings");
                         nLi.innerHTML = ['<img src="', Lib.AssetUrl, 'star_system/', obj.body.image, '.png" />', obj.body.name].join('');
                         Event.on(nLi, "click", this.excavatorClick, obj, true);
                         nUl.appendChild(nLi);
+                        var bbtn;
                         if (obj.id > 0) {
                             nLi = li.cloneNode(false);
                             Dom.addClass(nLi, "excavatorAbandon");
-                            var bbtn = document.createElement("button");
+                            bbtn = document.createElement("button");
                             bbtn.setAttribute("type", "button");
                             bbtn.innerHTML = "Abandon";
                             bbtn = nLi.appendChild(bbtn);
@@ -299,7 +300,7 @@ YAHOO.namespace("lacuna.buildings");
                             var chance = ctypes[chance_i];
                             if (obj[chance] > 0) {
                                 outChance.push('<li><label>' + chance.replace(/^\w/, function(c) {
-                                    return c.toUpperCase()
+                                    return c.toUpperCase();
                                 }) + ':</label> ');
                                 outChance.push(obj[chance]);
                                 outChance.push('</li>');

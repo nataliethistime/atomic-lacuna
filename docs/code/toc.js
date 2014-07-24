@@ -240,14 +240,6 @@ window.files = [
   "toc": []
 },
 {
-  "path": "app/js/util.js.html",
-  "originalName": "util.js",
-  "originalPath": "app/js/util.js",
-  "name": "util.js.html",
-  "lang": "javascript",
-  "toc": []
-},
-{
   "path": "app/js/building/archaeology.js.html",
   "originalName": "archaeology.js",
   "originalPath": "app/js/building/archaeology.js",

@@ -166,7 +166,7 @@ the negative space (the area of the list without any list items)</p>
         <div class="code"><pre class="wrapper">                <span class="hljs-keyword">if</span> (!region.intersect(pt)) {
                     <span class="hljs-keyword">var</span> El = <span class="hljs-keyword">this</span>.getEl();
                     <span class="hljs-keyword">var</span> fromCombineList = Dom.getAncestorBy(El, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> {</span>
-                        <span class="hljs-keyword">return</span> el.id == <span class="hljs-string">"archaeologyGlyphCombine"</span>
+                        <span class="hljs-keyword">return</span> el.id == <span class="hljs-string">"archaeologyGlyphCombine"</span>;
                     });
                     <span class="hljs-keyword">if</span> (fromCombineList) {</pre></div>
       
@@ -467,10 +467,11 @@ notifications for the list.</p>
                         nLi.innerHTML = [<span class="hljs-string">'&lt;img src="'</span>, Lib.AssetUrl, <span class="hljs-string">'star_system/'</span>, obj.body.image, <span class="hljs-string">'.png" /&gt;'</span>, obj.body.name].join(<span class="hljs-string">''</span>);
                         Event.on(nLi, <span class="hljs-string">"click"</span>, <span class="hljs-keyword">this</span>.excavatorClick, obj, <span class="hljs-literal">true</span>);
                         nUl.appendChild(nLi);
+                        <span class="hljs-keyword">var</span> bbtn;
                         <span class="hljs-keyword">if</span> (obj.id &gt; <span class="hljs-number">0</span>) {
                             nLi = li.cloneNode(<span class="hljs-literal">false</span>);
                             Dom.addClass(nLi, <span class="hljs-string">"excavatorAbandon"</span>);
-                            <span class="hljs-keyword">var</span> bbtn = document.createElement(<span class="hljs-string">"button"</span>);
+                            bbtn = document.createElement(<span class="hljs-string">"button"</span>);
                             bbtn.setAttribute(<span class="hljs-string">"type"</span>, <span class="hljs-string">"button"</span>);
                             bbtn.innerHTML = <span class="hljs-string">"Abandon"</span>;
                             bbtn = nLi.appendChild(bbtn);
@@ -486,7 +487,7 @@ notifications for the list.</p>
                             <span class="hljs-keyword">var</span> chance = ctypes[chance_i];
                             <span class="hljs-keyword">if</span> (obj[chance] &gt; <span class="hljs-number">0</span>) {
                                 outChance.push(<span class="hljs-string">'&lt;li&gt;&lt;label&gt;'</span> + chance.replace(<span class="hljs-regexp">/^\w/</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(c)</span> {</span>
-                                    <span class="hljs-keyword">return</span> c.toUpperCase()
+                                    <span class="hljs-keyword">return</span> c.toUpperCase();
                                 }) + <span class="hljs-string">':&lt;/label&gt; '</span>);
                                 outChance.push(obj[chance]);
                                 outChance.push(<span class="hljs-string">'&lt;/li&gt;'</span>);
@@ -780,7 +781,8 @@ notifications for the list.</p>
         }
     });
     Lacuna.buildings.Archaeology = Archaeology;
-})();</pre></div>
+})();
+</pre></div>
       
       </div>
     

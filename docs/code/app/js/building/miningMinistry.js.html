@@ -206,7 +206,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
                         <span class="hljs-keyword">var</span> ore = ores[ore_i];
                         <span class="hljs-keyword">if</span> (totals[ore_i] &gt; <span class="hljs-number">0</span>) {
                             outOre.push(<span class="hljs-string">'&lt;li&gt;&lt;label&gt;'</span> + ore.replace(<span class="hljs-regexp">/^\w/</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(c)</span> {</span>
-                                <span class="hljs-keyword">return</span> c.toUpperCase()
+                                <span class="hljs-keyword">return</span> c.toUpperCase();
                             }) + <span class="hljs-string">':&lt;/label&gt; '</span>);
                             outOre.push(totals[ore_i]);
                             outOre.push(<span class="hljs-string">'&lt;/li&gt;'</span>);
@@ -378,7 +378,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna.buildings"</span>);
         }
     });
     YAHOO.lacuna.buildings.MiningMinistry = MiningMinistry;
-})();</pre></div>
+})();
+</pre></div>
       
       </div>
     

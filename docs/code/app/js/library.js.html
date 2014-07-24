@@ -40,7 +40,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
     <span class="hljs-built_in">String</span>.punct = <span class="hljs-string">"([!\"#$%&amp;'()*+,./:;&lt;=&gt;?@[\\\\\\]^_`{|}~-]*)"</span>;
     <span class="hljs-built_in">String</span>.prototype.titleCaps = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(replaceVal, withVal)</span> {</span>
         <span class="hljs-keyword">var</span> parts = [],
-            split = <span class="hljs-regexp">/[:.;?!] |(?: |^)["�]/g</span>,
+            split = <span class="hljs-regexp">/[:.;?!] |(?: |^)["Ò]/g</span>,
             index = <span class="hljs-number">0</span>,
             processVal = <span class="hljs-keyword">this</span>;
         <span class="hljs-keyword">var</span> fnUpper = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(all)</span> {</span>
@@ -57,7 +57,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
             <span class="hljs-keyword">var</span> m = split.exec(processVal);
             parts.push(processVal.substring(index, m ? m.index : processVal.length)
-                .replace(<span class="hljs-regexp">/\b([A-Za-z][a-z.'�]*)\b/g</span>, fnUpper)
+                .replace(<span class="hljs-regexp">/\b([A-Za-z][a-z.'Ò]*)\b/g</span>, fnUpper)
                 .replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"\\b"</span> + <span class="hljs-built_in">String</span>.small + <span class="hljs-string">"\\b"</span>, <span class="hljs-string">"ig"</span>), <span class="hljs-built_in">String</span>.lower)
                 .replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"^"</span> + <span class="hljs-built_in">String</span>.punct + <span class="hljs-built_in">String</span>.small + <span class="hljs-string">"\\b"</span>, <span class="hljs-string">"ig"</span>), fnPuntUpper)
                 .replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"\\b"</span> + <span class="hljs-built_in">String</span>.small + <span class="hljs-built_in">String</span>.punct + <span class="hljs-string">"$"</span>, <span class="hljs-string">"ig"</span>), <span class="hljs-built_in">String</span>.upper));
@@ -71,7 +71,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         }
         <span class="hljs-keyword">return</span> parts.join(<span class="hljs-string">""</span>)
             .replace(<span class="hljs-regexp">/ V(s?)\. /ig</span>, <span class="hljs-string">" v$1. "</span>)
-            .replace(<span class="hljs-regexp">/(['�])S\b/ig</span>, <span class="hljs-string">"$1s"</span>)
+            .replace(<span class="hljs-regexp">/(['Ò])S\b/ig</span>, <span class="hljs-string">"$1s"</span>)
             .replace(<span class="hljs-regexp">/\b(AT&amp;T|Q&amp;A)\b/ig</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(all)</span> {</span>
                 <span class="hljs-keyword">return</span> all.toUpperCase();
             });
@@ -420,7 +420,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         }
     };
     YAHOO.lacuna.Library = Library;
-})();</pre></div>
+})();
+</pre></div>
       
       </div>
     

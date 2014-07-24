@@ -72,7 +72,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-keyword">this</span>.starDetails.addQueue = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(seconds, queueFn, elm, sc)</span> {</span>
                 <span class="hljs-keyword">this</span>.queue = <span class="hljs-keyword">this</span>.queue || [];
                 <span class="hljs-comment">//check if the queue is empty and store</span>
-                <span class="hljs-keyword">var</span> notStarted = <span class="hljs-keyword">this</span>.queue.length == <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">var</span> notStarted = <span class="hljs-keyword">this</span>.queue.length === <span class="hljs-number">0</span>;
                 <span class="hljs-comment">//push new queue item so it's immediately available for the tick</span>
                 <span class="hljs-keyword">this</span>.queue.push({
                     secondsRemaining: seconds * <span class="hljs-number">1</span>,
@@ -175,7 +175,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-keyword">this</span>.planetDetails.addQueue = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(seconds, queueFn, elm, sc)</span> {</span>
                 <span class="hljs-keyword">this</span>.queue = <span class="hljs-keyword">this</span>.queue || [];
                 <span class="hljs-comment">//check if the queue is empty and store</span>
-                <span class="hljs-keyword">var</span> notStarted = <span class="hljs-keyword">this</span>.queue.length == <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">var</span> notStarted = <span class="hljs-keyword">this</span>.queue.length === <span class="hljs-number">0</span>;
                 <span class="hljs-comment">//push new queue item so it's immediately available for the tick</span>
                 <span class="hljs-keyword">this</span>.queue.push({
                     secondsRemaining: seconds * <span class="hljs-number">1</span>,
@@ -866,7 +866,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         },
         PopulateShipsMiningPlatforms: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(panel)</span> {</span>
             <span class="hljs-keyword">var</span> ships = <span class="hljs-keyword">this</span>.currentShips.mining_platforms || [];
-            details = Dom.get(<span class="hljs-string">"planetDetailMiningShips"</span>);
+            <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"planetDetailMiningShips"</span>);
             <span class="hljs-keyword">if</span> (details) {
                 <span class="hljs-keyword">var</span> parent = details.parentNode;
                 details = parent.removeChild(details);
@@ -902,7 +902,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
         },
         PopulateShipsExcavators: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(panel)</span> {</span>
             <span class="hljs-keyword">var</span> ships = <span class="hljs-keyword">this</span>.currentShips.excavators || [];
-            details = Dom.get(<span class="hljs-string">"planetDetailExcavators"</span>);
+            <span class="hljs-keyword">var</span> details = Dom.get(<span class="hljs-string">"planetDetailExcavators"</span>);
             <span class="hljs-keyword">if</span> (details) {
                 <span class="hljs-keyword">var</span> parent = details.parentNode;
                 details = parent.removeChild(details);
@@ -1227,7 +1227,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             <span class="hljs-keyword">var</span> spies = tab.avail.spies;
             <span class="hljs-keyword">var</span> ships = tab.avail.spyShips;
             <span class="hljs-keyword">var</span> verb = tab.id == <span class="hljs-string">'planetDetailSendSpies'</span> ? <span class="hljs-string">'send'</span> : <span class="hljs-string">'fetch'</span>;
-            <span class="hljs-keyword">if</span> (spies.length == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">if</span> (spies.length === <span class="hljs-number">0</span>) {
                 tab.elMessage.innerHTML = <span class="hljs-string">'No spies available.'</span>;
                 <span class="hljs-keyword">return</span>;
             }
@@ -1241,7 +1241,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                     maxSpies = <span class="hljs-number">100</span>;
                 }
             }
-            <span class="hljs-keyword">if</span> (maxSpies == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">if</span> (maxSpies === <span class="hljs-number">0</span>) {
                 tab.elMessage.innerHTML = <span class="hljs-string">'No ships available.'</span>;
             }
             <span class="hljs-keyword">else</span> {
@@ -1254,7 +1254,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 <span class="hljs-keyword">var</span> spy = spies[si],
                     nLi = li.cloneNode(<span class="hljs-literal">false</span>);
                 nLi.innerHTML = [<span class="hljs-string">'&lt;div class="yui-gd" style="margin-bottom:2px;"&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u first description"&gt;'</span>, <span class="hljs-string">'        &lt;div&gt;&lt;strong&gt;'</span>, spy.name, <span class="hljs-string">'&lt;/strong&gt;&lt;/div&gt;&lt;div&gt;Level '</span>, spy.level, <span class="hljs-string">'&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;div class="yui-u"&gt;'</span>,
-                    maxSpies == <span class="hljs-number">0</span> ? <span class="hljs-string">''</span> : <span class="hljs-string">'&lt;input type="checkbox" name="spyId" value="'</span> + spy.id + <span class="hljs-string">'" /&gt;'</span>, <span class="hljs-string">'        &lt;div class="attributes"&gt;&lt;span class="attribute"&gt;Offense: '</span>, spy.offense_rating, <span class="hljs-string">'&lt;/span&gt;&lt;span class="attribute"&gt;Defense: '</span>, spy.defense_rating, <span class="hljs-string">'&lt;/span&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>
+                    maxSpies === <span class="hljs-number">0</span> ? <span class="hljs-string">''</span> : <span class="hljs-string">'&lt;input type="checkbox" name="spyId" value="'</span> + spy.id + <span class="hljs-string">'" /&gt;'</span>, <span class="hljs-string">'        &lt;div class="attributes"&gt;&lt;span class="attribute"&gt;Offense: '</span>, spy.offense_rating, <span class="hljs-string">'&lt;/span&gt;&lt;span class="attribute"&gt;Defense: '</span>, spy.defense_rating, <span class="hljs-string">'&lt;/span&gt;&lt;/div&gt;'</span>, <span class="hljs-string">'    &lt;/div&gt;'</span>, <span class="hljs-string">'&lt;/div&gt;'</span>
                 ].join(<span class="hljs-string">''</span>);
                 list.appendChild(nLi);
             }
@@ -1276,7 +1276,7 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                     spies.push(el.value);
                 }
             });
-            <span class="hljs-keyword">if</span> (spies.length == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">if</span> (spies.length === <span class="hljs-number">0</span>) {
                 alert(<span class="hljs-string">"You must select at least one spy to "</span> + verb + <span class="hljs-string">"!"</span>);
                 <span class="hljs-keyword">return</span>;
             }
@@ -1353,7 +1353,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
     };
     Lang.augmentProto(MapStar, Util.EventProvider);
     Lacuna.MapStar = <span class="hljs-keyword">new</span> MapStar();
-})();</pre></div>
+})();
+</pre></div>
       
       </div>
     

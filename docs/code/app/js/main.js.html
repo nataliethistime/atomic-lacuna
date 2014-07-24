@@ -39,7 +39,23 @@
       
       
         <div class="code"><pre class="wrapper">    window.$ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'jquery'</span>);
-    window._ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'lodash'</span>);</pre></div>
+    window._ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'lodash'</span>);
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Load in the CoffeeScript compiler so that when something like:
+require(&#39;foo.coffee&#39;) happens, the file gets compiled first.
+Note: just &#39;foo&#39; can be used in this case.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-built_in">require</span>(<span class="hljs-string">'coffee-script/register'</span>);
+</pre></div>
       
       </div>
     
@@ -321,7 +337,8 @@ has a code in the url as a parameter.)</p>
       
       
         <div class="code"><pre class="wrapper">    loader.insert();
-})();</pre></div>
+})();
+</pre></div>
       
       </div>
     

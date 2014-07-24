@@ -1,7 +1,7 @@
 {
-    "eqeqeq": true,
+    "eqeqeq": false,
     "curly": true,
-    "forin": true,
+    "forin": false,
     "noempty": true,
     "undef": true,
     "strict": true,
@@ -12,6 +12,9 @@
     "node": true,
     "yui": true,
     "globals": {
-        "YAHOO": true
-    }
+        "YAHOO": true,
+        "_": true
+    },
+    "shadow": true,
+    "loopfunc": true
 }

@@ -25,14 +25,16 @@
       <div class="segment">
       
       
-        <div class="code"><pre class="wrapper"><span class="hljs-keyword">var</span> app = <span class="hljs-built_in">require</span>(<span class="hljs-string">'app'</span>),
-    BrowserWindow = <span class="hljs-built_in">require</span>(<span class="hljs-string">'browser-window'</span>),
-    fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>),
-    path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>),
-    ipc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'ipc'</span>),
+        <div class="code"><pre class="wrapper"><span class="hljs-pi">'use strict'</span>;
 
-    Handlebars = <span class="hljs-built_in">require</span>(<span class="hljs-string">'handlebars'</span>),
-    development = process.env.ATOMIC_LACUNA_DEVELOPMENT || <span class="hljs-literal">false</span>,
+<span class="hljs-keyword">var</span> app = <span class="hljs-built_in">require</span>(<span class="hljs-string">'app'</span>);
+<span class="hljs-keyword">var</span> BrowserWindow = <span class="hljs-built_in">require</span>(<span class="hljs-string">'browser-window'</span>);
+<span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
+<span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+<span class="hljs-keyword">var</span> ipc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'ipc'</span>);
+
+<span class="hljs-keyword">var</span> Handlebars = <span class="hljs-built_in">require</span>(<span class="hljs-string">'handlebars'</span>);
+<span class="hljs-keyword">var</span> development = process.env.ATOMIC_LACUNA_DEVELOPMENT || <span class="hljs-literal">false</span>;
 </pre></div>
       
       </div>
@@ -46,7 +48,7 @@ be closed automatically when the JavaScript object is GCed.</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">    mainWindow = <span class="hljs-literal">null</span>;
+        <div class="code"><pre class="wrapper"><span class="hljs-keyword">var</span> mainWindow = <span class="hljs-literal">null</span>;
 </pre></div>
       
       </div>
@@ -71,7 +73,7 @@ be closed automatically when the JavaScript object is GCed.</p>
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><p>This method will be called when atom-shell has done all
+          <div class="wrapper"><p>This method will be called when atom-shell has done all required
 initialization and is ready to create browser windows.</p>
 </div>
         </div>

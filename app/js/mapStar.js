@@ -45,7 +45,7 @@ YAHOO.namespace("lacuna");
             this.starDetails.addQueue = function(seconds, queueFn, elm, sc) {
                 this.queue = this.queue || [];
                 //check if the queue is empty and store
-                var notStarted = this.queue.length == 0;
+                var notStarted = this.queue.length === 0;
                 //push new queue item so it's immediately available for the tick
                 this.queue.push({
                     secondsRemaining: seconds * 1,
@@ -148,7 +148,7 @@ YAHOO.namespace("lacuna");
             this.planetDetails.addQueue = function(seconds, queueFn, elm, sc) {
                 this.queue = this.queue || [];
                 //check if the queue is empty and store
-                var notStarted = this.queue.length == 0;
+                var notStarted = this.queue.length === 0;
                 //push new queue item so it's immediately available for the tick
                 this.queue.push({
                     secondsRemaining: seconds * 1,
@@ -839,7 +839,7 @@ YAHOO.namespace("lacuna");
         },
         PopulateShipsMiningPlatforms: function(panel) {
             var ships = this.currentShips.mining_platforms || [];
-            details = Dom.get("planetDetailMiningShips");
+            var details = Dom.get("planetDetailMiningShips");
             if (details) {
                 var parent = details.parentNode;
                 details = parent.removeChild(details);
@@ -875,7 +875,7 @@ YAHOO.namespace("lacuna");
         },
         PopulateShipsExcavators: function(panel) {
             var ships = this.currentShips.excavators || [];
-            details = Dom.get("planetDetailExcavators");
+            var details = Dom.get("planetDetailExcavators");
             if (details) {
                 var parent = details.parentNode;
                 details = parent.removeChild(details);
@@ -1200,7 +1200,7 @@ YAHOO.namespace("lacuna");
             var spies = tab.avail.spies;
             var ships = tab.avail.spyShips;
             var verb = tab.id == 'planetDetailSendSpies' ? 'send' : 'fetch';
-            if (spies.length == 0) {
+            if (spies.length === 0) {
                 tab.elMessage.innerHTML = 'No spies available.';
                 return;
             }
@@ -1214,7 +1214,7 @@ YAHOO.namespace("lacuna");
                     maxSpies = 100;
                 }
             }
-            if (maxSpies == 0) {
+            if (maxSpies === 0) {
                 tab.elMessage.innerHTML = 'No ships available.';
             }
             else {
@@ -1227,7 +1227,7 @@ YAHOO.namespace("lacuna");
                 var spy = spies[si],
                     nLi = li.cloneNode(false);
                 nLi.innerHTML = ['<div class="yui-gd" style="margin-bottom:2px;">', '    <div class="yui-u first description">', '        <div><strong>', spy.name, '</strong></div><div>Level ', spy.level, '</div>', '    </div>', '    <div class="yui-u">',
-                    maxSpies == 0 ? '' : '<input type="checkbox" name="spyId" value="' + spy.id + '" />', '        <div class="attributes"><span class="attribute">Offense: ', spy.offense_rating, '</span><span class="attribute">Defense: ', spy.defense_rating, '</span></div>', '    </div>', '</div>'
+                    maxSpies === 0 ? '' : '<input type="checkbox" name="spyId" value="' + spy.id + '" />', '        <div class="attributes"><span class="attribute">Offense: ', spy.offense_rating, '</span><span class="attribute">Defense: ', spy.defense_rating, '</span></div>', '    </div>', '</div>'
                 ].join('');
                 list.appendChild(nLi);
             }
@@ -1249,7 +1249,7 @@ YAHOO.namespace("lacuna");
                     spies.push(el.value);
                 }
             });
-            if (spies.length == 0) {
+            if (spies.length === 0) {
                 alert("You must select at least one spy to " + verb + "!");
                 return;
             }

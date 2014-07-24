@@ -179,7 +179,7 @@ YAHOO.namespace("lacuna.buildings");
                         var ore = ores[ore_i];
                         if (totals[ore_i] > 0) {
                             outOre.push('<li><label>' + ore.replace(/^\w/, function(c) {
-                                return c.toUpperCase()
+                                return c.toUpperCase();
                             }) + ':</label> ');
                             outOre.push(totals[ore_i]);
                             outOre.push('</li>');

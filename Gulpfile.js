@@ -26,6 +26,10 @@ gulp.task('lint', function() {
         // ~> es3 : true
         // ~> quotmark : 'single'
         // ~> unused : true
+        // ~> eqeqeq : true
+        // ~> shadow : false
+        // ~> loopfunc : true
+        // ~> forin : true
 
         // Note JSHint finds configuration options in the .jshintrc
         .pipe(jshint())

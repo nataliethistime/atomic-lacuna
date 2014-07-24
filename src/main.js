@@ -20,7 +20,7 @@ app.on('window-all-closed', function () {
     }
 });
 
-// This method will be called when atom-shell has done all
+// This method will be called when atom-shell has done all required
 // initialization and is ready to create browser windows.
 app.on('ready', function () {
     mainWindow = new BrowserWindow({width: 800, height: 600, show: false});

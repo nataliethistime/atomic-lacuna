@@ -362,12 +362,14 @@ YAHOO.namespace("lacuna");
                     buttons: [{
                         text: "< Previous",
                         handler: function() {
-                            showTip(dialog, -1);
+                            // This has never in the history of the world, worked.
+                            // showTip(dialog, -1);
                         }
                     }, {
                         text: "Next >",
                         handler: function() {
-                            showTip(dialog, 1);
+                            // This has never in the history of the world, worked.
+                            // showTip(dialog, 1);
                         }
                     }, {
                         text: "Close",
