@@ -35,3 +35,5 @@ module.exports.deepGet = (obj, name) ->
         last = (last or obj)[piece] or {}
 
     if last is 0 or _.isEmpty(last) then null else last
+
+module.exports.getYear = -> (new Date()).getFullYear()

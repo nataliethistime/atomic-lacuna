@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - about.coffee</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/about.coffee"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/about.coffee
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-string">'use strict'</span>
+
+templates = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/templates'</span>
+util = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/util'</span>
+
+Lang = YAHOO.lang
+Lacuna = YAHOO.lacuna
+Game = Lacuna.Game
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">About</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">YAHOO</span>.<span class="hljs-title">util</span>.<span class="hljs-title">EventProvider</span></span>
+    <span class="hljs-attribute">constructor</span>:<span class="hljs-function"> -&gt;</span>
+
+        <span class="hljs-property">@id</span> = <span class="hljs-string">'about'</span>
+        <span class="hljs-property">@createEvent</span> <span class="hljs-string">'onShow'</span>
+        <span class="hljs-property">@template</span> = templates.get <span class="hljs-string">'menu.about'</span>
+
+        container = $(<span class="hljs-string">'&lt;div&gt;&lt;/div&gt;'</span>).attr(<span class="hljs-string">'id'</span>, <span class="hljs-property">@id</span>).addClass(<span class="hljs-string">'nofooter'</span>)
+        $(<span class="hljs-built_in">document</span>.body).prepend container
+
+        <span class="hljs-property">@panel</span> = <span class="hljs-keyword">new</span> YAHOO.widget.Panel <span class="hljs-property">@id</span>,
+            <span class="hljs-attribute">constraintoviewport</span>: <span class="hljs-literal">true</span>
+            <span class="hljs-attribute">fixedcenter</span>: <span class="hljs-literal">true</span>
+            <span class="hljs-attribute">visible</span>: <span class="hljs-literal">false</span>
+            <span class="hljs-attribute">draggable</span>: <span class="hljs-literal">true</span>
+            <span class="hljs-attribute">effect</span>: Game.GetContainerEffect()
+            <span class="hljs-attribute">underlay</span>: <span class="hljs-literal">false</span>
+            <span class="hljs-attribute">modal</span>: <span class="hljs-literal">true</span>
+            <span class="hljs-attribute">close</span>: <span class="hljs-literal">true</span>
+            <span class="hljs-attribute">width</span>: <span class="hljs-string">'450px'</span>
+            <span class="hljs-attribute">zIndex</span>: <span class="hljs-number">9999</span>
+
+        <span class="hljs-property">@panel</span>.setHeader <span class="hljs-string">'About'</span>
+        <span class="hljs-property">@panel</span>.render()
+        Game.OverlayManager.register <span class="hljs-property">@panel</span>
+
+    <span class="hljs-attribute">show</span>:<span class="hljs-function"> -&gt;</span>
+        <span class="hljs-keyword">unless</span> <span class="hljs-property">@hasCredits</span>
+            Game.Services.Stats.credits {},
+                <span class="hljs-attribute">success</span>: <span class="hljs-function"><span class="hljs-params">(o)</span> -&gt;</span>
+                    YAHOO.log o, <span class="hljs-string">'info'</span>, <span class="hljs-string">'Stats'</span>
+                    <span class="hljs-property">@render</span> o
+                    <span class="hljs-property">@hasCredits</span> = <span class="hljs-literal">true</span>
+                    <span class="hljs-property">@open</span>()
+                <span class="hljs-attribute">scope</span>: @
+        <span class="hljs-keyword">else</span>
+            <span class="hljs-property">@open</span>()
+
+    <span class="hljs-attribute">open</span>:<span class="hljs-function"> -&gt;</span>
+        Game.OverlayManager.hideAll()
+        <span class="hljs-property">@panel</span>.show()
+        <span class="hljs-property">@panel</span>.center()
+
+    <span class="hljs-attribute">hide</span>:<span class="hljs-function"> -&gt;</span>
+        <span class="hljs-property">@panel</span>.hide()
+
+    <span class="hljs-attribute">render</span>: <span class="hljs-function"><span class="hljs-params">(o)</span> -&gt;</span>
+        <span class="hljs-property">@panel</span>.setBody <span class="hljs-property">@template</span>(o)
+        $(<span class="hljs-string">'#aboutVersion'</span>).html Game.ServerData.version
+        $(<span class="hljs-string">'#aboutYear'</span>).html util.getYear()
+
+
+<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span>.About = <span class="hljs-keyword">new</span> About()
+</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

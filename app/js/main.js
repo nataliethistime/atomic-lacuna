@@ -44,30 +44,35 @@
             menu.popup(remote.getCurrentWindow());
         }, false);
     }
+
     // This converts url parameters into a usable object. I think it's only used
     // in the registration process when someone clicks a referral link (which
     // has a code in the url as a parameter.)
-    var l = window.location;
-    var query = {};
-    var vars = l.hash.substring(1)
-        .split('&');
-    if (vars.length > 0) {
-        for (var i = 0; i < vars.length; i++) {
-            var pair = vars[i].split("=");
-            query[pair[0]] = decodeURIComponent(pair[1]);
+    if (!window.ATOM_SHELL) {
+        var l = window.location;
+        var query = {};
+        var vars = l.hash.substring(1)
+            .split('&');
+        if (vars.length > 0) {
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                query[pair[0]] = decodeURIComponent(pair[1]);
+            }
+        }
+        if (window.history.replaceState) {
+            window.history.replaceState({}, document.title, l.protocol + '//' + l.host + l.pathname + l.search);
+        }
+        else if (l.hash !== '') {
+            l.hash = '';
         }
     }
-    if (window.history.replaceState) {
-        window.history.replaceState({}, document.title, l.protocol + '//' + l.host + l.pathname + l.search);
-    }
-    else if (l.hash !== '') {
-        l.hash = '';
-    }
+
     // Make sure the pulser is hidden.
     var p = document.getElementById("pulsing");
     if (p.className.indexOf('hidden') < 0) {
         p.className += ' hidden';
     }
+
     var basePath = '';
     if (window.DOWNLOAD_YUI) {
         basePath = 'http://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/';
@@ -77,23 +82,38 @@
         var Util = require('js/util');
         basePath = path.join(Util.root(), 'lib', 'yui2') + '/';
     }
+
+    function setGlobal(moduleObj) {
+        YAHOO.namespace('lacuna');
+
+        _.each(moduleObj, function(obj, name) {
+            // TODO: change this when we wanna fully kill YUI.
+            YAHOO.lacuna[name] = obj;
+        });
+    }
+
     var loader = new YAHOO.util.YUILoader({
         base: basePath,
         filter: "RAW",
         allowRollup: false,
         combine: false
     });
+
     // List of YUI2 components that need to be loaded.
     loader.require(["autocomplete", "logger", "yahoo", "dom", "connection", "get", "json", "event", "container", "dragdrop", "slider", "animation", "selector", "event-delegate", "event-mouseenter", "paginator", "tabview", "menu", "datatable"]);
+
     loader.onSuccess = function(o) {
+
         // RPC and core stuff
         require('js/smd');
         require('js/rpc');
         require('js/library');
         require('js/game');
+
         // Misc?
-        require('js/about');
+        setGlobal(require('js/about'));
         require('js/announce');
+
         // Empire management and star map
         require('js/speciesDesigner');
         require('js/createSpecies');
@@ -101,6 +121,7 @@
         require('js/login');
         require('js/mapper');
         require('js/mapStar');
+
         // Buildings
         require('js/building');
         require('js/building/archaeology');
@@ -144,8 +165,10 @@
         require('js/module/parliament');
         require('js/module/policeStation');
         require('js/module/stationCommand');
+
         // Planet map
         require('js/mapPlanet');
+
         // Menu stuff
         require('js/textboxList');
         require('js/messaging');
@@ -168,6 +191,7 @@
         YAHOO.widget.Logger.enableBrowserConsole();
         YAHOO.lacuna.Game.Start(query);
     };
+
     // Start the loading process.
     loader.insert();
 })();

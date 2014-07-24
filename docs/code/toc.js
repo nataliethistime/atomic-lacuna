@@ -1,21 +1,5 @@
 window.files = [
 {
-  "path": "src/main.js.html",
-  "originalName": "main.js",
-  "originalPath": "src/main.js",
-  "name": "main.js.html",
-  "lang": "javascript",
-  "toc": []
-},
-{
-  "path": "app/js/about.js.html",
-  "originalName": "about.js",
-  "originalPath": "app/js/about.js",
-  "name": "about.js.html",
-  "lang": "javascript",
-  "toc": []
-},
-{
   "path": "app/js/announce.js.html",
   "originalName": "announce.js",
   "originalPath": "app/js/announce.js",
@@ -565,6 +549,22 @@ window.files = [
   "originalPath": "app/js/module/stationCommand.js",
   "name": "stationCommand.js.html",
   "lang": "javascript",
+  "toc": []
+},
+{
+  "path": "app/js/about.coffee.html",
+  "originalName": "about.coffee",
+  "originalPath": "app/js/about.coffee",
+  "name": "about.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/util.coffee.html",
+  "originalName": "util.coffee",
+  "originalPath": "app/js/util.coffee",
+  "name": "util.coffee.html",
+  "lang": "coffeescript",
   "toc": []
 },
 {
