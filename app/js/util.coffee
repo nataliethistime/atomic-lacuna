@@ -27,13 +27,13 @@ module.exports.deepSet = (obj, name, value) ->
 
 module.exports.deepGet = (obj, name) ->
 
-    # name is a '.' separated string indicating where in obj it belongs.
+    # `name` is a '.' separated string indicating where in `obj` it belongs.
     pieces = name.split('.')
-    last = 0
+    last = null
 
     _.each pieces, (piece) ->
         last = (last or obj)[piece] or {}
 
-    if last is 0 or _.isEmpty(last) then null else last
+    if last? then last else null
 
 module.exports.getYear = -> (new Date()).getFullYear()

@@ -11,6 +11,9 @@ var concat = require('gulp-concat');
 var cleanHTML = require('gulp-cleanhtml');
 
 var browserify = require('browserify');
+var through = require('through');
+var coffee = require('coffee-script');
+coffee.register();
 var source = require('vinyl-source-stream');
 var AtomShellDownload = require('atom-shell-pull');
 var _ = require('lodash');
@@ -40,11 +43,38 @@ gulp.task('lint', function() {
 gulp.task('code-build', function() {
     process.env.NODE_PATH = path.join(__dirname, 'app')
 
-    browserify('./app/js/main.js')
-        .bundle({
-            insertGlobals : true,
-            ignoreMissing : true // Ignore missing modules. (Ex: 'ipc', 'remote').
-        })
+    var b = browserify(['./app/js/main.js'], {
+        insertGlobals : true,
+        ignoreMissing : true, // Ignore missing modules. (Ex: 'ipc', 'remote').
+        extensions: ['.coffee']
+    });
+
+    // Compile CoffeeScript code.
+    b.transform(function (file) {
+        var data = '';
+
+        function write(buf) {
+            data += buf
+        }
+
+        // Ignore JS code.
+        if (file.match(/\.coffee$/)) {
+            return through(write, function() {
+                this.queue(coffee.compile(data));
+                this.queue(null);
+            });
+        }
+        else {
+            return through(write, function() {
+                this.queue(data);
+                this.queue(null);
+            });
+        }
+    });
+
+    b
+        .bundle()
+        // Rename to 'browser-build.js'
         .pipe(source('browser-build.js'))
         .pipe(gulp.dest('./public/dist'));
 

@@ -24,6 +24,7 @@
     "gulp-define-module": "0.1.x",
     "gulp-concat": "2.3.x",
     "gulp-declare": "0.2.x",
-    "gulp-cleanhtml": "0.0.x"
+    "gulp-cleanhtml": "0.0.x",
+    "through": "2.3.4"
   }
 }

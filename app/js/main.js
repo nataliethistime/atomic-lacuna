@@ -7,7 +7,10 @@
     // Load in the CoffeeScript compiler so that when something like:
     // require('foo.coffee') happens, the file gets compiled first.
     // Note: just 'foo' can be used in this case.
-    require('coffee-script/register');
+    if (window.ATOM_SHELL) {
+        // atom-shell only. Browserify compiles CoffeeScript for the browser build.
+        require('coffee-script/register');
+    }
 
     // Initialize the menu, this should be the last part of GUI initialization
     // before the JS code starts to load.
@@ -48,9 +51,9 @@
     // This converts url parameters into a usable object. I think it's only used
     // in the registration process when someone clicks a referral link (which
     // has a code in the url as a parameter.)
+    var query = {};
     if (!window.ATOM_SHELL) {
         var l = window.location;
-        var query = {};
         var vars = l.hash.substring(1)
             .split('&');
         if (vars.length > 0) {
