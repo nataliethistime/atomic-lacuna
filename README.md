@@ -47,6 +47,7 @@ Changes
 - Cleaned all of the code out using `node-beautify`.
 - Fixed some errors introduced in the cleaning.
 - Implemented a build for the web browser.
+- Various improvements to internals of the code.
 
 ###0.1.1 (2014-07-13)
 - Include binaries for Windows (32 bit) and Linux (64 and 32 bit).
