@@ -83,7 +83,7 @@ Game = Lacuna.Game
     <span class="hljs-attribute">render</span>: <span class="hljs-function"><span class="hljs-params">(o)</span> -&gt;</span>
         <span class="hljs-property">@panel</span>.setBody <span class="hljs-property">@template</span>(o)
         $(<span class="hljs-string">'#aboutVersion'</span>).html Game.ServerData.version
-        $(<span class="hljs-string">'#aboutYear'</span>).html util.getYear()
+        $(<span class="hljs-string">'#aboutYear'</span>).html util.year()
 
 
 <span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span>.About = <span class="hljs-keyword">new</span> About()

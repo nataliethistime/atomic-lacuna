@@ -54,7 +54,20 @@ Note: just &#39;foo&#39; can be used in this case.</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">    <span class="hljs-built_in">require</span>(<span class="hljs-string">'coffee-script/register'</span>);
+        <div class="code"><pre class="wrapper">    <span class="hljs-keyword">if</span> (window.ATOM_SHELL) {</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>atom-shell only. Browserify compiles CoffeeScript for the browser build.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-built_in">require</span>(<span class="hljs-string">'coffee-script/register'</span>);
+    }
 </pre></div>
       
       </div>
@@ -115,9 +128,9 @@ has a code in the url as a parameter.)</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">    <span class="hljs-keyword">if</span> (!window.ATOM_SHELL) {
+        <div class="code"><pre class="wrapper">    <span class="hljs-keyword">var</span> query = {};
+    <span class="hljs-keyword">if</span> (!window.ATOM_SHELL) {
         <span class="hljs-keyword">var</span> l = window.location;
-        <span class="hljs-keyword">var</span> query = {};
         <span class="hljs-keyword">var</span> vars = l.hash.substring(<span class="hljs-number">1</span>)
             .split(<span class="hljs-string">'&amp;'</span>);
         <span class="hljs-keyword">if</span> (vars.length &gt; <span class="hljs-number">0</span>) {

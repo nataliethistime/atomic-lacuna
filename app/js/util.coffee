@@ -4,7 +4,7 @@ path = require('path')
 cwd = process.cwd()
 
 
-module.exports.root = () ->
+module.exports.root = ->
 
     # When in development mode, the cwd is:
     # /home/vasari/atomic-lacuna
@@ -31,9 +31,14 @@ module.exports.deepGet = (obj, name) ->
     pieces = name.split('.')
     last = null
 
+    # Do some preliminary checking to avoid null errors later on.
+    if not obj? or not obj[pieces[0]]
+        return null
+
+
     _.each pieces, (piece) ->
         last = (last or obj)[piece] or {}
 
     if last? then last else null
 
-module.exports.getYear = -> (new Date()).getFullYear()
+module.exports.year = -> (new Date()).getFullYear()

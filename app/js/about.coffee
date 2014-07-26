@@ -56,7 +56,7 @@ class About extends YAHOO.util.EventProvider
     render: (o) ->
         @panel.setBody @template(o)
         $('#aboutVersion').html Game.ServerData.version
-        $('#aboutYear').html util.getYear()
+        $('#aboutYear').html util.year()
 
 
 module.exports.About = new About()

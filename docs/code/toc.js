@@ -596,8 +596,8 @@ window.files = [
     },
     {
       "level": 3,
-      "slug": "0-1-2-unreleased-",
-      "title": "0.1.2 (Unreleased)"
+      "slug": "0-2-0-2014-07-26-",
+      "title": "0.2.0 (2014-07-26)"
     },
     {
       "level": 3,

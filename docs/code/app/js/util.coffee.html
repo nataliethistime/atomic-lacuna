@@ -31,7 +31,7 @@ path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'pat
 cwd = process.cwd()
 
 
-<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span>.<span class="hljs-function"><span class="hljs-title">root</span> = <span class="hljs-params">()</span> -&gt;</span>
+<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span>.<span class="hljs-function"><span class="hljs-title">root</span> = -&gt;</span>
 </pre></div>
       
       </div>
@@ -70,20 +70,35 @@ In a build, it&#39;s:
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><p>name is a &#39;.&#39; separated string indicating where in obj it belongs.</p>
+          <div class="wrapper"><p><code>name</code> is a &#39;.&#39; separated string indicating where in <code>obj</code> it belongs.</p>
 </div>
         </div>
       
       
         <div class="code"><pre class="wrapper">    pieces = name.split(<span class="hljs-string">'.'</span>)
-    last = <span class="hljs-number">0</span>
+    last = <span class="hljs-literal">null</span>
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Do some preliminary checking to avoid null errors later on.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> obj? <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> obj[pieces[<span class="hljs-number">0</span>]]
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>
+
 
     _.each pieces, <span class="hljs-function"><span class="hljs-params">(piece)</span> -&gt;</span>
         last = (last <span class="hljs-keyword">or</span> obj)[piece] <span class="hljs-keyword">or</span> {}
 
-    <span class="hljs-keyword">if</span> last <span class="hljs-keyword">is</span> <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> _.isEmpty(last) <span class="hljs-keyword">then</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">else</span> last
+    <span class="hljs-keyword">if</span> last? <span class="hljs-keyword">then</span> last <span class="hljs-keyword">else</span> <span class="hljs-literal">null</span>
 
-<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span>.<span class="hljs-function"><span class="hljs-title">getYear</span> = -&gt;</span> (<span class="hljs-keyword">new</span> Date()).getFullYear()
+<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span>.<span class="hljs-function"><span class="hljs-title">year</span> = -&gt;</span> (<span class="hljs-keyword">new</span> Date()).getFullYear()
 </pre></div>
       
       </div>
