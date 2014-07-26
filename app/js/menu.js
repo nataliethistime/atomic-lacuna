@@ -26,6 +26,12 @@ YAHOO.namespace("lacuna");
                 context: [this.clickId, "tl", "bl", [11, -14]]
             });
             userMenu.addItems([{
+                text: 'Script Console',
+                onclick: {
+                    fn: Lacuna.ScriptConsole.show,
+                    scope: Lacuna.ScriptConsole
+                }
+            }, {
                 text: "Alliance Map",
                 url: "/starmap/",
                 target: "_blank"
@@ -110,9 +116,6 @@ YAHOO.namespace("lacuna");
                 destruct = document.createElement("div"),
                 destructClick = destruct.cloneNode(false),
                 destructImg = destruct.appendChild(document.createElement("img"));
-            //bookmark = document.createElement("div"),
-            //bookmarkClick = bookmark.cloneNode(false),
-            //bookmarkImg = bookmark.appendChild(document.createElement("img"));
             changeImg.src = Lib.AssetUrl + 'ui/l/star_map.png';
             changeImg.alt = "Change";
             changeClick.id = "userMenuChange";
@@ -149,14 +152,6 @@ YAHOO.namespace("lacuna");
             Dom.addClass([essentia, essentiaClick], "essentia");
             Dom.addClass([essentia, essentiaClick], "menuItem");
             Dom.addClass(essentiaClick, "click");
-            /*bookmarkImg.src = Lib.AssetUrl + 'ui/l/bookmarks.png';
-        bookmarkImg.alt = "Bookmark";
-        Event.on(bookmarkClick, "click", function() {
-            this.fireEvent("onBookmarkClick");
-        }, this, true);
-        Dom.addClass([bookmark,bookmarkClick], "bookmark");
-        Dom.addClass([bookmark,bookmarkClick], "menuItem");
-        Dom.addClass(bookmarkClick, "click");*/
             destructImg.src = Lib.AssetUrl + (Game.EmpireData.self_destruct_active * 1 === 1 ? 'ui/l/disable_self_destruct.png' : 'ui/l/enable_self_destruct.png');
             destructImg.alt = destructImg.title = "Destruct";
             destructClick.id = "userMenuDestruct";

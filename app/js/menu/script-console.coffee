@@ -7,11 +7,11 @@ Lang = YAHOO.lang
 Lacuna = YAHOO.lacuna
 Game = Lacuna.Game
 
-class About
+class ScriptConsole
     constructor: ->
 
         @id = 'about'
-        @template = templates.get 'menu.about'
+        @template = templates.get 'menu.scriptConsole'
 
         container = $('<div></div>').attr('id', @id).addClass('nofooter')
         $(document.body).prepend container
@@ -23,25 +23,17 @@ class About
             draggable: true
             effect: Game.GetContainerEffect()
             underlay: false
-            modal: true
             close: true
-            width: '450px'
+            width: '600px'
             zIndex: 9999
 
-        @panel.setHeader 'About'
+        @panel.setHeader 'Script Console'
         @panel.render()
         Game.OverlayManager.register @panel
 
     show: ->
-        unless @hasCredits
-            Game.Services.Stats.credits {},
-                success: (o) ->
-                    @render o
-                    @hasCredits = true
-                    @open()
-                scope: @
-        else
-            @open()
+        @render()
+        @open()
 
     open: ->
         Game.OverlayManager.hideAll()
@@ -51,10 +43,8 @@ class About
     hide: ->
         @panel.hide()
 
-    render: (o) ->
-        @panel.setBody @template(o)
-        $('#aboutVersion').html Game.ServerData.version
-        $('#aboutYear').html util.year()
+    render: ->
+        @panel.setBody @template()
 
 
-module.exports = new About()
+module.exports = new ScriptConsole()

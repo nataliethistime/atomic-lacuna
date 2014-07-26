@@ -1,4 +1,5 @@
 'use strict';
+
 var Handlebars = require('handlebars'),
     fs = require('fs'),
     path = require('path'),
@@ -13,7 +14,14 @@ module.exports = {
 
     get: function(name) {
         // Get from cache or load new one.
-        return this._get(name) || this.load(name);
+        var foo = this._get(name);
+
+        if (_.isFunction(foo)) {
+            return foo;
+        }
+        else {
+            return this.load(name);
+        }
     },
 
     _get: function(name) {
@@ -23,7 +31,8 @@ module.exports = {
 
     load: function(name) {
         if (window.ATOM_SHELL) {
-            return this.save(name, this.compile(this.loadFile(name)));
+            var func = this.compile(this.loadFile(name));
+            return this.save(name, func);
         }
         else {
             // If it can't be gotten from the file system, then it isn't here.

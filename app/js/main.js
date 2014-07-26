@@ -86,13 +86,11 @@
         basePath = path.join(Util.root(), 'lib', 'yui2') + '/';
     }
 
-    function setGlobal(moduleObj) {
+    function setGlobal(name, obj) {
         YAHOO.namespace('lacuna');
 
-        _.each(moduleObj, function(obj, name) {
-            // TODO: change this when we wanna fully kill YUI.
-            YAHOO.lacuna[name] = obj;
-        });
+        // TODO: change this when we wanna fully kill YUI.
+        YAHOO.lacuna[name] = obj;
     }
 
     var loader = new YAHOO.util.YUILoader({
@@ -114,7 +112,7 @@
         require('js/game');
 
         // Misc?
-        setGlobal(require('js/about'));
+        setGlobal('About', require('js/about'));
         require('js/announce');
 
         // Empire management and star map
@@ -183,6 +181,7 @@
         require('js/info');
         require('js/notify');
         require('js/captcha');
+        setGlobal('ScriptConsole', require('js/menu/script-console'));
         require('js/menu');
 
         if (window.ATOM_SHELL) {

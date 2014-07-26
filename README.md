@@ -43,7 +43,7 @@ Badges! :beginner:
 Roadmap
 =======
 
-###1.0.0 (Planned)
+###1.0.0
 - Basic Script console
 - Most HTTP issues solved (ex: star search)
 - Progressive simplification and modulation of the code (including moving to CoffeeScript).
