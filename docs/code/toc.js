@@ -568,6 +568,36 @@ window.files = [
   "toc": []
 },
 {
+  "path": "app/js/menu/script-console.coffee.html",
+  "originalName": "script-console.coffee",
+  "originalPath": "app/js/menu/script-console.coffee",
+  "name": "script-console.coffee.html",
+  "lang": "coffeescript",
+  "title": "Script Console",
+  "toc": [
+    {
+      "level": 1,
+      "slug": "script-console",
+      "title": "Script Console"
+    },
+    {
+      "level": 2,
+      "slug": "scriptconsole-show",
+      "title": "ScriptConsole.show"
+    },
+    {
+      "level": 2,
+      "slug": "scriptconsle-open",
+      "title": "ScriptConsle.open"
+    },
+    {
+      "level": 2,
+      "slug": "scriptconsole-render",
+      "title": "ScriptConsole.render"
+    }
+  ]
+},
+{
   "path": "README.md.html",
   "originalName": "README.md",
   "originalPath": "README.md",
@@ -588,6 +618,16 @@ window.files = [
       "level": 1,
       "slug": "badges-beginner-",
       "title": "Badges! :beginner:"
+    },
+    {
+      "level": 1,
+      "slug": "roadmap",
+      "title": "Roadmap"
+    },
+    {
+      "level": 3,
+      "slug": "1-0-0",
+      "title": "1.0.0"
     },
     {
       "level": 1,
@@ -637,6 +677,14 @@ window.files = [
   "originalName": "captcha.hbs",
   "originalPath": "app/templates/menu/captcha.hbs",
   "name": "captcha.hbs.html",
+  "lang": "handlebars",
+  "toc": []
+},
+{
+  "path": "app/templates/menu/scriptConsole.hbs.html",
+  "originalName": "scriptConsole.hbs",
+  "originalPath": "app/templates/menu/scriptConsole.hbs",
+  "name": "scriptConsole.hbs.html",
   "lang": "handlebars",
   "toc": []
 },

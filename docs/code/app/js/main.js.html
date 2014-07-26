@@ -173,10 +173,9 @@ has a code in the url as a parameter.)</p>
         basePath = path.join(Util.root(), <span class="hljs-string">'lib'</span>, <span class="hljs-string">'yui2'</span>) + <span class="hljs-string">'/'</span>;
     }
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setGlobal</span><span class="hljs-params">(moduleObj)</span> {</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setGlobal</span><span class="hljs-params">(name, obj)</span> {</span>
         YAHOO.namespace(<span class="hljs-string">'lacuna'</span>);
-
-        _.each(moduleObj, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj, name)</span> {</span></pre></div>
+</pre></div>
       
       </div>
     
@@ -188,8 +187,7 @@ has a code in the url as a parameter.)</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">            YAHOO.lacuna[name] = obj;
-        });
+        <div class="code"><pre class="wrapper">        YAHOO.lacuna[name] = obj;
     }
 
     <span class="hljs-keyword">var</span> loader = <span class="hljs-keyword">new</span> YAHOO.util.YUILoader({
@@ -241,7 +239,7 @@ has a code in the url as a parameter.)</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">        setGlobal(<span class="hljs-built_in">require</span>(<span class="hljs-string">'js/about'</span>));
+        <div class="code"><pre class="wrapper">        setGlobal(<span class="hljs-string">'About'</span>, <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/about'</span>));
         <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/announce'</span>);
 </pre></div>
       
@@ -350,6 +348,7 @@ has a code in the url as a parameter.)</p>
         <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/info'</span>);
         <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/notify'</span>);
         <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/captcha'</span>);
+        setGlobal(<span class="hljs-string">'ScriptConsole'</span>, <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/menu/script-console'</span>));
         <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/menu'</span>);
 
         <span class="hljs-keyword">if</span> (window.ATOM_SHELL) {

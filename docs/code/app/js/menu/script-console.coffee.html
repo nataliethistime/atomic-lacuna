@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Script Console - script-console.coffee</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/menu/script-console.coffee"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/menu/script-console.coffee
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h1 id="script-console"><a href="#script-console" class="anchor"></a>Script Console</h1><p>The Script Console is the interface that the player uses to automate their empire&#39;s
+repetitive tasks. The general idea is that a user can select a task to run, how
+often and what options to pass in and then the rest is handled. It is comprised of
+the following components:</p>
+<ul>
+<li>A Github repository containing all of the the tasks I approve and have tested
+to not be malicious and such.</li>
+<li>A build-persistant data storage of some kind where all the data about tasks and
+options that the user has setup. This could be a sqlite db or a json file. json
+<em>might</em> work best here.</li>
+<li>The GUI that pulls all of the above together for the user to use.</li>
+<li>Finally, some kind of back-end scheduler that runs the tasks at the right time.</li>
+</ul>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-string">'use strict'</span>
+
+templates = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/templates'</span>
+util = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/util'</span>
+
+Lang = YAHOO.lang
+Lacuna = YAHOO.lacuna
+Game = Lacuna.Game
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ScriptConsole</span></span>
+    <span class="hljs-attribute">constructor</span>:<span class="hljs-function"> -&gt;</span>
+
+        <span class="hljs-property">@id</span> = <span class="hljs-string">'about'</span>
+        <span class="hljs-property">@template</span> = templates.get <span class="hljs-string">'menu.scriptConsole'</span>
+
+        container = $(<span class="hljs-string">'&lt;div&gt;&lt;/div&gt;'</span>).attr(<span class="hljs-string">'id'</span>, <span class="hljs-property">@id</span>).addClass(<span class="hljs-string">'nofooter'</span>)
+        $(<span class="hljs-built_in">document</span>.body).prepend container
+
+        <span class="hljs-property">@panel</span> = <span class="hljs-keyword">new</span> YAHOO.widget.Panel <span class="hljs-property">@id</span>,
+            <span class="hljs-attribute">constraintoviewport</span>: <span class="hljs-literal">true</span>
+            <span class="hljs-attribute">fixedcenter</span>: <span class="hljs-literal">true</span>
+            <span class="hljs-attribute">visible</span>: <span class="hljs-literal">false</span>
+            <span class="hljs-attribute">draggable</span>: <span class="hljs-literal">true</span>
+            <span class="hljs-attribute">effect</span>: Game.GetContainerEffect()
+            <span class="hljs-attribute">underlay</span>: <span class="hljs-literal">false</span>
+            <span class="hljs-attribute">close</span>: <span class="hljs-literal">true</span>
+            <span class="hljs-attribute">width</span>: <span class="hljs-string">'600px'</span>
+            <span class="hljs-attribute">zIndex</span>: <span class="hljs-number">9999</span>
+
+        <span class="hljs-property">@panel</span>.setHeader <span class="hljs-string">'Script Console'</span>
+        Game.OverlayManager.register <span class="hljs-property">@panel</span>
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="scriptconsole-show"><a href="#scriptconsole-show" class="anchor"></a>ScriptConsole.show</h2><p>This is called by the menu when the user clicks on the &#39;Script Console&#39; item
+of the top menu bar.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">show</span>:<span class="hljs-function"> -&gt;</span>
+        <span class="hljs-property">@render</span>()
+        <span class="hljs-property">@open</span>()
+
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="scriptconsle-open"><a href="#scriptconsle-open" class="anchor"></a>ScriptConsle.open</h2><p>This method uses <code>Game</code>&#39;s <code>OverlayManager</code> to hide all other windows that
+are open. Then it centers and shows the Script Console.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">open</span>:<span class="hljs-function"> -&gt;</span>
+        Game.OverlayManager.hideAll()
+        <span class="hljs-property">@panel</span>.show()
+        <span class="hljs-property">@panel</span>.center()
+
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="scriptconsole-render"><a href="#scriptconsole-render" class="anchor"></a>ScriptConsole.render</h2><p>Calls <code>setBody</code> on <code>@panel</code> to render the template into the <code>DOM</code>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">render</span>:<span class="hljs-function"> -&gt;</span>
+        <span class="hljs-property">@panel</span>.setBody <span class="hljs-property">@template</span>()
+
+
+<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = <span class="hljs-keyword">new</span> ScriptConsole()
+</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

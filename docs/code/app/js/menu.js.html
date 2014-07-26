@@ -53,6 +53,12 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 context: [<span class="hljs-keyword">this</span>.clickId, <span class="hljs-string">"tl"</span>, <span class="hljs-string">"bl"</span>, [<span class="hljs-number">11</span>, -<span class="hljs-number">14</span>]]
             });
             userMenu.addItems([{
+                text: <span class="hljs-string">'Script Console'</span>,
+                onclick: {
+                    fn: Lacuna.ScriptConsole.show,
+                    scope: Lacuna.ScriptConsole
+                }
+            }, {
                 text: <span class="hljs-string">"Alliance Map"</span>,
                 url: <span class="hljs-string">"/starmap/"</span>,
                 target: <span class="hljs-string">"_blank"</span>
@@ -147,9 +153,6 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 destruct = document.createElement(<span class="hljs-string">"div"</span>),
                 destructClick = destruct.cloneNode(<span class="hljs-literal">false</span>),
                 destructImg = destruct.appendChild(document.createElement(<span class="hljs-string">"img"</span>));
-            <span class="hljs-comment">//bookmark = document.createElement("div"),</span>
-            <span class="hljs-comment">//bookmarkClick = bookmark.cloneNode(false),</span>
-            <span class="hljs-comment">//bookmarkImg = bookmark.appendChild(document.createElement("img"));</span>
             changeImg.src = Lib.AssetUrl + <span class="hljs-string">'ui/l/star_map.png'</span>;
             changeImg.alt = <span class="hljs-string">"Change"</span>;
             changeClick.id = <span class="hljs-string">"userMenuChange"</span>;
@@ -186,14 +189,6 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
             Dom.addClass([essentia, essentiaClick], <span class="hljs-string">"essentia"</span>);
             Dom.addClass([essentia, essentiaClick], <span class="hljs-string">"menuItem"</span>);
             Dom.addClass(essentiaClick, <span class="hljs-string">"click"</span>);
-            <span class="hljs-comment">/*bookmarkImg.src = Lib.AssetUrl + 'ui/l/bookmarks.png';
-        bookmarkImg.alt = "Bookmark";
-        Event.on(bookmarkClick, "click", function() {
-            this.fireEvent("onBookmarkClick");
-        }, this, true);
-        Dom.addClass([bookmark,bookmarkClick], "bookmark");
-        Dom.addClass([bookmark,bookmarkClick], "menuItem");
-        Dom.addClass(bookmarkClick, "click");*/</span>
             destructImg.src = Lib.AssetUrl + (Game.EmpireData.self_destruct_active * <span class="hljs-number">1</span> === <span class="hljs-number">1</span> ? <span class="hljs-string">'ui/l/disable_self_destruct.png'</span> : <span class="hljs-string">'ui/l/enable_self_destruct.png'</span>);
             destructImg.alt = destructImg.title = <span class="hljs-string">"Destruct"</span>;
             destructClick.id = <span class="hljs-string">"userMenuDestruct"</span>;
@@ -856,7 +851,8 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
     };
     Lang.augmentProto(Menu, Util.EventProvider);
     Lacuna.Menu = <span class="hljs-keyword">new</span> Menu();
-})();</pre></div>
+})();
+</pre></div>
       
       </div>
     
