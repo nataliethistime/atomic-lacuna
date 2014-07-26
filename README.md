@@ -40,15 +40,17 @@ Badges! :beginner:
 | Dependencies     | [![Dependency Status](https://david-dm.org/Vasari/atomic-lacuna.svg)](https://david-dm.org/Vasari/atomic-lacuna) |
 | Dev Dependencies | [![Dev Dependency Status](https://david-dm.org/Vasari/atomic-lacuna/dev-status.svg)](https://david-dm.org/Vasari/atomic-lacuna#info=devDependencies) |
 
-Changes
+Roadmap
 =======
 
 ###1.0.0 (Planned)
-To Be implemented:
 - Basic Script console
 - Most HTTP issues solved (ex: star search)
 - Progressive simplification and modulation of the code (including moving to CoffeeScript).
 - Progressive movement from YUI modules to jQuery and jQuery plugins.
+
+Changes
+=======
 
 ###0.2.0 (2014-07-26)
 - Cleaned all of the code out using a script.
