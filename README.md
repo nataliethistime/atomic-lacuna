@@ -43,6 +43,13 @@ Badges! :beginner:
 Changes
 =======
 
+###1.0.0 (Planned)
+To Be implemented:
+- Basic Script console
+- Most HTTP issues solved (ex: star search)
+- Progressive simplification and modulation of the code (including moving to CoffeeScript).
+- Progressive movement from YUI modules to jQuery and jQuery plugins.
+
 ###0.2.0 (2014-07-26)
 - Cleaned all of the code out using a script.
 - Fixed some errors introduced in the cleaning.
