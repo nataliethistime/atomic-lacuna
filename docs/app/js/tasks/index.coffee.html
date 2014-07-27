@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title> - scriptConsole.hbs</title>
+  <title>Index - index.coffee</title>
 
   <link rel="stylesheet" href="../../../assets/style.css">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
   <meta name="groc-relative-root" content="../../../"/>
-  <meta name="groc-document-path" content="app/templates/menu/scriptConsole.hbs"/>
+  <meta name="groc-document-path" content="app/js/tasks/index.coffee"/>
   
 </head>
 <body>
@@ -16,7 +16,7 @@
     <div id="meta">
       <code class="file-path">
       
-        app/templates/menu/scriptConsole.hbs
+        app/js/tasks/index.coffee
       
       </code>
     </div>
@@ -24,13 +24,21 @@
     
       <div class="segment">
       
+      
+      </div>
+    
+      <div class="segment">
+      
         <div class="comments ">
-          <div class="wrapper"><p>div containing the configuration options for the selected Task. </p>
+          <div class="wrapper"><h1 id="index"><a href="#index" class="anchor"></a>Index</h1><p>This is the main file where all available Tasks the user can run are loaded from.</p>
 </div>
         </div>
       
       
-        <div class="code"><pre class="wrapper"><span class="xml"></span></pre></div>
+        <div class="code"><pre class="wrapper"><span class="hljs-string">'use strict'</span>
+
+<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span>.pushGlyphs = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/tasks/push-glyphs'</span>
+</pre></div>
       
       </div>
     

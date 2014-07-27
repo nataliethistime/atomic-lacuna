@@ -27,13 +27,23 @@ Lacuna = YAHOO.lacuna
 Game = Lacuna.Game
 
 class ScriptConsole
+
+    ###
+    # ## ScriptConsole.constructor
+    #
+    ###
+
     constructor: ->
 
-        @id = 'about'
+        @id = 'scriptConsole'
         @template = templates.get 'menu.scriptConsole'
 
-        container = $('<div></div>').attr('id', @id).addClass('nofooter')
-        $(document.body).prepend container
+        container = $ '<div></div>'
+            .attr 'id', @id
+            .addClass 'nofooter'
+
+        $ document.body
+            .prepend container
 
         @panel = new YAHOO.widget.Panel @id,
             constraintoviewport: true
@@ -47,7 +57,29 @@ class ScriptConsole
             zIndex: 9999
 
         @panel.setHeader 'Script Console'
+        @panel.render()
         Game.OverlayManager.register @panel
+
+        @tasks = @loadTasks()
+
+
+    ###
+    # ## ScriptConsole.loadTasks
+    # `require` all of the tasks.
+    #
+    # Because these tasks can be user generated we need to make sure they're usable.
+    # To do this, just call the `validate` method on each one. This method will
+    # blow any errors out to the console. Hopefully, this only happens in development. :)
+    ###
+
+    loadTasks: ->
+        tasks = require 'js/tasks'
+
+        _.each tasks, (task) ->
+            task.validate()
+
+        tasks
+
 
     ###
     # ## ScriptConsole.show
@@ -56,7 +88,9 @@ class ScriptConsole
     ###
 
     show: ->
+
         @render()
+        @events()
         @open()
 
 
@@ -77,8 +111,18 @@ class ScriptConsole
     # Calls `setBody` on `@panel` to render the template into the `DOM`.
     ###
 
-    render: ->
-        @panel.setBody @template()
+    render: =>
+        @panel.setBody @template {@tasks}
+
+
+    ###
+    # ## ScriptConsole.events
+    # Sets up all the events.
+    ###
+
+    events: ->
+        $ '#' + @id
+            .on 'change', @render
 
 
 module.exports = new ScriptConsole()

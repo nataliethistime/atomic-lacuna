@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task - task.coffee</title>
+
+  <link rel="stylesheet" href="../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../"/>
+  <meta name="groc-document-path" content="app/js/task.coffee"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/task.coffee
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h1 id="task"><a href="#task" class="anchor"></a>Task</h1><p>A class that all of the tasks are based off of.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Task</span></span>
+
+    <span class="hljs-attribute">validate</span>:<span class="hljs-function"> -&gt;</span>
+        <span class="hljs-keyword">unless</span> <span class="hljs-property">@displayName</span>?
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Error <span class="hljs-string">'I need a displayName!'</span>
+
+        <span class="hljs-literal">yes</span>
+
+<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = Task
+</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../toc.js"></script>
+  <script src="../../assets/libs.js"></script>
+  <script src="../../assets/behavior.js"></script>
+</body>
+</html>

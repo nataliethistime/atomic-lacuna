@@ -52,13 +52,28 @@ Lacuna = YAHOO.lacuna
 Game = Lacuna.Game
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ScriptConsole</span></span>
-    <span class="hljs-attribute">constructor</span>:<span class="hljs-function"> -&gt;</span>
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="scriptconsole-constructor"><a href="#scriptconsole-constructor" class="anchor"></a>ScriptConsole.constructor</h2></div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">constructor</span>:<span class="hljs-function"> -&gt;</span>
 
-        <span class="hljs-property">@id</span> = <span class="hljs-string">'about'</span>
+        <span class="hljs-property">@id</span> = <span class="hljs-string">'scriptConsole'</span>
         <span class="hljs-property">@template</span> = templates.get <span class="hljs-string">'menu.scriptConsole'</span>
 
-        container = $(<span class="hljs-string">'&lt;div&gt;&lt;/div&gt;'</span>).attr(<span class="hljs-string">'id'</span>, <span class="hljs-property">@id</span>).addClass(<span class="hljs-string">'nofooter'</span>)
-        $(<span class="hljs-built_in">document</span>.body).prepend container
+        container = $ <span class="hljs-string">'&lt;div&gt;&lt;/div&gt;'</span>
+            .attr <span class="hljs-string">'id'</span>, <span class="hljs-property">@id</span>
+            .addClass <span class="hljs-string">'nofooter'</span>
+
+        $ <span class="hljs-built_in">document</span>.body
+            .prepend container
 
         <span class="hljs-property">@panel</span> = <span class="hljs-keyword">new</span> YAHOO.widget.Panel <span class="hljs-property">@id</span>,
             <span class="hljs-attribute">constraintoviewport</span>: <span class="hljs-literal">true</span>
@@ -72,7 +87,34 @@ Game = Lacuna.Game
             <span class="hljs-attribute">zIndex</span>: <span class="hljs-number">9999</span>
 
         <span class="hljs-property">@panel</span>.setHeader <span class="hljs-string">'Script Console'</span>
+        <span class="hljs-property">@panel</span>.render()
         Game.OverlayManager.register <span class="hljs-property">@panel</span>
+
+        <span class="hljs-property">@tasks</span> = <span class="hljs-property">@loadTasks</span>()
+
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="scriptconsole-loadtasks"><a href="#scriptconsole-loadtasks" class="anchor"></a>ScriptConsole.loadTasks</h2><p><code>require</code> all of the tasks.</p>
+<p>Because these tasks can be user generated we need to make sure they&#39;re usable.
+To do this, just call the <code>validate</code> method on each one. This method will
+blow any errors out to the console. Hopefully, this only happens in development. :)</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">loadTasks</span>:<span class="hljs-function"> -&gt;</span>
+        tasks = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/tasks'</span>
+
+        _.each tasks, <span class="hljs-function"><span class="hljs-params">(task)</span> -&gt;</span>
+            task.validate()
+
+        tasks
+
 </pre></div>
       
       </div>
@@ -87,7 +129,9 @@ of the top menu bar.</p>
       
       
         <div class="code"><pre class="wrapper">    <span class="hljs-attribute">show</span>:<span class="hljs-function"> -&gt;</span>
+
         <span class="hljs-property">@render</span>()
+        <span class="hljs-property">@events</span>()
         <span class="hljs-property">@open</span>()
 
 </pre></div>
@@ -120,8 +164,24 @@ are open. Then it centers and shows the Script Console.</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">render</span>:<span class="hljs-function"> -&gt;</span>
-        <span class="hljs-property">@panel</span>.setBody <span class="hljs-property">@template</span>()
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">render</span>:<span class="hljs-function"> =&gt;</span>
+        <span class="hljs-property">@panel</span>.setBody <span class="hljs-property">@template</span> {<span class="hljs-property">@tasks</span>}
+
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="scriptconsole-events"><a href="#scriptconsole-events" class="anchor"></a>ScriptConsole.events</h2><p>Sets up all the events.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">events</span>:<span class="hljs-function"> -&gt;</span>
+        $ <span class="hljs-string">'#'</span> + <span class="hljs-property">@id</span>
+            .<span class="hljs-literal">on</span> <span class="hljs-string">'change'</span>, <span class="hljs-property">@render</span>
 
 
 <span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = <span class="hljs-keyword">new</span> ScriptConsole()

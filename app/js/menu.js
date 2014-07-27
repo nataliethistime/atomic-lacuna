@@ -26,12 +26,6 @@ YAHOO.namespace("lacuna");
                 context: [this.clickId, "tl", "bl", [11, -14]]
             });
             userMenu.addItems([{
-                text: 'Script Console',
-                onclick: {
-                    fn: Lacuna.ScriptConsole.show,
-                    scope: Lacuna.ScriptConsole
-                }
-            }, {
                 text: "Alliance Map",
                 url: "/starmap/",
                 target: "_blank"
@@ -66,6 +60,19 @@ YAHOO.namespace("lacuna");
                 url: "http://community.lacunaexpanse.com/wiki/",
                 target: "_blank"
             }]);
+
+            if (window.ATOM_SHELL) {
+                var SC = require('js/menu/script-console');
+
+                userMenu.addItem({
+                    text: 'Script Console',
+                    onclick: {
+                        fn: SC.show,
+                        scope: SC
+                    }
+                });
+            }
+
             userMenu.subscribe("beforeShow", function() {
                 if (this.getRoot() === this) {
                     this.align("tl", "bl", [11, -14]);

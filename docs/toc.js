@@ -560,6 +560,21 @@ window.files = [
   "toc": []
 },
 {
+  "path": "app/js/task.coffee.html",
+  "originalName": "task.coffee",
+  "originalPath": "app/js/task.coffee",
+  "name": "task.coffee.html",
+  "lang": "coffeescript",
+  "title": "Task",
+  "toc": [
+    {
+      "level": 1,
+      "slug": "task",
+      "title": "Task"
+    }
+  ]
+},
+{
   "path": "app/js/util.coffee.html",
   "originalName": "util.coffee",
   "originalPath": "app/js/util.coffee",
@@ -582,6 +597,16 @@ window.files = [
     },
     {
       "level": 2,
+      "slug": "scriptconsole-constructor",
+      "title": "ScriptConsole.constructor"
+    },
+    {
+      "level": 2,
+      "slug": "scriptconsole-loadtasks",
+      "title": "ScriptConsole.loadTasks"
+    },
+    {
+      "level": 2,
       "slug": "scriptconsole-show",
       "title": "ScriptConsole.show"
     },
@@ -594,6 +619,41 @@ window.files = [
       "level": 2,
       "slug": "scriptconsole-render",
       "title": "ScriptConsole.render"
+    },
+    {
+      "level": 2,
+      "slug": "scriptconsole-events",
+      "title": "ScriptConsole.events"
+    }
+  ]
+},
+{
+  "path": "app/js/tasks/index.coffee.html",
+  "originalName": "index.coffee",
+  "originalPath": "app/js/tasks/index.coffee",
+  "name": "index.coffee.html",
+  "lang": "coffeescript",
+  "title": "Index",
+  "toc": [
+    {
+      "level": 1,
+      "slug": "index",
+      "title": "Index"
+    }
+  ]
+},
+{
+  "path": "app/js/tasks/push-glyphs.coffee.html",
+  "originalName": "push-glyphs.coffee",
+  "originalPath": "app/js/tasks/push-glyphs.coffee",
+  "name": "push-glyphs.coffee.html",
+  "lang": "coffeescript",
+  "title": "Push Glyphs",
+  "toc": [
+    {
+      "level": 1,
+      "slug": "push-glyphs",
+      "title": "Push Glyphs"
     }
   ]
 },

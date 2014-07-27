@@ -53,12 +53,6 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 context: [<span class="hljs-keyword">this</span>.clickId, <span class="hljs-string">"tl"</span>, <span class="hljs-string">"bl"</span>, [<span class="hljs-number">11</span>, -<span class="hljs-number">14</span>]]
             });
             userMenu.addItems([{
-                text: <span class="hljs-string">'Script Console'</span>,
-                onclick: {
-                    fn: Lacuna.ScriptConsole.show,
-                    scope: Lacuna.ScriptConsole
-                }
-            }, {
                 text: <span class="hljs-string">"Alliance Map"</span>,
                 url: <span class="hljs-string">"/starmap/"</span>,
                 target: <span class="hljs-string">"_blank"</span>
@@ -93,6 +87,19 @@ YAHOO.namespace(<span class="hljs-string">"lacuna"</span>);
                 url: <span class="hljs-string">"http://community.lacunaexpanse.com/wiki/"</span>,
                 target: <span class="hljs-string">"_blank"</span>
             }]);
+
+            <span class="hljs-keyword">if</span> (window.ATOM_SHELL) {
+                <span class="hljs-keyword">var</span> SC = <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/menu/script-console'</span>);
+
+                userMenu.addItem({
+                    text: <span class="hljs-string">'Script Console'</span>,
+                    onclick: {
+                        fn: SC.show,
+                        scope: SC
+                    }
+                });
+            }
+
             userMenu.subscribe(<span class="hljs-string">"beforeShow"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
                 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.getRoot() === <span class="hljs-keyword">this</span>) {
                     <span class="hljs-keyword">this</span>.align(<span class="hljs-string">"tl"</span>, <span class="hljs-string">"bl"</span>, [<span class="hljs-number">11</span>, -<span class="hljs-number">14</span>]);

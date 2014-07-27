@@ -181,7 +181,6 @@
         require('js/info');
         require('js/notify');
         require('js/captcha');
-        setGlobal('ScriptConsole', require('js/menu/script-console'));
         require('js/menu');
 
         if (window.ATOM_SHELL) {
