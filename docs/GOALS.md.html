@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Goals - GOALS.md</title>
+
+  <link rel="stylesheet" href="assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content=""/>
+  <meta name="groc-document-path" content="GOALS.md"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        GOALS.md
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h1 id="goals"><a href="#goals" class="anchor"></a>Goals</h1><blockquote>
+<p>There are several ideas behind this project, a lot of them are aimed at improving
+the quality of the code so that improvements can be made to important issues such
+as performance or usability.</p>
+</blockquote>
+<h4 id="implemented"><a href="#implemented" class="anchor"></a>Implemented</h4><ul>
+<li>Use JSHint to check the code for errors and report on possible bugs because
+of various pitfalls in the JavaScript language design.</li>
+<li>Use Browserify to make this code usable in the web browser, so that we&#39;re only
+maintaining one code base.</li>
+<li>Make zip files for Windows, Linux and the web browser containing the platform-specific
+binaries to Run The Thing.</li>
+</ul>
+<h4 id="working-on"><a href="#working-on" class="anchor"></a>Working On</h4><ul>
+<li>Use the Handlebars template engine to use HTML templates instead of manually
+messing with HTML inside the code. The reasons for this should be obvious.</li>
+<li>More jQuery and Underscore, less YUI. The version of YUI that this project uses
+has been depreciated since 2011. It&#39;s now 2014. Rely on YUI as little as possible
+when writing or improving code. Extra notes about this:<ul>
+<li>Don&#39;t use the YAHOO.lacuna global for the code.</li>
+<li>There is nearly always a jQuery/Underscore/jQuery plugin which is more concise
+than the raw DOM manipulation that goes on right now.</li>
+</ul>
+</li>
+<li>Properly document each of the core library methods so that they make more sense.</li>
+</ul>
+<h4 id="later"><a href="#later" class="anchor"></a>Later</h4><ul>
+<li>Because this project is NodeJs based, it&#39;s the easiest thing in the world to
+break code out into new modules.</li>
+<li>General cleaning of messy code.</li>
+</ul>
+<p>Other possible improvements that could be done later on:</p>
+<ul>
+<li>Fix all the weird method names that aren&#39;t camelCased. This is really annoying
+and generally confusing for people new to the code. This could probably be fixed
+earlier rather than later, but because I&#39;m the only person developing this project
+and it doesn&#39;t bother me <em>as much</em>, it&#39;s being delayed.</li>
+</ul>
+</div>
+        </div>
+      
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="toc.js"></script>
+  <script src="assets/libs.js"></script>
+  <script src="assets/behavior.js"></script>
+</body>
+</html>

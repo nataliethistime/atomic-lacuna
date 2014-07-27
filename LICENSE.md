@@ -1,4 +1,7 @@
-The MIT License (MIT)
+ License
+=======
+
+ > The MIT License (MIT)
 
 Copyright (c) 2014 Nathan McCallum
 

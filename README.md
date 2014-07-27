@@ -1,8 +1,15 @@
 atomic-lacuna
 =============
 
-The Lacuna Expanse Web Client inside an atom-shell. All the documentation for
-this is viewable on the [documentation index page](https://github.com/Vasari/atomic-lacuna/blob/master/docs/index.md).
+ > The Lacuna Expanse Web Client inside an atom-shell. It's cleaner, sweeter, brighter
+ > and includes a scripting console.
+
+In terms of documentation, the isn't a huge amount running around. *(It's kinda
+hard to catch, you know, being such a wildly unpredictable creature)*. But hey,
+if you want the short and sweet of it, see the ROADMAP. Or for more detailed (read: technical)
+documentation see the GOALS. Finally if you're a developer and want to help, CHANGES
+and HACKING are the places to be.
+
 If you have any questions or suggestions, please yell at me via the Github Issue tracker.
 I'd love to hear from you. :blush:
 
@@ -22,11 +29,10 @@ that could be re-used in other projects.
 To make a short story shorter, the `atom-shell` allows a web page (such as the
 web client) to run in a desktop window and have access to the file system via
 NodeJs. This allowed me to streamline the loading of all the JavaScript and assets.
-I don't have any performance tests, but the client *seems* faster in the desktop
-mode than in the web browser. If any of that doesn't convince you, just look at it.
-No silly web browser rubbish in the way! Tadaaa! :dizzy:
+Several users who have tested Atomic Lacuna have said that it feels faster than
+the in-browser client. Here's a sneak peak of what it looks like. Tadaaa! :dizzy:
 
-![Atomic Lacuna in action!](https://raw.githubusercontent.com/Vasari/atomic-lacuna/master/docs/Screenshot.png)
+![Atomic Lacuna in action!](https://raw.githubusercontent.com/Vasari/atomic-lacuna/master/public/Screenshot.png)
 Made with :heart: by Nathan McCallum and contributers under the MIT license! :panda_face:
 
 Badges! :beginner:
@@ -39,34 +45,3 @@ Badges! :beginner:
 | Ohloh            | [![Ohloh](https://www.ohloh.net/images/logo/ohloh_hub.png)](https://www.ohloh.net/p/atomic-lacuna)
 | Dependencies     | [![Dependency Status](https://david-dm.org/Vasari/atomic-lacuna.svg)](https://david-dm.org/Vasari/atomic-lacuna) |
 | Dev Dependencies | [![Dev Dependency Status](https://david-dm.org/Vasari/atomic-lacuna/dev-status.svg)](https://david-dm.org/Vasari/atomic-lacuna#info=devDependencies) |
-
-Roadmap
-=======
-
-###1.0.0
-- Basic Script console
-- Most HTTP issues solved (ex: star search)
-- Progressive simplification and modulation of the code (including moving to CoffeeScript).
-- Progressive movement from YUI modules to jQuery and jQuery plugins.
-
-Changes
-=======
-
-###0.2.0 (2014-07-26)
-- Cleaned all of the code out using a script.
-- Fixed some errors introduced in the cleaning.
-- Implemented a build for the web browser.
-- Various improvements to the internals of the code.
-
-###0.1.1 (2014-07-13)
-- Include binaries for Windows (32 bit) and Linux (64 and 32 bit).
-
-###0.1.0 (2014-07-13)
-- Started keeping a change log.
-- Sorted out the inclusion of `node_modules` in linux builds.
-- The build script now zips each package.
-- Build script now deletes old stuff before running.
-- Ignore useless development dependencies when building.
-
-###0.0.1
-- Initial version! :D

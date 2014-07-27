@@ -598,37 +598,12 @@ window.files = [
   ]
 },
 {
-  "path": "README.md.html",
-  "originalName": "README.md",
-  "originalPath": "README.md",
-  "name": "README.md.html",
-  "title": "atomic-lacuna",
+  "path": "CHANGES.md.html",
+  "originalName": "CHANGES.md",
+  "originalPath": "CHANGES.md",
+  "name": "CHANGES.md.html",
+  "title": "Changes",
   "toc": [
-    {
-      "level": 1,
-      "slug": "atomic-lacuna",
-      "title": "atomic-lacuna"
-    },
-    {
-      "level": 1,
-      "slug": "why-octocat-",
-      "title": "Why? :octocat:"
-    },
-    {
-      "level": 1,
-      "slug": "badges-beginner-",
-      "title": "Badges! :beginner:"
-    },
-    {
-      "level": 1,
-      "slug": "roadmap",
-      "title": "Roadmap"
-    },
-    {
-      "level": 3,
-      "slug": "1-0-0",
-      "title": "1.0.0"
-    },
     {
       "level": 1,
       "slug": "changes",
@@ -653,6 +628,111 @@ window.files = [
       "level": 3,
       "slug": "0-0-1",
       "title": "0.0.1"
+    }
+  ]
+},
+{
+  "path": "GOALS.md.html",
+  "originalName": "GOALS.md",
+  "originalPath": "GOALS.md",
+  "name": "GOALS.md.html",
+  "title": "Goals",
+  "toc": [
+    {
+      "level": 1,
+      "slug": "goals",
+      "title": "Goals"
+    },
+    {
+      "level": 4,
+      "slug": "implemented",
+      "title": "Implemented"
+    },
+    {
+      "level": 4,
+      "slug": "working-on",
+      "title": "Working On"
+    },
+    {
+      "level": 4,
+      "slug": "later",
+      "title": "Later"
+    }
+  ]
+},
+{
+  "path": "HACKING.md.html",
+  "originalName": "HACKING.md",
+  "originalPath": "HACKING.md",
+  "name": "HACKING.md.html",
+  "title": "Setup &amp; Usage",
+  "toc": [
+    {
+      "level": 1,
+      "slug": "setup-amp-usage",
+      "title": "Setup &amp; Usage"
+    },
+    {
+      "level": 1,
+      "slug": "hacking",
+      "title": "Hacking"
+    }
+  ]
+},
+{
+  "path": "LICENSE.md.html",
+  "originalName": "LICENSE.md",
+  "originalPath": "LICENSE.md",
+  "name": "LICENSE.md.html",
+  "title": " License",
+  "toc": [
+    {
+      "level": 1,
+      "slug": "-license",
+      "title": " License"
+    }
+  ]
+},
+{
+  "path": "README.md.html",
+  "originalName": "README.md",
+  "originalPath": "README.md",
+  "name": "README.md.html",
+  "title": "atomic-lacuna",
+  "toc": [
+    {
+      "level": 1,
+      "slug": "atomic-lacuna",
+      "title": "atomic-lacuna"
+    },
+    {
+      "level": 1,
+      "slug": "why-octocat-",
+      "title": "Why? :octocat:"
+    },
+    {
+      "level": 1,
+      "slug": "badges-beginner-",
+      "title": "Badges! :beginner:"
+    }
+  ]
+},
+{
+  "path": "ROADMAP.md.html",
+  "originalName": "ROADMAP.md",
+  "originalPath": "ROADMAP.md",
+  "name": "ROADMAP.md.html",
+  "title": "Roadmap",
+  "toc": [
+    {
+      "level": 1,
+      "slug": "roadmap",
+      "title": "Roadmap"
+    },
+    {
+      "level": 3,
+      "slug": "1-0-0",
+      "title": "1.0.0"
     }
   ]
 },
