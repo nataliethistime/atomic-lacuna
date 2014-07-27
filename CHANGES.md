@@ -1,8 +1,7 @@
 Changes
 =======
 
- > History of the changes made to the code since version `0.0.1`!
-
+ > History of the changes made to the code since version `0.0.1`.
 
 ###0.3.0 (Unreleased)
 - Massive overhaul of the documentation.

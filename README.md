@@ -1,11 +1,10 @@
-atomic-lacuna
+Atomic Lacuna
 =============
 
  > The Lacuna Expanse Web Client inside an atom-shell. It's cleaner, sweeter, brighter
  > and includes a scripting console.
 
-In terms of documentation, the isn't a huge amount running around. *(It's kinda
-hard to catch, you know, being such a wildly unpredictable creature)*. But hey,
+In terms of documentation, the isn't much, *yet*. But hey,
 if you want the short and sweet of it, see the ROADMAP. Or for more detailed (read: technical)
 documentation see the GOALS. Finally if you're a developer and want to help, CHANGES
 and HACKING are the places to be.
@@ -33,7 +32,6 @@ Several users who have tested Atomic Lacuna have said that it feels faster than
 the in-browser client. Here's a sneak peak of what it looks like. Tadaaa! :dizzy:
 
 ![Atomic Lacuna in action!](https://raw.githubusercontent.com/Vasari/atomic-lacuna/master/public/Screenshot.png)
-Made with :heart: by Nathan McCallum and contributers under the MIT license! :panda_face:
 
 Badges! :beginner:
 =======
@@ -45,3 +43,5 @@ Badges! :beginner:
 | Ohloh            | [![Ohloh](https://www.ohloh.net/images/logo/ohloh_hub.png)](https://www.ohloh.net/p/atomic-lacuna)
 | Dependencies     | [![Dependency Status](https://david-dm.org/Vasari/atomic-lacuna.svg)](https://david-dm.org/Vasari/atomic-lacuna) |
 | Dev Dependencies | [![Dev Dependency Status](https://david-dm.org/Vasari/atomic-lacuna/dev-status.svg)](https://david-dm.org/Vasari/atomic-lacuna#info=devDependencies) |
+
+Made with :heart: by Nathan McCallum under the MIT license! :panda_face:

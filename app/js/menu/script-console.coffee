@@ -1,6 +1,5 @@
 ###
 #
-#
 # # Script Console
 #
 # The Script Console is the interface that the player uses to automate their empire's

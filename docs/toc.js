@@ -611,6 +611,11 @@ window.files = [
     },
     {
       "level": 3,
+      "slug": "0-3-0-unreleased-",
+      "title": "0.3.0 (Unreleased)"
+    },
+    {
+      "level": 3,
       "slug": "0-2-0-2014-07-26-",
       "title": "0.2.0 (2014-07-26)"
     },
@@ -673,9 +678,24 @@ window.files = [
       "title": "Setup &amp; Usage"
     },
     {
+      "level": 4,
+      "slug": "ingredients-",
+      "title": "Ingredients:"
+    },
+    {
+      "level": 4,
+      "slug": "method-",
+      "title": "Method:"
+    },
+    {
       "level": 1,
       "slug": "hacking",
       "title": "Hacking"
+    },
+    {
+      "level": 2,
+      "slug": "todo-",
+      "title": "TODO!!!!"
     }
   ]
 },
@@ -698,12 +718,12 @@ window.files = [
   "originalName": "README.md",
   "originalPath": "README.md",
   "name": "README.md.html",
-  "title": "atomic-lacuna",
+  "title": "Atomic Lacuna",
   "toc": [
     {
       "level": 1,
       "slug": "atomic-lacuna",
-      "title": "atomic-lacuna"
+      "title": "Atomic Lacuna"
     },
     {
       "level": 1,

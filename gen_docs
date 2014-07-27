@@ -3,10 +3,10 @@ gen_docs() {
     # Just to make sure
     rm -rf docs/
 
-    grock --out "docs/" --style thin \
+    grock --out "docs/" --style thin     \
         --glob "app/js/**/*.js"          \
         --glob "app/js/**/*.coffee"      \
-        --glob "*.md"               \
+        --glob "*.md"                    \
         --glob "app/templates/**/*.hbs"  \
         --glob "app/css/*.css"
 
