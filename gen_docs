@@ -1,11 +1,26 @@
-# Just to make sure
-rm -rf docs/code
 
-grock --out "docs/code" --style thin \
-    --glob "app/js/**/*.js"          \
-    --glob "app/js/**/*.coffee"      \
-    --glob "README.md"               \
-    --glob "app/templates/**/*.hbs"  \
-    --glob "app/css/*.css"
+gen_docs() {
+    # Just to make sure
+    rm -rf docs/code
 
-# TODO: replace all the emoji's with <img> things.
+    grock --out "docs/code" --style thin \
+        --glob "app/js/**/*.js"          \
+        --glob "app/js/**/*.coffee"      \
+        --glob "README.md"               \
+        --glob "app/templates/**/*.hbs"  \
+        --glob "app/css/*.css"
+
+    # TODO: replace all the emoji's with <img> things.
+}
+
+
+if [ -n "$1" ] && [ "$1" == "watch" ]; then
+    # Note: this requires the 'rerun' Ruby Gem. You can install it with:
+    # `sudo gem install rerun`.
+    rerun --name "Atomic Lacuna" --dir "app/" --ignore "app/lib/*" \
+        --exit                                                     \
+        --pattern "**/*.{js,coffee,css,hbs}"                       \
+        "./gen_docs"
+else
+    gen_docs
+fi
