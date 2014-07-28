@@ -30,11 +30,16 @@
         </div>
       
       
-        <div class="code"><pre class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Task</span></span>
+        <div class="code"><pre class="wrapper">requiredAttributes = [<span class="hljs-string">'displayName'</span>, <span class="hljs-string">'internalName'</span>, <span class="hljs-string">'template'</span>]
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Task</span></span>
 
     <span class="hljs-attribute">validate</span>:<span class="hljs-function"> -&gt;</span>
-        <span class="hljs-keyword">unless</span> <span class="hljs-property">@displayName</span>?
-            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Error <span class="hljs-string">'I need a displayName!'</span>
+
+        _.each requiredAttributes, <span class="hljs-function"><span class="hljs-params">(attr)</span> -&gt;</span>
+            <span class="hljs-keyword">unless</span> @[attr]?
+                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Error <span class="hljs-string">"<span class="hljs-subst">#{attr}</span> is required!"</span>
+        , @
 
         <span class="hljs-literal">yes</span>
 

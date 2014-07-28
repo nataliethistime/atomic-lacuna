@@ -779,6 +779,34 @@ showTip(dialog, 1);</p>
                 id = ED.current_planet_id || ED.home_planet_id;
             <span class="hljs-keyword">return</span> ED.planets[id];
         },
+
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="game-getplanetnames"><a href="#game-getplanetnames" class="anchor"></a>Game.getPlanetNames</h2><p>Returns a sorted list of all the names of all the planets (<em>Space Stations
+included</em>) the player owns.
+Note: <code>Game.EmpireData.planets</code> contains objects (in the form of a
+<code>body.get_status</code> response). We need to filter through all that and just
+get the names.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        getPlanetNames: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> planetObjs = _.values(Game.EmpireData.planets);
+            <span class="hljs-keyword">var</span> array = [];
+
+            _.each(planetObjs, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(planet)</span> {</span>
+                array.push(planet.name);
+            });
+
+            <span class="hljs-keyword">return</span> array.sort();
+        },
+
         GetSize: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             <span class="hljs-keyword">var</span> content = document.getElementById(<span class="hljs-string">"content"</span>),
                 width = content.offsetWidth,

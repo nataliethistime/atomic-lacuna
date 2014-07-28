@@ -25,3 +25,21 @@ Handlebars.registerHelper('removeLeadingErrorCode', function(string) {
 Handlebars.registerHelper('formatTime', function(string) {
     return Lib.formatTime(string);
 });
+
+// Render a template inside another template.
+Handlebars.registerHelper('renderTemplate', function(template, options) {
+    if (_.isFunction(template)) {
+        return template(options || {});
+    }
+    else {
+        throw new Error('Helper: renderTemplate needs a function.');
+    }
+});
+
+Handlebars.registerHelper('array2Select', function(array) {
+    return '<select>' +
+        _.map(array, function(item) {
+            return '<option value="' + item + '">' + item + '</option>';
+        }).join('') +
+        '</select>';
+});

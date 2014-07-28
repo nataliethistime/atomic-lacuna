@@ -164,8 +164,46 @@ are open. Then it centers and shows the Script Console.</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">render</span>:<span class="hljs-function"> =&gt;</span>
-        <span class="hljs-property">@panel</span>.setBody <span class="hljs-property">@template</span> {<span class="hljs-property">@tasks</span>}
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">render</span>: <span class="hljs-function"><span class="hljs-params">(task)</span> =&gt;</span>
+        <span class="hljs-keyword">if</span> task?
+            <span class="hljs-property">@selectedTask</span> = task
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Provide a few convenience options for each task&#39;s configuration template
+to use.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">            templateOptions =
+                planets : Game.getPlanetNames()
+
+            <span class="hljs-property">@panel</span>.setBody <span class="hljs-property">@template</span> {<span class="hljs-property">@tasks</span>, <span class="hljs-property">@selectedTask</span>, templateOptions}
+
+        <span class="hljs-keyword">else</span>
+            <span class="hljs-property">@panel</span>.setBody <span class="hljs-property">@template</span> {<span class="hljs-property">@tasks</span>}
+
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="scriptconsole-onchangetask"><a href="#scriptconsole-onchangetask" class="anchor"></a>ScriptConsole.onChangeTask</h2><p>Function that&#39;s called when the user changes the task they&#39;re configuring.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">onChangeTask</span>: <span class="hljs-function"><span class="hljs-params">(event)</span> =&gt;</span>
+        newTaskName = event.target.value
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> newTaskName?
+        <span class="hljs-property">@render</span> <span class="hljs-property">@tasks</span>[newTaskName]
 
 </pre></div>
       
@@ -181,7 +219,7 @@ are open. Then it centers and shows the Script Console.</p>
       
         <div class="code"><pre class="wrapper">    <span class="hljs-attribute">events</span>:<span class="hljs-function"> -&gt;</span>
         $ <span class="hljs-string">'#'</span> + <span class="hljs-property">@id</span>
-            .<span class="hljs-literal">on</span> <span class="hljs-string">'change'</span>, <span class="hljs-property">@render</span>
+            .<span class="hljs-literal">on</span> <span class="hljs-string">'change'</span>, <span class="hljs-property">@onChangeTask</span>
 
 
 <span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = <span class="hljs-keyword">new</span> ScriptConsole()

@@ -1,7 +1,14 @@
+<label for="taskSelect">Select a Task:</label>
 <select>
     <option value="null">Select a Task to Configure</option>
+
+    {{#each tasks}}
+        <option value="{{internalName}}">{{displayName}}</option>
+    {{/each}}
 </select>
 
-{{! div containing the configuration options for the selected Task. }}
-<div>
-</div>
+{{#if selectedTask}}
+    <hr />
+    <h1 class="center-text">{{selectedTask.displayName}}</h1>
+    {{#renderTemplate selectedTask.template templateOptions}}{{/renderTemplate}}
+{{/if}}

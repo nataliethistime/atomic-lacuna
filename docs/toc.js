@@ -61,7 +61,13 @@ window.files = [
   "originalPath": "app/js/game.js",
   "name": "game.js.html",
   "lang": "javascript",
-  "toc": []
+  "toc": [
+    {
+      "level": 2,
+      "slug": "game-getplanetnames",
+      "title": "Game.getPlanetNames"
+    }
+  ]
 },
 {
   "path": "app/js/info.js.html",
@@ -622,6 +628,11 @@ window.files = [
     },
     {
       "level": 2,
+      "slug": "scriptconsole-onchangetask",
+      "title": "ScriptConsole.onChangeTask"
+    },
+    {
+      "level": 2,
       "slug": "scriptconsole-events",
       "title": "ScriptConsole.events"
     }
@@ -845,6 +856,14 @@ window.files = [
   "originalName": "scriptConsole.hbs",
   "originalPath": "app/templates/menu/scriptConsole.hbs",
   "name": "scriptConsole.hbs.html",
+  "lang": "handlebars",
+  "toc": []
+},
+{
+  "path": "app/templates/tasks/pushGlyphs.hbs.html",
+  "originalName": "pushGlyphs.hbs",
+  "originalPath": "app/templates/tasks/pushGlyphs.hbs",
+  "name": "pushGlyphs.hbs.html",
   "lang": "handlebars",
   "toc": []
 },

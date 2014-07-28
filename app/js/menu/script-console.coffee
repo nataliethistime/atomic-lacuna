@@ -111,8 +111,29 @@ class ScriptConsole
     # Calls `setBody` on `@panel` to render the template into the `DOM`.
     ###
 
-    render: =>
-        @panel.setBody @template {@tasks}
+    render: (task) =>
+        if task?
+            @selectedTask = task
+
+            # Provide a few convenience options for each task's configuration template
+            # to use.
+            templateOptions =
+                planets : Game.getPlanetNames()
+
+            @panel.setBody @template {@tasks, @selectedTask, templateOptions}
+
+        else
+            @panel.setBody @template {@tasks}
+
+
+    ###
+    # ## ScriptConsole.onChangeTask
+    # Function that's called when the user changes the task they're configuring.
+    ###
+    onChangeTask: (event) =>
+        newTaskName = event.target.value
+        return unless newTaskName?
+        @render @tasks[newTaskName]
 
 
     ###
@@ -122,7 +143,7 @@ class ScriptConsole
 
     events: ->
         $ '#' + @id
-            .on 'change', @render
+            .on 'change', @onChangeTask
 
 
 module.exports = new ScriptConsole()

@@ -6,11 +6,15 @@
 
 'use strict'
 
+templates = require 'js/templates'
 Task = require 'js/task'
 
 class PushGlyphs extends Task
 
     displayName: 'Push Glyphs'
+    internalName: 'pushGlyphs'
+
+    template: templates.get 'tasks.pushGlyphs'
 
 
 module.exports = new PushGlyphs()

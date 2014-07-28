@@ -71,7 +71,36 @@ error message.</p>
 });
 Handlebars.registerHelper(<span class="hljs-string">'formatTime'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(string)</span> {</span>
     <span class="hljs-keyword">return</span> Lib.formatTime(string);
-});</pre></div>
+});
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Render a template inside another template.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">Handlebars.registerHelper(<span class="hljs-string">'renderTemplate'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(template, options)</span> {</span>
+    <span class="hljs-keyword">if</span> (_.isFunction(template)) {
+        <span class="hljs-keyword">return</span> template(options || {});
+    }
+    <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Helper: renderTemplate needs a function.'</span>);
+    }
+});
+
+Handlebars.registerHelper(<span class="hljs-string">'array2Select'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(array)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'&lt;select&gt;'</span> +
+        _.map(array, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item)</span> {</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-string">'&lt;option value="'</span> + item + <span class="hljs-string">'"&gt;'</span> + item + <span class="hljs-string">'&lt;/option&gt;'</span>;
+        }).join(<span class="hljs-string">''</span>) +
+        <span class="hljs-string">'&lt;/select&gt;'</span>;
+});
+</pre></div>
       
       </div>
     

@@ -632,6 +632,26 @@ YAHOO.namespace("lacuna");
                 id = ED.current_planet_id || ED.home_planet_id;
             return ED.planets[id];
         },
+
+
+        // ##Game.getPlanetNames
+        // Returns a sorted list of all the names of all the planets (*Space Stations
+        // included*) the player owns.
+        //
+        // Note: `Game.EmpireData.planets` contains objects (in the form of a
+        // `body.get_status` response). We need to filter through all that and just
+        // get the names.
+        getPlanetNames: function() {
+            var planetObjs = _.values(Game.EmpireData.planets);
+            var array = [];
+
+            _.each(planetObjs, function(planet) {
+                array.push(planet.name);
+            });
+
+            return array.sort();
+        },
+
         GetSize: function() {
             var content = document.getElementById("content"),
                 width = content.offsetWidth,
