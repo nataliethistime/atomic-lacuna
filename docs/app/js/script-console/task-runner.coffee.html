@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Runner - task-runner.coffee</title>
+
+  <link rel="stylesheet" href="../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../"/>
+  <meta name="groc-document-path" content="app/js/script-console/task-runner.coffee"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/script-console/task-runner.coffee
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h1 id="task-runner"><a href="#task-runner" class="anchor"></a>Task Runner</h1><p>The module that takes care of executing a valid task and displaying the results
+to the user.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-string">'use strict'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TaskRunner</span></span>
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="taskrunner-runtask"><a href="#taskrunner-runtask" class="anchor"></a>TaskRunner.runTask</h2><p>The root of all the operations here. This method does the following to run
+a task:</p>
+<ul>
+<li>Load all of the configuration options the task will need.</li>
+<li>Some sort of configuration option validation step?</li>
+<li>Open the console output window.</li>
+<li>Run the task, putting all output in the window opened before.</li>
+<li>When the task finishes. Do a Happy dance! :D :D</li>
+</ul>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">runTask</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@task</span>)</span> -&gt;</span>
+        <span class="hljs-property">@task</span>.loadOptions()
+        <span class="hljs-property">@show</span>()
+        <span class="hljs-property">@task</span>.run()
+        alert <span class="hljs-string">"I'm the happiest little crazy there is!"</span>
+
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="taskrunner-show"><a href="#taskrunner-show" class="anchor"></a>TaskRunner.show</h2><p>Show the output dialog.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">show</span>:<span class="hljs-function"> -&gt;</span></pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>do stuffs</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = <span class="hljs-keyword">new</span> TaskRunner()
+</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../toc.js"></script>
+  <script src="../../../assets/libs.js"></script>
+  <script src="../../../assets/behavior.js"></script>
+</body>
+</html>

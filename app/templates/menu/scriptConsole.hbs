@@ -1,6 +1,6 @@
 <label for="taskSelect">Select a Task:</label>
 <select>
-    <option value="null">Select a Task to Configure</option>
+    <option value="null">Select a Task to Run</option>
 
     {{#each tasks}}
         <option value="{{internalName}}">{{displayName}}</option>
@@ -9,6 +9,11 @@
 
 {{#if selectedTask}}
     <hr />
+
     <h1 class="center-text">{{selectedTask.displayName}}</h1>
     {{#renderTemplate selectedTask.template templateOptions}}{{/renderTemplate}}
+
+    <div style="display: block; text-align: right;">
+        <button type="button" id="runTask">Run</button>
+    </div>
 {{/if}}

@@ -46,6 +46,7 @@ options that the user has setup. This could be a sqlite db or a json file. json
 
 templates = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/templates'</span>
 util = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/util'</span>
+taskRunner = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/script-console/task-runner'</span>
 
 Lang = YAHOO.lang
 Lacuna = YAHOO.lacuna
@@ -108,7 +109,7 @@ blow any errors out to the console. Hopefully, this only happens in development.
       
       
         <div class="code"><pre class="wrapper">    <span class="hljs-attribute">loadTasks</span>:<span class="hljs-function"> -&gt;</span>
-        tasks = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/tasks'</span>
+        tasks = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/script-console/tasks'</span>
 
         _.each tasks, <span class="hljs-function"><span class="hljs-params">(task)</span> -&gt;</span>
             task.validate()
@@ -131,7 +132,6 @@ of the top menu bar.</p>
         <div class="code"><pre class="wrapper">    <span class="hljs-attribute">show</span>:<span class="hljs-function"> -&gt;</span>
 
         <span class="hljs-property">@render</span>()
-        <span class="hljs-property">@events</span>()
         <span class="hljs-property">@open</span>()
 
 </pre></div>
@@ -159,7 +159,8 @@ are open. Then it centers and shows the Script Console.</p>
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><h2 id="scriptconsole-render"><a href="#scriptconsole-render" class="anchor"></a>ScriptConsole.render</h2><p>Calls <code>setBody</code> on <code>@panel</code> to render the template into the <code>DOM</code>.</p>
+          <div class="wrapper"><h2 id="scriptconsole-render"><a href="#scriptconsole-render" class="anchor"></a>ScriptConsole.render</h2><p>Calls <code>setBody</code> on <code>@panel</code> to render the template into the <code>DOM</code> and sets
+up all the events.</p>
 </div>
         </div>
       
@@ -174,7 +175,7 @@ are open. Then it centers and shows the Script Console.</p>
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><p>Provide a few convenience options for each task&#39;s configuration template
+          <div class="wrapper"><p>Provide a few convenience variables for each task&#39;s configuration template
 to use.</p>
 </div>
         </div>
@@ -188,6 +189,8 @@ to use.</p>
         <span class="hljs-keyword">else</span>
             <span class="hljs-property">@panel</span>.setBody <span class="hljs-property">@template</span> {<span class="hljs-property">@tasks</span>}
 
+        <span class="hljs-property">@events</span>()
+
 </pre></div>
       
       </div>
@@ -195,7 +198,7 @@ to use.</p>
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><h2 id="scriptconsole-onchangetask"><a href="#scriptconsole-onchangetask" class="anchor"></a>ScriptConsole.onChangeTask</h2><p>Function that&#39;s called when the user changes the task they&#39;re configuring.</p>
+          <div class="wrapper"><h2 id="scriptconsole-onchangetask"><a href="#scriptconsole-onchangetask" class="anchor"></a>ScriptConsole.onChangeTask</h2><p>Method that&#39;s called when the user changes the task they&#39;re configuring.</p>
 </div>
         </div>
       
@@ -212,6 +215,22 @@ to use.</p>
       <div class="segment">
       
         <div class="comments ">
+          <div class="wrapper"><h2 id="scriptconsole-onrunclick"><a href="#scriptconsole-onrunclick" class="anchor"></a>ScriptConsole.onRunClick</h2><p>Runs the currently selected task. This is done by handling <code>@selectedTask</code>
+over to the <code>task-runner</code> module.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">onRunClick</span>:<span class="hljs-function"> =&gt;</span>
+        taskRunner.runTask <span class="hljs-property">@selectedTask</span>
+
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
           <div class="wrapper"><h2 id="scriptconsole-events"><a href="#scriptconsole-events" class="anchor"></a>ScriptConsole.events</h2><p>Sets up all the events.</p>
 </div>
         </div>
@@ -219,7 +238,12 @@ to use.</p>
       
         <div class="code"><pre class="wrapper">    <span class="hljs-attribute">events</span>:<span class="hljs-function"> -&gt;</span>
         $ <span class="hljs-string">'#'</span> + <span class="hljs-property">@id</span>
+            .<span class="hljs-literal">off</span>()
             .<span class="hljs-literal">on</span> <span class="hljs-string">'change'</span>, <span class="hljs-property">@onChangeTask</span>
+
+        $ <span class="hljs-string">'#runTask'</span>
+            .<span class="hljs-literal">off</span>()
+            .<span class="hljs-literal">on</span> <span class="hljs-string">'click'</span>, <span class="hljs-property">@onRunClick</span>
 
 
 <span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = <span class="hljs-keyword">new</span> ScriptConsole()

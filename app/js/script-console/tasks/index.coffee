@@ -6,6 +6,6 @@
 
 'use strict'
 
-pushGlyphs = require 'js/tasks/push-glyphs'
+pushGlyphs = require 'js/script-console/tasks/push-glyphs'
 
 module.exports[pushGlyphs.internalName] = pushGlyphs

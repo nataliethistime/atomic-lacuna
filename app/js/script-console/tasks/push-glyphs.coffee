@@ -17,4 +17,20 @@ class PushGlyphs extends Task
     template: templates.get 'tasks.pushGlyphs'
 
 
+    ###
+    # ## PushGlyphs.loadOptions
+    # See the documentation for the `Task` class for what this is.
+    ###
+    loadOptions: ->
+        # TODO
+
+
+    ###
+    # ## PushGlyphs.run
+    # See the documentation for the `Task` class for what this is.
+    ###
+    run: ->
+        # TODO
+
+
 module.exports = new PushGlyphs()

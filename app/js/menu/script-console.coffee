@@ -21,6 +21,7 @@
 
 templates = require 'js/templates'
 util = require 'js/util'
+taskRunner = require 'js/script-console/task-runner'
 
 Lang = YAHOO.lang
 Lacuna = YAHOO.lacuna
@@ -73,7 +74,7 @@ class ScriptConsole
     ###
 
     loadTasks: ->
-        tasks = require 'js/tasks'
+        tasks = require 'js/script-console/tasks'
 
         _.each tasks, (task) ->
             task.validate()
@@ -90,7 +91,6 @@ class ScriptConsole
     show: ->
 
         @render()
-        @events()
         @open()
 
 
@@ -108,14 +108,15 @@ class ScriptConsole
 
     ###
     # ## ScriptConsole.render
-    # Calls `setBody` on `@panel` to render the template into the `DOM`.
+    # Calls `setBody` on `@panel` to render the template into the `DOM` and sets
+    # up all the events.
     ###
 
     render: (task) =>
         if task?
             @selectedTask = task
 
-            # Provide a few convenience options for each task's configuration template
+            # Provide a few convenience variables for each task's configuration template
             # to use.
             templateOptions =
                 planets : Game.getPlanetNames()
@@ -125,15 +126,28 @@ class ScriptConsole
         else
             @panel.setBody @template {@tasks}
 
+        @events()
+
 
     ###
     # ## ScriptConsole.onChangeTask
-    # Function that's called when the user changes the task they're configuring.
+    # Method that's called when the user changes the task they're configuring.
     ###
+
     onChangeTask: (event) =>
         newTaskName = event.target.value
         return unless newTaskName?
         @render @tasks[newTaskName]
+
+
+    ###
+    # ## ScriptConsole.onRunClick
+    # Runs the currently selected task. This is done by handling `@selectedTask`
+    # over to the `task-runner` module.
+    ###
+
+    onRunClick: =>
+        taskRunner.runTask @selectedTask
 
 
     ###
@@ -143,7 +157,12 @@ class ScriptConsole
 
     events: ->
         $ '#' + @id
+            .off()
             .on 'change', @onChangeTask
+
+        $ '#runTask'
+            .off()
+            .on 'click', @onRunClick
 
 
 module.exports = new ScriptConsole()

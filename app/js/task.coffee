@@ -3,7 +3,8 @@
 # A class that all of the tasks are based off of.
 ###
 
-requiredAttributes = ['displayName', 'internalName', 'template']
+# TODO: document these!
+requiredAttributes = ['displayName', 'internalName', 'template', 'loadOptions', 'run']
 
 class Task
 
