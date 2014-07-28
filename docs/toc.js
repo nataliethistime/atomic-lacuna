@@ -558,14 +558,6 @@ window.files = [
   "toc": []
 },
 {
-  "path": "app/js/about.coffee.html",
-  "originalName": "about.coffee",
-  "originalPath": "app/js/about.coffee",
-  "name": "about.coffee.html",
-  "lang": "coffeescript",
-  "toc": []
-},
-{
   "path": "app/js/task.coffee.html",
   "originalName": "task.coffee",
   "originalPath": "app/js/task.coffee",
@@ -585,6 +577,14 @@ window.files = [
   "originalName": "util.coffee",
   "originalPath": "app/js/util.coffee",
   "name": "util.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/menu/about.coffee.html",
+  "originalName": "about.coffee",
+  "originalPath": "app/js/menu/about.coffee",
+  "name": "about.coffee.html",
   "lang": "coffeescript",
   "toc": []
 },

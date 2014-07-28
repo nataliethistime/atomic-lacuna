@@ -112,7 +112,7 @@
         require('js/game');
 
         // Misc?
-        setGlobal('About', require('js/about'));
+        setGlobal('About', require('js/menu/about'));
         require('js/announce');
 
         // Empire management and star map
