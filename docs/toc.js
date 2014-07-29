@@ -558,6 +558,25 @@ window.files = [
   "toc": []
 },
 {
+  "path": "app/js/client.coffee.html",
+  "originalName": "client.coffee",
+  "originalPath": "app/js/client.coffee",
+  "name": "client.coffee.html",
+  "lang": "coffeescript",
+  "toc": [
+    {
+      "level": 2,
+      "slug": "client-constructor",
+      "title": "Client.constructor"
+    },
+    {
+      "level": 2,
+      "slug": "client-initmethods",
+      "title": "Client.initMethods"
+    }
+  ]
+},
+{
   "path": "app/js/task.coffee.html",
   "originalName": "task.coffee",
   "originalPath": "app/js/task.coffee",
@@ -577,6 +596,14 @@ window.files = [
   "originalName": "util.coffee",
   "originalPath": "app/js/util.coffee",
   "name": "util.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules.coffee.html",
+  "originalName": "modules.coffee",
+  "originalPath": "app/js/client/modules.coffee",
+  "name": "modules.coffee.html",
   "lang": "coffeescript",
   "toc": []
 },
