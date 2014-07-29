@@ -566,13 +566,8 @@ window.files = [
   "toc": [
     {
       "level": 2,
-      "slug": "client-constructor",
-      "title": "Client.constructor"
-    },
-    {
-      "level": 2,
-      "slug": "client-initmethods",
-      "title": "Client.initMethods"
+      "slug": "client-send",
+      "title": "Client.send"
     }
   ]
 },

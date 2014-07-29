@@ -41,36 +41,50 @@
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><h2 id="client-constructor"><a href="#client-constructor" class="anchor"></a>Client.constructor</h2></div>
+          <div class="wrapper"><h2 id="client-send"><a href="#client-send" class="anchor"></a>Client.send</h2><p>Send stuff to the server.</p>
+</div>
         </div>
       
       
-        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">constructor</span>:<span class="hljs-function"> -&gt;</span>
-        <span class="hljs-property">@initMethods</span>
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">send</span>:<span class="hljs-function"> -&gt;</span></pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>TODO</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Initialize all of the methods that belong in the <code>Client</code> using the <code>modules</code> object.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">methods = {}
 
+<span class="hljs-function"><span class="hljs-title">func</span> = <span class="hljs-params">(<span class="hljs-built_in">module</span>, key)</span> -&gt;</span>
+
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">module</span>.methods
+        _.each <span class="hljs-built_in">module</span>.methods, <span class="hljs-function"><span class="hljs-params">(name)</span> -&gt;</span>
+            methods[key] ?= {}
+            methods[key][name] = _.bind(<span class="hljs-attribute">Client</span>::send, {url : <span class="hljs-built_in">module</span>.url})
+
+
+_.each modules, func
+_.assign(<span class="hljs-attribute">Client</span>::, methods)
+
+<span class="hljs-built_in">console</span>.log methods
+
+<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = <span class="hljs-keyword">new</span> Client()
 </pre></div>
-      
-      </div>
-    
-      <div class="segment">
-      
-        <div class="comments ">
-          <div class="wrapper"><h2 id="client-initmethods"><a href="#client-initmethods" class="anchor"></a>Client.initMethods</h2><p>Initializes all of the rpc methods and puts them in this class.</p>
-</div>
-        </div>
-      
-      
-        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">initMethods</span>:<span class="hljs-function"> -&gt;</span></pre></div>
-      
-      </div>
-    
-      <div class="segment">
-      
-        <div class="comments ">
-          <div class="wrapper"><p>stuff</p>
-</div>
-        </div>
-      
       
       </div>
     

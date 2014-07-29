@@ -9,6 +9,8 @@
 templates = require 'js/templates'
 Task = require 'js/task'
 
+client = require 'js/client'
+
 class PushGlyphs extends Task
 
     displayName: 'Push Glyphs'
