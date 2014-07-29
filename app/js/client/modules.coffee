@@ -8,3668 +8,395 @@
 
 
 module.exports = {
-    Alliance: {
-        "target": "/alliance",
-        "services": [
+    Alliance:
+        url: '/alliance'
+        methods: [
             "find"
             "view_profile"
         ]
-    },
-    Body: {
-        "SMDVersion": "2.0",
-        "description": "Body",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
-        "target": "/body",
-        "services": {
-            "abandon": {
-                "description": "Abandon's a colony, and destroys everything on the planet.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "body_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_buildings": {
-                "description": "Retrieves a list of the buildings on a planet.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "body_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_buildable": {
-                "description": "Provides a list of all the building types that are available to be built on a given space on a planet.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "body_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "x",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "y",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "tag",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_build_queue": {
-                "description": "Returns a list of the buildings being constructed or upgraded",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "body_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_body_status": {
-                "description": "Retrieves the status of a body to display in the star map.",
-                "parameters": [{
-                    "name": "args",
-                    "type": "object",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_status": {
-                "description": "Returns detailed statistics about a planet.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "body_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "rename": {
-                "description": "Renames a body, provided the empire attached to the session owns the body. Returns a 1 on success.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "body_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "name",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
-        }
-    },
+
+    Body:
+        url: '/body'
+        methods: [
+            'abandon'
+            'get_buildings'
+            'get_buildable'
+            'get_build_queue'
+            'get_status'
+            'rename'
+        ]
+
     Buildings: {
-        Generic: {
-            "SMDVersion": "2.0",
-            "description": "Buildings",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
-            "services": {
-                "build": {
-                    "description": "Adds this building to the planet's build queue.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "planet_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "x",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "y",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "demolish": {
-                    "description": "Allows you to instantly destroy a building provided it wouldn't put you into a negative resource production situation. For example, if you're producing only a net positive of 100 food per hour, and you destroy a corn field that would take away 200 food per hour, then the game won't allow you to demolish that building.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "downgrade": {
-                    "description": "Downgrades a building by one level and then returns view.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "view": {
-                    "description": "Retrieves the properties of the building.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "upgrade": {
-                    "description": "Adds the requested upgrade to the build queue. On success returns the view() method.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "repair": {
-                    "description": "Repair buildings Efficiency to 100%",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
-            }
-        },
-        Archaeology: {
-            "SMDVersion": "2.0",
-            "description": "Archaeology Ministry",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
-            "target": "/archaeology",
-            "services": {
-                "search_for_glyph": {
-                    "description": "Searches through ore looking for glyphs left behind by the ancient race. Takes 10,000 of one type of ore to search.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "ore_type",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "get_glyph_summary": {
-                    "description": "Returns a list of glyphs that may be traded. Used with the add_trade method.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "get_glyphs": {
-                    "description": "Returns a list of glyphs that have been found by this archaeology ministry.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "assemble_glyphs": {
-                    "description": "Turns glyphs into rare ancient items.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "glyphs",
-                        "type": "array",
-                        "optional": false
-                    }, {
-                        "name": "quantity",
-                        "type": "number",
-                        "optional": true
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "get_ores_available_for_processing": {
-                    "description": "Returns a list of ore names that the user has enough of to process for glyphs.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "subsidize_search": {
-                    "description": "Will spend 2 essentia to complete the current glyph search immediately.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "view_excavators": {
-                    "description": "Returns a list of the excavators currently controlled by this ministry.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "abandon_excavator": {
-                    "description": "Close down an existing excavator site.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "excavator_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
-            }
-        },
+
+        Generic:
+            url: '/buildings'
+            methods: [
+                "build"
+                "demolish"
+                "downgrade"
+                "view"
+                "upgrade"
+                "repair"
+            ]
+
+        Archaeology:
+            url: "/archaeology",
+            methods: [
+                "search_for_glyph"
+                "get_glyph_summary"
+                "get_glyphs"
+                "assemble_glyphs"
+                "get_ores_available_for_processing"
+                "subsidize_search"
+                "view_excavators"
+                "abandon_excavator"
+            ]
+
         BlackHoleGenerator: {
-            "SMDVersion": "2.0",
-            "description": "Black Hole Generator",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/blackholegenerator",
-            "services": {
-                "get_actions_for": {
-                    "description": "Provides a list of actions that the BHG can do. Use with generate_singularity.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "target",
-                        "type": "object",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "generate_singularity": {
-                    "description": "Performs action on specified target.",
-                    "parameters": [{
-                        "name": "params",
-                        "type": "object",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "subsidize_cooldown": {
-                    "description": "Will spend 2 essentia to cool down the BHG immediately.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
-            }
+            "services": [
+                "get_actions_for"
+                "generate_singularity"
+                "subsidize_cooldown"
+            ]
         },
+
         Capitol: {
-            "SMDVersion": "2.0",
-            "description": "Capitol",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/capitol",
             "services": {
-                "rename_empire": {
-                    "description": "Spend some essentia to rename your empire.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "name",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
+                "rename_empire"
             }
         },
         Development: {
-            "SMDVersion": "2.0",
-            "description": "Development Ministry",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/development",
-            "services": {
-                "subsidize_one_build": {
-                    "description": "Instantly finish any one building on the build queue.",
-                    "parameters": [{
-                        "name": "args",
-                        "type": "object",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "cancel_build": {
-                    "description": "Cancel any one building on the build queue.",
-                    "parameters": [{
-                        "name": "args",
-                        "type": "object",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "subsidize_build_queue": {
-                    "description": "Allows a player to instantly finish all buildings in their build queue. The cost is returned by the view method.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
+            "services"
+                "cancel_build"
+                "subsidize_build_queue"
             }
         },
+
         DistributionCenter: {
-            "SMDVersion": "2.0",
-            "description": "Distribution Center",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/distributioncenter",
             "services": {
-                "reserve": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "resources",
-                        "type": "array",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "release_reserve": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "get_stored_resources": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
+                "reserve"
+                "release_reserve"
+                "get_stored_resources"
             }
         },
         Embassy: {
-            "SMDVersion": "2.0",
-            "description": "Embassy",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/embassy",
             "services": {
-                "create_alliance": {
-                    "description": "Create a new alliance. Returns the same output as get_alliance_status.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "name",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "dissolve_alliance": {
-                    "description": "Can only be called by alliance leader. Disbands and existing alliance.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "get_alliance_status": {
-                    "description": "Returns everything about an alliance that members should know.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "send_invite": {
-                    "description": "Can only be called by alliance leader. Invite an empire to an alliance.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "invitee_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "message",
-                        "type": "string",
-                        "optional": true
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "withdraw_invite": {
-                    "description": "Can only be called by alliance leader. Delete an invitation.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "invite_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "message",
-                        "type": "string",
-                        "optional": true
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "accept_invite": {
-                    "description": "Accept an invitation. Returns the same output as get_alliance_status.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "invite_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "message",
-                        "type": "string",
-                        "optional": true
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "reject_invite": {
-                    "description": "Delete an invitation.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "invite_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "message",
-                        "type": "string",
-                        "optional": true
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "get_pending_invites": {
-                    "description": "Can only be called by the alliance leader. Returns a list of invitations that have been sent out, but that have not been accepted, rejected, or withdrawn.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "get_my_invites": {
-                    "description": "Returns a list of invitations that have been offered to this empire.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "assign_alliance_leader": {
-                    "description": "Sets a new empire to lead the alliance. Can only be called by the current alliance leader. Returns the same thing as get_alliance_status.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "new_leader_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "update_alliance": {
-                    "description": "Updates the properties of an alliance. Returns the same thing as get_alliance_status. Can only be called by the alliance leader.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "params",
-                        "type": "object",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "leave_alliance": {
-                    "description": "A member of an alliance revokes their own membership.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "message",
-                        "type": "string",
-                        "optional": true
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "expel_member": {
-                    "description": "Forcibly removes a member from an alliance. Returns the same thing as get_alliance_status. Can only be called by the alliance leader.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "empire_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "message",
-                        "type": "string",
-                        "optional": true
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "view_stash": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "donate_to_stash": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "donation",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "exchange_with_stash": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "donation",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "request",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
+                "create_alliance"
+                "dissolve_alliance"
+                "get_alliance_status"
+                "send_invite"
+                "withdraw_invite"
+                "accept_invite"
+                "reject_invite"
+                "get_pending_invites"
+                "get_my_invites"
+                "assign_alliance_leader"
+                "update_alliance"
+                "leave_alliance"
+                "expel_member"
+                "view_stash"
+                "donate_to_stash"
+                "exchange_with_stash"
             }
         },
+
         EnergyReserve: {
-            "SMDVersion": "2.0",
-            "description": "Energy Reserve",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/energyreserve",
             "services": {
-                "dump": {
-                    "description": "Converts energy into waste",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "amount",
-                        "type": "number",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
+                "dump"
                 }
             }
         },
+
         Entertainment: {
-            "SMDVersion": "2.0",
-            "description": "Entertainment",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/entertainment",
             "services": {
-                "get_lottery_voting_options": {
-                    "description": "This is the starting point to a voting lottery system. The user can vote on a site once and only once per day and each vote enters him/her into a lottery. At the end of the day a lottery ticket will be drawn, and a winner will be chosen to receive 10 essentia. Every vote is equal, but the more votes you have the greater your odds of winning.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "duck_quack": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "string"
-                    }
-                }
+                "get_lottery_voting_options"
+                "duck_quack"
             }
         },
+
         Exchanger: {
-            "SMDVersion": "2.0",
-            "description": "Waste Exchanger",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/wasteexchanger",
             "services": {
-                "recycle": {
-                    "description": "Converts waste into water, ore, and energy. You can choose which amounts of each you want, so long as their total does not go over the amount of waste you have on hand. For each unit of waste converted, the recycling center will take 1 second to complete the recycling process. However, the amount of time is reduced a bit by the level of the Waste Exchanger.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "water",
-                        "type": "number",
-                        "optional": false
-                    }, {
-                        "name": "ore",
-                        "type": "number",
-                        "optional": false
-                    }, {
-                        "name": "energy",
-                        "type": "number",
-                        "optional": false
-                    }, {
-                        "name": "use_essentia",
-                        "type": "number",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "subsidize_recycling": {
-                    "description": "Will spend 2 essentia to complete the current recycling job immediately.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
+                "recycle"
+                "subsidize_recycling"
             }
         },
+
         FoodReserve: {
-            "SMDVersion": "2.0",
-            "description": "Food Reserve",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/foodreserve",
             "services": {
-                "dump": {
-                    "description": "Converts food into waste",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "type",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "amount",
-                        "type": "number",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
+                "dump"
             }
         },
+
         GeneticsLab: {
-            "SMDVersion": "2.0",
-            "description": "Genetics Lab",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/geneticslab",
-            "services": {
-                "prepare_experiment": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "run_experiment": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "spy_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "affinity",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "rename_species": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "params",
-                        "type": "object",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
+            "services"
+                "run_experiment"
+                "rename_species"
             }
         },
+
         Intelligence: {
-            "SMDVersion": "2.0",
-            "description": "Intelligence",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/intelligence",
             "services": {
-                "train_spy": {
-                    "description": "Allows you to train more spies",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "quantity",
-                        "type": "number",
-                        "optional": true
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "view_spies": {
-                    "description": "Returns the list of spies you have on your roster.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "page_number",
-                        "type": "number",
-                        "optional": true
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "burn_spy": {
-                    "description": "Allows you to eliminate one of your spies from your payroll.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "spy_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "assign_spy": {
-                    "description": "Set a spy on a new task.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "spy_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "assignment",
-                        "type": "string",
-                        "optional": false
-                    }]
-                },
-                "name_spy": {
-                    "description": "Set the name of the spy",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "spy_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "name",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "subsidize_training": {
-                    "description": "Will spend 1 essentia per spy to complete the training of all spies immediately.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
+                "train_spy"
+                "view_spies"
+                "burn_spy"
+                "assign_spy"
+                "name_spy"
+                "subsidize_training"
             }
         },
-        IntelTraining: {
-            "SMDVersion": "2.0",
-            "description": "Intel Training",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
-            "target": "/inteltraining",
-            "services": {
-                "train_spy": {
-                    "description": "Allows you to train an idle spy in the ways of intelligence gathering.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "spy_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
-            }
-        },
+
         LibraryOfJith: {
-            "SMDVersion": "2.0",
-            "description": "Library Of Jith",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/libraryofjith",
             "services": {
-                "research_species": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "empire_id",
-                        "type": "string",
-                        "optional": false
-                    }]
-                }
+                "research_species"
             }
         },
-        MayhemTraining: {
-            "SMDVersion": "2.0",
-            "description": "Mayhem Training",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
-            "target": "/mayhemtraining",
-            "services": {
-                "train_spy": {
-                    "description": "Allows you to train an idle spy in the art of destruction.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "spy_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
-            }
-        },
+
         MercenariesGuild: {
-            "SMDVersion": "2.0",
-            "description": "Mercenaries Guild",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/mercenariesguild",
             "services": {
-                "add_to_market": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "spy_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "ask",
-                        "type": "number",
-                        "optional": false
-                    }, {
-                        "name": "ship_id",
-                        "type": "string",
-                        "optional": true
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "get_spies": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "withdraw_from_market": {
-                    "description": "Remove a trade that you have offered and collect the items up for trade.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "trade_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "accept_from_market": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "trade_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "view_market": {
-                    "description": "Displays a list of trades available at the present time.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "page_number",
-                        "type": "number",
-                        "optional": true
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "view_my_market": {
-                    "description": "Displays a list of trades the current user has posted.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "page_number",
-                        "type": "number",
-                        "optional": true
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "get_trade_ships": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "target_body_id",
-                        "type": "string",
-                        "optional": true
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "report_abuse": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "trade_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
+                "add_to_market"
+                "get_spies"
+                "withdraw_from_market"
+                "accept_from_market"
+                "view_market"
+                "view_my_market"
+                "get_trade_ships"
+                "report_abuse"
             }
         },
+
         Mining: {
-            "SMDVersion": "2.0",
-            "description": "Mining Ministry",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/miningministry",
             "services": {
-                "view_platforms": {
-                    "description": "Returns a list of the mining platforms currently controlled by this ministry.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "view_ships": {
-                    "description": "Shows you the ships that are working in the mining fleet, and available to work in the mining fleet.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "add_cargo_ship_to_fleet": {
-                    "description": "Take a cargo ship from the space port and add it to the mining fleet.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "ship_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "remove_cargo_ship_from_fleet": {
-                    "description": "Tell one of the cargo ships in the mining fleet to come home and park at the space port.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "ship_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "abandon_platform": {
-                    "description": "Close down an existing mining platform.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "platform_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
+                "view_platforms"
+                "view_ships"
+                "add_cargo_ship_to_fleet"
+                "remove_cargo_ship_from_fleet"
+                "abandon_platform"
             }
         },
+
         MissionCommand: {
-            "SMDVersion": "2.0",
-            "description": "Mission Command",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/missioncommand",
             "services": {
-                "get_missions": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "complete_mission": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "mission_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                },
-                "skip_mission": {
-                    "description": "",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "mission_id",
-                        "type": "string",
-                        "optional": false
-                    }],
-                    "returns": {
-                        "type": "object"
-                    }
-                }
+                "get_missions"
+                "complete_mission"
+                "skip_mission"
             }
         },
+
         Network19: {
-            "SMDVersion": "2.0",
-            "description": "Network19",
-            "envelope": "JSON-RPC-2.0",
-            "transport": "POST",
             "target": "/network19",
             "services": {
-                "restrict_coverage": {
-                    "description": "You can enact or disband a policy to restrict what Network 19 covers about your planet. Restricting coverage does make your citizens unhappy.",
-                    "parameters": [{
-                        "name": "session_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "building_id",
-                        "type": "string",
-                        "optional": false
-                    }, {
-                        "name": "onoff",
-                        "type": "number",
-                        "optional": false
-                    }]
-                }
-            },
-            "view_news": {
-                "description": "Get the top 100 headlines from your region of space. It also returns a list of RSS feeds that can be used outside the game to see the same news in a given region.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
+                "restrict_coverage"
+                "view_news"
             }
         }
     },
+
     Observatory: {
-        "SMDVersion": "2.0",
-        "description": "Observatory",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/observatory",
         "services": {
-            "abandon_probe": {
-                "description": "The probe is deactivated, and allowed to burn up in the star.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "star_id",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "abandon_all_probes": {
-                "description": "All probes are deactivated, and allowed to burn up in the stars.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_probed_stars": {
-                "description": "Returns a list of the stars that have been probed by this planet.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "page_number",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
+            "abandon_probe"
+            "abandon_all_probes"
+            "get_probed_stars"
         }
     },
-    OracleOfAnid: {
-        "SMDVersion": "2.0",
-        "description": "Oracle of Anid",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
-        "target": "/oracleofanid",
-        "services": {
-            "get_star": {
-                "description": "Retrieves a single star",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "star_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
-        }
-    },
+
+
     OreStorage: {
-        "SMDVersion": "2.0",
-        "description": "Ore Storage",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/orestorage",
         "services": {
-            "dump": {
-                "description": "Converts ore into waste",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "type",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "amount",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
+            "dump"
         }
     },
+
     Park: {
-        "SMDVersion": "2.0",
-        "description": "Park",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/park",
         "services": {
-            "throw_a_party": {
-                "description": "Initiates a party. It will cost you 10,000 food, and the party will last for a day. For 10,000 food you'll get 3,000 happiness. For each type of food available in quantities of 500 or more, you'll get a multiplier added to that. So if you have 4 types of food, you'll get 12,000 happiness. In addition, you get a 0.3 to your multiplier for each level of park that you have. Therefore a level 10 park is the same as adding three extra foods to your party!",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "subsidize_party": {
-                "description": "Will spend 2 essentia to complete the current party immediately.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
+            "throw_a_party"
+            "subsidize_party"
         }
     },
+
     PlanetaryCommand: {
-        "SMDVersion": "2.0",
-        "description": "Planetary Command",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/planetarycommand",
         "services": {
-            "view_plans": {
-                "description": "Returns a list of all the plans you've collected through various means.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "view_incoming_supply_chains": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
+            "view_plans"
+            "view_incoming_supply_chains"
         }
     },
-    PoliticsTraining: {
-        "SMDVersion": "2.0",
-        "description": "Politics Training",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
-        "target": "/politicstraining",
-        "services": {
-            "train_spy": {
-                "description": "The Politics Training Facility is where you train your spies in the dark art of social engineering.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "spy_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
-        }
-    },
+
+
     Recycler: {
-        "SMDVersion": "2.0",
-        "description": "Waste Recycler",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/wasterecycling",
         "services": {
-            "recycle": {
-                "description": "Converts waste into water, ore, and energy. You can choose which amounts of each you want, so long as their total does not go over the amount of waste you have on hand. For each unit of waste converted, the recycling center will take 1 second to complete the recycling process. However, the amount of time is reduced a bit by the level of the Recycling Center.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "water",
-                    "type": "number",
-                    "optional": false
-                }, {
-                    "name": "ore",
-                    "type": "number",
-                    "optional": false
-                }, {
-                    "name": "energy",
-                    "type": "number",
-                    "optional": false
-                }, {
-                    "name": "use_essentia",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "subsidize_recycling": {
-                "description": "Will spend 2 essentia to complete the current recycling job immediately.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
+            "recycle"
+            "subsidize_recycling"
         }
     },
+
     Security: {
-        "SMDVersion": "2.0",
-        "description": "Security",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/security",
         "services": {
-            "view_prisoners": {
-                "description": "Displays a list of the spies that have been captured.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "page_number",
-                    "type": "number",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "execute_prisoner": {
-                "description": "You may choose to execute a prisoner rather than letting him serve his sentence and be released. However, that will cost you 10,000 times the prisoner's level in happiness from your planet. So a level 11 prisoner would cost you 110,000 happiness.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "prisoner_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "release_prisoner": {
-                "description": "You may choose to release a prisoner by calling this method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "prisoner_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "view_foreign_spies": {
-                "description": "Displays a list of the spies that are on your planet, and have a level lower than your security ministry.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "page_number",
-                    "type": "number",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
+            "view_prisoners"
+            "execute_prisoner"
+            "release_prisoner"
+            "view_foreign_spies"
         }
     },
+
     Shipyard: {
-        "SMDVersion": "2.0",
-        "description": "Shipyard",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/shipyard",
         "services": {
-            "view_build_queue": {
-                "description": "Retrieves what is already being built at this shipyard.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "page_number",
-                    "type": "number",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "subsidize_build_queue": {
-                "description": "Will spend 1 essentia per ship to complete the current build queue immediately.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "subsidize_ship": {
-                "description": "Will spend 1 essentia to build the ship immediately.",
-                "parameters": [{
-                    "name": "args",
-                    "type": "object",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_buildable": {
-                "description": "Returns a list of buildable ships and their costs, and if they're not buildable, gives a reason why not in the form of an exception.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "build_ship": {
-                "description": "Adds a ship to the build queue.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "type",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "quantity",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
+            "view_build_queue"
+            "subsidize_build_queue"
+            "subsidize_ship"
+            "get_buildable"
+            "build_ship"
         }
     },
+
     SpacePort: {
-        "SMDVersion": "2.0",
-        "description": "SpacePort",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/spaceport",
         "services": {
-            "prepare_fetch_spies": {
-                "description": "Gathers the information needed to call the fetch_spies method",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "on_body_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "to_body_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "fetch_spies": {
-                "description": "Sends a specified ship to fetch specified spies from on_body_id, and bring them back to to_body_id. See also prepare_fetch_spies",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "on_body_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "to_body_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "ship_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "spy_ids",
-                    "type": "array",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "prepare_send_spies": {
-                "description": "Gathers the information needed to call the send_spies method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "on_body_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "to_body_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "send_spies": {
-                "description": "Sends one or more of spies to a planet using a selected ship. See also prepare_send_spies.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "on_body_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "to_body_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "ship_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "spy_ids",
-                    "type": "array",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_ships_for": {
-                "description": "Provides a list of incoming ships and ships that are available to send to a specific target. Use with send_ship.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "from_body_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "target",
-                    "type": "object",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "name_ship": {
-                "description": "Set the name of a ship.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "ship_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "name",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "recall_ship": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "ship_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "recall_all": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "scuttle_ship": {
-                "description": "Destroy a ship that you no longer need. It must be docked to scuttle it.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "ship_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "send_fleet": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "ship_ids",
-                    "type": "array",
-                    "optional": false
-                }, {
-                    "name": "target",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "set_speed",
-                    "type": "number",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "send_ship": {
-                "description": "Sends a ship to a specified body or star. Use with get_ships_for.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "ship_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "target",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "view_all_ships": {
-                "description": "Returns a list of all ships",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "paging",
-                    "type": "object",
-                    "optional": true
-                }, {
-                    "name": "filter",
-                    "type": "object",
-                    "optional": true
-                }, {
-                    "name": "sort",
-                    "type": "string",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "view_foreign_ships": {
-                "description": "Shows you all the foreign ships that are incoming. However, the list is filtered by the stealth of the ship vs the level of the SpacePort.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "page_number",
-                    "type": "number",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "view_ships_travelling": {
-                "description": "Returns a list of the ships that are travelling to or from this planet. NOTE: All inbound/outbound ships are shown regardless of which space port they will eventually land at.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "page_number",
-                    "type": "number",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "view_ships_orbiting": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "page_number",
-                    "type": "number",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "view_battle_logs": {
-                "description": "Shows you the battle logs for your empire with the most recent action listed first. This data will be cleaned out every seven days.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "page_number",
-                    "type": "number",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
+            "prepare_fetch_spies"
+            "fetch_spies"
+            "prepare_send_spies"
+            "send_spies"
+            "get_ships_for"
+            "name_ship"
+            "recall_ship"
+            "recall_all"
+            "scuttle_ship"
+            "send_fleet"
+            "send_ship"
+            "view_all_ships"
+            "view_foreign_ships"
+            "view_ships_travelling"
+            "view_ships_orbiting"
+            "view_battle_logs"
         }
     },
+
     SpaceStationLab: {
-        "SMDVersion": "2.0",
-        "description": "Space Station Lab",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/ssla",
         "services": {
-            "make_plan": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "type",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "level",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "subsidize_plan": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
+            "make_plan"
+            "subsidize_plan"
         }
     },
+
     SubspaceSupplyDepot: {
-        "SMDVersion": "2.0",
-        "description": "Subspace Supply Depot",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/subspacesupplydepot",
         "services": {
-            "transmit_food": {
-                "description": "Convert 3600 seconds into 3600 food.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "transmit_energy": {
-                "description": "Convert 3600 seconds into 3600 energy.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "transmit_ore": {
-                "description": "Convert 3600 seconds into 3600 ore.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "transmit_water": {
-                "description": "Convert 3600 seconds into 3600 water.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "complete_build_queue": {
-                "description": "Trade seconds for build queue time.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
+            "transmit_food"
+            "transmit_energy"
+            "transmit_ore"
+            "transmit_water"
+            "complete_build_queue"
         }
     },
+
     TempleOfTheDrajilites: {
-        "SMDVersion": "2.0",
-        "description": "Temple Of The Drajilites",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/templeofthedrajilites",
         "services": {
-            "list_planets": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "star_id",
-                    "type": "string",
-                    "optional": true
-                }]
-            },
-            "view_planet": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "planet_id",
-                    "type": "string",
-                    "optional": false
-                }]
-            }
+            "list_planets"
+            "view_planet"
         }
     },
-    TheftTraining: {
-        "SMDVersion": "2.0",
-        "description": "Theft Training",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
-        "target": "/thefttraining",
-        "services": {
-            "train_spy": {
-                "description": "The Theft Training Facility is where you train your spies in the art of appropriation.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "spy_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
-        }
-    },
+
     ThemePark: {
-        "SMDVersion": "2.0",
-        "description": "Theme Park",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/themepark",
         "services": {
-            "operate": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
+            "operate"
         }
     },
+
     TheDillonForge: {
-        "SMDVersion": "2.0",
-        "description": "The Dillon Forge",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/thedillonforge",
         "services": {
-            "make_plan": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "plan_class",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "level",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "split_plan": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "plan_class",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "level",
-                    "type": "number",
-                    "optional": false
-                }, {
-                    "name": "extra_build_level",
-                    "type": "number",
-                    "optional": false
-                }, {
-                    "name": "quantity",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "subsidize": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
+            "make_plan"
+            "split_plan"
+            "subsidize"
         }
     },
+
     Trade: {
-        "SMDVersion": "2.0",
-        "description": "Trade",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/trade",
         "services": {
-            "add_to_market": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "offer",
-                    "type": "object",
-                    "optional": false
-                }, {
-                    "name": "ask",
-                    "type": "number",
-                    "optional": false
-                }, {
-                    "name": "options",
-                    "type": "object",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_ship_summary": {
-                "description": "Returns a list of ships that may be traded. Used with the add_trade method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_ships": {
-                "description": "Returns a list of ships that may be traded. Used with the add_trade method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_prisoners": {
-                "description": "Returns a list of prisoners that may be traded. Used with the add_trade method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_plan_summary": {
-                "description": "Returns a list of plans that may be traded. Used with the add_trade method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_plans": {
-                "description": "Returns a list of plans that may be traded. Used with the add_trade method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_glyph_summary": {
-                "description": "Returns a list of glyphs that may be traded. Used with the add_trade method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_glyphs": {
-                "description": "Returns a list of glyphs that may be traded. Used with the add_trade method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "withdraw_from_market": {
-                "description": "Remove a trade that you have offered and collect the items up for trade.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "trade_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "accept_from_market": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "trade_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "view_market": {
-                "description": "Displays a list of trades available at the present time.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "page_number",
-                    "type": "number",
-                    "optional": true
-                }, {
-                    "name": "filter",
-                    "type": "string",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "view_my_market": {
-                "description": "Displays a list of trades the current user has posted.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "page_number",
-                    "type": "number",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_trade_ships": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "target_body_id",
-                    "type": "string",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_waste_ships": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_supply_ships": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "view_supply_chains": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "view_waste_chains": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "create_supply_chain": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "target_id",
-                    "type": "number",
-                    "optional": false
-                }, {
-                    "name": "resource_type",
-                    "type": "number",
-                    "optional": false
-                }, {
-                    "name": "resource_hour",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "delete_supply_chain": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "supply_chain_id",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "update_supply_chain": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "supply_chain_id",
-                    "type": "number",
-                    "optional": false
-                }, {
-                    "name": "resource_type",
-                    "type": "number",
-                    "optional": false
-                }, {
-                    "name": "resource_hour",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "update_waste_chain": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "waste_chain_id",
-                    "type": "number",
-                    "optional": false
-                }, {
-                    "name": "waste_hour",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "add_supply_ship_to_fleet": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "ship_id",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "add_waste_ship_to_fleet": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "ship_id",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "remove_supply_ship_from_fleet": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "ship_id",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "remove_waste_ship_from_fleet": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "ship_id",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_stored_resources": {
-                "description": "Returns a list of the resources you have stored to make it easier to identify what you want to trade.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "push_items": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "target_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "items",
-                    "type": "object",
-                    "optional": false
-                }, {
-                    "name": "options",
-                    "type": "object",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "report_abuse": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "trade_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
+            "add_to_market"
+            "get_ship_summary"
+            "get_ships"
+            "get_prisoners"
+            "get_plan_summary"
+            "get_plans"
+            "get_glyph_summary"
+            "get_glyphs"
+            "withdraw_from_market"
+            "accept_from_market"
+            "view_market"
+            "view_my_market"
+            "get_trade_ships"
+            "get_waste_ships"
+            "get_supply_ships"
+            "view_supply_chains"
+            "view_waste_chains"
+            "create_supply_chain"
+            "delete_supply_chain"
+            "update_supply_chain"
+            "update_waste_chain"
+            "add_supply_ship_to_fleet"
+            "add_waste_ship_to_fleet"
+            "remove_supply_ship_from_fleet"
+            "remove_waste_ship_from_fleet"
+            "get_stored_resources"
+            "push_items"
+            "report_abuse"
         }
     },
+
     Transporter: {
-        "SMDVersion": "2.0",
-        "description": "Transporter",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/transporter",
         "services": {
-            "add_to_market": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "offer",
-                    "type": "object",
-                    "optional": false
-                }, {
-                    "name": "ask",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_ship_summary": {
-                "description": "Returns a list of ships that may be traded. Used with the add_trade method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_ships": {
-                "description": "Returns a list of ships that may be traded. Used with the add_trade method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_prisoners": {
-                "description": "Returns a list of prisoners that may be traded. Used with the add_trade method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_plan_summary": {
-                "description": "Returns a list of plans that may be traded. Used with the add_trade method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_plans": {
-                "description": "Returns a list of plans that may be traded. Used with the add_trade method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_glyph_summary": {
-                "description": "Returns a list of glyphs that may be traded. Used with the add_trade method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_glyphs": {
-                "description": "Returns a list of glyphs that may be traded. Used with the add_trade method.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "withdraw_from_market": {
-                "description": "Remove a trade that you have offered and collect the items up for trade.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "trade_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "accept_from_market": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "trade_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "view_market": {
-                "description": "Displays a list of trades available at the present time.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "page_number",
-                    "type": "number",
-                    "optional": true
-                }, {
-                    "name": "filter",
-                    "type": "string",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "view_my_market": {
-                "description": "Displays a list of trades the current user has posted.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "page_number",
-                    "type": "number",
-                    "optional": true
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "get_stored_resources": {
-                "description": "Returns a list of the resources you have stored to make it easier to identify what you want to trade.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "push_items": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "target_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "items",
-                    "type": "object",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "trade_one_for_one": {
-                "description": "Lacuna Expanse Corp will do one for one trades of any resource in exchange for 3 essentia.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "have",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "want",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "quantity",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            },
-            "report_abuse": {
-                "description": "",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "trade_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
+            "add_to_market"
+            "get_ship_summary"
+            "get_ships"
+            "get_prisoners"
+            "get_plan_summary"
+            "get_plans"
+            "get_glyph_summary"
+            "get_glyphs"
+            "withdraw_from_market"
+            "accept_from_market"
+            "view_market"
+            "view_my_market"
+            "get_stored_resources"
+            "push_items"
+            "trade_one_for_one"
+            "report_abuse"
         }
     },
+
     WaterStorage: {
-        "SMDVersion": "2.0",
-        "description": "Water Storage",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
         "target": "/waterstorage",
         "services": {
-            "dump": {
-                "description": "Converts water into waste",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "building_id",
-                    "type": "string",
-                    "optional": false
-                }, {
-                    "name": "amount",
-                    "type": "number",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
+            "dump"
         }
     },
-    Chat: {
-        "SMDVersion": "2.0",
-        "description": "SMD service demonstration",
-        "envelope": "JSON-RPC-2.0",
-        "transport": "POST",
-        "target": "/chat/rpc",
-        "services": {
-            "get_commands": {
-                "description": "Get chat login data.",
-                "parameters": [{
-                    "name": "session_id",
-                    "type": "string",
-                    "optional": false
-                }],
-                "returns": {
-                    "type": "object"
-                }
-            }
-        }
-    },
+
     Empire: {
         "SMDVersion": "2.0",
         "description": "SMD service demonstration",
