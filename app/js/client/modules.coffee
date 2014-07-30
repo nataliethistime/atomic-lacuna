@@ -9,7 +9,7 @@
 
 module.exports =
 
-    alliance:
+    Alliance:
         url: '/alliance'
         path: 'Alliance'
         methods: [
@@ -17,7 +17,7 @@ module.exports =
             'view_profile'
         ]
 
-    body:
+    Body:
         url: '/body'
         path: 'Body'
         methods: [
