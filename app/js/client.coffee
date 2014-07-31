@@ -6,8 +6,8 @@
 modules = require 'js/client/modules'
 util = require 'js/util'
 
-request = require 'superagent'
-{resolve} = require 'url'
+http = require 'http'
+url = require 'url'
 
 
 class Client
@@ -18,7 +18,6 @@ class Client
     ###
 
     send: (params=[]) ->
-        console.log @
 
         if "#{@module}/#{@method}" isnt 'empire/login'
 
@@ -29,34 +28,35 @@ class Client
             else if _.isArray params
                 params = [@sessionId].concat params
 
-        # Define the data that'll get sent to the server.
+        # This is the jsonrpc 2.0 data that'll get sent to the server.
         data =
             jsonrpc: '2.0'
             id: 1
             method: @method
             params: params
 
-        # Also setup the url for all this to be sent to.
-        sendUrl = resolve YAHOO.lacuna.Game.RPCBase, @url
+        # These are the options passed into `http.request`
+        requestOptions =
+            method: 'POST'
+            port: 80
+            headers:
+                'Content-Type': 'application/json'
 
-        console.log sendUrl
-        console.log data
+        # Call `url.parse` and put it into the request options
+        sendUrl = url.resolve YAHOO.lacuna.Game.RPCBase, @url
+        _.assign requestOptions, url.parse sendUrl
 
         # Now that we've sorted all that `params` stuff out. Let's send the request!
-        request
-            .post sendUrl
-            .send data
-            .set 'Content-Type', 'application/json'
-            .end (res) ->
-                if res.ok
-                    console.log 'ok'
-                    console.log res.body
-                else
-                    console.log 'error'
-                    console.log res
-                    console.log res.body
-                    console.log res.error.message
+        req = http.request requestOptions, (res) ->
+            # Success!
+            console.log res
 
+        req.on 'error', (err) ->
+            console.log err
+
+        # Write in the data that needs to be sent off and send the request.
+        req.write JSON.stringify data
+        req.end()
 
 
 # Initialize all of the methods that belong in the `Client` using the `modules` object.
