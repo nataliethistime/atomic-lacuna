@@ -6,7 +6,7 @@
 modules = require 'js/client/modules'
 util = require 'js/util'
 
-http = require 'http'
+http = require 'https'
 url = require 'url'
 
 
