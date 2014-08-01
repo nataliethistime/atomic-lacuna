@@ -563,11 +563,67 @@ window.files = [
   "originalPath": "app/js/client.coffee",
   "name": "client.coffee.html",
   "lang": "coffeescript",
+  "title": "Client",
   "toc": [
+    {
+      "level": 1,
+      "slug": "client",
+      "title": "Client"
+    },
+    {
+      "level": 2,
+      "slug": "session",
+      "title": "Session"
+    },
+    {
+      "level": 2,
+      "slug": "client",
+      "title": "Client"
+    },
+    {
+      "level": 2,
+      "slug": "client-prepareparams",
+      "title": "Client.prepareParams"
+    },
+    {
+      "level": 2,
+      "slug": "client-preparepostdata",
+      "title": "Client.preparePostData"
+    },
+    {
+      "level": 2,
+      "slug": "client-preparerequestoptions",
+      "title": "Client.prepareRequestOptions"
+    },
     {
       "level": 2,
       "slug": "client-send",
       "title": "Client.send"
+    },
+    {
+      "level": 2,
+      "slug": "client-handlerpcres",
+      "title": "Client.handleRpcRes"
+    },
+    {
+      "level": 2,
+      "slug": "client-handlerpcerr",
+      "title": "Client.handleRpcErr"
+    },
+    {
+      "level": 1,
+      "slug": "client-initialization",
+      "title": "Client Initialization"
+    },
+    {
+      "level": 2,
+      "slug": "save",
+      "title": "save"
+    },
+    {
+      "level": 2,
+      "slug": "func",
+      "title": "func"
     }
   ]
 },

@@ -1,5 +1,5 @@
 ###
-# Client
+# # Client
 # This is the client Node-based client that should work better and be easier to
 # work with than the included `YUI` client.
 ###
@@ -13,6 +13,13 @@ http = require 'https'
 {parse, resolve} = require 'url'
 
 
+###
+# ## Session
+# This is a static class used to store the session id. We cannot store the session
+# id inside the `Client` class because of the way that the `send` methods are setup.
+# See below...
+###
+
 class Session
 
     get: ->
@@ -22,11 +29,29 @@ class Session
         @sessionId
 
 
+###
+# ## Client
+# This is the class in which all available API methods are defined. When you `require`
+# this module it returns an instance of this class. See the documentation for
+# **Client.send** for some example usages.
+###
+
 class Client
+
+
+    ###
+    # ## Client.prepareParams
+    # Adds the session id to the `params` (wheather it be object or array).
+    #
+    # When `params` is `undefined` it defaults to an empty array. There aren't
+    # any API methods that take an empty object or empty array. So either way, if this
+    # happens, it'll probably throw an error.
+    #
+    # Note: **all** requests excluding `/empire/login()` require a session id.
+    ###
 
     prepareParams: (params) ->
 
-        # Most requests use an array, so this should be fine.
         params ?= []
 
         if "#{@module}/#{@method}" isnt 'empire/login'
@@ -41,12 +66,30 @@ class Client
         else
             params
 
+
+    ###
+    # ## Client.preparePostData
+    # Returns the object that the Lacuna server requires to be sent in. It's basically
+    # a JSON RPC 2.0 request. There's more information about this object at
+    # [Lacuna's HTTP Docs](http://us1.lacunaexpanse.com/api/#HTTP_POST).
+    ###
+
     preparePostData: (params) ->
-    # This is the jsonrpc 2.0 data that'll get sent to the server
         jsonrpc: '2.0'
         id: 1
         method: @method
         params: params
+
+
+    ###
+    # ## Client.prepareRequestOptions
+    # Creates the object which is passed into
+    # [http.request()](http://nodejs.org/docs/latest/api/http.html#http_http_request_options_callback)
+    #
+    # The docs aren't clear about how the `url` is meant to be handled. So, we call
+    # `url.parse` on it, which generates an object that Node can use to send the request.
+    # For some reason we can't just supply a href or something.
+    ###
 
     prepareRequestOptions: (url) ->
         options =
@@ -55,15 +98,20 @@ class Client
             headers:
                 'Content-Type': 'application/json'
 
-        # Call `url.parse` and put it into the request options
         sendUrl = resolve YAHOO.lacuna.Game.RPCBase, url
         _.assign options, parse sendUrl
 
         options
 
+
     ###
     # ## Client.send
-    # Send stuff to the server.
+    # This is the main beast of this class. It takes in an object of parameters
+    # and some callbacks and does all the magic HTTP stuff.
+    #
+    # Below are some examples for using this class to send server requests.
+    #
+    # **TODO: add some examples!!!!**
     ###
 
     send: (options) ->
@@ -72,21 +120,27 @@ class Client
         data = @preparePostData @prepareParams options.params
         requestOptions = @prepareRequestOptions @url
 
-        # This is a debug message but it may as well stay for a while.
         console.log 'Sending ', data.params, 'to', requestOptions.href
 
-        # Now that we've sorted all that `params` stuff out. Let's send the request!
         req = http.request requestOptions, _.partialRight @handleRpcRes, options
-
         req.on 'error', _.partialRight @handleRpcErr, options
-
-        # Write in the data that needs to be sent off.
-        # TODO: this should use either `json2` or `jquery-json` to work properly
-        #   in older browsers.
         req.write JSON.stringify data
-
-        # Start the request.
         req.end()
+
+
+    ###
+    # ## Client.handleRpcRes
+    # This is the method that `Client.send` calls when a request succeeds.
+    # It's given a `res` object which is an instance of Node's
+    # [http.IncomingMessage class](http://nodejs.org/docs/latest/api/http.html#http_http_incomingmessage).
+    # The `options` object is all of the options passed to the original `Client.send` call.
+    #
+    # This method handles Node's chunking of the response string. It also parses
+    # the resulting string into JSON and tries to call the correct callback.
+    #
+    # When the Lacuna server returns a `result` block, the request has succeeded.
+    # But when there's an `error` block, there's an error that needs to be looked after.
+    ###
 
     handleRpcRes: (res, options) ->
         res.setEncoding 'utf8'
@@ -97,7 +151,6 @@ class Client
         res.on 'end', ->
             data = $.parseJSON str
 
-            # The server returns a `result` block
             if data.result and options.success
                 options.success.call data.scope, data.result
             else if data.error and options.error
@@ -106,21 +159,51 @@ class Client
                 console.log data, options
                 throw new Error 'Unrecognized options passed into Client.send()'
 
+
+    ###
+    # ## Client.handleRpcErr
+    # This will be a HTTP error (404, for example) not an in-game error.
+    # As such, I don't really have anything smart to do here.
+    ###
+
     handleRpcErr: (err, options) ->
-        # This will be a HTTP error (404, for example) not an in-game error.
-        # As such, I don't really have anything smart to do here.
         console.log 'HTTP error...'
         console.log err, options
 
 
-# Initialize all of the methods that belong in the `Client` using the `modules` object.
-# TODO: document this properly!
+###
+# # Client Initialization
+# Initialize all of the methods that belong in the `Client` using the `modules`
+# object. This is done here mostly because I'm lazy. So, it it matters so much,
+# please *do* find a better place for this.
+###
+
+
+# Note: this `methods` object is used to store the methods during initialization
+# so that when each function is bound to the `Client`'s `prototype`, it doesn't
+# include all the other methods. This reduces the object down quite a lot.
 methods = {}
+
+
+###
+# ## save
+# Loops through each of the method names in `methodList` and binds a clone of the
+# `Client`'s prototype, the `url` and the `method` to a new function. This new
+# function is put into the above `methods` object and taken care of later.
+###
 
 save = (path, url, methodList) ->
     _.each methodList, (method) ->
         sendFunc = _.bind Client::send, _.assign _.clone(Client::), {url, method}
         util.deepSet(methods, "#{path}.#{method}", sendFunc)
+
+
+###
+# ## func
+# This is the recursive function which tries to loop through the entire object.
+# On each iteration, if the current object has a `url`, `methods` and `path`,
+# then it's sent off to be put into the collection of callable server methods.
+###
 
 func = (value, key) ->
 
@@ -131,11 +214,14 @@ func = (value, key) ->
         _.each value, func
 
 
+# Kick off the recursion and save the resulting object into the `Client`'s `prototype`.
 _.each modules, func
 _.assign(Client::, methods)
 
 # Test the stuffs
-Client::Empire.get_status
+# Note: this is test code and doesn't need to be documented. It will be removed later.
+thing = new Client()
+thing.Empire.get_status
     params: []
     scope: @
     success: (result) ->
