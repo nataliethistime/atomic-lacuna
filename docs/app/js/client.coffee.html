@@ -50,16 +50,16 @@ url = <span class="hljs-built_in">require</span> <span class="hljs-string">'url'
         </div>
       
       
-        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">send</span>: <span class="hljs-function"><span class="hljs-params">(params=[])</span> -&gt;</span>
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">send</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
 
         <span class="hljs-keyword">if</span> <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-property">@module</span>}</span>/<span class="hljs-subst">#{<span class="hljs-property">@method</span>}</span>"</span> <span class="hljs-keyword">isnt</span> <span class="hljs-string">'empire/login'</span>
 
             <span class="hljs-property">@sessionId</span> ?= YAHOO.lacuna.Game.GetSession()
 
-            <span class="hljs-keyword">if</span> _.isObject params
-                params[<span class="hljs-string">'session_id'</span>] = <span class="hljs-property">@sessionId</span>
-            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> _.isArray params
-                params = [<span class="hljs-property">@sessionId</span>].concat params
+            <span class="hljs-keyword">if</span> _.isArray options.params
+                options.params = [<span class="hljs-property">@sessionId</span>].concat options.params
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> _.isObject options.params
+                options.params[<span class="hljs-string">'session_id'</span>] = <span class="hljs-property">@sessionId</span>
 </pre></div>
       
       </div>
@@ -76,7 +76,7 @@ url = <span class="hljs-built_in">require</span> <span class="hljs-string">'url'
             <span class="hljs-attribute">jsonrpc</span>: <span class="hljs-string">'2.0'</span>
             <span class="hljs-attribute">id</span>: <span class="hljs-number">1</span>
             <span class="hljs-attribute">method</span>: <span class="hljs-property">@method</span>
-            <span class="hljs-attribute">params</span>: params
+            <span class="hljs-attribute">params</span>: options.params || []
 </pre></div>
       
       </div>
@@ -108,6 +108,8 @@ url = <span class="hljs-built_in">require</span> <span class="hljs-string">'url'
       
         <div class="code"><pre class="wrapper">        sendUrl = url.resolve YAHOO.lacuna.Game.RPCBase, <span class="hljs-property">@url</span>
         _.assign requestOptions, url.parse sendUrl
+
+        <span class="hljs-built_in">console</span>.log <span class="hljs-string">'Sending '</span>, data.params, <span class="hljs-string">'to'</span>, requestOptions.href
 </pre></div>
       
       </div>
@@ -120,21 +122,37 @@ url = <span class="hljs-built_in">require</span> <span class="hljs-string">'url'
         </div>
       
       
-        <div class="code"><pre class="wrapper">        req = http.request requestOptions, <span class="hljs-function"><span class="hljs-params">(res)</span> -&gt;</span></pre></div>
+        <div class="code"><pre class="wrapper">        req = http.request requestOptions, <span class="hljs-function"><span class="hljs-params">(res)</span> -&gt;</span>
+            res.setEncoding <span class="hljs-string">'utf8'</span>
+            str = <span class="hljs-string">''</span>
+            res.<span class="hljs-literal">on</span> <span class="hljs-string">'data'</span>, <span class="hljs-function"><span class="hljs-params">(chunk)</span> -&gt;</span>
+                str += chunk
+
+            res.<span class="hljs-literal">on</span> <span class="hljs-string">'end'</span>,<span class="hljs-function"> -&gt;</span>
+                data = $.parseJSON str
+
+                <span class="hljs-keyword">if</span> data.result <span class="hljs-keyword">and</span> options.success
+                    options.success.call data.scope, data.result
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> data.error <span class="hljs-keyword">and</span> options.error
+                    options.error.call data.scope, data.error
+                <span class="hljs-keyword">else</span>
+                    <span class="hljs-built_in">console</span>.log data, options
+                    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Error <span class="hljs-string">'Unknown options passed into Client.send()'</span>
+
+        req.<span class="hljs-literal">on</span> <span class="hljs-string">'error'</span>, <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span></pre></div>
       
       </div>
     
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><p>Success!</p>
+          <div class="wrapper"><p>This will be a HTTP error (404, for example) not an in-game error.
+As such, I don&#39;t really have anything smart to do here.</p>
 </div>
         </div>
       
       
-        <div class="code"><pre class="wrapper">            <span class="hljs-built_in">console</span>.log res
-
-        req.<span class="hljs-literal">on</span> <span class="hljs-string">'error'</span>, <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
+        <div class="code"><pre class="wrapper">            <span class="hljs-built_in">console</span>.log <span class="hljs-string">'HTTP error...'</span>
             <span class="hljs-built_in">console</span>.log err
 </pre></div>
       
@@ -143,13 +161,27 @@ url = <span class="hljs-built_in">require</span> <span class="hljs-string">'url'
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><p>Write in the data that needs to be sent off and send the request.</p>
+          <div class="wrapper"><p>Write in the data that needs to be sent off.
+TODO: this should use either <code>json2</code> or <code>jquery-json</code> to work properly
+  in older browsers.</p>
 </div>
         </div>
       
       
         <div class="code"><pre class="wrapper">        req.write JSON.stringify data
-        req.end()
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Start the request.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        req.end()
 
 </pre></div>
       
@@ -166,16 +198,15 @@ TODO: document this properly!</p>
       
         <div class="code"><pre class="wrapper">methods = {}
 
-<span class="hljs-function"><span class="hljs-title">save</span> = <span class="hljs-params">(path, url, methodList, <span class="hljs-built_in">module</span>)</span> -&gt;</span>
+<span class="hljs-function"><span class="hljs-title">save</span> = <span class="hljs-params">(path, url, methodList)</span> -&gt;</span>
     _.each methodList, <span class="hljs-function"><span class="hljs-params">(method)</span> -&gt;</span>
-        sendFunc = _.bind <span class="hljs-attribute">Client</span>::send, {url, method, <span class="hljs-built_in">module</span>}
-        fullPath = <span class="hljs-string">"<span class="hljs-subst">#{path}</span>.<span class="hljs-subst">#{method}</span>"</span>
-        util.deepSet(methods, fullPath, sendFunc)
+        sendFunc = _.bind <span class="hljs-attribute">Client</span>::send, {url, method}
+        util.deepSet(methods, <span class="hljs-string">"<span class="hljs-subst">#{path}</span>.<span class="hljs-subst">#{method}</span>"</span>, sendFunc)
 
 <span class="hljs-function"><span class="hljs-title">func</span> = <span class="hljs-params">(value, key)</span> -&gt;</span>
 
     <span class="hljs-keyword">if</span> value.url? <span class="hljs-keyword">and</span> value.methods? <span class="hljs-keyword">and</span> value.path?
-        save(value.path, value.url, value.methods, key)
+        save(value.path, value.url, value.methods)
 
     <span class="hljs-keyword">if</span> _.isObject value
         _.each value, func
@@ -195,7 +226,13 @@ _.assign(<span class="hljs-attribute">Client</span>::, methods)
         </div>
       
       
-        <div class="code"><pre class="wrapper"><span class="hljs-attribute">Client</span>::Empire.get_status()
+        <div class="code"><pre class="wrapper"><span class="hljs-attribute">Client</span>::Empire.get_status
+    <span class="hljs-attribute">params</span>: []
+    <span class="hljs-attribute">scope</span>: @
+    <span class="hljs-attribute">success</span>: <span class="hljs-function"><span class="hljs-params">(result)</span> -&gt;</span>
+        <span class="hljs-built_in">console</span>.log <span class="hljs-string">'success'</span>
+    <span class="hljs-attribute">error</span>: <span class="hljs-function"><span class="hljs-params">(error)</span> -&gt;</span>
+        <span class="hljs-built_in">console</span>.log <span class="hljs-string">'error'</span>
 
 
 <span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = <span class="hljs-keyword">new</span> Client()
