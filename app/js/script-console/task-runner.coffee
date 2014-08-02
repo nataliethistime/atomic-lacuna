@@ -28,7 +28,7 @@ class TaskRunner
 
 
     ###
-    # ##TaskRunner.show
+    # ## TaskRunner.show
     # Show the output dialog.
     ###
 
