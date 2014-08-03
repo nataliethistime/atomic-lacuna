@@ -32,7 +32,22 @@ class PushGlyphs extends Task
     # See the documentation for the `Task` class for what this is.
     ###
     run: ->
-        # TODO
+        # client.Empire.get_status
+        #     params: []
+        #     scope: @
+        #     success: (result) ->
+        #         console.log 'success'
+        #         console.log result
+        #     error: (error) ->
+        #         console.log error
+        #         console.log 'error'
+
+        client.Empire.get_status
+            params: []
+        # .then (err, res) ->
+        #     console.log err, res
+        # .done()
+
 
 
 module.exports = new PushGlyphs()

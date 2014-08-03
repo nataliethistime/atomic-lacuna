@@ -24,7 +24,7 @@ class TaskRunner
         @task.loadOptions()
         @show()
         @task.run()
-        alert "I'm the happiest little crazy there is!"
+        console.log 'Finished running task'
 
 
     ###

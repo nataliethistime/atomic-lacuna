@@ -9,8 +9,11 @@
 modules = require 'js/client/modules'
 util = require 'js/util'
 
-http = require 'https'
-{parse, resolve} = require 'url'
+# Get the right edition of the `request` module.
+request = if window.ATOM_SHELL then require 'request' else require 'browser-request'
+
+{resolve} = require 'url'
+Q = require 'q'
 
 
 ###
@@ -83,25 +86,16 @@ class Client
 
     ###
     # ## Client.prepareRequestOptions
-    # Creates the object which is passed into
-    # [http.request()](http://nodejs.org/docs/latest/api/http.html#http_http_request_options_callback)
+    # Creates the object which is passed into the `request.request` method.
     #
     # The docs aren't clear about how the `url` is meant to be handled. So, we call
     # `url.parse` on it, which generates an object that Node can use to send the request.
     # For some reason we can't just supply a href or something.
     ###
 
-    prepareRequestOptions: (url) ->
-        options =
-            method: 'POST'
-            port: 80
-            headers:
-                'Content-Type': 'application/json'
-
-        sendUrl = resolve YAHOO.lacuna.Game.RPCBase, url
-        _.assign options, parse sendUrl
-
-        options
+    prepareRequestOptions: (url, data) ->
+        json: data
+        timeout: 20 * 1000
 
 
     ###
@@ -115,60 +109,31 @@ class Client
     ###
 
     send: (options) ->
-        console.log @
 
         data = @preparePostData @prepareParams options.params
-        requestOptions = @prepareRequestOptions @url
+        url = resolve YAHOO.lacuna.Game.RPCBase, @url
 
-        console.log 'Sending ', data.params, 'to', requestOptions.href
+        console.log 'Sending ', data.params, 'to', url
 
-        req = http.request requestOptions, _.partialRight @handleRpcRes, options
-        req.on 'error', _.partialRight @handleRpcErr, options
-        req.write JSON.stringify data
-        req.end()
+        @createSendPromise options, url, JSON.stringify data
 
 
     ###
-    # ## Client.handleRpcRes
-    # This is the method that `Client.send` calls when a request succeeds.
-    # It's given a `res` object which is an instance of Node's
-    # [http.IncomingMessage class](http://nodejs.org/docs/latest/api/http.html#http_http_incomingmessage).
-    # The `options` object is all of the options passed to the original `Client.send` call.
-    #
-    # This method handles Node's chunking of the response string. It also parses
-    # the resulting string into JSON and tries to call the correct callback.
-    #
-    # When the Lacuna server returns a `result` block, the request has succeeded.
-    # But when there's an `error` block, there's an error that needs to be looked after.
+    # ## Client.createSendPromise
+    # Uses `Q` to make this request into a promise. Great for chaining.
     ###
 
-    handleRpcRes: (res, options) ->
-        res.setEncoding 'utf8'
-        str = ''
-        res.on 'data', (chunk) ->
-            str += chunk
+    createSendPromise: (options, url, json) ->
 
-        res.on 'end', ->
-            data = $.parseJSON str
+        # Q.Promise (resolve, reject, notify) ->
+        timeout = 5000
+        url = 'http://localhost:8080/'
 
-            if data.result and options.success
-                options.success.call data.scope, data.result
-            else if data.error and options.error
-                options.error.call data.scope, data.error
+        request.post url, {json, timeout}, (error, response, body) ->
+            unless error
+                console.log response, body
             else
-                console.log data, options
-                throw new Error 'Unrecognized options passed into Client.send()'
-
-
-    ###
-    # ## Client.handleRpcErr
-    # This will be a HTTP error (404, for example) not an in-game error.
-    # As such, I don't really have anything smart to do here.
-    ###
-
-    handleRpcErr: (err, options) ->
-        console.log 'HTTP error...'
-        console.log err, options
+                console.log error
 
 
 ###
@@ -217,19 +182,4 @@ func = (value, key) ->
 # Kick off the recursion and save the resulting object into the `Client`'s `prototype`.
 _.each modules, func
 _.assign(Client::, methods)
-
-# Test the stuffs
-# Note: this is test code and doesn't need to be documented. It will be removed later.
-thing = new Client()
-thing.Empire.get_status
-    params: []
-    scope: @
-    success: (result) ->
-        console.log 'success'
-        console.log result
-    error: (error) ->
-        console.log error
-        console.log 'error'
-
-
 module.exports = new Client()

@@ -602,13 +602,8 @@ window.files = [
     },
     {
       "level": 2,
-      "slug": "client-handlerpcres",
-      "title": "Client.handleRpcRes"
-    },
-    {
-      "level": 2,
-      "slug": "client-handlerpcerr",
-      "title": "Client.handleRpcErr"
+      "slug": "client-createsendpromise",
+      "title": "Client.createSendPromise"
     },
     {
       "level": 1,
