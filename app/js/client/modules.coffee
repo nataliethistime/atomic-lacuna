@@ -11,7 +11,7 @@ module.exports =
 
     Alliance:
         url: '/alliance'
-        path: 'Alliance'
+        path: 'alliance'
         methods: [
             'find'
             'view_profile'
@@ -19,7 +19,7 @@ module.exports =
 
     Body:
         url: '/body'
-        path: 'Body'
+        path: 'body'
         methods: [
             'abandon'
             'get_buildings'
@@ -33,7 +33,7 @@ module.exports =
 
         Generic:
             url: '/buildings'
-            path: 'Buildings.Generic'
+            path: 'buildings.generic'
             methods: [
                 'build'
                 'demolish'
@@ -45,7 +45,7 @@ module.exports =
 
         Archaeology:
             url: '/archaeology'
-            path: 'Buildings.Archaeology'
+            path: 'buildings.archaeology'
             methods: [
                 'search_for_glyph'
                 'get_glyph_summary'
@@ -59,7 +59,7 @@ module.exports =
 
         BlackHoleGenerator:
             url: '/blackholegenerator'
-            path: 'Buildings.BlackHoleGenerator'
+            path: 'buildings.blackHoleGenerator'
             methods: [
                 'get_actions_for'
                 'generate_singularity'
@@ -68,14 +68,14 @@ module.exports =
 
         Capitol:
             url: '/capitol'
-            path: 'Buildings.Capitol'
+            path: 'buildings.capitol'
             methods: [
                 'rename_empire'
             ]
 
         Development:
             url: '/development'
-            path: 'Buildings.Development'
+            path: 'buildings.development'
             methods: [
                 'cancel_build'
                 'subsidize_build_queue'
@@ -84,7 +84,7 @@ module.exports =
 
         DistributionCenter:
             url: '/distributioncenter'
-            path: 'Buildings.DistributionCenter'
+            path: 'buildings.distributionCenter'
             methods: [
                 'reserve'
                 'release_reserve'
@@ -93,7 +93,7 @@ module.exports =
 
         Embassy:
             url: '/embassy'
-            path: 'Buildings.Embassy'
+            path: 'buildings.embassy'
             methods: [
                 'create_alliance'
                 'dissolve_alliance'
@@ -115,14 +115,14 @@ module.exports =
 
         EnergyReserve:
             url: '/energyreserve'
-            path: 'Buildings.EnergyReserve'
+            path: 'buildings.energyReserve'
             methods: [
                 'dump'
             ]
 
         Entertainment:
             url: '/entertainment'
-            path: 'Buildings.Entertainment'
+            path: 'buildings.entertainment'
             methods: [
                 'get_lottery_voting_options'
                 'duck_quack'
@@ -130,7 +130,7 @@ module.exports =
 
         Exchanger:
             url: '/wasteexchanger'
-            path: 'Buildings.Exchanger'
+            path: 'buildings.exchanger'
             methods: [
                 'recycle'
                 'subsidize_recycling'
@@ -138,14 +138,14 @@ module.exports =
 
         FoodReserve:
             url: '/foodreserve'
-            path: 'Buildings.FoodReserve'
+            path: 'buildings.foodReserve'
             methods: [
                 'dump'
             ]
 
         GeneticsLab:
             url: '/geneticslab'
-            path: 'Buildings.GeneticsLab'
+            path: 'buildings.geneticsLab'
             methods: [
                 'prepare_experiment'
                 'run_experiment'
@@ -154,7 +154,7 @@ module.exports =
 
         Intelligence:
             url: '/intelligence'
-            path: 'Buildings.Intelligence'
+            path: 'buildings.intelligence'
             methods: [
                 'train_spy'
                 'view_spies'
@@ -166,14 +166,14 @@ module.exports =
 
         LibraryOfJith:
             url: '/libraryofjith'
-            path: 'Buildings.LibraryOfJith'
+            path: 'buildings.libraryOfJith'
             methods: [
                 'research_species'
             ]
 
         MercenariesGuild:
             url: '/mercenariesguild'
-            path: 'Buildings.MercenariesGuild'
+            path: 'buildings.mercenariesGuild'
             methods: [
                 'add_to_market'
                 'get_spies'
@@ -187,7 +187,7 @@ module.exports =
 
         Mining:
             url: '/miningministry'
-            path: 'Buildings.Mining'
+            path: 'buildings.mining'
             methods: [
                 'view_platforms'
                 'view_ships'
@@ -198,7 +198,7 @@ module.exports =
 
         MissionCommand:
             url: '/missioncommand'
-            path: 'Buildings.MissionCommand'
+            path: 'buildings.missionCommand'
             methods: [
                 'get_missions'
                 'complete_mission'
@@ -207,7 +207,7 @@ module.exports =
 
         Network19:
             url: '/network19'
-            path: 'Buildings.Network19'
+            path: 'buildings.network19'
             methods: [
                 'restrict_coverage'
                 'view_news'
@@ -215,7 +215,7 @@ module.exports =
 
         Observatory:
             url: '/observatory'
-            path: 'Buildings.Observatory'
+            path: 'buildings.observatory'
             methods: [
                 'abandon_probe'
                 'abandon_all_probes'
@@ -224,14 +224,14 @@ module.exports =
 
         OreStorage:
             url: '/orestorage'
-            path: 'Buildings.OreStorage'
+            path: 'buildings.oreStorage'
             methods: [
                 'dump'
             ]
 
         Park:
             url: '/park'
-            path: 'Buildings.Park'
+            path: 'buildings.park'
             methods: [
                 'throw_a_party'
                 'subsidize_party'
@@ -239,7 +239,7 @@ module.exports =
 
         PlanetaryCommand:
             url: '/planetarycommand'
-            path: 'Buildings.PlanetaryCommand'
+            path: 'buildings.planetaryCommand'
             methods: [
                 'view_plans'
                 'view_incoming_supply_chains'
@@ -247,7 +247,7 @@ module.exports =
 
         Recycler:
             url: '/wasterecycling'
-            path: 'Buildings.Recycler'
+            path: 'buildings.recycler'
             methods: [
                 'recycle'
                 'subsidize_recycling'
@@ -255,7 +255,7 @@ module.exports =
 
         Security:
             url: '/security'
-            path: 'Buildings.Security'
+            path: 'buildings.security'
             methods: [
                 'view_prisoners'
                 'execute_prisoner'
@@ -265,7 +265,7 @@ module.exports =
 
         Shipyard:
             url: '/shipyard'
-            path: 'Buildings.Shipyard'
+            path: 'buildings.shipyard'
             methods: [
                 'view_build_queue'
                 'subsidize_build_queue'
@@ -276,7 +276,7 @@ module.exports =
 
         SpacePort:
             url: '/spaceport'
-            path: 'Buildings.SpacePort'
+            path: 'buildings.spacePort'
             methods: [
                 'prepare_fetch_spies'
                 'fetch_spies'
@@ -298,7 +298,7 @@ module.exports =
 
         SpaceStationLab:
             url: '/ssla'
-            path: 'Buildings.SpaceStationLab'
+            path: 'buildings.spaceStationLab'
             methods: [
                 'make_plan'
                 'subsidize_plan'
@@ -306,7 +306,7 @@ module.exports =
 
         SubspaceSupplyDepot:
             url: '/subspacesupplydepot'
-            path: 'Buildings.SubspaceSupplyDepot'
+            path: 'buildings.subspaceSupplyDepot'
             methods: [
                 'transmit_food'
                 'transmit_energy'
@@ -317,7 +317,7 @@ module.exports =
 
         TempleOfTheDrajilites:
             url: '/templeofthedrajilites'
-            path: 'Buildings.TempleOfTheDrajilites'
+            path: 'buildings.templeOfTheDrajilites'
             methods: [
                 'list_planets'
                 'view_planet'
@@ -325,14 +325,14 @@ module.exports =
 
         ThemePark:
             url: '/themepark'
-            path: 'Buildings.ThemePark'
+            path: 'buildings.themePark'
             methods: [
                 'operate'
             ]
 
         TheDillonForge:
             url: '/thedillonforge'
-            path: 'Buildings.TheDillonForge'
+            path: 'buildings.theDillonForge'
             methods: [
                 'make_plan'
                 'split_plan'
@@ -341,7 +341,7 @@ module.exports =
 
         Trade:
             url: '/trade'
-            path: 'Buildings.Trade'
+            path: 'buildings.trade'
             methods: [
                 'add_to_market'
                 'get_ship_summary'
@@ -375,7 +375,7 @@ module.exports =
 
         Transporter:
             url: '/transporter'
-            path: 'Buildings.Transporter'
+            path: 'buildings.transporter'
             methods: [
                 'add_to_market'
                 'get_ship_summary'
@@ -397,14 +397,14 @@ module.exports =
 
         WaterStorage:
             url: '/waterstorage'
-            path: 'Buildings.WaterStorage'
+            path: 'buildings.waterStorage'
             methods: [
                 'dump'
             ]
 
     Empire:
         url: '/empire'
-        path: 'Empire'
+        path: 'empire'
         methods: [
             'is_name_available'
             'logout'
@@ -444,7 +444,7 @@ module.exports =
 
     Captcha:
         url: '/captcha'
-        path: 'Captcha'
+        path: 'captcha'
         methods: [
             'fetch'
             'solve'
@@ -452,7 +452,7 @@ module.exports =
 
     Inbox:
         url: '/inbox'
-        path: 'Inbox'
+        path: 'inbox'
         methods: [
             'view_inbox'
             'view_archived'
@@ -466,7 +466,7 @@ module.exports =
 
     Map:
         url: '/map'
-        path: 'Map'
+        path: 'map'
         methods: [
             'check_star_for_incoming_probe'
             'get_star'
@@ -480,7 +480,7 @@ module.exports =
     Modules:
         Parliament:
             url: '/parliament'
-            path: 'Modules.Parliament'
+            path: 'modules.parliament'
             methods: [
                 'view_laws'
                 'view_propositions'
@@ -510,7 +510,7 @@ module.exports =
 
         PoliceStation:
             url: '/policestation'
-            path: 'Modules.PoliceStation'
+            path: 'modules.policeStation'
             methods: [
                 'view_prisoners'
                 'execute_prisoner'
@@ -520,7 +520,7 @@ module.exports =
 
         StationCommand:
             url: '/stationcommand'
-            path: 'Modules.StationCommand'
+            path: 'modules.stationCommand'
             methods: [
                 'view_plans'
                 'view_incoming_supply_chains'
@@ -528,7 +528,7 @@ module.exports =
 
     Stats:
         url: '/stats'
-        path: 'Stats'
+        path: 'stats'
         methods: [
             'credits'
             'empire_rank'
