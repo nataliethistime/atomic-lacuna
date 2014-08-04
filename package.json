@@ -15,7 +15,7 @@
     "request": "2.39.0"
   },
   "devDependencies": {
-    "gulp": "3.8.x",
+    "gulp": "3.8.7",
     "gulp-concat-css": "0.1.x",
     "vinyl-source-stream": "0.1.x",
     "browserify": "4.2.x",
