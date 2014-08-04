@@ -61,17 +61,14 @@ YAHOO.namespace("lacuna");
                 target: "_blank"
             }]);
 
-            if (window.ATOM_SHELL) {
-                var SC = require('js/menu/script-console');
-
-                userMenu.addItem({
-                    text: 'Script Console',
-                    onclick: {
-                        fn: SC.show,
-                        scope: SC
-                    }
-                });
-            }
+            var SC = require('js/menu/script-console');
+            userMenu.addItem({
+                text: 'Script Console',
+                onclick: {
+                    fn: SC.show,
+                    scope: SC
+                }
+            });
 
             userMenu.subscribe("beforeShow", function() {
                 if (this.getRoot() === this) {

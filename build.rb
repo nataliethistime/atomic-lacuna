@@ -24,7 +24,14 @@ build_dir = File.join(Dir.getwd, 'build')
 FileUtils::mkdir_p build_dir
 
 
-PACKAGES = %w(web linux-32 linux-64 win32-32)
+# Allow the packages to be specified in the command line.
+PACKAGES =
+    if ARGV.size > 0
+        ARGV
+    else
+        %w(web linux-32 linux-64 win32-32)
+    end
+
 
 # Clean out the old build files 'n' things.
 puts 'Cleaning out files from previous run...'
@@ -39,13 +46,15 @@ end
 print "\n\n"
 
 
-
-# Run the Gulp task which downloads the atom-shell for different platforms.
-unless system 'gulp download-shell'
-    puts "ERR: Failed to download atom-shell"
-    exit
-else
-    print "\n\n"
+# Don't download atom-shells when doing a web build.
+unless PACKAGES.first == 'web' && PACKAGES.size == 1
+    # Run the Gulp task which downloads the atom-shell for different platforms.
+    unless system 'gulp download-shell'
+        puts "ERR: Failed to download atom-shell"
+        exit
+    else
+        print "\n\n"
+    end
 end
 
 
