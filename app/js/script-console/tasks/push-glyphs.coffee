@@ -9,7 +9,7 @@
 templates = require 'js/templates'
 Task = require 'js/task'
 
-client = require 'js/client'
+{Empire} = require 'js/client'
 
 class PushGlyphs extends Task
 
@@ -31,22 +31,15 @@ class PushGlyphs extends Task
     # ## PushGlyphs.run
     # See the documentation for the `Task` class for what this is.
     ###
-    run: ->
-        # client.Empire.get_status
-        #     params: []
-        #     scope: @
-        #     success: (result) ->
-        #         console.log 'success'
-        #         console.log result
-        #     error: (error) ->
-        #         console.log error
-        #         console.log 'error'
+    run: (callback) ->
 
-        client.Empire.get_status
+        Empire.get_status
             params: []
-        # .then (err, res) ->
-        #     console.log err, res
-        # .done()
+        .then (res) ->
+            console.log res
+        , (err) ->
+            console.log err
+        .done(callback);
 
 
 

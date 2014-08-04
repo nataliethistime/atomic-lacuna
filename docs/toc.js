@@ -711,6 +711,11 @@ window.files = [
     },
     {
       "level": 2,
+      "slug": "scriptconsole-ontaskfinish",
+      "title": "ScriptConsole.onTaskFinish"
+    },
+    {
+      "level": 2,
       "slug": "scriptconsole-events",
       "title": "ScriptConsole.events"
     }

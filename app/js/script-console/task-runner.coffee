@@ -20,11 +20,10 @@ class TaskRunner
     # - When the task finishes. Do a Happy dance! :D :D
     ###
 
-    runTask: (@task) ->
+    runTask: (@task, callback) ->
         @task.loadOptions()
         @show()
-        @task.run()
-        console.log 'Finished running task'
+        @task.run(callback)
 
 
     ###

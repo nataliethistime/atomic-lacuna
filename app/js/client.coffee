@@ -12,7 +12,7 @@ util = require 'js/util'
 # Get the right edition of the `request` module.
 request = if window.ATOM_SHELL then require 'request' else require 'browser-request'
 
-{resolve} = require 'url'
+url = require 'url'
 Q = require 'q'
 
 
@@ -93,9 +93,9 @@ class Client
     # For some reason we can't just supply a href or something.
     ###
 
-    prepareRequestOptions: (url, data) ->
+    prepareRequestOptions: (data) ->
         json: data
-        timeout: 20 * 1000
+        timeout: 5 * 1000
 
 
     ###
@@ -111,11 +111,11 @@ class Client
     send: (options) ->
 
         data = @preparePostData @prepareParams options.params
-        url = resolve YAHOO.lacuna.Game.RPCBase, @url
+        url = url.resolve YAHOO.lacuna.Game.RPCBase, @url
 
         console.log 'Sending ', data.params, 'to', url
 
-        @createSendPromise options, url, JSON.stringify data
+        @createSendPromise options, url, @prepareRequestOptions data
 
 
     ###
@@ -123,17 +123,20 @@ class Client
     # Uses `Q` to make this request into a promise. Great for chaining.
     ###
 
-    createSendPromise: (options, url, json) ->
+    createSendPromise: (options, url, requestOptions) ->
 
-        # Q.Promise (resolve, reject, notify) ->
-        timeout = 5000
-        url = 'http://localhost:8080/'
+        Q.Promise (resolve, reject, notify) ->
+            timeout = 5000
 
-        request.post url, {json, timeout}, (error, response, body) ->
-            unless error
-                console.log response, body
-            else
-                console.log error
+            request.post url, requestOptions, (error, response, body) ->
+                unless error
+                    if body.result
+                        resolve body.result or body
+                    else if body.error
+                        reject body.error
+                else
+                    # TODO: do something interesting here!
+                    console.log error
 
 
 ###

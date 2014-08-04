@@ -147,7 +147,16 @@ class ScriptConsole
     ###
 
     onRunClick: =>
-        taskRunner.runTask @selectedTask
+        taskRunner.runTask @selectedTask, @onTaskFinish
+
+
+    ###
+    # ## ScriptConsole.onTaskFinish
+    # Callback that's called when `@selectedTask` has finished executing.
+    ###
+
+    onTaskFinish: () =>
+        console.log 'Finished Task', @selectedTask
 
 
     ###
