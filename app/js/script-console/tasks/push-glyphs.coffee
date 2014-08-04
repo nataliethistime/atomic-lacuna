@@ -36,9 +36,11 @@ class PushGlyphs extends Task
         empire.get_status
             params: []
         .then (res) ->
-            console.log res
+            # console.log res
+            @
         , (err) ->
-            console.log err
+            # console.log err
+            @
         .done(callback);
 
 

@@ -180,8 +180,19 @@ and some callbacks and does all the magic HTTP stuff.</p>
 
         data = <span class="hljs-property">@preparePostData</span> <span class="hljs-property">@prepareParams</span> options.params
         url = url.resolve YAHOO.lacuna.Game.RPCBase, <span class="hljs-property">@url</span>
-
-        <span class="hljs-built_in">console</span>.log <span class="hljs-string">'Sending '</span>, data.params, <span class="hljs-string">'to'</span>, url
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>console.log url + &#39;.&#39; + data.method + &#39;(&#39;, data.params, &#39;)&#39;</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-built_in">console</span>.log <span class="hljs-string">"<span class="hljs-subst">#{url}</span>.<span class="hljs-subst">#{data.method}</span>("</span>, data.params, <span class="hljs-string">')'</span>
 
         <span class="hljs-property">@createSendPromise</span> options, url, <span class="hljs-property">@prepareRequestOptions</span> data
 
@@ -205,9 +216,12 @@ and some callbacks and does all the magic HTTP stuff.</p>
             request.post url, requestOptions, <span class="hljs-function"><span class="hljs-params">(error, response, body)</span> -&gt;</span>
                 <span class="hljs-keyword">unless</span> error
                     <span class="hljs-keyword">if</span> body.result
-                        resolve body.result <span class="hljs-keyword">or</span> body
-                    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> body.error
-                        reject body.error
+                        val = body.result <span class="hljs-keyword">or</span> body
+                        <span class="hljs-built_in">console</span>.log <span class="hljs-string">'=&gt;'</span>, val
+                        resolve val
+                    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> body.errorval = body.error
+                        <span class="hljs-built_in">console</span>.log <span class="hljs-string">'=&gt;'</span>, val
+                        resolve val
                 <span class="hljs-keyword">else</span></pre></div>
       
       </div>
@@ -220,7 +234,8 @@ and some callbacks and does all the magic HTTP stuff.</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">                    <span class="hljs-built_in">console</span>.log error
+        <div class="code"><pre class="wrapper">                    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"fatal error that shouldn't happen. Oh noes!"</span>
+                    <span class="hljs-built_in">console</span>.log error
 
 </pre></div>
       

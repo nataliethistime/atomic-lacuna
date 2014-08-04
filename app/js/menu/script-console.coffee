@@ -156,7 +156,7 @@ class ScriptConsole
     ###
 
     onTaskFinish: () =>
-        console.log 'Finished Task', @selectedTask
+        console.log "Finished running task: #{@selectedTask.displayName}"
 
 
     ###

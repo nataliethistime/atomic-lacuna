@@ -113,7 +113,8 @@ class Client
         data = @preparePostData @prepareParams options.params
         url = url.resolve YAHOO.lacuna.Game.RPCBase, @url
 
-        console.log 'Sending ', data.params, 'to', url
+        # console.log url + '.' + data.method + '(', data.params, ')'
+        console.log "#{url}.#{data.method}(", data.params, ')'
 
         @createSendPromise options, url, @prepareRequestOptions data
 
@@ -131,11 +132,15 @@ class Client
             request.post url, requestOptions, (error, response, body) ->
                 unless error
                     if body.result
-                        resolve body.result or body
-                    else if body.error
-                        reject body.error
+                        val = body.result or body
+                        console.log '=>', val
+                        resolve val
+                    else if body.errorval = body.error
+                        console.log '=>', val
+                        resolve val
                 else
                     # TODO: do something interesting here!
+                    console.log "fatal error that shouldn't happen. Oh noes!"
                     console.log error
 
 
