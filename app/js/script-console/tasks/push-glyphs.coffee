@@ -9,7 +9,7 @@
 templates = require 'js/templates'
 Task = require 'js/task'
 
-{Empire} = require 'js/client'
+{empire} = require 'js/client'
 
 class PushGlyphs extends Task
 
@@ -33,7 +33,7 @@ class PushGlyphs extends Task
     ###
     run: (callback) ->
 
-        Empire.get_status
+        empire.get_status
             params: []
         .then (res) ->
             console.log res

@@ -36,7 +36,7 @@ to a different planet.</p>
 templates = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/templates'</span>
 Task = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/task'</span>
 
-{Empire} = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/client'</span>
+{empire} = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/client'</span>
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PushGlyphs</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Task</span></span>
 
@@ -81,7 +81,7 @@ Task = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/
       
         <div class="code"><pre class="wrapper">    <span class="hljs-attribute">run</span>: <span class="hljs-function"><span class="hljs-params">(callback)</span> -&gt;</span>
 
-        Empire.get_status
+        empire.get_status
             <span class="hljs-attribute">params</span>: []
         .<span class="hljs-keyword">then</span> <span class="hljs-function"><span class="hljs-params">(res)</span> -&gt;</span>
             <span class="hljs-built_in">console</span>.log res
