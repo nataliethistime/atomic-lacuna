@@ -179,22 +179,11 @@ and some callbacks and does all the magic HTTP stuff.</p>
         <div class="code"><pre class="wrapper">    <span class="hljs-attribute">send</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
 
         data = <span class="hljs-property">@preparePostData</span> <span class="hljs-property">@prepareParams</span> options.params
-        url = url.resolve YAHOO.lacuna.Game.RPCBase, <span class="hljs-property">@url</span>
-</pre></div>
-      
-      </div>
-    
-      <div class="segment">
-      
-        <div class="comments ">
-          <div class="wrapper"><p>console.log url + &#39;.&#39; + data.method + &#39;(&#39;, data.params, &#39;)&#39;</p>
-</div>
-        </div>
-      
-      
-        <div class="code"><pre class="wrapper">        <span class="hljs-built_in">console</span>.log <span class="hljs-string">"<span class="hljs-subst">#{url}</span>.<span class="hljs-subst">#{data.method}</span>("</span>, data.params, <span class="hljs-string">')'</span>
+        sendUrl = url.resolve YAHOO.lacuna.Game.RPCBase, <span class="hljs-property">@url</span>
 
-        <span class="hljs-property">@createSendPromise</span> options, url, <span class="hljs-property">@prepareRequestOptions</span> data
+        <span class="hljs-built_in">console</span>.log <span class="hljs-string">"<span class="hljs-subst">#{sendUrl}</span>.<span class="hljs-subst">#{data.method}</span>("</span>, data.params, <span class="hljs-string">')'</span>
+
+        <span class="hljs-property">@createSendPromise</span> options, sendUrl, <span class="hljs-property">@prepareRequestOptions</span> data
 
 </pre></div>
       
@@ -208,12 +197,12 @@ and some callbacks and does all the magic HTTP stuff.</p>
         </div>
       
       
-        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">createSendPromise</span>: <span class="hljs-function"><span class="hljs-params">(options, url, requestOptions)</span> -&gt;</span>
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">createSendPromise</span>: <span class="hljs-function"><span class="hljs-params">(options, sendUrl, requestOptions)</span> -&gt;</span>
 
         Q.Promise <span class="hljs-function"><span class="hljs-params">(resolve, reject, notify)</span> -&gt;</span>
             timeout = <span class="hljs-number">5000</span>
 
-            request.post url, requestOptions, <span class="hljs-function"><span class="hljs-params">(error, response, body)</span> -&gt;</span>
+            request.post sendUrl, requestOptions, <span class="hljs-function"><span class="hljs-params">(error, response, body)</span> -&gt;</span>
                 <span class="hljs-keyword">unless</span> error
                     <span class="hljs-keyword">if</span> body.result
                         val = body.result <span class="hljs-keyword">or</span> body

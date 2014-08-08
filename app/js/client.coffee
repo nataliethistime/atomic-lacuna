@@ -111,12 +111,11 @@ class Client
     send: (options) ->
 
         data = @preparePostData @prepareParams options.params
-        url = url.resolve YAHOO.lacuna.Game.RPCBase, @url
+        sendUrl = url.resolve YAHOO.lacuna.Game.RPCBase, @url
 
-        # console.log url + '.' + data.method + '(', data.params, ')'
-        console.log "#{url}.#{data.method}(", data.params, ')'
+        console.log "#{sendUrl}.#{data.method}(", data.params, ')'
 
-        @createSendPromise options, url, @prepareRequestOptions data
+        @createSendPromise options, sendUrl, @prepareRequestOptions data
 
 
     ###
@@ -124,12 +123,12 @@ class Client
     # Uses `Q` to make this request into a promise. Great for chaining.
     ###
 
-    createSendPromise: (options, url, requestOptions) ->
+    createSendPromise: (options, sendUrl, requestOptions) ->
 
         Q.Promise (resolve, reject, notify) ->
             timeout = 5000
 
-            request.post url, requestOptions, (error, response, body) ->
+            request.post sendUrl, requestOptions, (error, response, body) ->
                 unless error
                     if body.result
                         val = body.result or body
