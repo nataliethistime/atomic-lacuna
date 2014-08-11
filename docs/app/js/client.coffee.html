@@ -50,7 +50,7 @@ util = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/
         <div class="code"><pre class="wrapper">request = <span class="hljs-keyword">if</span> <span class="hljs-built_in">window</span>.ATOM_SHELL <span class="hljs-keyword">then</span> <span class="hljs-built_in">require</span> <span class="hljs-string">'request'</span> <span class="hljs-keyword">else</span> <span class="hljs-built_in">require</span> <span class="hljs-string">'browser-request'</span>
 
 url = <span class="hljs-built_in">require</span> <span class="hljs-string">'url'</span>
-Q = <span class="hljs-built_in">require</span> <span class="hljs-string">'q'</span>
+Promise = <span class="hljs-built_in">require</span> <span class="hljs-string">'bluebird'</span>
 
 </pre></div>
       
@@ -192,14 +192,15 @@ and some callbacks and does all the magic HTTP stuff.</p>
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><h2 id="client-createsendpromise"><a href="#client-createsendpromise" class="anchor"></a>Client.createSendPromise</h2><p>Uses <code>Q</code> to make this request into a promise. Great for chaining.</p>
+          <div class="wrapper"><h2 id="client-createsendpromise"><a href="#client-createsendpromise" class="anchor"></a>Client.createSendPromise</h2><p>Uses <a href="https://github.com/petkaantonov/bluebird">Bluebird</a> to make this
+request into a promise.</p>
 </div>
         </div>
       
       
         <div class="code"><pre class="wrapper">    <span class="hljs-attribute">createSendPromise</span>: <span class="hljs-function"><span class="hljs-params">(sendUrl, requestOptions)</span> -&gt;</span>
 
-        Q.Promise <span class="hljs-function"><span class="hljs-params">(resolve, reject, notify)</span> -&gt;</span>
+        <span class="hljs-keyword">new</span> Promise <span class="hljs-function"><span class="hljs-params">(resolve, reject)</span> -&gt;</span>
             timeout = <span class="hljs-number">5000</span>
 
             request.post sendUrl, requestOptions, <span class="hljs-function"><span class="hljs-params">(error, response, body)</span> -&gt;</span>
@@ -208,7 +209,8 @@ and some callbacks and does all the magic HTTP stuff.</p>
                         val = body.result <span class="hljs-keyword">or</span> body
                         <span class="hljs-built_in">console</span>.log <span class="hljs-string">'=&gt;'</span>, val
                         resolve val
-                    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> body.errorval = body.error
+                    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> body.error
+                        val = body.error
                         <span class="hljs-built_in">console</span>.log <span class="hljs-string">'=&gt;'</span>, val
                         resolve val
                 <span class="hljs-keyword">else</span></pre></div>

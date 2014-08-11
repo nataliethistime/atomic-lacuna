@@ -13,7 +13,7 @@ util = require 'js/util'
 request = if window.ATOM_SHELL then require 'request' else require 'browser-request'
 
 url = require 'url'
-Q = require 'q'
+Promise = require 'bluebird'
 
 
 ###
@@ -120,12 +120,13 @@ class Client
 
     ###
     # ## Client.createSendPromise
-    # Uses `Q` to make this request into a promise. Great for chaining.
+    # Uses [Bluebird](https://github.com/petkaantonov/bluebird) to make this
+    # request into a promise.
     ###
 
     createSendPromise: (sendUrl, requestOptions) ->
 
-        Q.Promise (resolve, reject, notify) ->
+        new Promise (resolve, reject) ->
             timeout = 5000
 
             request.post sendUrl, requestOptions, (error, response, body) ->
@@ -134,7 +135,8 @@ class Client
                         val = body.result or body
                         console.log '=>', val
                         resolve val
-                    else if body.errorval = body.error
+                    else if body.error
+                        val = body.error
                         console.log '=>', val
                         resolve val
                 else

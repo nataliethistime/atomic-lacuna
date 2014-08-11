@@ -34,23 +34,17 @@ class PushGlyphs extends Task
     ###
     run: (callback) ->
 
-        # Create local references to these variables because they're not accessible
-        # inside the promise callbacks.
-        {fromName, toName} = @
-
-        fromId = 0
-        toId = 0
-
         empire.get_status []
+        .bind @
         .then (res) ->
-            planets = _.invert res.empire.planets
-            fromId = planets[fromName]
-            toId = planets[toName]
+            @planets = _.invert res.empire.planets
+            @fromId = @planets[@fromName]
+            @toId = @planets[@toName]
 
-            body.get_buildings [fromId]
+            body.get_buildings [@fromId]
 
         .then (res) ->
-            console.log res
+            @
 
         .done callback
 

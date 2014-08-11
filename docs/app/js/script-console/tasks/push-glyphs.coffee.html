@@ -74,34 +74,18 @@ Task = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/
       
       
         <div class="code"><pre class="wrapper">    <span class="hljs-attribute">run</span>: <span class="hljs-function"><span class="hljs-params">(callback)</span> -&gt;</span>
-</pre></div>
-      
-      </div>
-    
-      <div class="segment">
-      
-        <div class="comments ">
-          <div class="wrapper"><p>Create local references to these variables because they&#39;re not accessible
-inside the promise callbacks.</p>
-</div>
-        </div>
-      
-      
-        <div class="code"><pre class="wrapper">        {fromName, toName} = @
-
-        fromId = <span class="hljs-number">0</span>
-        toId = <span class="hljs-number">0</span>
 
         empire.get_status []
+        .bind @
         .<span class="hljs-keyword">then</span> <span class="hljs-function"><span class="hljs-params">(res)</span> -&gt;</span>
-            planets = _.invert res.empire.planets
-            fromId = planets[fromName]
-            toId = planets[toName]
+            <span class="hljs-property">@planets</span> = _.invert res.empire.planets
+            <span class="hljs-property">@fromId</span> = <span class="hljs-property">@planets</span>[<span class="hljs-property">@fromName</span>]
+            <span class="hljs-property">@toId</span> = <span class="hljs-property">@planets</span>[<span class="hljs-property">@toName</span>]
 
-            body.get_buildings [fromId]
+            body.get_buildings [<span class="hljs-property">@fromId</span>]
 
         .<span class="hljs-keyword">then</span> <span class="hljs-function"><span class="hljs-params">(res)</span> -&gt;</span>
-            <span class="hljs-built_in">console</span>.log res
+            @
 
         .done callback
 
