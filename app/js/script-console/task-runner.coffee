@@ -23,7 +23,7 @@ class TaskRunner
     runTask: (@task, callback) ->
         @task.loadOptions()
         @show()
-        @task.run(callback)
+        @task.run callback
 
 
     ###

@@ -36,8 +36,9 @@ Handlebars.registerHelper('renderTemplate', function(template, options) {
     }
 });
 
-Handlebars.registerHelper('array2Select', function(array) {
-    return '<select>' +
+Handlebars.registerHelper('array2Select', function(array, id) {
+    var id = !_.isEmpty(id) ? ' id="' + id + '"' : '';
+    return '<select' + id + '>' +
         _.map(array, function(item) {
             return '<option value="' + item + '">' + item + '</option>';
         }).join('') +
