@@ -92,15 +92,14 @@ inside the promise callbacks.</p>
         fromId = <span class="hljs-number">0</span>
         toId = <span class="hljs-number">0</span>
 
-        empire.get_status
-            <span class="hljs-attribute">params</span>: []
+        empire.get_status []
         .<span class="hljs-keyword">then</span> <span class="hljs-function"><span class="hljs-params">(res)</span> -&gt;</span>
             planets = _.invert res.empire.planets
             fromId = planets[fromName]
             toId = planets[toName]
 
-            body.get_buildings
-                <span class="hljs-attribute">params</span>: [fromId]
+            body.get_buildings [fromId]
+
         .<span class="hljs-keyword">then</span> <span class="hljs-function"><span class="hljs-params">(res)</span> -&gt;</span>
             <span class="hljs-built_in">console</span>.log res
 

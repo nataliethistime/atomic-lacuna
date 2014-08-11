@@ -41,15 +41,14 @@ class PushGlyphs extends Task
         fromId = 0
         toId = 0
 
-        empire.get_status
-            params: []
+        empire.get_status []
         .then (res) ->
             planets = _.invert res.empire.planets
             fromId = planets[fromName]
             toId = planets[toName]
 
-            body.get_buildings
-                params: [fromId]
+            body.get_buildings [fromId]
+
         .then (res) ->
             console.log res
 
