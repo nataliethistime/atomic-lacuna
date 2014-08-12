@@ -165,7 +165,7 @@ class ScriptConsole
     ###
 
     events: ->
-        $ '#' + @id
+        $ '#taskSelect'
             .off()
             .on 'change', @onChangeTask
 
