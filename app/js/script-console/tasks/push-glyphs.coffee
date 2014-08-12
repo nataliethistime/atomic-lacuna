@@ -59,8 +59,27 @@ class PushGlyphs extends Task
                 _.parseInt ship.hold_size
             .reverse()
 
-            console.log @ships
-            console.log @
+            @ship = _.first @ships
+
+            toPush = []
+            total = 0
+            max = _.parseInt @ship.hold_size
+
+            for name, quantity of @glyphs
+                quantity = _.parseInt quantity
+                thing = (total + quantity) * @glyphCargoSpace
+
+                if thing > max
+                    continue
+                else
+                    toPush.push {type: 'glyph', name, quantity}
+                    total += quantity
+
+
+            @trade.push_items [@trade.id, @toId, toPush, ship_id: @ship.id]
+
+        .then (res) ->
+            console.log 'Success!' if res.ship.task is 'Travelling'
 
         .done callback
 

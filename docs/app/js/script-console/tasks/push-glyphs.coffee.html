@@ -100,8 +100,27 @@ Task = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/
                 _.parseInt ship.hold_size
             .reverse()
 
-            <span class="hljs-built_in">console</span>.log <span class="hljs-property">@ships</span>
-            <span class="hljs-built_in">console</span>.log @
+            <span class="hljs-property">@ship</span> = _.first <span class="hljs-property">@ships</span>
+
+            toPush = []
+            total = <span class="hljs-number">0</span>
+            max = _.parseInt <span class="hljs-property">@ship</span>.hold_size
+
+            <span class="hljs-keyword">for</span> name, quantity <span class="hljs-keyword">of</span> <span class="hljs-property">@glyphs</span>
+                quantity = _.parseInt quantity
+                thing = (total + quantity) * <span class="hljs-property">@glyphCargoSpace</span>
+
+                <span class="hljs-keyword">if</span> thing &gt; max
+                    <span class="hljs-keyword">continue</span>
+                <span class="hljs-keyword">else</span>
+                    toPush.push {<span class="hljs-attribute">type</span>: <span class="hljs-string">'glyph'</span>, name, quantity}
+                    total += quantity
+
+
+            <span class="hljs-property">@trade</span>.push_items [<span class="hljs-property">@trade</span>.id, <span class="hljs-property">@toId</span>, toPush, <span class="hljs-attribute">ship_id</span>: <span class="hljs-property">@ship</span>.id]
+
+        .<span class="hljs-keyword">then</span> <span class="hljs-function"><span class="hljs-params">(res)</span> -&gt;</span>
+            <span class="hljs-built_in">console</span>.log <span class="hljs-string">'Success!'</span> <span class="hljs-keyword">if</span> res.ship.task <span class="hljs-keyword">is</span> <span class="hljs-string">'Travelling'</span>
 
         .done callback
 
