@@ -31,9 +31,13 @@
       
         <div class="code"><pre class="wrapper"><span class="hljs-string">'use strict'</span>
 
-<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> =
+modules = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/client/modules'</span>
+client = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/client'</span>
+util = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/util'</span>
 
+helpers =
     <span class="hljs-attribute">body</span>:
+
 </pre></div>
       
       </div>
@@ -41,9 +45,12 @@
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><h1 id="body-findbuilding"><a href="#body-findbuilding" class="anchor"></a>body.findBuilding</h1><p>Takes a <code>buildings</code> object (as returned from <code>body.get_buildings</code>) and
-finds the building as specified by <code>name</code></p>
-</div>
+          <div class="wrapper"><h2 id="body-findbuilding"><a href="#body-findbuilding" class="anchor"></a>body.findBuilding</h2><p>Takes a <code>buildings</code> object (as returned from <code>body.get_buildings</code>) and
+finds the building as specified by <code>name</code>. Aldo, allow mixing in of a building&#39;s
+rpc methods and helper methods into the return value. So the following is possible:</p>
+<pre><code>trade = body<span class="hljs-preprocessor">.findBuilding</span> buildings, name
+trade<span class="hljs-preprocessor">.getGlyphInventory</span> [trade<span class="hljs-preprocessor">.id</span>]
+</code></pre></div>
         </div>
       
       
@@ -51,7 +58,53 @@ finds the building as specified by <code>name</code></p>
             key = _.findKey buildings, {name}
             obj = _.clone buildings[key]
             obj.id = key
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Do a fresh require to avoid issues with circular dependencies.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">            client = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/client'</span>
+
+            {path} = modules.Buildings[_.findKey(modules.Buildings, <span class="hljs-attribute">url</span>: obj.url)]
+            methods = util.deepGet client, path
+            _.assign obj, methods
+
             obj
+
+
+    <span class="hljs-attribute">buildings</span>:
+        <span class="hljs-attribute">trade</span>:
+
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="buildings-trade-getglyphinventory"><a href="#buildings-trade-getglyphinventory" class="anchor"></a>buildings.trade.getGlyphInventory</h2><p>Get an object of the glyphs where the key is the name of the glyph
+and the value is the quantity.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">            <span class="hljs-attribute">getGlyphInventory</span>: <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+                <span class="hljs-property">@get_glyph_summary</span> [<span class="hljs-property">@id</span>]
+                .<span class="hljs-keyword">then</span> <span class="hljs-function"><span class="hljs-params">(res)</span> -&gt;</span>
+                    glyphs = {}
+                    glyphs[glyph.name] = glyph.quantity <span class="hljs-keyword">for</span> glyph <span class="hljs-keyword">in</span> res.glyphs
+
+                    [glyphs, res.cargo_space_used_each]
+
+
+<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = helpers
 </pre></div>
       
       </div>

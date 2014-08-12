@@ -77,6 +77,7 @@ Task = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/
 
         empire.get_status []
         .bind @
+
         .<span class="hljs-keyword">then</span> <span class="hljs-function"><span class="hljs-params">(res)</span> -&gt;</span>
             <span class="hljs-property">@planets</span> = _.invert res.empire.planets
             <span class="hljs-property">@fromId</span> = <span class="hljs-property">@planets</span>[<span class="hljs-property">@fromName</span>]
@@ -86,8 +87,21 @@ Task = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/
 
         .<span class="hljs-keyword">then</span> <span class="hljs-function"><span class="hljs-params">(res)</span> -&gt;</span>
 
-            trade = body.findBuilding res.buildings, <span class="hljs-string">'Trade Ministry'</span>
-            <span class="hljs-built_in">console</span>.log(trade);
+            {buildings} = res
+            <span class="hljs-property">@trade</span> = body.findBuilding buildings, <span class="hljs-string">'Trade Ministry'</span>
+            <span class="hljs-property">@trade</span>.getGlyphInventory()
+
+        .spread <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@glyphs</span>, <span class="hljs-property">@glyphCargoSpace</span>)</span> -&gt;</span>
+            <span class="hljs-property">@trade</span>.get_trade_ships [<span class="hljs-property">@trade</span>.id, <span class="hljs-property">@toId</span>]
+
+        .<span class="hljs-keyword">then</span> <span class="hljs-function"><span class="hljs-params">(res)</span> -&gt;</span>
+
+            <span class="hljs-property">@ships</span> = _.sortBy res.ships, <span class="hljs-function"><span class="hljs-params">(ship)</span> -&gt;</span>
+                _.parseInt ship.hold_size
+            .reverse()
+
+            <span class="hljs-built_in">console</span>.log <span class="hljs-property">@ships</span>
+            <span class="hljs-built_in">console</span>.log @
 
         .done callback
 

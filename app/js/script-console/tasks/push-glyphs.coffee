@@ -36,6 +36,7 @@ class PushGlyphs extends Task
 
         empire.get_status []
         .bind @
+
         .then (res) ->
             @planets = _.invert res.empire.planets
             @fromId = @planets[@fromName]
@@ -45,8 +46,21 @@ class PushGlyphs extends Task
 
         .then (res) ->
 
-            trade = body.findBuilding res.buildings, 'Trade Ministry'
-            console.log(trade);
+            {buildings} = res
+            @trade = body.findBuilding buildings, 'Trade Ministry'
+            @trade.getGlyphInventory()
+
+        .spread (@glyphs, @glyphCargoSpace) ->
+            @trade.get_trade_ships [@trade.id, @toId]
+
+        .then (res) ->
+
+            @ships = _.sortBy res.ships, (ship) ->
+                _.parseInt ship.hold_size
+            .reverse()
+
+            console.log @ships
+            console.log @
 
         .done callback
 

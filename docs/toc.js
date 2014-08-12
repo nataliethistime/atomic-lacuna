@@ -659,9 +659,14 @@ window.files = [
       "title": "Helpers"
     },
     {
-      "level": 1,
+      "level": 2,
       "slug": "body-findbuilding",
       "title": "body.findBuilding"
+    },
+    {
+      "level": 2,
+      "slug": "buildings-trade-getglyphinventory",
+      "title": "buildings.trade.getGlyphInventory"
     }
   ]
 },
