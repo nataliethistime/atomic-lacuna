@@ -7,6 +7,7 @@
 'use strict'
 
 modules = require 'js/client/modules'
+helpers = require 'js/client/helpers'
 util = require 'js/util'
 
 # Get the right edition of the `request` module.
@@ -190,5 +191,5 @@ func = (value, key) ->
 
 # Kick off the recursion and save the resulting object into the `Client`'s `prototype`.
 _.each modules, func
-_.assign(Client::, methods)
+_.merge Client::, methods, helpers
 module.exports = new Client()

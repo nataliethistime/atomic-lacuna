@@ -44,7 +44,9 @@ class PushGlyphs extends Task
             body.get_buildings [@fromId]
 
         .then (res) ->
-            @
+
+            trade = body.findBuilding res.buildings, 'Trade Ministry'
+            console.log(trade);
 
         .done callback
 

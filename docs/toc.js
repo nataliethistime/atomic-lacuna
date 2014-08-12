@@ -646,6 +646,26 @@ window.files = [
   "toc": []
 },
 {
+  "path": "app/js/client/helpers.coffee.html",
+  "originalName": "helpers.coffee",
+  "originalPath": "app/js/client/helpers.coffee",
+  "name": "helpers.coffee.html",
+  "lang": "coffeescript",
+  "title": "Helpers",
+  "toc": [
+    {
+      "level": 1,
+      "slug": "helpers",
+      "title": "Helpers"
+    },
+    {
+      "level": 1,
+      "slug": "body-findbuilding",
+      "title": "body.findBuilding"
+    }
+  ]
+},
+{
   "path": "app/js/client/modules.coffee.html",
   "originalName": "modules.coffee",
   "originalPath": "app/js/client/modules.coffee",

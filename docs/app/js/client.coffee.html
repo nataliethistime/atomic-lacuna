@@ -34,6 +34,7 @@ work with than the included <code>YUI</code> client.</p>
         <div class="code"><pre class="wrapper"><span class="hljs-string">'use strict'</span>
 
 modules = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/client/modules'</span>
+helpers = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/client/helpers'</span>
 util = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/util'</span>
 </pre></div>
       
@@ -310,7 +311,7 @@ then it&#39;s sent off to be put into the collection of callable server methods.
       
       
         <div class="code"><pre class="wrapper">_.each modules, func
-_.assign(<span class="hljs-attribute">Client</span>::, methods)
+_.merge <span class="hljs-attribute">Client</span>::, methods, helpers
 <span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = <span class="hljs-keyword">new</span> Client()
 </pre></div>
       
