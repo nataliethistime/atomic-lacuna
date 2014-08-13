@@ -36,7 +36,7 @@ class Session
 ###
 # ## Client
 # This is the class in which all available API methods are defined. When you `require`
-# this module it returns an instance of this class.
+# this module, it returns an instance of this class.
 ###
 
 class Client
