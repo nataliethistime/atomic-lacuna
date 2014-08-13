@@ -35,7 +35,7 @@ class ScriptConsole
     constructor: ->
 
         @id = 'scriptConsole'
-        @template = templates.get 'menu.scriptConsole'
+        @template = templates.get 'menu.script-console'
 
         container = $ '<div></div>'
             .attr 'id', @id

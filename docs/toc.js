@@ -1040,26 +1040,26 @@ window.files = [
   "toc": []
 },
 {
-  "path": "app/templates/menu/scriptConsole.hbs.html",
-  "originalName": "scriptConsole.hbs",
-  "originalPath": "app/templates/menu/scriptConsole.hbs",
-  "name": "scriptConsole.hbs.html",
+  "path": "app/templates/menu/script-console.hbs.html",
+  "originalName": "script-console.hbs",
+  "originalPath": "app/templates/menu/script-console.hbs",
+  "name": "script-console.hbs.html",
   "lang": "handlebars",
   "toc": []
 },
 {
-  "path": "app/templates/menu/taskRunnerOutput.hbs.html",
-  "originalName": "taskRunnerOutput.hbs",
-  "originalPath": "app/templates/menu/taskRunnerOutput.hbs",
-  "name": "taskRunnerOutput.hbs.html",
+  "path": "app/templates/menu/task-runner-output.hbs.html",
+  "originalName": "task-runner-output.hbs",
+  "originalPath": "app/templates/menu/task-runner-output.hbs",
+  "name": "task-runner-output.hbs.html",
   "lang": "handlebars",
   "toc": []
 },
 {
-  "path": "app/templates/tasks/pushGlyphs.hbs.html",
-  "originalName": "pushGlyphs.hbs",
-  "originalPath": "app/templates/tasks/pushGlyphs.hbs",
-  "name": "pushGlyphs.hbs.html",
+  "path": "app/templates/tasks/push-glyphs.hbs.html",
+  "originalName": "push-glyphs.hbs",
+  "originalPath": "app/templates/tasks/push-glyphs.hbs",
+  "name": "push-glyphs.hbs.html",
   "lang": "handlebars",
   "toc": []
 },

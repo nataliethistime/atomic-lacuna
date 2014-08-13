@@ -17,7 +17,7 @@ class PushGlyphs extends Task
     displayName: 'Push Glyphs'
     internalName: 'pushGlyphs'
 
-    template: templates.get 'tasks.pushGlyphs'
+    template: templates.get 'tasks.push-glyphs'
 
 
     ###

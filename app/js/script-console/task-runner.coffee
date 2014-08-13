@@ -38,7 +38,7 @@ class TaskRunner
         @outputPanel = new Panel
             header: 'Output'
             id: 'taskRunnerOutput'
-            template: templates.get 'menu.taskRunnerOutput'
+            template: templates.get 'menu.task-runner-output'
             args:
                 modal: true
 
