@@ -53,6 +53,28 @@
 
         <span class="hljs-literal">yes</span>
 
+    <span class="hljs-attribute">log</span>: <span class="hljs-function"><span class="hljs-params">(msg = <span class="hljs-string">''</span>)</span> -&gt;</span>
+        out = $ <span class="hljs-string">'#taskRunnerOutputDiv'</span>
+
+        out.append msg
+        out.append <span class="hljs-string">'&lt;br /&gt;'</span>
+
+        msg
+
+    <span class="hljs-attribute">error</span>: <span class="hljs-function"><span class="hljs-params">(err = <span class="hljs-string">''</span>)</span> -&gt;</span>
+        out = $ <span class="hljs-string">'#taskRunnerOutputDiv'</span>
+
+        out.append <span class="hljs-string">'&lt;br /&gt;'</span>
+        out.append <span class="hljs-string">'Error!!!!'</span>
+        out.append <span class="hljs-string">'&lt;br /&gt;'</span>
+        out.append err
+        out.append <span class="hljs-string">'&lt;br /&gt;'</span>
+        out.append <span class="hljs-string">'&lt;br /&gt;'</span>
+
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Error err
+
+
+
 <span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = Task
 </pre></div>
       

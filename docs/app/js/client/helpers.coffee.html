@@ -25,7 +25,11 @@
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><h1 id="helpers"><a href="#helpers" class="anchor"></a>Helpers</h1></div>
+          <div class="wrapper"><h1 id="helpers"><a href="#helpers" class="anchor"></a>Helpers</h1><p>This is a collection of methods that can be called in the same style as the
+server API methods found in the client. They are merged in with the generated
+server methods.</p>
+<p>For good examples of using these please see the <code>Push Glyphs</code> task.</p>
+</div>
         </div>
       
       
@@ -56,6 +60,9 @@ trade<span class="hljs-preprocessor">.getGlyphInventory</span> [trade<span class
       
         <div class="code"><pre class="wrapper">        <span class="hljs-attribute">findBuilding</span>: <span class="hljs-function"><span class="hljs-params">(buildings, name)</span> -&gt;</span>
             key = _.findKey buildings, {name}
+
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> key?
+
             obj = _.clone buildings[key]
             obj.id = key
 </pre></div>
@@ -91,6 +98,9 @@ trade<span class="hljs-preprocessor">.getGlyphInventory</span> [trade<span class
         <div class="comments ">
           <div class="wrapper"><h2 id="buildings-trade-getglyphinventory"><a href="#buildings-trade-getglyphinventory" class="anchor"></a>buildings.trade.getGlyphInventory</h2><p>Get an object of the glyphs where the key is the name of the glyph
 and the value is the quantity.</p>
+<p>Note that to carry on the chain after this promise statement, you
+need to use a <code>spread</code> instead of <code>then</code>. This is because multiple
+values are returned from this function.</p>
 </div>
         </div>
       

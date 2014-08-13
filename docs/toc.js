@@ -772,6 +772,21 @@ window.files = [
   ]
 },
 {
+  "path": "app/js/ui/panel.coffee.html",
+  "originalName": "panel.coffee",
+  "originalPath": "app/js/ui/panel.coffee",
+  "name": "panel.coffee.html",
+  "lang": "coffeescript",
+  "title": "Panel",
+  "toc": [
+    {
+      "level": 1,
+      "slug": "panel",
+      "title": "Panel"
+    }
+  ]
+},
+{
   "path": "app/js/script-console/tasks/index.coffee.html",
   "originalName": "index.coffee",
   "originalPath": "app/js/script-console/tasks/index.coffee",
@@ -999,6 +1014,14 @@ window.files = [
   "originalName": "scriptConsole.hbs",
   "originalPath": "app/templates/menu/scriptConsole.hbs",
   "name": "scriptConsole.hbs.html",
+  "lang": "handlebars",
+  "toc": []
+},
+{
+  "path": "app/templates/menu/taskRunnerOutput.hbs.html",
+  "originalName": "taskRunnerOutput.hbs",
+  "originalPath": "app/templates/menu/taskRunnerOutput.hbs",
+  "name": "taskRunnerOutput.hbs.html",
   "lang": "handlebars",
   "toc": []
 },

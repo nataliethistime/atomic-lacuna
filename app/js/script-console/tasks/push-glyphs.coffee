@@ -11,6 +11,7 @@ Task = require 'js/task'
 
 {empire, body} = require 'js/client'
 
+
 class PushGlyphs extends Task
 
     displayName: 'Push Glyphs'
@@ -42,13 +43,19 @@ class PushGlyphs extends Task
             @fromId = @planets[@fromName]
             @toId = @planets[@toName]
 
+            @log "Getting buildings on #{@fromName}."
             body.get_buildings [@fromId]
 
         .then (res) ->
 
             {buildings} = res
             @trade = body.findBuilding buildings, 'Trade Ministry'
-            @trade.getGlyphInventory()
+
+            if @trade?
+                @log 'Found the Trade Ministry. Getting Glyph inventory.'
+                @trade.getGlyphInventory()
+            else
+                @error "Could not find Trade Ministry on #{@fromName}"
 
         .spread (@glyphs, @glyphCargoSpace) ->
             @trade.get_trade_ships [@trade.id, @toId]

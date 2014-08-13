@@ -6,6 +6,9 @@
 
 'use strict'
 
+Panel = require 'js/ui/panel'
+templates = require 'js/templates'
+
 class TaskRunner
 
     ###
@@ -32,7 +35,14 @@ class TaskRunner
     ###
 
     show: ->
-        # do stuffs
+        @outputPanel = new Panel
+            header: 'Output'
+            id: 'taskRunnerOutput'
+            template: templates.get 'menu.taskRunnerOutput'
+            args:
+                modal: true
+
+        @outputPanel.show()
 
 
 module.exports = new TaskRunner()

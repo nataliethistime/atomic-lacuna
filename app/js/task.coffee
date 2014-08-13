@@ -17,4 +17,26 @@ class Task
 
         yes
 
+    log: (msg = '') ->
+        out = $ '#taskRunnerOutputDiv'
+
+        out.append msg
+        out.append '<br />'
+
+        msg
+
+    error: (err = '') ->
+        out = $ '#taskRunnerOutputDiv'
+
+        out.append '<br />'
+        out.append 'Error!!!!'
+        out.append '<br />'
+        out.append err
+        out.append '<br />'
+        out.append '<br />'
+
+        throw new Error err
+
+
+
 module.exports = Task

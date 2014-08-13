@@ -38,6 +38,7 @@ Task = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/
 
 {empire, body} = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/client'</span>
 
+
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PushGlyphs</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Task</span></span>
 
     <span class="hljs-attribute">displayName</span>: <span class="hljs-string">'Push Glyphs'</span>
@@ -83,13 +84,19 @@ Task = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/
             <span class="hljs-property">@fromId</span> = <span class="hljs-property">@planets</span>[<span class="hljs-property">@fromName</span>]
             <span class="hljs-property">@toId</span> = <span class="hljs-property">@planets</span>[<span class="hljs-property">@toName</span>]
 
+            <span class="hljs-property">@log</span> <span class="hljs-string">"Getting buildings on <span class="hljs-subst">#{<span class="hljs-property">@fromName</span>}</span>."</span>
             body.get_buildings [<span class="hljs-property">@fromId</span>]
 
         .<span class="hljs-keyword">then</span> <span class="hljs-function"><span class="hljs-params">(res)</span> -&gt;</span>
 
             {buildings} = res
             <span class="hljs-property">@trade</span> = body.findBuilding buildings, <span class="hljs-string">'Trade Ministry'</span>
-            <span class="hljs-property">@trade</span>.getGlyphInventory()
+
+            <span class="hljs-keyword">if</span> <span class="hljs-property">@trade</span>?
+                <span class="hljs-property">@log</span> <span class="hljs-string">'Found the Trade Ministry. Getting Glyph inventory.'</span>
+                <span class="hljs-property">@trade</span>.getGlyphInventory()
+            <span class="hljs-keyword">else</span>
+                <span class="hljs-property">@error</span> <span class="hljs-string">"Could not find Trade Ministry on <span class="hljs-subst">#{<span class="hljs-property">@fromName</span>}</span>"</span>
 
         .spread <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@glyphs</span>, <span class="hljs-property">@glyphCargoSpace</span>)</span> -&gt;</span>
             <span class="hljs-property">@trade</span>.get_trade_ships [<span class="hljs-property">@trade</span>.id, <span class="hljs-property">@toId</span>]

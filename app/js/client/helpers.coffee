@@ -1,6 +1,10 @@
 ###
 # # Helpers
+# This is a collection of methods that can be called in the same style as the
+# server API methods found in the client. They are merged in with the generated
+# server methods.
 #
+# For good examples of using these please see the `Push Glyphs` task.
 ###
 
 'use strict'
@@ -27,6 +31,9 @@ helpers =
 
         findBuilding: (buildings, name) ->
             key = _.findKey buildings, {name}
+
+            return null unless key?
+
             obj = _.clone buildings[key]
             obj.id = key
 
@@ -48,6 +55,10 @@ helpers =
             # ## buildings.trade.getGlyphInventory
             # Get an object of the glyphs where the key is the name of the glyph
             # and the value is the quantity.
+            #
+            # Note that to carry on the chain after this promise statement, you
+            # need to use a `spread` instead of `then`. This is because multiple
+            # values are returned from this function.
             ###
 
             getGlyphInventory: () ->

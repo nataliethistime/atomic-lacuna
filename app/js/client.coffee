@@ -96,7 +96,7 @@ class Client
 
     prepareRequestOptions: (data) ->
         json: data
-        timeout: 5 * 1000
+        timeout: 30 * 1000
 
 
     ###
@@ -128,10 +128,9 @@ class Client
     createSendPromise: (sendUrl, requestOptions) ->
 
         new Promise (resolve, reject) ->
-            timeout = 5000
 
             request.post sendUrl, requestOptions, (error, response, body) ->
-                unless error
+                if !error and response.statusCode is 200
                     if body.result
                         val = body.result or body
                         console.log '=>', val
@@ -141,9 +140,7 @@ class Client
                         console.log '=>', val
                         resolve val
                 else
-                    # TODO: do something interesting here!
-                    console.log "fatal error that shouldn't happen. Oh noes!"
-                    console.log error
+                    throw error
 
 
 ###
