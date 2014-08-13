@@ -634,6 +634,21 @@ window.files = [
       "level": 1,
       "slug": "task",
       "title": "Task"
+    },
+    {
+      "level": 2,
+      "slug": "task-validate",
+      "title": "Task.validate"
+    },
+    {
+      "level": 2,
+      "slug": "task-log",
+      "title": "Task.log"
+    },
+    {
+      "level": 2,
+      "slug": "task-error",
+      "title": "Task.error"
     }
   ]
 },
@@ -783,6 +798,21 @@ window.files = [
       "level": 1,
       "slug": "panel",
       "title": "Panel"
+    },
+    {
+      "level": 2,
+      "slug": "panel-defaults",
+      "title": "Panel::DEFAULTS"
+    },
+    {
+      "level": 2,
+      "slug": "panel-constructor",
+      "title": "Panel.constructor"
+    },
+    {
+      "level": 2,
+      "slug": "panel-show",
+      "title": "Panel.show"
     }
   ]
 },

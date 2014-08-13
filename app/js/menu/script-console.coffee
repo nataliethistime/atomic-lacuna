@@ -7,8 +7,6 @@
 # often and what options to pass in and then the rest is handled. It is comprised of
 # the following components:
 #
-# - A Github repository containing all of the the tasks I approve and have tested
-#   to not be malicious and such.
 # - A build-persistant data storage of some kind where all the data about tasks and
 #   options that the user has setup. This could be a sqlite db or a json file. json
 #   *might* work best here.
@@ -31,7 +29,7 @@ class ScriptConsole
 
     ###
     # ## ScriptConsole.constructor
-    #
+    # Sets up the Script Console window.
     ###
 
     constructor: ->
@@ -108,16 +106,16 @@ class ScriptConsole
 
     ###
     # ## ScriptConsole.render
-    # Calls `setBody` on `@panel` to render the template into the `DOM` and sets
-    # up all the events.
+    # Sets the body of the panel to the template and initializes any relevant events.
+    #
+    # Note: if a task has been selected, then a few convenience variables are put
+    # into the template as well.
     ###
 
     render: (task) =>
         if task?
             @selectedTask = task
 
-            # Provide a few convenience variables for each task's configuration template
-            # to use.
             templateOptions =
                 planets : Game.getPlanetNames()
 

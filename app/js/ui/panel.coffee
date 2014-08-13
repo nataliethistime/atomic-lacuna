@@ -1,15 +1,19 @@
-###
-# # Panel
-#
-###
-
 'use strict'
 
 Lacuna = YAHOO.lacuna
 Game = Lacuna.Game
 
-
+###
+# # Panel
+# The class that other code interacts with for creating panels.
+###
 class Panel
+
+
+    ###
+    # ## Panel::DEFAULTS
+    # These are the default options passed into YUI's panel constructor.
+    ###
 
     DEFAULTS:
         constraintoviewport: true
@@ -19,6 +23,12 @@ class Panel
         close: true
         width: '600px'
         zIndex: 9999
+
+
+    ###
+    # ## Panel.constructor
+    # The function that puts all of this stuff together.
+    ###
 
     constructor: (options) ->
 
@@ -40,6 +50,13 @@ class Panel
         @panel.setHeader options.header or ''
         @panel.render()
         Game.OverlayManager.register @panel
+
+
+    ###
+    # ## Panel.show
+    # This function shows the panel on the screen. It also renders the template
+    # passed into the constructor.
+    ###
 
     show: (templateVars = {}) ->
         @panel.setBody @template(templateVars) or ''

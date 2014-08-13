@@ -36,8 +36,7 @@ class Session
 ###
 # ## Client
 # This is the class in which all available API methods are defined. When you `require`
-# this module it returns an instance of this class. See the documentation for
-# **Client.send** for some example usages.
+# this module it returns an instance of this class.
 ###
 
 class Client
@@ -45,7 +44,7 @@ class Client
 
     ###
     # ## Client.prepareParams
-    # Adds the session id to the `params` (wheather it be object or array).
+    # Adds the session id to the `params` (whether it be object or array).
     #
     # When `params` is `undefined` it defaults to an empty array. There aren't
     # any API methods that take an empty object or empty array. So either way, if this
@@ -87,11 +86,7 @@ class Client
 
     ###
     # ## Client.prepareRequestOptions
-    # Creates the object which is passed into the `request.request` method.
-    #
-    # The docs aren't clear about how the `url` is meant to be handled. So, we call
-    # `url.parse` on it, which generates an object that Node can use to send the request.
-    # For some reason we can't just supply a href or something.
+    # Creates the object which is passed into the `request` method.
     ###
 
     prepareRequestOptions: (data) ->
@@ -123,6 +118,9 @@ class Client
     # ## Client.createSendPromise
     # Uses [Bluebird](https://github.com/petkaantonov/bluebird) to make this
     # request into a promise.
+    #
+    # When a request comes in, if the body has a `result` than the request is
+    # considered successful and is `resolve()`'d. Otherwise the data is `reject()`'d.
     ###
 
     createSendPromise: (sendUrl, requestOptions) ->
@@ -146,7 +144,7 @@ class Client
 ###
 # # Client Initialization
 # Initialize all of the methods that belong in the `Client` using the `modules`
-# object. This is done here mostly because I'm lazy. So, it it matters so much,
+# object. This is done here mostly because I'm lazy. So, if it matters so much,
 # please *do* find a better place for this.
 ###
 
@@ -188,5 +186,9 @@ func = (value, key) ->
 
 # Kick off the recursion and save the resulting object into the `Client`'s `prototype`.
 _.each modules, func
+
+# Note that the helpers are merged in here, as well as the generated methods.
 _.merge Client::, methods, helpers
+
+
 module.exports = new Client()

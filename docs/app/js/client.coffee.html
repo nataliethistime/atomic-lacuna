@@ -83,8 +83,7 @@ See below...</p>
       
         <div class="comments ">
           <div class="wrapper"><h2 id="client"><a href="#client" class="anchor"></a>Client</h2><p>This is the class in which all available API methods are defined. When you <code>require</code>
-this module it returns an instance of this class. See the documentation for
-<strong>Client.send</strong> for some example usages.</p>
+this module it returns an instance of this class.</p>
 </div>
         </div>
       
@@ -98,7 +97,7 @@ this module it returns an instance of this class. See the documentation for
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><h2 id="client-prepareparams"><a href="#client-prepareparams" class="anchor"></a>Client.prepareParams</h2><p>Adds the session id to the <code>params</code> (wheather it be object or array).</p>
+          <div class="wrapper"><h2 id="client-prepareparams"><a href="#client-prepareparams" class="anchor"></a>Client.prepareParams</h2><p>Adds the session id to the <code>params</code> (whether it be object or array).</p>
 <p>When <code>params</code> is <code>undefined</code> it defaults to an empty array. There aren&#39;t
 any API methods that take an empty object or empty array. So either way, if this
 happens, it&#39;ll probably throw an error.</p>
@@ -150,10 +149,7 @@ a JSON RPC 2.0 request. There&#39;s more information about this object at
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><h2 id="client-preparerequestoptions"><a href="#client-preparerequestoptions" class="anchor"></a>Client.prepareRequestOptions</h2><p>Creates the object which is passed into the <code>request.request</code> method.</p>
-<p>The docs aren&#39;t clear about how the <code>url</code> is meant to be handled. So, we call
-<code>url.parse</code> on it, which generates an object that Node can use to send the request.
-For some reason we can&#39;t just supply a href or something.</p>
+          <div class="wrapper"><h2 id="client-preparerequestoptions"><a href="#client-preparerequestoptions" class="anchor"></a>Client.prepareRequestOptions</h2><p>Creates the object which is passed into the <code>request</code> method.</p>
 </div>
         </div>
       
@@ -195,6 +191,8 @@ and some callbacks and does all the magic HTTP stuff.</p>
         <div class="comments ">
           <div class="wrapper"><h2 id="client-createsendpromise"><a href="#client-createsendpromise" class="anchor"></a>Client.createSendPromise</h2><p>Uses <a href="https://github.com/petkaantonov/bluebird">Bluebird</a> to make this
 request into a promise.</p>
+<p>When a request comes in, if the body has a <code>result</code> than the request is
+considered successful and is <code>resolve()</code>&#39;d. Otherwise the data is <code>reject()</code>&#39;d.</p>
 </div>
         </div>
       
@@ -224,7 +222,7 @@ request into a promise.</p>
       
         <div class="comments ">
           <div class="wrapper"><h1 id="client-initialization"><a href="#client-initialization" class="anchor"></a>Client Initialization</h1><p>Initialize all of the methods that belong in the <code>Client</code> using the <code>modules</code>
-object. This is done here mostly because I&#39;m lazy. So, it it matters so much,
+object. This is done here mostly because I&#39;m lazy. So, if it matters so much,
 please <em>do</em> find a better place for this.</p>
 </div>
         </div>
@@ -298,7 +296,21 @@ then it&#39;s sent off to be put into the collection of callable server methods.
       
       
         <div class="code"><pre class="wrapper">_.each modules, func
-_.merge <span class="hljs-attribute">Client</span>::, methods, helpers
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Note that the helpers are merged in here, as well as the generated methods.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">_.merge <span class="hljs-attribute">Client</span>::, methods, helpers
+
+
 <span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = <span class="hljs-keyword">new</span> Client()
 </pre></div>
       

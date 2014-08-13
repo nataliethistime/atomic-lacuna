@@ -35,16 +35,110 @@
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><p>TODO: document these!</p>
+          <div class="wrapper"><p>This is the list of all the attributes a Task needs to contain.
+To see an example of all these, have a look at the Push Glyphs task.</p>
 </div>
         </div>
       
       
-        <div class="code"><pre class="wrapper">requiredAttributes = [<span class="hljs-string">'displayName'</span>, <span class="hljs-string">'internalName'</span>, <span class="hljs-string">'template'</span>, <span class="hljs-string">'loadOptions'</span>, <span class="hljs-string">'run'</span>]
+        <div class="code"><pre class="wrapper">requiredAttributes = [
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><ul>
+<li><code>displayName</code>, the name that the user sees when they select this task.</li>
+</ul>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-string">'displayName'</span>
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><ul>
+<li><code>internalName</code>, the name is used to identify this task within the HTML.</li>
+</ul>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-string">'internalName'</span>
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><ul>
+<li><code>template</code>, the Handlebars template that will render all of the controls
+required to configure this task.</li>
+</ul>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-string">'template'</span>
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><ul>
+<li><code>loadOptions</code>, a function that will be called before the task is run. It
+should return a human readable error string if anything is wrong. Otherwise
+it should return <code>true</code>.</li>
+</ul>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-string">'loadOptions'</span>
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><ul>
+<li><code>run</code>, the function that will be called when the user has clicked the run
+button and everything is in order to go. Put your task&#39;s logic in here.</li>
+</ul>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-string">'run'</span>
+]
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Task</span></span>
 
-    <span class="hljs-attribute">validate</span>:<span class="hljs-function"> -&gt;</span>
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="task-validate"><a href="#task-validate" class="anchor"></a>Task.validate</h2><p>Checks to make sure this task is valid according to the needed attributes
+specified above.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">validate</span>:<span class="hljs-function"> -&gt;</span>
 
         _.each requiredAttributes, <span class="hljs-function"><span class="hljs-params">(attr)</span> -&gt;</span>
             <span class="hljs-keyword">unless</span> @[attr]?
@@ -53,24 +147,38 @@
 
         <span class="hljs-literal">yes</span>
 
-    <span class="hljs-attribute">log</span>: <span class="hljs-function"><span class="hljs-params">(msg = <span class="hljs-string">''</span>)</span> -&gt;</span>
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="task-log"><a href="#task-log" class="anchor"></a>Task.log</h2><p>This functions prints the given message to the output console.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">log</span>: <span class="hljs-function"><span class="hljs-params">(msg = <span class="hljs-string">''</span>)</span> -&gt;</span>
         out = $ <span class="hljs-string">'#taskRunnerOutputDiv'</span>
-
-        out.append msg
-        out.append <span class="hljs-string">'&lt;br /&gt;'</span>
-
+        out.append <span class="hljs-string">"<span class="hljs-subst">#{msg}</span>&lt;br /&gt;"</span>
         msg
 
-    <span class="hljs-attribute">error</span>: <span class="hljs-function"><span class="hljs-params">(err = <span class="hljs-string">''</span>)</span> -&gt;</span>
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="task-error"><a href="#task-error" class="anchor"></a>Task.error</h2><p>This function displays an error in the output console and throws a new <code>Error</code>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">error</span>: <span class="hljs-function"><span class="hljs-params">(err = <span class="hljs-string">''</span>)</span> -&gt;</span>
         out = $ <span class="hljs-string">'#taskRunnerOutputDiv'</span>
-
-        out.append <span class="hljs-string">'&lt;br /&gt;'</span>
-        out.append <span class="hljs-string">'Error!!!!'</span>
-        out.append <span class="hljs-string">'&lt;br /&gt;'</span>
-        out.append err
-        out.append <span class="hljs-string">'&lt;br /&gt;'</span>
-        out.append <span class="hljs-string">'&lt;br /&gt;'</span>
-
+        out.append <span class="hljs-string">"&lt;br /&gt;&lt;span style=\"color: red;\"&gt;Error: <span class="hljs-subst">#{err}</span>&lt;/span&gt;&lt;br /&gt;"</span>
         <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Error err
 
 
