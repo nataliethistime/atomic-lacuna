@@ -1,0 +1,22 @@
+'use strict'
+module.exports =
+    url: '/embassy'
+    path: 'buildings.embassy'
+    methods: [
+        'create_alliance'
+        'dissolve_alliance'
+        'get_alliance_status'
+        'send_invite'
+        'withdraw_invite'
+        'accept_invite'
+        'reject_invite'
+        'get_pending_invites'
+        'get_my_invites'
+        'assign_alliance_leader'
+        'update_alliance'
+        'leave_alliance'
+        'expel_member'
+        'view_stash'
+        'donate_to_stash'
+        'exchange_with_stash'
+    ]

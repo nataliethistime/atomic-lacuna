@@ -1,14 +1,10 @@
 ###
 # # Client
 # This is the client Node-based client that should work better and be easier to
-# work with than the included `YUI` client.
+# work with than the old `YUI` client.
 ###
 
 'use strict'
-
-modules = require 'js/client/modules'
-helpers = require 'js/client/helpers'
-util = require 'js/util'
 
 # Get the right edition of the `request` module.
 request = if window.ATOM_SHELL then require 'request' else require 'browser-request'
@@ -16,30 +12,70 @@ request = if window.ATOM_SHELL then require 'request' else require 'browser-requ
 url = require 'url'
 Promise = require 'bluebird'
 
+Session = require 'js/client/session'
+util = require 'js/util'
 
-###
-# ## Session
-# This is a static class used to store the session id. We cannot store the session
-# id inside the `Client` class because of the way that the `send` methods are setup.
-# See below...
-###
+module.exports = class
 
-class Session
-
-    get: ->
-        unless @sessionId
-            @sessionId = YAHOO.lacuna.Game.GetSession()
-
-        @sessionId
+    # Use this variable to check if this is an initialized version of the client object.
+    initialized: no
 
 
-###
-# ## Client
-# This is the class in which all available API methods are defined. When you `require`
-# this module, it returns an instance of this class.
-###
+    constructor: ->
+        # This `methods` object is used to store the methods during initialization
+        # so that when each function is bound to the `Client`'s `prototype`, it doesn't
+        # include all the other methods. This reduces the object down quite a lot.
+        methods = {}
 
-class Client
+
+        ###
+        # ## save
+        # Loops through each of the method names in `methodList` and binds a clone of the
+        # `Client`'s prototype, the `url` and the `method` to a new function. This new
+        # function is put into the above `methods` object and taken care of later.
+        ###
+
+        save = (path, url, methodList) =>
+            _.each methodList, (method) =>
+                sendFunc = _.bind @send, _.assign {url, method}
+                util.deepSet(methods, "#{path}.#{method}", sendFunc)
+
+
+        ###
+        # ## saveHelpers
+        # Saves the helpers into the object thing-o. Whatever.
+        ###
+
+        saveHelpers = (helpers, path) ->
+            _.each helpers, (helper, name) ->
+                thefunc = _.bind helper, methods
+                util.deepSet(methods, "#{path}.#{name}", thefunc)
+
+
+        ###
+        # ## func
+        # This is the recursive function which tries to loop through the entire object.
+        # On each iteration, if the current object has a `url`, `methods` and `path`,
+        # then it's sent off to be put into the collection of callable server methods.
+        ###
+
+        func = (value, key) ->
+
+            if value.url? and value.methods? and value.path?
+                save(value.path, value.url, value.methods)
+
+            if value.helpers? and value.path?
+                saveHelpers(value.helpers, value.path)
+
+            if _.isObject value
+                _.each value, func
+
+
+        # Let's get this party started.
+        _.each require('js/client/modules'), func
+        _.merge @, methods
+
+        @initialized = yes
 
 
     ###
@@ -140,55 +176,3 @@ class Client
                 else
                     throw error
 
-
-###
-# # Client Initialization
-# Initialize all of the methods that belong in the `Client` using the `modules`
-# object. This is done here mostly because I'm lazy. So, if it matters so much,
-# please *do* find a better place for this.
-###
-
-
-# Note: this `methods` object is used to store the methods during initialization
-# so that when each function is bound to the `Client`'s `prototype`, it doesn't
-# include all the other methods. This reduces the object down quite a lot.
-methods = {}
-
-
-###
-# ## save
-# Loops through each of the method names in `methodList` and binds a clone of the
-# `Client`'s prototype, the `url` and the `method` to a new function. This new
-# function is put into the above `methods` object and taken care of later.
-###
-
-save = (path, url, methodList) ->
-    _.each methodList, (method) ->
-        sendFunc = _.bind Client::send, _.assign _.clone(Client::), {url, method}
-        util.deepSet(methods, "#{path}.#{method}", sendFunc)
-
-
-###
-# ## func
-# This is the recursive function which tries to loop through the entire object.
-# On each iteration, if the current object has a `url`, `methods` and `path`,
-# then it's sent off to be put into the collection of callable server methods.
-###
-
-func = (value, key) ->
-
-    if value.url? and value.methods? and value.path?
-        save(value.path, value.url, value.methods)
-
-    if _.isObject value
-        _.each value, func
-
-
-# Kick off the recursion and save the resulting object into the `Client`'s `prototype`.
-_.each modules, func
-
-# Note that the helpers are merged in here, as well as the generated methods.
-_.merge Client::, methods, helpers
-
-
-module.exports = new Client()

@@ -1,0 +1,22 @@
+'use strict'
+module.exports =
+    url: '/spaceport'
+    path: 'buildings.spacePort'
+    methods: [
+        'prepare_fetch_spies'
+        'fetch_spies'
+        'prepare_send_spies'
+        'send_spies'
+        'get_ships_for'
+        'name_ship'
+        'recall_ship'
+        'recall_all'
+        'scuttle_ship'
+        'send_fleet'
+        'send_ship'
+        'view_all_ships'
+        'view_foreign_ships'
+        'view_ships_travelling'
+        'view_ships_orbiting'
+        'view_battle_logs'
+    ]

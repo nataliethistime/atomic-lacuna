@@ -86,7 +86,7 @@ class PushGlyphs extends Task
             @trade.push_items [@trade.id, @toId, toPush, ship_id: @ship.id]
 
         .then (res) ->
-            console.log 'Success!' if res.ship.task is 'Travelling'
+            console.log 'Success!'
 
         .done callback
 

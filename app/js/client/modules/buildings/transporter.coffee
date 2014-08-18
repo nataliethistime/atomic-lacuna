@@ -1,0 +1,22 @@
+'use strict'
+module.exports =
+    url: '/transporter'
+    path: 'buildings.transporter'
+    methods: [
+        'add_to_market'
+        'get_ship_summary'
+        'get_ships'
+        'get_prisoners'
+        'get_plan_summary'
+        'get_plans'
+        'get_glyph_summary'
+        'get_glyphs'
+        'withdraw_from_market'
+        'accept_from_market'
+        'view_market'
+        'view_my_market'
+        'get_stored_resources'
+        'push_items'
+        'trade_one_for_one'
+        'report_abuse'
+    ]
