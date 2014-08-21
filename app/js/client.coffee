@@ -15,7 +15,7 @@ Promise = require 'bluebird'
 Session = require 'js/client/session'
 util = require 'js/util'
 
-module.exports = class
+class Client
 
     # Use this variable to check if this is an initialized version of the client object.
     initialized: no
@@ -37,7 +37,7 @@ module.exports = class
 
         save = (path, url, methodList) =>
             _.each methodList, (method) =>
-                sendFunc = _.bind @send, _.assign {url, method}
+                sendFunc = _.bind Client::send, _.assign _.clone(Client::), {url, method}
                 util.deepSet(methods, "#{path}.#{method}", sendFunc)
 
 
@@ -48,8 +48,7 @@ module.exports = class
 
         saveHelpers = (helpers, path) ->
             _.each helpers, (helper, name) ->
-                thefunc = _.bind helper, methods
-                util.deepSet(methods, "#{path}.#{name}", thefunc)
+                util.deepSet methods, "#{path}.#{name}", helper
 
 
         ###
@@ -66,9 +65,6 @@ module.exports = class
 
             if value.helpers? and value.path?
                 saveHelpers(value.helpers, value.path)
-
-            if _.isObject value
-                _.each value, func
 
 
         # Let's get this party started.
@@ -127,7 +123,7 @@ module.exports = class
 
     prepareRequestOptions: (data) ->
         json: data
-        timeout: 30 * 1000
+        timeout: 20 * 1000
 
 
     ###
@@ -176,3 +172,5 @@ module.exports = class
                 else
                     throw error
 
+
+module.exports = Client

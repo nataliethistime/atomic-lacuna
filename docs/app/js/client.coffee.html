@@ -26,16 +26,12 @@
       
         <div class="comments ">
           <div class="wrapper"><h1 id="client"><a href="#client" class="anchor"></a>Client</h1><p>This is the client Node-based client that should work better and be easier to
-work with than the included <code>YUI</code> client.</p>
+work with than the old <code>YUI</code> client.</p>
 </div>
         </div>
       
       
         <div class="code"><pre class="wrapper"><span class="hljs-string">'use strict'</span>
-
-modules = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/client/modules'</span>
-helpers = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/client/helpers'</span>
-util = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/util'</span>
 </pre></div>
       
       </div>
@@ -53,6 +49,10 @@ util = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/
 url = <span class="hljs-built_in">require</span> <span class="hljs-string">'url'</span>
 Promise = <span class="hljs-built_in">require</span> <span class="hljs-string">'bluebird'</span>
 
+Session = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/client/session'</span>
+util = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/util'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Client</span></span>
 </pre></div>
       
       </div>
@@ -60,20 +60,29 @@ Promise = <span class="hljs-built_in">require</span> <span class="hljs-string">'
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><h2 id="session"><a href="#session" class="anchor"></a>Session</h2><p>This is a static class used to store the session id. We cannot store the session
-id inside the <code>Client</code> class because of the way that the <code>send</code> methods are setup.
-See below...</p>
+          <div class="wrapper"><p>Use this variable to check if this is an initialized version of the client object.</p>
 </div>
         </div>
       
       
-        <div class="code"><pre class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Session</span></span>
+        <div class="code"><pre class="wrapper">    <span class="hljs-attribute">initialized</span>: <span class="hljs-literal">no</span>
 
-    <span class="hljs-attribute">get</span>:<span class="hljs-function"> -&gt;</span>
-        <span class="hljs-keyword">unless</span> <span class="hljs-property">@sessionId</span>
-            <span class="hljs-property">@sessionId</span> = YAHOO.lacuna.Game.GetSession()
 
-        <span class="hljs-property">@sessionId</span>
+    <span class="hljs-attribute">constructor</span>:<span class="hljs-function"> -&gt;</span></pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>This <code>methods</code> object is used to store the methods during initialization
+so that when each function is bound to the <code>Client</code>&#39;s <code>prototype</code>, it doesn&#39;t
+include all the other methods. This reduces the object down quite a lot.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        methods = {}
 
 </pre></div>
       
@@ -82,13 +91,72 @@ See below...</p>
       <div class="segment">
       
         <div class="comments ">
-          <div class="wrapper"><h2 id="client"><a href="#client" class="anchor"></a>Client</h2><p>This is the class in which all available API methods are defined. When you <code>require</code>
-this module, it returns an instance of this class.</p>
+          <div class="wrapper"><h2 id="save"><a href="#save" class="anchor"></a>save</h2><p>Loops through each of the method names in <code>methodList</code> and binds a clone of the
+<code>Client</code>&#39;s prototype, the <code>url</code> and the <code>method</code> to a new function. This new
+function is put into the above <code>methods</code> object and taken care of later.</p>
 </div>
         </div>
       
       
-        <div class="code"><pre class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Client</span></span>
+        <div class="code"><pre class="wrapper">        <span class="hljs-function"><span class="hljs-title">save</span> = <span class="hljs-params">(path, url, methodList)</span> =&gt;</span>
+            _.each methodList, <span class="hljs-function"><span class="hljs-params">(method)</span> =&gt;</span>
+                sendFunc = _.bind <span class="hljs-attribute">Client</span>::send, _.assign _.clone(<span class="hljs-attribute">Client</span>::), {url, method}
+                util.deepSet(methods, <span class="hljs-string">"<span class="hljs-subst">#{path}</span>.<span class="hljs-subst">#{method}</span>"</span>, sendFunc)
+
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="savehelpers"><a href="#savehelpers" class="anchor"></a>saveHelpers</h2><p>Saves the helpers into the object thing-o. Whatever.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-function"><span class="hljs-title">saveHelpers</span> = <span class="hljs-params">(helpers, path)</span> -&gt;</span>
+            _.each helpers, <span class="hljs-function"><span class="hljs-params">(helper, name)</span> -&gt;</span>
+                util.deepSet methods, <span class="hljs-string">"<span class="hljs-subst">#{path}</span>.<span class="hljs-subst">#{name}</span>"</span>, helper
+
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="func"><a href="#func" class="anchor"></a>func</h2><p>This is the recursive function which tries to loop through the entire object.
+On each iteration, if the current object has a <code>url</code>, <code>methods</code> and <code>path</code>,
+then it&#39;s sent off to be put into the collection of callable server methods.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-function"><span class="hljs-title">func</span> = <span class="hljs-params">(value, key)</span> -&gt;</span>
+
+            <span class="hljs-keyword">if</span> value.url? <span class="hljs-keyword">and</span> value.methods? <span class="hljs-keyword">and</span> value.path?
+                save(value.path, value.url, value.methods)
+
+            <span class="hljs-keyword">if</span> value.helpers? <span class="hljs-keyword">and</span> value.path?
+                saveHelpers(value.helpers, value.path)
+
+</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Let&#39;s get this party started.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        _.each <span class="hljs-built_in">require</span>(<span class="hljs-string">'js/client/modules'</span>), func
+        _.merge @, methods
+
+        <span class="hljs-property">@initialized</span> = <span class="hljs-literal">yes</span>
 
 </pre></div>
       
@@ -156,7 +224,7 @@ a JSON RPC 2.0 request. There&#39;s more information about this object at
       
         <div class="code"><pre class="wrapper">    <span class="hljs-attribute">prepareRequestOptions</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
         <span class="hljs-attribute">json</span>: data
-        <span class="hljs-attribute">timeout</span>: <span class="hljs-number">30</span> * <span class="hljs-number">1000</span>
+        <span class="hljs-attribute">timeout</span>: <span class="hljs-number">20</span> * <span class="hljs-number">1000</span>
 
 </pre></div>
       
@@ -214,104 +282,8 @@ considered successful and is <code>resolve()</code>&#39;d. Otherwise the data is
                 <span class="hljs-keyword">else</span>
                     <span class="hljs-keyword">throw</span> error
 
-</pre></div>
-      
-      </div>
-    
-      <div class="segment">
-      
-        <div class="comments ">
-          <div class="wrapper"><h1 id="client-initialization"><a href="#client-initialization" class="anchor"></a>Client Initialization</h1><p>Initialize all of the methods that belong in the <code>Client</code> using the <code>modules</code>
-object. This is done here mostly because I&#39;m lazy. So, if it matters so much,
-please <em>do</em> find a better place for this.</p>
-</div>
-        </div>
-      
-      
-      </div>
-    
-      <div class="segment">
-      
-        <div class="comments ">
-          <div class="wrapper"><p>Note: this <code>methods</code> object is used to store the methods during initialization
-so that when each function is bound to the <code>Client</code>&#39;s <code>prototype</code>, it doesn&#39;t
-include all the other methods. This reduces the object down quite a lot.</p>
-</div>
-        </div>
-      
-      
-        <div class="code"><pre class="wrapper">methods = {}
 
-</pre></div>
-      
-      </div>
-    
-      <div class="segment">
-      
-        <div class="comments ">
-          <div class="wrapper"><h2 id="save"><a href="#save" class="anchor"></a>save</h2><p>Loops through each of the method names in <code>methodList</code> and binds a clone of the
-<code>Client</code>&#39;s prototype, the <code>url</code> and the <code>method</code> to a new function. This new
-function is put into the above <code>methods</code> object and taken care of later.</p>
-</div>
-        </div>
-      
-      
-        <div class="code"><pre class="wrapper"><span class="hljs-function"><span class="hljs-title">save</span> = <span class="hljs-params">(path, url, methodList)</span> -&gt;</span>
-    _.each methodList, <span class="hljs-function"><span class="hljs-params">(method)</span> -&gt;</span>
-        sendFunc = _.bind <span class="hljs-attribute">Client</span>::send, _.assign _.clone(<span class="hljs-attribute">Client</span>::), {url, method}
-        util.deepSet(methods, <span class="hljs-string">"<span class="hljs-subst">#{path}</span>.<span class="hljs-subst">#{method}</span>"</span>, sendFunc)
-
-</pre></div>
-      
-      </div>
-    
-      <div class="segment">
-      
-        <div class="comments ">
-          <div class="wrapper"><h2 id="func"><a href="#func" class="anchor"></a>func</h2><p>This is the recursive function which tries to loop through the entire object.
-On each iteration, if the current object has a <code>url</code>, <code>methods</code> and <code>path</code>,
-then it&#39;s sent off to be put into the collection of callable server methods.</p>
-</div>
-        </div>
-      
-      
-        <div class="code"><pre class="wrapper"><span class="hljs-function"><span class="hljs-title">func</span> = <span class="hljs-params">(value, key)</span> -&gt;</span>
-
-    <span class="hljs-keyword">if</span> value.url? <span class="hljs-keyword">and</span> value.methods? <span class="hljs-keyword">and</span> value.path?
-        save(value.path, value.url, value.methods)
-
-    <span class="hljs-keyword">if</span> _.isObject value
-        _.each value, func
-
-</pre></div>
-      
-      </div>
-    
-      <div class="segment">
-      
-        <div class="comments ">
-          <div class="wrapper"><p>Kick off the recursion and save the resulting object into the <code>Client</code>&#39;s <code>prototype</code>.</p>
-</div>
-        </div>
-      
-      
-        <div class="code"><pre class="wrapper">_.each modules, func
-</pre></div>
-      
-      </div>
-    
-      <div class="segment">
-      
-        <div class="comments ">
-          <div class="wrapper"><p>Note that the helpers are merged in here, as well as the generated methods.</p>
-</div>
-        </div>
-      
-      
-        <div class="code"><pre class="wrapper">_.merge <span class="hljs-attribute">Client</span>::, methods, helpers
-
-
-<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = <span class="hljs-keyword">new</span> Client()
+<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = Client
 </pre></div>
       
       </div>

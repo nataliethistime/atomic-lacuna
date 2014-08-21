@@ -1,7 +1,7 @@
 ###
 # # Push Glyphs
 # A task to use any available transport ship to push all glyphs on one planet
-# to a different planet.
+# to a specified target planet.
 ###
 
 'use strict'
@@ -9,7 +9,7 @@
 templates = require 'js/templates'
 Task = require 'js/task'
 
-{empire, body} = require 'js/client'
+Client = require 'js/client'
 
 
 class PushGlyphs extends Task
@@ -34,6 +34,8 @@ class PushGlyphs extends Task
     # See the documentation for the `Task` class for what this is.
     ###
     run: (callback) ->
+
+        {empire, body} = new Client()
 
         empire.get_status []
         .bind @

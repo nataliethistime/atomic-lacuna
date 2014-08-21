@@ -572,13 +572,18 @@ window.files = [
     },
     {
       "level": 2,
-      "slug": "session",
-      "title": "Session"
+      "slug": "save",
+      "title": "save"
     },
     {
       "level": 2,
-      "slug": "client",
-      "title": "Client"
+      "slug": "savehelpers",
+      "title": "saveHelpers"
+    },
+    {
+      "level": 2,
+      "slug": "func",
+      "title": "func"
     },
     {
       "level": 2,
@@ -604,21 +609,6 @@ window.files = [
       "level": 2,
       "slug": "client-createsendpromise",
       "title": "Client.createSendPromise"
-    },
-    {
-      "level": 1,
-      "slug": "client-initialization",
-      "title": "Client Initialization"
-    },
-    {
-      "level": 2,
-      "slug": "save",
-      "title": "save"
-    },
-    {
-      "level": 2,
-      "slug": "func",
-      "title": "func"
     }
   ]
 },
@@ -661,37 +651,19 @@ window.files = [
   "toc": []
 },
 {
-  "path": "app/js/client/helpers.coffee.html",
-  "originalName": "helpers.coffee",
-  "originalPath": "app/js/client/helpers.coffee",
-  "name": "helpers.coffee.html",
+  "path": "app/js/client/session.coffee.html",
+  "originalName": "session.coffee",
+  "originalPath": "app/js/client/session.coffee",
+  "name": "session.coffee.html",
   "lang": "coffeescript",
-  "title": "Helpers",
+  "title": "Session",
   "toc": [
     {
       "level": 1,
-      "slug": "helpers",
-      "title": "Helpers"
-    },
-    {
-      "level": 2,
-      "slug": "body-findbuilding",
-      "title": "body.findBuilding"
-    },
-    {
-      "level": 2,
-      "slug": "buildings-trade-getglyphinventory",
-      "title": "buildings.trade.getGlyphInventory"
+      "slug": "session",
+      "title": "Session"
     }
   ]
-},
-{
-  "path": "app/js/client/modules.coffee.html",
-  "originalName": "modules.coffee",
-  "originalPath": "app/js/client/modules.coffee",
-  "name": "modules.coffee.html",
-  "lang": "coffeescript",
-  "toc": []
 },
 {
   "path": "app/js/menu/about.coffee.html",
@@ -817,6 +789,93 @@ window.files = [
   ]
 },
 {
+  "path": "app/js/client/modules/alliance.coffee.html",
+  "originalName": "alliance.coffee",
+  "originalPath": "app/js/client/modules/alliance.coffee",
+  "name": "alliance.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/body.coffee.html",
+  "originalName": "body.coffee",
+  "originalPath": "app/js/client/modules/body.coffee",
+  "name": "body.coffee.html",
+  "lang": "coffeescript",
+  "toc": [
+    {
+      "level": 2,
+      "slug": "body-findbuilding",
+      "title": "body.findBuilding"
+    }
+  ]
+},
+{
+  "path": "app/js/client/modules/captcha.coffee.html",
+  "originalName": "captcha.coffee",
+  "originalPath": "app/js/client/modules/captcha.coffee",
+  "name": "captcha.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/empire.coffee.html",
+  "originalName": "empire.coffee",
+  "originalPath": "app/js/client/modules/empire.coffee",
+  "name": "empire.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/inbox.coffee.html",
+  "originalName": "inbox.coffee",
+  "originalPath": "app/js/client/modules/inbox.coffee",
+  "name": "inbox.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/index.coffee.html",
+  "originalName": "index.coffee",
+  "originalPath": "app/js/client/modules/index.coffee",
+  "name": "index.coffee.html",
+  "lang": "coffeescript",
+  "title": "Things :)",
+  "toc": [
+    {
+      "level": 1,
+      "slug": "things-",
+      "title": "Things :)"
+    },
+    {
+      "level": 1,
+      "slug": "buildings",
+      "title": "Buildings"
+    },
+    {
+      "level": 1,
+      "slug": "space-station-modules",
+      "title": "Space Station Modules"
+    }
+  ]
+},
+{
+  "path": "app/js/client/modules/map.coffee.html",
+  "originalName": "map.coffee",
+  "originalPath": "app/js/client/modules/map.coffee",
+  "name": "map.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/stats.coffee.html",
+  "originalName": "stats.coffee",
+  "originalPath": "app/js/client/modules/stats.coffee",
+  "name": "stats.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
   "path": "app/js/script-console/tasks/index.coffee.html",
   "originalName": "index.coffee",
   "originalPath": "app/js/script-console/tasks/index.coffee",
@@ -855,6 +914,308 @@ window.files = [
       "title": "PushGlyphs.run"
     }
   ]
+},
+{
+  "path": "app/js/client/modules/buildings/archaeology.coffee.html",
+  "originalName": "archaeology.coffee",
+  "originalPath": "app/js/client/modules/buildings/archaeology.coffee",
+  "name": "archaeology.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/blackHoleGenerator.coffee.html",
+  "originalName": "blackHoleGenerator.coffee",
+  "originalPath": "app/js/client/modules/buildings/blackHoleGenerator.coffee",
+  "name": "blackHoleGenerator.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/capitol.coffee.html",
+  "originalName": "capitol.coffee",
+  "originalPath": "app/js/client/modules/buildings/capitol.coffee",
+  "name": "capitol.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/development.coffee.html",
+  "originalName": "development.coffee",
+  "originalPath": "app/js/client/modules/buildings/development.coffee",
+  "name": "development.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/distributionCenter.coffee.html",
+  "originalName": "distributionCenter.coffee",
+  "originalPath": "app/js/client/modules/buildings/distributionCenter.coffee",
+  "name": "distributionCenter.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/embassy.coffee.html",
+  "originalName": "embassy.coffee",
+  "originalPath": "app/js/client/modules/buildings/embassy.coffee",
+  "name": "embassy.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/energyReserve.coffee.html",
+  "originalName": "energyReserve.coffee",
+  "originalPath": "app/js/client/modules/buildings/energyReserve.coffee",
+  "name": "energyReserve.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/entertainment.coffee.html",
+  "originalName": "entertainment.coffee",
+  "originalPath": "app/js/client/modules/buildings/entertainment.coffee",
+  "name": "entertainment.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/exchanger.coffee.html",
+  "originalName": "exchanger.coffee",
+  "originalPath": "app/js/client/modules/buildings/exchanger.coffee",
+  "name": "exchanger.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/foodReserve.coffee.html",
+  "originalName": "foodReserve.coffee",
+  "originalPath": "app/js/client/modules/buildings/foodReserve.coffee",
+  "name": "foodReserve.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/generic.coffee.html",
+  "originalName": "generic.coffee",
+  "originalPath": "app/js/client/modules/buildings/generic.coffee",
+  "name": "generic.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/geneticsLab.coffee.html",
+  "originalName": "geneticsLab.coffee",
+  "originalPath": "app/js/client/modules/buildings/geneticsLab.coffee",
+  "name": "geneticsLab.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/intelligence.coffee.html",
+  "originalName": "intelligence.coffee",
+  "originalPath": "app/js/client/modules/buildings/intelligence.coffee",
+  "name": "intelligence.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/libraryOfJith.coffee.html",
+  "originalName": "libraryOfJith.coffee",
+  "originalPath": "app/js/client/modules/buildings/libraryOfJith.coffee",
+  "name": "libraryOfJith.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/mercenariesGuild.coffee.html",
+  "originalName": "mercenariesGuild.coffee",
+  "originalPath": "app/js/client/modules/buildings/mercenariesGuild.coffee",
+  "name": "mercenariesGuild.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/mining.coffee.html",
+  "originalName": "mining.coffee",
+  "originalPath": "app/js/client/modules/buildings/mining.coffee",
+  "name": "mining.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/missionCommand.coffee.html",
+  "originalName": "missionCommand.coffee",
+  "originalPath": "app/js/client/modules/buildings/missionCommand.coffee",
+  "name": "missionCommand.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/network19.coffee.html",
+  "originalName": "network19.coffee",
+  "originalPath": "app/js/client/modules/buildings/network19.coffee",
+  "name": "network19.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/observatory.coffee.html",
+  "originalName": "observatory.coffee",
+  "originalPath": "app/js/client/modules/buildings/observatory.coffee",
+  "name": "observatory.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/oreStorage.coffee.html",
+  "originalName": "oreStorage.coffee",
+  "originalPath": "app/js/client/modules/buildings/oreStorage.coffee",
+  "name": "oreStorage.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/park.coffee.html",
+  "originalName": "park.coffee",
+  "originalPath": "app/js/client/modules/buildings/park.coffee",
+  "name": "park.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/planetaryCommand.coffee.html",
+  "originalName": "planetaryCommand.coffee",
+  "originalPath": "app/js/client/modules/buildings/planetaryCommand.coffee",
+  "name": "planetaryCommand.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/recycler.coffee.html",
+  "originalName": "recycler.coffee",
+  "originalPath": "app/js/client/modules/buildings/recycler.coffee",
+  "name": "recycler.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/security.coffee.html",
+  "originalName": "security.coffee",
+  "originalPath": "app/js/client/modules/buildings/security.coffee",
+  "name": "security.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/shipyard.coffee.html",
+  "originalName": "shipyard.coffee",
+  "originalPath": "app/js/client/modules/buildings/shipyard.coffee",
+  "name": "shipyard.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/spacePort.coffee.html",
+  "originalName": "spacePort.coffee",
+  "originalPath": "app/js/client/modules/buildings/spacePort.coffee",
+  "name": "spacePort.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/spaceStationLab.coffee.html",
+  "originalName": "spaceStationLab.coffee",
+  "originalPath": "app/js/client/modules/buildings/spaceStationLab.coffee",
+  "name": "spaceStationLab.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/subspaceSupplyDepot.coffee.html",
+  "originalName": "subspaceSupplyDepot.coffee",
+  "originalPath": "app/js/client/modules/buildings/subspaceSupplyDepot.coffee",
+  "name": "subspaceSupplyDepot.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/templeOfTheDrajilites.coffee.html",
+  "originalName": "templeOfTheDrajilites.coffee",
+  "originalPath": "app/js/client/modules/buildings/templeOfTheDrajilites.coffee",
+  "name": "templeOfTheDrajilites.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/theDillonForge.coffee.html",
+  "originalName": "theDillonForge.coffee",
+  "originalPath": "app/js/client/modules/buildings/theDillonForge.coffee",
+  "name": "theDillonForge.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/themePark.coffee.html",
+  "originalName": "themePark.coffee",
+  "originalPath": "app/js/client/modules/buildings/themePark.coffee",
+  "name": "themePark.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/trade.coffee.html",
+  "originalName": "trade.coffee",
+  "originalPath": "app/js/client/modules/buildings/trade.coffee",
+  "name": "trade.coffee.html",
+  "lang": "coffeescript",
+  "toc": [
+    {
+      "level": 2,
+      "slug": "buildings-trade-getglyphinventory",
+      "title": "buildings.trade.getGlyphInventory"
+    }
+  ]
+},
+{
+  "path": "app/js/client/modules/buildings/transporter.coffee.html",
+  "originalName": "transporter.coffee",
+  "originalPath": "app/js/client/modules/buildings/transporter.coffee",
+  "name": "transporter.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/buildings/waterStorage.coffee.html",
+  "originalName": "waterStorage.coffee",
+  "originalPath": "app/js/client/modules/buildings/waterStorage.coffee",
+  "name": "waterStorage.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/modules/parliament.coffee.html",
+  "originalName": "parliament.coffee",
+  "originalPath": "app/js/client/modules/modules/parliament.coffee",
+  "name": "parliament.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/modules/policeStation.coffee.html",
+  "originalName": "policeStation.coffee",
+  "originalPath": "app/js/client/modules/modules/policeStation.coffee",
+  "name": "policeStation.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
+},
+{
+  "path": "app/js/client/modules/modules/stationCommand.coffee.html",
+  "originalName": "stationCommand.coffee",
+  "originalPath": "app/js/client/modules/modules/stationCommand.coffee",
+  "name": "stationCommand.coffee.html",
+  "lang": "coffeescript",
+  "toc": []
 },
 {
   "path": "CHANGES.md.html",

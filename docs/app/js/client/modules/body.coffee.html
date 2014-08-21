@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> - body.coffee</title>
+
+  <link rel="stylesheet" href="../../../../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../../../../"/>
+  <meta name="groc-document-path" content="app/js/client/modules/body.coffee"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        app/js/client/modules/body.coffee
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><pre class="wrapper"><span class="hljs-string">'use strict'</span>
+
+Client = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/client'</span>
+modules = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/client/modules'</span>
+
+util = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/util'</span>
+
+<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> =
+    <span class="hljs-attribute">url</span>: <span class="hljs-string">'/body'</span>
+    <span class="hljs-attribute">path</span>: <span class="hljs-string">'body'</span>
+    <span class="hljs-attribute">methods</span>: [
+        <span class="hljs-string">'abandon'</span>
+        <span class="hljs-string">'get_buildings'</span>
+        <span class="hljs-string">'get_buildable'</span>
+        <span class="hljs-string">'get_build_queue'</span>
+        <span class="hljs-string">'get_status'</span>
+        <span class="hljs-string">'rename'</span>
+    ]
+
+    <span class="hljs-attribute">helpers</span>:</pre></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="body-findbuilding"><a href="#body-findbuilding" class="anchor"></a>body.findBuilding</h2><p>Takes a <code>buildings</code> object (as returned from <code>body.get_buildings</code>) and
+finds the building as specified by <code>name</code>. Also, allow mixing in of a building&#39;s
+rpc methods and helper methods into the return value. So the following is possible:</p>
+<pre><code>trade = <span class="hljs-keyword">body</span>.findBuilding buildings, <span class="hljs-attribute">'Trade</span> Ministry'
+trade.getGlyphInventory [trade.id]
+</code></pre></div>
+        </div>
+      
+      
+        <div class="code"><pre class="wrapper">        <span class="hljs-attribute">findBuilding</span>: <span class="hljs-function"><span class="hljs-params">(buildings, name)</span> -&gt;</span>
+            key = _.findKey buildings, {name}
+
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> key?
+
+            obj = _.clone buildings[key]
+            obj.id = key
+
+            client = <span class="hljs-keyword">new</span> Client()
+
+            {path} = modules[_.findKey(modules, <span class="hljs-attribute">url</span>: obj.url)]
+            methods = util.deepGet client, path
+            _.assign obj, methods
+
+            obj
+</pre></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../../../../toc.js"></script>
+  <script src="../../../../assets/libs.js"></script>
+  <script src="../../../../assets/behavior.js"></script>
+</body>
+</html>

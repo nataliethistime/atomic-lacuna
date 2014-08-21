@@ -26,7 +26,7 @@
       
         <div class="comments ">
           <div class="wrapper"><h1 id="push-glyphs"><a href="#push-glyphs" class="anchor"></a>Push Glyphs</h1><p>A task to use any available transport ship to push all glyphs on one planet
-to a different planet.</p>
+to a specified target planet.</p>
 </div>
         </div>
       
@@ -36,7 +36,7 @@ to a different planet.</p>
 templates = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/templates'</span>
 Task = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/task'</span>
 
-{empire, body} = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/client'</span>
+Client = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/client'</span>
 
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PushGlyphs</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Task</span></span>
@@ -75,6 +75,8 @@ Task = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/
       
       
         <div class="code"><pre class="wrapper">    <span class="hljs-attribute">run</span>: <span class="hljs-function"><span class="hljs-params">(callback)</span> -&gt;</span>
+
+        {empire, body} = <span class="hljs-keyword">new</span> Client()
 
         empire.get_status []
         .bind @
@@ -127,7 +129,7 @@ Task = <span class="hljs-built_in">require</span> <span class="hljs-string">'js/
             <span class="hljs-property">@trade</span>.push_items [<span class="hljs-property">@trade</span>.id, <span class="hljs-property">@toId</span>, toPush, <span class="hljs-attribute">ship_id</span>: <span class="hljs-property">@ship</span>.id]
 
         .<span class="hljs-keyword">then</span> <span class="hljs-function"><span class="hljs-params">(res)</span> -&gt;</span>
-            <span class="hljs-built_in">console</span>.log <span class="hljs-string">'Success!'</span> <span class="hljs-keyword">if</span> res.ship.task <span class="hljs-keyword">is</span> <span class="hljs-string">'Travelling'</span>
+            <span class="hljs-built_in">console</span>.log <span class="hljs-string">'Success!'</span>
 
         .done callback
 

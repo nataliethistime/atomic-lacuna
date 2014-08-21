@@ -32,3 +32,23 @@ module.exports =
         'push_items'
         'report_abuse'
     ]
+
+    helpers:
+
+        ###
+        # ## buildings.trade.getGlyphInventory
+        # Get an object of the glyphs where the key is the name of the glyph
+        # and the value is the quantity.
+        #
+        # Note that to carry on the chain after this promise statement, you
+        # need to use a `spread` instead of `then`. This is because multiple
+        # values are returned from this function.
+        ###
+
+        getGlyphInventory: ->
+            @get_glyph_summary [@id]
+            .then (res) ->
+                glyphs = {}
+                glyphs[glyph.name] = glyph.quantity for glyph in res.glyphs
+
+                [glyphs, res.cargo_space_used_each]
