@@ -5,14 +5,15 @@
   "main": "src/main.js",
   "private": true,
   "dependencies": {
+    "async": "^0.9.0",
+    "bluebird": "2.2.2",
+    "browser-request": "0.3.2",
+    "coffee-script": "1.7.1",
     "dom-storage": "2.0.x",
+    "handlebars": "1.3.x",
     "jquery": "2.1.x",
     "lodash": "2.4.x",
-    "handlebars": "1.3.x",
-    "coffee-script": "1.7.1",
-    "browser-request": "0.3.2",
-    "request": "2.39.0",
-    "bluebird": "2.2.2"
+    "request": "2.39.0"
   },
   "devDependencies": {
     "gulp": "3.8.7",

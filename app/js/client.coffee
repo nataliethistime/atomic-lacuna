@@ -11,6 +11,7 @@ request = if window.ATOM_SHELL then require 'request' else require 'browser-requ
 
 url = require 'url'
 Promise = require 'bluebird'
+async = require 'async'
 
 Session = require 'js/client/session'
 util = require 'js/util'
@@ -123,7 +124,7 @@ class Client
 
     prepareRequestOptions: (data) ->
         json: data
-        timeout: 20 * 1000
+        timeout: 8 * 1000
 
 
     ###
@@ -141,7 +142,7 @@ class Client
         data = @preparePostData @prepareParams params
         sendUrl = url.resolve YAHOO.lacuna.Game.RPCBase, @url
 
-        console.log "#{sendUrl}.#{data.method}(", data.params, ')'
+        console.log "#{@url}.#{data.method}(", data.params, ')'
 
         @createSendPromise sendUrl, @prepareRequestOptions data
 
@@ -158,19 +159,29 @@ class Client
     createSendPromise: (sendUrl, requestOptions) ->
 
         new Promise (resolve, reject) ->
+            boundSend = _.bind Client::sendRequest, {sendUrl, requestOptions}
+            # TODO: should this retry number be a configuration option?
+            async.retry 5, boundSend, (err, res) ->
 
-            request.post sendUrl, requestOptions, (error, response, body) ->
-                if !error and response.statusCode is 200
-                    if body.result
-                        val = body.result or body
+                if !err
+                    if res.result
+                        val = res.result or res
                         console.log '=>', val
                         resolve val
-                    else if body.error
-                        val = body.error
+                    else if res.error
+                        val = res.error
                         console.log '=>', val
                         resolve val
                 else
-                    throw error
+                    throw new Error 'Request failed after several attempts'
+
+    sendRequest: (callback) ->
+        request.post @sendUrl, @requestOptions, (error, response, body) ->
+            if !error and response.statusCode is 200
+                callback null, body
+            else
+                callback error
+
 
 
 module.exports = Client
