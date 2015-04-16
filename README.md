@@ -12,6 +12,11 @@ and HACKING are the places to be.
 If you have any questions or suggestions, please yell at me via the Github Issue tracker.
 I'd love to hear from you. :blush:
 
+[![Code Climate](https://codeclimate.com/github/1vasari/atomic-lacuna.png)](https://codeclimate.com/github/Vasari/atomic-lacuna)
+[![Build Status](https://travis-ci.org/1vasari/atomic-lacuna.svg?branch=master)](https://travis-ci.org/Vasari/atomic-lacuna)
+[![Dependency Status](https://david-dm.org/1vasari/atomic-lacuna.svg)](https://david-dm.org/1vasari/atomic-lacuna)
+[![Dev Dependency Status](https://david-dm.org/1vasari/atomic-lacuna/dev-status.svg)](https://david-dm.org/1vasari/atomic-lacuna#info=devDependencies)
+
 Why? :octocat:
 ====
 
@@ -33,15 +38,7 @@ the in-browser client. Here's a sneak peak of what it looks like. Tadaaa! :dizzy
 
 ![Atomic Lacuna in action!](https://raw.githubusercontent.com/Vasari/atomic-lacuna/master/public/Screenshot.png)
 
-Badges! :beginner:
+License
 =======
 
-| Name             | Status    |
-| :--------------: | :-------: |
-| Code Climate     | [![Code Climate](https://codeclimate.com/github/Vasari/atomic-lacuna.png)](https://codeclimate.com/github/Vasari/atomic-lacuna) |
-| Travis CI        | [![Build Status](https://travis-ci.org/Vasari/atomic-lacuna.svg?branch=master)](https://travis-ci.org/Vasari/atomic-lacuna)     |
-| Ohloh            | [![Ohloh](https://www.ohloh.net/images/logo/ohloh_hub.png)](https://www.ohloh.net/p/atomic-lacuna)
-| Dependencies     | [![Dependency Status](https://david-dm.org/Vasari/atomic-lacuna.svg)](https://david-dm.org/Vasari/atomic-lacuna) |
-| Dev Dependencies | [![Dev Dependency Status](https://david-dm.org/Vasari/atomic-lacuna/dev-status.svg)](https://david-dm.org/Vasari/atomic-lacuna#info=devDependencies) |
-
-Made with :heart: by Nathan McCallum under the MIT license! :panda_face:
+This project is made with love, under the MIT license, by [@1vasari](https://twitter.com/1vasari). :heart:
