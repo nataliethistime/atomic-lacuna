@@ -12,6 +12,8 @@ and HACKING are the places to be.
 If you have any questions or suggestions, please yell at me via the Github Issue tracker.
 I'd love to hear from you. :blush:
 
+**Note:** This project is no longer in development.
+
 [![Code Climate](https://codeclimate.com/github/1vasari/atomic-lacuna.png)](https://codeclimate.com/github/Vasari/atomic-lacuna)
 [![Build Status](https://travis-ci.org/1vasari/atomic-lacuna.svg?branch=master)](https://travis-ci.org/Vasari/atomic-lacuna)
 [![Dependency Status](https://david-dm.org/1vasari/atomic-lacuna.svg)](https://david-dm.org/1vasari/atomic-lacuna)
